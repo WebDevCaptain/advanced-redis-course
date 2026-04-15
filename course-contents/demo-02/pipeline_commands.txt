@@ -1,0 +1,10 @@
+SET 01 iRzCY4ehheQpbGm
+SET 02 OlLIWwKXBIL7rlt
+SET 03 aaGN19SJkmrP6K9
+SET 04 LYygSPJ6a2q7omJ
+SET 05 udjSSYD47AjqHrt
+HSET 100 name Nora                    
+HSET 100 age 34
+HSET 100 designation Director
+HSET 100 department Engineering
+HSET 100 company SomeCompany
