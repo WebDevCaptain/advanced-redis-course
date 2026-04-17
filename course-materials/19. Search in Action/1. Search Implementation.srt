@@ -1,0 +1,307 @@
+1
+00:00:00,780 --> 00:00:04,440
+Let's go back over to our e-commerce application and start to integrate search into it.
+
+2
+00:00:04,830 --> 00:00:08,340
+As you probably guess, we're going to wire up the search bar up here at the very top.
+
+3
+00:00:08,760 --> 00:00:13,500
+So if a user types in something like chair, I want to find all the different items that have chair
+
+4
+00:00:13,500 --> 00:00:15,740
+in the name or its description.
+
+5
+00:00:16,080 --> 00:00:19,080
+And I want to show those items and a little box right underneath it.
+
+6
+00:00:21,150 --> 00:00:24,990
+Now, just to clarify, we're going to show some search results right underneath it.
+
+7
+00:00:25,200 --> 00:00:31,080
+These are going to be the results of a full tech search, specifically of the items, names and the
+
+8
+00:00:31,080 --> 00:00:31,770
+descriptions.
+
+9
+00:00:32,100 --> 00:00:32,640
+That's it.
+
+10
+00:00:33,150 --> 00:00:39,090
+They're not going to do any querying here around, say, the items, VUSE or its bid price or anything
+
+11
+00:00:39,090 --> 00:00:39,600
+like that.
+
+12
+00:00:39,630 --> 00:00:42,360
+We are just concerned with the items, name and description.
+
+13
+00:00:43,710 --> 00:00:48,450
+So to get started on this, I've put together a little bit of a process that we're going to go through.
+
+14
+00:00:48,900 --> 00:00:51,900
+This is focused solely on just the index creation.
+
+15
+00:00:52,500 --> 00:00:56,550
+So whenever we need to make a new index inside of an application, these are the steps are going to
+
+16
+00:00:56,550 --> 00:00:56,970
+go through.
+
+17
+00:00:57,750 --> 00:01:01,440
+First thing we're going to do is figure out what prefix the index will use.
+
+18
+00:01:01,950 --> 00:01:07,080
+Remember that whenever we call FTE that creates, we have to provide a prefix to it.
+
+19
+00:01:07,170 --> 00:01:12,360
+And that means go and find all the different keys inside of radius that start with some particular string
+
+20
+00:01:12,570 --> 00:01:14,310
+and try to index those hashes.
+
+21
+00:01:16,120 --> 00:01:20,310
+For us, our prefects is going to try to look at all the different items that we've stored inside of
+
+22
+00:01:20,470 --> 00:01:20,710
+us.
+
+23
+00:01:21,340 --> 00:01:24,340
+All of our different items start with the prefix of items.
+
+24
+00:01:24,470 --> 00:01:28,390
+LB So items LB is probably going to be our prefix.
+
+25
+00:01:30,270 --> 00:01:35,520
+The next thing we have to do is look at all the different fields and the types of those fields inside
+
+26
+00:01:35,520 --> 00:01:36,660
+of our different hashes.
+
+27
+00:01:37,530 --> 00:01:40,860
+We're going to specifically add those to the index that is being created.
+
+28
+00:01:41,640 --> 00:01:46,050
+Remember that we only have to add fields to the index if we actually intend to use them inside of a
+
+29
+00:01:46,050 --> 00:01:46,440
+search.
+
+30
+00:01:47,160 --> 00:01:51,510
+We are only going to be doing searching on a item's name and description.
+
+31
+00:01:52,140 --> 00:01:57,390
+So we don't need any of the other fields inside of an item to be added to the index.
+
+32
+00:01:57,720 --> 00:02:00,030
+We only need the name and the description.
+
+33
+00:02:02,070 --> 00:02:06,360
+Given that we want to do a full tech search on both these fields, they're probably going to be of type
+
+34
+00:02:06,540 --> 00:02:09,870
+text instead of tag or numeric or any other type.
+
+35
+00:02:12,970 --> 00:02:17,170
+Once you've got those first few steps done, and we pretty much do at this point, those steps are pretty
+
+36
+00:02:17,170 --> 00:02:18,130
+easy and straightforward.
+
+37
+00:02:18,370 --> 00:02:21,190
+We're then going to actually write our function to create the index.
+
+38
+00:02:21,910 --> 00:02:25,530
+And then the last step here and this is where things are going to get a little bit challenging.
+
+39
+00:02:25,690 --> 00:02:28,270
+We have to decide when to create the index.
+
+40
+00:02:28,480 --> 00:02:32,260
+We can have a separate discussion on that because there's a couple of interesting little challenges
+
+41
+00:02:32,260 --> 00:02:35,890
+that we're going to run into around deciding when the index will be created.
+
+42
+00:02:36,850 --> 00:02:38,590
+But let's move on to step number three right here.
+
+43
+00:02:38,620 --> 00:02:41,050
+We need to make a function to create the index.
+
+44
+00:02:41,830 --> 00:02:43,930
+To do that, I'm going to go back over to my code editor.
+
+45
+00:02:46,910 --> 00:02:50,930
+And inside of my SIRC service's reticence.
+
+46
+00:02:52,230 --> 00:02:52,880
+Directory.
+
+47
+00:02:52,890 --> 00:02:54,870
+I'll find the file called Create Indexes.
+
+48
+00:02:55,200 --> 00:02:55,860
+Here it is right here.
+
+49
+00:02:56,690 --> 00:03:00,660
+You'll notice that I've already defined a function for us called create indexes.
+
+50
+00:03:02,010 --> 00:03:06,120
+The inside of here is where we are going to add in some code to actually, of course, create the index
+
+51
+00:03:06,840 --> 00:03:11,400
+to create an index using the Node Redis library, which is what we're using right now.
+
+52
+00:03:12,000 --> 00:03:17,160
+We're going to call a function of client dot dot creates.
+
+53
+00:03:17,610 --> 00:03:20,010
+This is how we create an index using node redis.
+
+54
+00:03:21,290 --> 00:03:23,330
+This function is going to take three different arguments.
+
+55
+00:03:23,630 --> 00:03:28,820
+The first will be where we want to store the key or where we want to store the index inside of Redis.
+
+56
+00:03:28,850 --> 00:03:30,890
+So we have to basically just provide a key.
+
+57
+00:03:32,020 --> 00:03:36,310
+The second argument is going to be a big object describing all the different fields that we want to
+
+58
+00:03:36,310 --> 00:03:38,560
+index and the types of those fields.
+
+59
+00:03:38,980 --> 00:03:43,630
+So we're going to say that we want to index the name and the description of every item and that they
+
+60
+00:03:43,630 --> 00:03:44,920
+are both of type text.
+
+61
+00:03:45,640 --> 00:03:49,990
+And then the third argument is going to describe the kind of structure we are trying to index.
+
+62
+00:03:50,590 --> 00:03:51,610
+So that is a hash.
+
+63
+00:03:52,030 --> 00:03:54,850
+And we'll that's where we will also provide our prefix as well.
+
+64
+00:03:56,290 --> 00:04:00,730
+And one thing to note here is that we are going to have to specify exactly where we want to store the
+
+65
+00:04:00,730 --> 00:04:01,690
+items index.
+
+66
+00:04:02,020 --> 00:04:06,790
+So we need to make another key generating function and we'll call it something like items index key.
+
+67
+00:04:07,540 --> 00:04:08,530
+Let's get started there.
+
+68
+00:04:09,220 --> 00:04:13,270
+So back inside, my editor, I'm going to find that key sorts file.
+
+69
+00:04:15,140 --> 00:04:21,500
+And then at the very bottom, I'm going to add on a new key generating function called items next key.
+
+70
+00:04:23,450 --> 00:04:26,930
+Now I'm going to follow the same naming convention I've told you about a couple of times.
+
+71
+00:04:27,320 --> 00:04:29,240
+So I'd colon items.
+
+72
+00:04:33,070 --> 00:04:34,960
+Well, then go back over to Crete indexes.
+
+73
+00:04:35,200 --> 00:04:35,590
+Yes.
+
+74
+00:04:38,040 --> 00:04:40,020
+And I'm going to import that function at the top.
+
+75
+00:04:45,820 --> 00:04:46,150
+Okay.
+
+76
+00:04:46,780 --> 00:04:51,550
+Now, rather than continue on and having this video get really, really long, let's take a pause right
+
+77
+00:04:51,550 --> 00:04:54,160
+here and then continue with the implementation in just a moment.

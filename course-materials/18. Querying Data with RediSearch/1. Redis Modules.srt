@@ -1,0 +1,131 @@
+1
+00:00:01,410 --> 00:00:06,120
+Up to this point in the course, we have focused on some pretty basic data types, such as sets, lists,
+
+2
+00:00:06,150 --> 00:00:07,200
+hashes and so on.
+
+3
+00:00:07,740 --> 00:00:10,320
+We've been able to make a pretty interesting application.
+
+4
+00:00:10,440 --> 00:00:15,120
+So the e-commerce app, it's not totally done, but it's definitely at least somewhat working.
+
+5
+00:00:15,450 --> 00:00:19,680
+So we can definitely make an interesting application by using these very basic data types.
+
+6
+00:00:20,400 --> 00:00:26,070
+But as we start to add in additional features, well, using some of these basic data types for implementing
+
+7
+00:00:26,070 --> 00:00:29,490
+things like, say, search starts to get a little bit more challenging.
+
+8
+00:00:30,240 --> 00:00:35,460
+So at a certain point in time, rather than trying to build advanced features using these basic data
+
+9
+00:00:35,460 --> 00:00:40,080
+types, we might try to instead enhance the capabilities of Redis itself.
+
+10
+00:00:40,890 --> 00:00:44,100
+We can make read this little bit more feature full.
+
+11
+00:00:44,100 --> 00:00:48,840
+We can add in additional capabilities to it by using something called modules.
+
+12
+00:00:49,770 --> 00:00:53,460
+Modules are separate programs that we're going to load into Redis.
+
+13
+00:00:54,120 --> 00:01:00,150
+When we load up a module, we are adding in some additional data structures and some commands to work
+
+14
+00:01:00,150 --> 00:01:01,080
+with those structures.
+
+15
+00:01:01,680 --> 00:01:05,040
+So it's plain and simple enhancing the capabilities of Redis.
+
+16
+00:01:05,340 --> 00:01:10,620
+It adds in more advanced features that we can make use of to build more advanced features ourselves.
+
+17
+00:01:12,110 --> 00:01:16,340
+There are many different modules out there, but two are the most popular and the two that we're going
+
+18
+00:01:16,340 --> 00:01:20,930
+to really focus on in this course are called registration and ready search.
+
+19
+00:01:21,800 --> 00:01:26,840
+Registration allows us to store and manipulate JSON very easily inside of Redis.
+
+20
+00:01:27,500 --> 00:01:32,120
+Remember, we already do have hashes, but hashes don't allow deeply nested data.
+
+21
+00:01:32,450 --> 00:01:34,400
+They are simple key value pairs.
+
+22
+00:01:35,150 --> 00:01:38,810
+With registration we can store true JSON data.
+
+23
+00:01:39,350 --> 00:01:45,380
+So nested arrays, nested objects and equivalent any kind of basically any kind of JSON structure we
+
+24
+00:01:45,380 --> 00:01:45,710
+want.
+
+25
+00:01:47,010 --> 00:01:50,040
+A second module they were going to make use of is called Ready Search.
+
+26
+00:01:50,520 --> 00:01:57,690
+This is going to add in true text search and true querying and filtering of different keys across our
+
+27
+00:01:57,690 --> 00:01:59,050
+entire register to store.
+
+28
+00:01:59,940 --> 00:02:06,750
+Whereas before we had to keep track of relational data or dual filters and queries by using either that
+
+29
+00:02:06,750 --> 00:02:12,480
+sort commands or sorted sets, we can now make use of ready search to take a look at a ton of different
+
+30
+00:02:12,480 --> 00:02:17,730
+hashes at the same time and find very specific hashes based upon some filtering criteria.
+
+31
+00:02:18,840 --> 00:02:24,860
+The registry site and research just plain make Redis little bit more useful and feature full.
+
+32
+00:02:27,430 --> 00:02:27,760
+Okay.
+
+33
+00:02:28,390 --> 00:02:32,560
+Now we're going to start to focus on how we actually make use of these modules in just a moment.

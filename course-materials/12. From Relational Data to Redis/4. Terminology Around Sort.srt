@@ -1,0 +1,559 @@
+1
+00:00:01,420 --> 00:00:02,650
+To better understand sports.
+
+2
+00:00:02,680 --> 00:00:06,190
+We are going to write out a little bit of data inside this first code cell right here.
+
+3
+00:00:06,490 --> 00:00:11,440
+We're going to set up three separate hashes and one sorted set will then make some sort to play with
+
+4
+00:00:11,440 --> 00:00:11,890
+all this data.
+
+5
+00:00:12,980 --> 00:00:15,230
+Here's a diagram of the data that we're going to set up.
+
+6
+00:00:15,830 --> 00:00:18,200
+In total, we have three separate hashes, like I mentioned.
+
+7
+00:00:18,560 --> 00:00:20,150
+Each one represents a single book.
+
+8
+00:00:20,540 --> 00:00:26,690
+So we've got a book with an idea of good, a book with an idea of bad and a book with an idea of OC.
+
+9
+00:00:27,260 --> 00:00:32,720
+Once again, I'm using good bad in OC as the IDs rather than numbers or something like that.
+
+10
+00:00:33,320 --> 00:00:40,190
+Just to make sure that the IDs are very easy for us to just look at and identify what that ID is referring
+
+11
+00:00:40,190 --> 00:00:40,340
+to.
+
+12
+00:00:41,310 --> 00:00:43,770
+We are also going to have a sorted set as well.
+
+13
+00:00:44,370 --> 00:00:49,740
+The sorted set will be stored at a key of books, likes and sorted set will have members of the idea
+
+14
+00:00:49,740 --> 00:00:55,680
+of each book and the number of likes that this book has received through imagining that I don't know,
+
+15
+00:00:55,680 --> 00:01:01,710
+we're making a book writing platform or something like that, but in this case, the book Bad has gotten
+
+16
+00:01:01,710 --> 00:01:02,440
+zero likes.
+
+17
+00:01:02,460 --> 00:01:03,360
+Nobody likes that book.
+
+18
+00:01:03,690 --> 00:01:06,520
+But 999 people liked the book.
+
+19
+00:01:08,130 --> 00:01:08,460
+All right.
+
+20
+00:01:08,670 --> 00:01:14,040
+Like I said, we're going to write out a couple of commands to get this structure set up inside of readies.
+
+21
+00:01:15,410 --> 00:01:16,130
+So Bakari here.
+
+22
+00:01:17,090 --> 00:01:25,790
+I'm going to do an H set of books good with the title of Good Book and a year of 1950.
+
+23
+00:01:26,930 --> 00:01:28,460
+I'm going to copy that down twice.
+
+24
+00:01:29,870 --> 00:01:31,540
+I'll change the second one right here.
+
+25
+00:01:31,550 --> 00:01:32,600
+Two books bad.
+
+26
+00:01:33,990 --> 00:01:34,650
+Bad book.
+
+27
+00:01:35,660 --> 00:01:37,670
+I'll make sure that is published in 1930.
+
+28
+00:01:39,750 --> 00:01:42,290
+And then on the third one, I'm going to change the ID to books.
+
+29
+00:01:42,300 --> 00:01:42,720
+Colin.
+
+30
+00:01:42,750 --> 00:01:43,290
+Okay.
+
+31
+00:01:44,530 --> 00:01:45,250
+Okay book.
+
+32
+00:01:46,280 --> 00:01:48,170
+Published in the year 1940.
+
+33
+00:01:50,230 --> 00:01:53,800
+Please double check your spelling on all these words and the capitalization as well.
+
+34
+00:01:53,950 --> 00:01:57,610
+If you have any typos in here, things are going to get a little bit strange later on.
+
+35
+00:01:59,680 --> 00:02:01,610
+Next up, we'll set up the sorted sets.
+
+36
+00:02:01,630 --> 00:02:04,740
+So I'll do a Z add on books likes.
+
+37
+00:02:07,370 --> 00:02:09,440
+Well, first, take care of the good book.
+
+38
+00:02:10,490 --> 00:02:15,440
+So that one has 999 likes and the member in this case is good.
+
+39
+00:02:18,030 --> 00:02:18,990
+And zero bad.
+
+40
+00:02:22,190 --> 00:02:22,970
+And 40.
+
+41
+00:02:23,300 --> 00:02:23,720
+Okay.
+
+42
+00:02:25,180 --> 00:02:28,450
+Once again, please double check your spelling and capitalization there.
+
+43
+00:02:28,630 --> 00:02:31,870
+Also, notice that all these prefixes are books.
+
+44
+00:02:31,900 --> 00:02:32,410
+So books.
+
+45
+00:02:32,410 --> 00:02:33,250
+Books, books, books.
+
+46
+00:02:34,900 --> 00:02:38,690
+Once you've double checked all that stuff, I'm going to run this thing and I'll get back to zero.
+
+47
+00:02:38,890 --> 00:02:40,330
+So presumably all the data is in here.
+
+48
+00:02:40,330 --> 00:02:41,230
+You might get one.
+
+49
+00:02:41,260 --> 00:02:45,610
+Actually, now that I think about it, I already had the sorted set created with these elements inside
+
+50
+00:02:45,610 --> 00:02:46,930
+of it before I recorded this video.
+
+51
+00:02:48,480 --> 00:02:48,770
+Okay.
+
+52
+00:02:48,780 --> 00:02:49,650
+So all the data is in here.
+
+53
+00:02:49,770 --> 00:02:55,410
+So now I'm going to add in another code self and as promised, we'll start making use of the sort command.
+
+54
+00:02:56,250 --> 00:03:00,570
+I'm going to write in sorts and remember what I told you in the last video.
+
+55
+00:03:00,780 --> 00:03:04,320
+The sort command operates on a sorted set, a set or a list.
+
+56
+00:03:04,890 --> 00:03:08,760
+We're not going to worry about list just yet, so we're only concerned with sorted sets and sets.
+
+57
+00:03:09,720 --> 00:03:11,150
+Let's do the kind of obvious thing.
+
+58
+00:03:11,160 --> 00:03:15,840
+Let's try to sort our sorted sets of books Colin likes and just see what happens.
+
+59
+00:03:16,590 --> 00:03:18,360
+I'll do books Colin likes.
+
+60
+00:03:19,410 --> 00:03:20,460
+And then going to run that.
+
+61
+00:03:20,820 --> 00:03:24,780
+And immediately, we're going to get our first very confusing error message.
+
+62
+00:03:26,030 --> 00:03:31,250
+Now, this is where in the last video I told you that some terminology around sort of conflicts with
+
+63
+00:03:31,250 --> 00:03:33,650
+other pieces of terminology we have already learned.
+
+64
+00:03:34,430 --> 00:03:40,430
+So there's a word in here that we've already seen somewhere else, and it means something completely
+
+65
+00:03:40,430 --> 00:03:42,140
+different than when we learned it previously.
+
+66
+00:03:42,140 --> 00:03:46,430
+So the ear says one or more scores can't be converted into double.
+
+67
+00:03:46,850 --> 00:03:48,590
+And the issue here is scores.
+
+68
+00:03:48,710 --> 00:03:49,370
+So what's going on?
+
+69
+00:03:49,880 --> 00:03:51,350
+Well, as usual, quick diagram.
+
+70
+00:03:53,640 --> 00:03:55,500
+All right, here is our sorted set.
+
+71
+00:03:56,040 --> 00:04:03,630
+Whenever we use the sort commands on a sorted set, sort is going to operate on the members of the sorted
+
+72
+00:04:03,630 --> 00:04:05,220
+sets, not the scores.
+
+73
+00:04:06,170 --> 00:04:08,410
+So we are currently operating on these members.
+
+74
+00:04:08,420 --> 00:04:10,760
+We are trying to sort these members in some way.
+
+75
+00:04:11,680 --> 00:04:16,900
+The reason we are seeing that error message is that all these members are listed out as strings and
+
+76
+00:04:16,900 --> 00:04:19,990
+sort by default expects to be working with numbers.
+
+77
+00:04:20,170 --> 00:04:21,700
+And that's kind of the error that we're seeing right now.
+
+78
+00:04:21,700 --> 00:04:24,910
+We're seeing something that says can't be converted into double double.
+
+79
+00:04:25,060 --> 00:04:27,100
+In other words, can't be converted into a number.
+
+80
+00:04:28,260 --> 00:04:34,350
+The reason that scores is so confusing here is that in the world of sorted sets, these over here,
+
+81
+00:04:34,380 --> 00:04:37,200
+these are our scores, our scores, our numbers.
+
+82
+00:04:37,800 --> 00:04:42,690
+But in the world of the sort commands, the members are referred to as scores.
+
+83
+00:04:43,140 --> 00:04:45,000
+They are sorting criteria.
+
+84
+00:04:45,000 --> 00:04:46,620
+They are sorting values.
+
+85
+00:04:48,060 --> 00:04:50,990
+Though, because it refers to these members as scorers.
+
+86
+00:04:51,000 --> 00:04:55,800
+It's in kind of direct competition with the terminology we learned when we were working assorted sets.
+
+87
+00:04:55,810 --> 00:04:59,250
+And so this is the first really confusing thing that we're going to run into.
+
+88
+00:05:00,090 --> 00:05:05,040
+So once again, as soon as we start making use of the Salk command in the sort world, when you apply
+
+89
+00:05:05,040 --> 00:05:08,670
+sort to a sort of set, members are scores.
+
+90
+00:05:09,450 --> 00:05:10,800
+I know it is confusing.
+
+91
+00:05:13,160 --> 00:05:18,860
+So we are seeing an error right now because it is trying to operate on these things and organize them
+
+92
+00:05:18,860 --> 00:05:19,520
+in some way.
+
+93
+00:05:20,770 --> 00:05:23,110
+By default tries to operate on numbers.
+
+94
+00:05:23,710 --> 00:05:27,070
+If we want to, we can apply an additional argument to the sort command.
+
+95
+00:05:27,520 --> 00:05:34,360
+Patel sought to try to organize these things, treating them as strings and so sort them alphabetically.
+
+96
+00:05:34,990 --> 00:05:37,660
+That's going to be the first variation of the sort command we're going to look at.
+
+97
+00:05:38,680 --> 00:05:39,460
+So back over here.
+
+98
+00:05:40,000 --> 00:05:43,900
+I'm going to put in sort books Colin likes and I'm going to add in Alpha.
+
+99
+00:05:45,040 --> 00:05:49,570
+So if we put in the alpha keyword, that means specifically sort all the members which again are referred
+
+100
+00:05:49,570 --> 00:05:54,400
+to as scores, but sort them alphabetically rather than treating them as numbers.
+
+101
+00:05:55,270 --> 00:05:57,640
+And if I run that journey now, if I end up with bad.
+
+102
+00:05:57,640 --> 00:05:57,950
+Good.
+
+103
+00:05:57,970 --> 00:05:58,460
+Okay.
+
+104
+00:05:58,480 --> 00:06:00,070
+Which is sorted alphabetically.
+
+105
+00:06:02,300 --> 00:06:02,630
+Okay.
+
+106
+00:06:02,990 --> 00:06:04,340
+Well, let's add in another code.
+
+107
+00:06:04,340 --> 00:06:07,250
+So we're going to look at a second variation on sort now.
+
+108
+00:06:09,360 --> 00:06:11,660
+So I'm going to write out the same initial a little bit.
+
+109
+00:06:11,670 --> 00:06:14,120
+I'll do sorts looks likes alpha.
+
+110
+00:06:15,250 --> 00:06:19,510
+Now in this variation, I want to try to limit how many elements we get back.
+
+111
+00:06:19,990 --> 00:06:25,510
+Whenever we apply the sort keyword to a sorted set or a list, we might be sorting many, many, many
+
+112
+00:06:25,510 --> 00:06:25,960
+elements.
+
+113
+00:06:26,380 --> 00:06:27,250
+And the words are sorted.
+
+114
+00:06:27,250 --> 00:06:29,440
+Set might have a million elements inside of it.
+
+115
+00:06:29,680 --> 00:06:33,280
+And when we apply sort, we might not want to get back all million elements.
+
+116
+00:06:33,280 --> 00:06:35,230
+We might might want to get back just a couple.
+
+117
+00:06:36,520 --> 00:06:42,370
+So if we want to get back just a subset of the sorted results, we can make use of the limit argument.
+
+118
+00:06:43,300 --> 00:06:47,860
+Limit works just the same way as it does back when we were learning about the range.
+
+119
+00:06:48,520 --> 00:06:50,230
+So limit is going to take in two numbers.
+
+120
+00:06:50,950 --> 00:06:55,270
+The first number is going to be a number of elements we want to skip in the result set.
+
+121
+00:06:55,630 --> 00:06:58,240
+And the second will be how many we want to include.
+
+122
+00:06:58,870 --> 00:07:06,520
+So if I put in one space two, that means skip over the first element of bad and then give me the next
+
+123
+00:07:06,520 --> 00:07:06,940
+two.
+
+124
+00:07:07,960 --> 00:07:10,780
+I can run that and sure enough, I get good and okay.
+
+125
+00:07:11,930 --> 00:07:17,220
+If I put in one one, that means skip over bad and then give me just one element.
+
+126
+00:07:17,360 --> 00:07:18,230
+So that would be good.
+
+127
+00:07:19,010 --> 00:07:21,600
+And then finally, as you probably guessed, I did zero one.
+
+128
+00:07:21,860 --> 00:07:24,170
+Don't skip over any and give me just one.
+
+129
+00:07:24,200 --> 00:07:25,310
+So that would be just bad.
+
+130
+00:07:26,690 --> 00:07:28,610
+I'm going to leave that as one to you.
+
+131
+00:07:31,000 --> 00:07:31,300
+All right.
+
+132
+00:07:31,300 --> 00:07:33,790
+So there is a basics of sort around sorted sets.
+
+133
+00:07:34,090 --> 00:07:35,440
+We've learned about two variations.
+
+134
+00:07:35,890 --> 00:07:41,500
+So we got sorts our sorted set key and an alpha that causes all the members to be sorted alphabetically.
+
+135
+00:07:42,020 --> 00:07:44,500
+And we've also seen limits that just hair's back.
+
+136
+00:07:44,500 --> 00:07:46,840
+How many elements get returned at this point?
+
+137
+00:07:46,990 --> 00:07:52,480
+This doesn't look too bad, with the exception of understanding that we are sorting the members, not
+
+138
+00:07:52,480 --> 00:07:53,590
+the scores or anything like that.
+
+139
+00:07:53,980 --> 00:07:57,820
+Let's take a pause here and we're going start to dive into the more interesting aspects of sort.
+
+140
+00:07:57,970 --> 00:07:58,690
+In just a moment.

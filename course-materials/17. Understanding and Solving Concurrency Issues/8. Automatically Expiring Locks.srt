@@ -1,0 +1,531 @@
+1
+00:00:01,380 --> 00:00:05,760
+As I have hinted at several times, our lock, for the most part, is working successfully.
+
+2
+00:00:06,060 --> 00:00:08,760
+But there are a couple of small issues with it that we need to address.
+
+3
+00:00:09,340 --> 00:00:13,800
+So for the first issue, I'm going to run through a little example inside the actual application.
+
+4
+00:00:13,930 --> 00:00:19,230
+Are we going to see that unfortunately, the lock is appearing to fail underneath a rather common scenario?
+
+5
+00:00:20,150 --> 00:00:24,560
+So back at the application, I'm going to make a brand new item with a duration of 10 minutes.
+
+6
+00:00:26,170 --> 00:00:28,540
+And then going to add a valid bid to the item.
+
+7
+00:00:28,630 --> 00:00:29,640
+So about $10.
+
+8
+00:00:31,040 --> 00:00:31,760
+That definitely worked.
+
+9
+00:00:32,480 --> 00:00:36,050
+Now I'm going to put in an invalid bid of five in this case.
+
+10
+00:00:36,860 --> 00:00:42,590
+And just as a quick note, I have enabled the check right here to make sure that we throw in air if
+
+11
+00:00:42,590 --> 00:00:43,400
+the bid is too low.
+
+12
+00:00:44,330 --> 00:00:50,780
+So when I entered the bid amount of five right here, a air should be thrown inside that Whitlock function.
+
+13
+00:00:52,220 --> 00:00:53,260
+Okay, I'm going to place it.
+
+14
+00:00:53,270 --> 00:00:57,860
+And hey, sure enough, we capture the air and it gets reported to the clients and I'm told bid too
+
+15
+00:00:57,860 --> 00:00:58,150
+low.
+
+16
+00:00:58,160 --> 00:00:59,120
+I need to adjust it.
+
+17
+00:00:59,300 --> 00:01:01,940
+So I'm going to try to put in a valid bid now of 25.
+
+18
+00:01:03,270 --> 00:01:05,340
+And it looks like everything just hangs for a little bit.
+
+19
+00:01:05,850 --> 00:01:08,310
+And then I'm told, okay, success of the winning bid.
+
+20
+00:01:08,610 --> 00:01:12,840
+But it still says that the high bid is $10 and there's only one bid.
+
+21
+00:01:13,890 --> 00:01:15,360
+I'm going to try to refresh really quickly.
+
+22
+00:01:15,820 --> 00:01:18,600
+There's still the same thing if I put in 25 again.
+
+23
+00:01:20,970 --> 00:01:21,240
+Okay.
+
+24
+00:01:21,240 --> 00:01:22,440
+I'm told success again.
+
+25
+00:01:22,440 --> 00:01:25,680
+And if I refresh it definitely is not working correctly.
+
+26
+00:01:26,010 --> 00:01:28,530
+It says that the bid was accepted, but clearly it is not.
+
+27
+00:01:28,530 --> 00:01:30,060
+Clearly something is not working.
+
+28
+00:01:30,690 --> 00:01:32,280
+Let's try to figure out what is going on here.
+
+29
+00:01:33,830 --> 00:01:34,180
+All right.
+
+30
+00:01:34,190 --> 00:01:39,380
+First, want to give you a quick reminder on a very specific part of our lock implementation.
+
+31
+00:01:40,280 --> 00:01:42,290
+After process, one acquires a lock.
+
+32
+00:01:42,680 --> 00:01:44,750
+It then tries to do some amount of work.
+
+33
+00:01:45,290 --> 00:01:50,270
+And then once all that work is done, a very critical part of this entire algorithm is to make sure
+
+34
+00:01:50,270 --> 00:01:52,040
+that we unlock the lock key.
+
+35
+00:01:52,520 --> 00:01:58,760
+So we need to unset the value right here so that some other process can succeed in its set operation
+
+36
+00:01:58,760 --> 00:01:59,780
+and acquire the lock.
+
+37
+00:02:00,500 --> 00:02:05,750
+So if this delete does not occur, then process number two is never going to be able to acquire the
+
+38
+00:02:05,750 --> 00:02:08,900
+lock and be able to safely modify the item hash.
+
+39
+00:02:09,800 --> 00:02:13,100
+And as you can guess, that's exactly what is happening right now.
+
+40
+00:02:13,850 --> 00:02:18,950
+Process one is acquiring the lock and then immediately after that, as we are trying to validate the
+
+41
+00:02:18,950 --> 00:02:23,930
+incoming bid and make sure that it has enough money, we are throwing an error.
+
+42
+00:02:24,530 --> 00:02:28,250
+And so our with lock function doesn't have any error handling right now.
+
+43
+00:02:28,520 --> 00:02:32,900
+So it never issues that delete command and never onsets this key.
+
+44
+00:02:33,780 --> 00:02:39,330
+And the result is process number two is going to forever try to set the key until eventually it runs
+
+45
+00:02:39,330 --> 00:02:40,200
+out of re tries.
+
+46
+00:02:41,340 --> 00:02:43,800
+That's the exact behavior we're seeing inside of our app right now.
+
+47
+00:02:44,340 --> 00:02:51,420
+If I put in a valid bid and click on place bid, I wait about 2 seconds until eventually all those retries
+
+48
+00:02:51,450 --> 00:02:55,140
+get eaten up and then the request kind of silently fails.
+
+49
+00:02:55,470 --> 00:02:59,370
+Yeah, I get a success message here, but truthfully, the thing definitely failed.
+
+50
+00:03:02,220 --> 00:03:05,630
+Now in this case, the crash here isn't really a crash per se.
+
+51
+00:03:05,730 --> 00:03:08,610
+We are just throwing an air within our locking function.
+
+52
+00:03:09,330 --> 00:03:11,100
+That's something that's going to happen all the time.
+
+53
+00:03:11,130 --> 00:03:13,140
+In many scenarios, we want to throw in air.
+
+54
+00:03:13,290 --> 00:03:18,570
+Even if we are inside of a locking function, we should probably add in some basic air handling, which
+
+55
+00:03:18,570 --> 00:03:19,470
+we could definitely do.
+
+56
+00:03:19,810 --> 00:03:21,780
+That's not really going to solve the underlying issue.
+
+57
+00:03:22,790 --> 00:03:27,990
+Whenever we are in a lock function, we truly have to assume that our entire server might crash.
+
+58
+00:03:28,010 --> 00:03:31,190
+For some reason, there might be some unrecoverable error.
+
+59
+00:03:31,610 --> 00:03:34,430
+We might lose power to our server itself.
+
+60
+00:03:34,730 --> 00:03:35,990
+We might take down our server.
+
+61
+00:03:36,260 --> 00:03:37,070
+Who knows?
+
+62
+00:03:37,850 --> 00:03:43,370
+So if at any point in time we crash before we unlock that key right there, that's pretty much it.
+
+63
+00:03:43,400 --> 00:03:48,800
+That key is going to be forever locked unless you and I go in manually and unset that key.
+
+64
+00:03:50,280 --> 00:03:56,520
+So we need to have some kind of extra feature here to make sure that no matter what, even if process
+
+65
+00:03:56,520 --> 00:04:02,760
+one fails, crashes, throws an error no matter what, after some period of time, we always automatically
+
+66
+00:04:02,760 --> 00:04:03,660
+unset that key.
+
+67
+00:04:04,510 --> 00:04:10,060
+And to do so, we can make use of a argument that we learned about a long time ago on the set commands.
+
+68
+00:04:10,870 --> 00:04:16,300
+So when we tried to acquire the lock with a set command, we're going to start to add on the arguments.
+
+69
+00:04:17,380 --> 00:04:23,320
+You might recall that the argument causes a value to automatically expire after some number of milliseconds.
+
+70
+00:04:24,160 --> 00:04:27,580
+So when process one acquires a lock and puts in a value of high right there.
+
+71
+00:04:28,420 --> 00:04:34,930
+It now has 2 seconds or 2000 milliseconds to do whatever work is required to be done with that.
+
+72
+00:04:36,040 --> 00:04:40,480
+And then after 2 seconds, that value is going to be automatically deleted.
+
+73
+00:04:41,480 --> 00:04:47,060
+If Process one finishes with its work before those two millisecond or those 2000 milliseconds, that's
+
+74
+00:04:47,060 --> 00:04:47,470
+fine.
+
+75
+00:04:47,540 --> 00:04:51,350
+It will still call delete as expected, and so that value will be deleted.
+
+76
+00:04:52,480 --> 00:04:57,640
+But if for some reason it fails to call delete, it will be automatically cleaned up after those 2000.
+
+77
+00:04:58,970 --> 00:04:59,340
+That's it.
+
+78
+00:04:59,360 --> 00:05:00,560
+That's how we're going to solve this issue.
+
+79
+00:05:01,070 --> 00:05:02,480
+So just be super clear now.
+
+80
+00:05:02,510 --> 00:05:07,280
+Process one, it's a lock, crashes on set after 2000 milliseconds.
+
+81
+00:05:07,520 --> 00:05:09,860
+Now, process two, you can safely acquire the lock.
+
+82
+00:05:12,170 --> 00:05:12,470
+Okay.
+
+83
+00:05:12,680 --> 00:05:15,650
+To put in this implementation, it's going to be super easy and straightforward.
+
+84
+00:05:16,340 --> 00:05:17,720
+Back inside of locked.
+
+85
+00:05:17,720 --> 00:05:18,110
+Yes.
+
+86
+00:05:18,780 --> 00:05:19,940
+But here's with lock.
+
+87
+00:05:21,720 --> 00:05:26,410
+I'm going to find where we do our set operation in addition to the Annex arguments.
+
+88
+00:05:26,430 --> 00:05:29,730
+I will also do a tax of 2000.
+
+89
+00:05:31,910 --> 00:05:37,880
+So now any with lock function really just has 2 seconds to complete all the work that is required.
+
+90
+00:05:38,420 --> 00:05:41,240
+If that is not long enough, we can always adjust its value.
+
+91
+00:05:41,660 --> 00:05:44,480
+We can go up to say 10 seconds or whatever else.
+
+92
+00:05:45,050 --> 00:05:49,670
+But for our application for testing purposes right now, 2000 is definitely reasonable.
+
+93
+00:05:51,150 --> 00:05:51,450
+Okay.
+
+94
+00:05:51,450 --> 00:05:52,350
+So now if I save this.
+
+95
+00:05:53,640 --> 00:05:55,110
+And go test my app again.
+
+96
+00:05:55,740 --> 00:05:59,130
+This chair that I was working with previously, this thing is forever locked.
+
+97
+00:05:59,160 --> 00:06:03,930
+It is unrecoverable at this point, unless we run a command to manually unlock it.
+
+98
+00:06:04,350 --> 00:06:08,220
+So just to make testing a little bit easier, I'm going to go make a new item very quickly.
+
+99
+00:06:10,170 --> 00:06:12,120
+And I'm going to repeat the same operation.
+
+100
+00:06:12,540 --> 00:06:18,780
+So I'm going to put in a valid bid, then an invalid bid, and then another valid bid.
+
+101
+00:06:19,650 --> 00:06:20,190
+And it works.
+
+102
+00:06:22,610 --> 00:06:22,940
+Okay.
+
+103
+00:06:23,090 --> 00:06:24,920
+So that's definitely a good step forward.
+
+104
+00:06:25,980 --> 00:06:32,130
+As I very briefly mentioned, we probably should put in some air handling inside of our Whitlock function
+
+105
+00:06:32,670 --> 00:06:36,450
+to make sure that if for some reason when we call the callback right here, so if something goes wrong
+
+106
+00:06:36,450 --> 00:06:41,550
+with that, we should probably still make sure that no matter what we call delete, that's definitely
+
+107
+00:06:41,550 --> 00:06:42,300
+something we should do.
+
+108
+00:06:42,870 --> 00:06:44,550
+We can handle that very easily.
+
+109
+00:06:45,690 --> 00:06:48,410
+By wrapping the tri statements.
+
+110
+00:06:49,940 --> 00:06:51,680
+We're seeing the results with a tri statement.
+
+111
+00:06:52,670 --> 00:06:53,900
+And a finally.
+
+112
+00:06:55,280 --> 00:07:01,550
+So we're going to try to run the call back if anything goes wrong with that whatsoever or if everything
+
+113
+00:07:01,550 --> 00:07:05,120
+succeeds either way, we're going to enter the final statements.
+
+114
+00:07:05,840 --> 00:07:09,440
+And inside there, we will make sure that we call delete.
+
+115
+00:07:11,480 --> 00:07:14,270
+And I will also give the written results up here as well.
+
+116
+00:07:17,450 --> 00:07:22,040
+So now, no matter what, whether the succeeds or fails, you're always going to do the unlock.
+
+117
+00:07:24,520 --> 00:07:24,760
+Okay.
+
+118
+00:07:24,820 --> 00:07:25,390
+So this looks good.
+
+119
+00:07:26,200 --> 00:07:26,530
+Now.
+
+120
+00:07:26,530 --> 00:07:27,940
+We really do want to have both.
+
+121
+00:07:27,970 --> 00:07:28,710
+Just be clear.
+
+122
+00:07:28,720 --> 00:07:30,970
+We definitely still want to have the peaks up here.
+
+123
+00:07:31,180 --> 00:07:36,070
+The peaks is going to make sure that even if our server completely crashes, that value gets unset.
+
+124
+00:07:36,610 --> 00:07:41,470
+The try finally down here is going to make sure that if you just have any plain JavaScript error, we
+
+125
+00:07:41,470 --> 00:07:45,040
+will still attempt to immediately unlock that lucky.
+
+126
+00:07:46,230 --> 00:07:49,770
+I can do one more very quick test here just to make sure it's working.
+
+127
+00:07:50,830 --> 00:07:55,780
+So I'm going to put in an invalid bid and then a valid one.
+
+128
+00:07:56,080 --> 00:07:56,370
+Yep.
+
+129
+00:07:56,380 --> 00:07:57,040
+Definitely works.
+
+130
+00:07:58,430 --> 00:07:58,740
+Okay.
+
+131
+00:07:58,740 --> 00:08:00,420
+So that is one more issue solved.
+
+132
+00:08:00,440 --> 00:08:04,910
+But there is another problem that we're going to take a look at with our implementation in just a minute
+
+133
+00:08:04,910 --> 00:08:05,330
+as well.

@@ -1,0 +1,135 @@
+1
+00:00:01,100 --> 00:00:03,740
+The next two commands are exact opposites of each other.
+
+2
+00:00:03,800 --> 00:00:06,110
+We've got Z, Pop Min and Z Pop Max.
+
+3
+00:00:06,470 --> 00:00:11,690
+What these commands are essentially saying, take the top number of elements and remove them from the
+
+4
+00:00:11,690 --> 00:00:13,910
+sorted set and give them back to us.
+
+5
+00:00:14,510 --> 00:00:15,370
+So zip up min.
+
+6
+00:00:15,930 --> 00:00:17,930
+We called it with products of two.
+
+7
+00:00:17,960 --> 00:00:21,450
+That means find the two lowest member score pairs.
+
+8
+00:00:21,470 --> 00:00:22,040
+Sorry.
+
+9
+00:00:22,400 --> 00:00:23,540
+Monitor and keyboard.
+
+10
+00:00:24,020 --> 00:00:25,820
+Delete them and return them to us.
+
+11
+00:00:26,820 --> 00:00:27,790
+Or Zee Pop, Max.
+
+12
+00:00:27,810 --> 00:00:28,390
+Same thing.
+
+13
+00:00:28,410 --> 00:00:32,560
+But we're taking a look at the highest score pairs Y, Z, pop, max products.
+
+14
+00:00:32,580 --> 00:00:36,660
+You would give us keyboard and power and remove them from these sorted sets.
+
+15
+00:00:37,650 --> 00:00:42,870
+The number argument here of two is optional, so we could remove that entirely.
+
+16
+00:00:43,080 --> 00:00:48,060
+And by default that means just remove the lowest one or the highest one.
+
+17
+00:00:49,380 --> 00:00:52,170
+And it does help you to of course we could put in any valid number.
+
+18
+00:00:52,200 --> 00:00:54,210
+So ten, 20, whatever else you want.
+
+19
+00:00:55,370 --> 00:00:55,700
+Okay.
+
+20
+00:00:55,760 --> 00:00:59,150
+These are pretty straightforward commands, but we might need them inside of our application.
+
+21
+00:00:59,220 --> 00:01:01,190
+Let's do once again a very quick test.
+
+22
+00:01:01,970 --> 00:01:02,690
+Back over here.
+
+23
+00:01:03,840 --> 00:01:05,100
+I'm going to add in a new cell.
+
+24
+00:01:05,610 --> 00:01:09,990
+I'm going to do a copy of just everything from Del up to the Z add.
+
+25
+00:01:14,690 --> 00:01:19,580
+Well then do a z pop min on products with two.
+
+26
+00:01:20,990 --> 00:01:24,860
+And so we'll get back the two lowest values, which are keyboard and CPU.
+
+27
+00:01:25,980 --> 00:01:29,580
+And then in a very similar vein, as you could guess, I'm going to copy that one.
+
+28
+00:01:30,910 --> 00:01:33,610
+And this one will do a Z pop max.
+
+29
+00:01:35,590 --> 00:01:38,080
+That will give us our and CPU.
+
+30
+00:01:41,160 --> 00:01:41,580
+All right.
+
+31
+00:01:41,880 --> 00:01:43,020
+Not that crazy.
+
+32
+00:01:43,320 --> 00:01:44,790
+Think it's pretty clear what's going on here.
+
+33
+00:01:45,210 --> 00:01:51,150
+Just one or two or three more commands and we'll move on to some actual implementation in our application
+
+34
+00:01:51,150 --> 00:01:52,020
+with sorted sets.

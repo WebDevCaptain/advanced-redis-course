@@ -1,0 +1,351 @@
+1
+00:00:00,270 --> 00:00:04,320
+You get some more experience with SATs, we're going to add in a like system to our application.
+
+2
+00:00:04,960 --> 00:00:09,390
+To get started, I first want to show you where this a like system really appears inside of our app.
+
+3
+00:00:10,080 --> 00:00:13,050
+Back over here at our app, I'm at the sign up page.
+
+4
+00:00:13,050 --> 00:00:14,700
+Remember, only sign up works right now.
+
+5
+00:00:14,970 --> 00:00:16,530
+I'm going to create a brand new account.
+
+6
+00:00:17,570 --> 00:00:21,860
+Once I've created the accounts, I'm going to create a new item by going to new at the top right inside.
+
+7
+00:00:22,830 --> 00:00:27,450
+I'm going to click Submit immediately and I'll see the product that was just created.
+
+8
+00:00:28,020 --> 00:00:31,110
+So on this page, on the top right hand side, there is a like button.
+
+9
+00:00:31,590 --> 00:00:35,310
+The number right here is supposed to represent the number of likes that this item has.
+
+10
+00:00:35,820 --> 00:00:38,970
+And if I click on the like button, that means that I want to like the item.
+
+11
+00:00:39,540 --> 00:00:41,250
+If I then click it a second time.
+
+12
+00:00:41,370 --> 00:00:42,000
+I want to.
+
+13
+00:00:42,150 --> 00:00:45,690
+Unlike the item, that's the first place where we really start to see it.
+
+14
+00:00:45,690 --> 00:00:48,720
+Likes appear will also see likes appear.
+
+15
+00:00:48,750 --> 00:00:52,170
+If I click on the see the seller link right here at the very center.
+
+16
+00:00:53,340 --> 00:00:56,730
+When I click on that link, I'm taken to a seller's profile page.
+
+17
+00:00:57,220 --> 00:01:03,000
+So on the screen I want to list out all the items that I like, and this person likes the items that
+
+18
+00:01:03,000 --> 00:01:04,260
+we both like together.
+
+19
+00:01:04,770 --> 00:01:07,710
+That would be an intersection of these two sets.
+
+20
+00:01:08,460 --> 00:01:13,170
+And then at the bottom, I want to see a list of all the items that just this person likes, not an
+
+21
+00:01:13,180 --> 00:01:15,690
+intersection, just the items that this person likes.
+
+22
+00:01:17,060 --> 00:01:17,270
+All right.
+
+23
+00:01:17,270 --> 00:01:20,480
+So again, a couple of locations where we are going to see this like system.
+
+24
+00:01:21,550 --> 00:01:25,840
+To implement this like stuff we're going to do again, exactly what we see in this diagram.
+
+25
+00:01:26,530 --> 00:01:29,920
+So every single user is going to have their own separate sets.
+
+26
+00:01:30,550 --> 00:01:34,390
+We might eventually have many, many, many sets, one for every single user.
+
+27
+00:01:34,720 --> 00:01:35,740
+And that's totally fine and right.
+
+28
+00:01:35,800 --> 00:01:38,140
+So we can have as many separate sets as we want to have.
+
+29
+00:01:39,430 --> 00:01:45,580
+Our keys for each individual set will be something like users colon likes out and then the ID of that
+
+30
+00:01:45,580 --> 00:01:46,480
+particular user.
+
+31
+00:01:47,350 --> 00:01:51,430
+And then inside assets, we're going to record the item ID that this person likes.
+
+32
+00:01:52,750 --> 00:01:54,700
+And we spoke about some the different commands we can run.
+
+33
+00:01:55,120 --> 00:01:55,470
+Yep.
+
+34
+00:01:55,510 --> 00:01:56,260
+Pretty simple stuff.
+
+35
+00:01:57,360 --> 00:01:57,630
+All right.
+
+36
+00:01:57,630 --> 00:01:59,190
+So to get started on the implementation.
+
+37
+00:02:01,050 --> 00:02:05,610
+Back inside my code editor, I'm going to find the queries like Scott's file.
+
+38
+00:02:06,650 --> 00:02:08,780
+So we've got a variety of different functions in here.
+
+39
+00:02:09,680 --> 00:02:12,980
+The two that we're going to focus on in this video are like item and unlike item.
+
+40
+00:02:13,670 --> 00:02:21,140
+So if we like an item, we want to take that user's ID, we want to find the like sets associated with
+
+41
+00:02:21,140 --> 00:02:23,540
+them and add the item ID to it.
+
+42
+00:02:24,830 --> 00:02:29,990
+And for unlike item, we want to take that same user ID on the likes that associated with it and remove
+
+43
+00:02:30,290 --> 00:02:31,580
+that item ID from the set.
+
+44
+00:02:34,250 --> 00:02:37,250
+Now to actually access these sets associated with each user ID.
+
+45
+00:02:37,490 --> 00:02:42,350
+We of course need to create a key function, a function that's going to generate that key right there.
+
+46
+00:02:42,980 --> 00:02:45,080
+As usual, let's create that key first.
+
+47
+00:02:46,400 --> 00:02:51,440
+Back inside the services directory, often the key sorts file at the very bottom of this list.
+
+48
+00:02:51,470 --> 00:02:55,210
+I'll make a new function called user likes e.
+
+49
+00:02:56,930 --> 00:02:59,930
+This is going to be called with some user ID that will be a string.
+
+50
+00:03:01,900 --> 00:03:09,700
+And I'm going to return a brand new string of users Berlin likes pound and then dollar sign.
+
+51
+00:03:09,880 --> 00:03:10,150
+Really?
+
+52
+00:03:10,150 --> 00:03:11,470
+Braces user ID.
+
+53
+00:03:17,470 --> 00:03:18,160
+Let's save this.
+
+54
+00:03:19,520 --> 00:03:20,600
+Go back to what you like, Scott.
+
+55
+00:03:20,690 --> 00:03:21,080
+Yes.
+
+56
+00:03:22,820 --> 00:03:28,250
+I'm going to zoom in very quickly and then at the top will add in a couple of different imports.
+
+57
+00:03:28,700 --> 00:03:34,700
+The first thing we definitely need is our right as clients by will import that from services readies.
+
+58
+00:03:36,480 --> 00:03:38,760
+You will also need that key function we just put together.
+
+59
+00:03:39,180 --> 00:03:40,800
+The user likes key.
+
+60
+00:03:42,800 --> 00:03:43,760
+From Services.
+
+61
+00:03:44,300 --> 00:03:44,810
+He's.
+
+62
+00:03:46,070 --> 00:03:48,680
+Now we can start working on like item and unlike item.
+
+63
+00:03:49,820 --> 00:03:55,130
+In the case of like item, all we have to do once again find the set associated with that user ID and
+
+64
+00:03:55,130 --> 00:03:56,570
+add an item ID to it.
+
+65
+00:03:57,500 --> 00:03:59,000
+So I will await.
+
+66
+00:04:00,170 --> 00:04:03,590
+Wyandotte is sad because we're trying to add an element into a set.
+
+67
+00:04:04,460 --> 00:04:09,860
+I want to find the set stored at the key user like key and put in the user ID.
+
+68
+00:04:11,080 --> 00:04:13,450
+And then I want to add the element item ID.
+
+69
+00:04:16,610 --> 00:04:17,780
+We'll type of their user.
+
+70
+00:04:19,770 --> 00:04:21,620
+Likes he.
+
+71
+00:04:24,970 --> 00:04:25,240
+Okay.
+
+72
+00:04:25,300 --> 00:04:26,260
+So that's it for like item.
+
+73
+00:04:26,440 --> 00:04:27,870
+And now we're going to do unlike item.
+
+74
+00:04:27,880 --> 00:04:29,830
+So it's just the exact opposite behavior.
+
+75
+00:04:29,980 --> 00:04:33,850
+We're going to remove an element instead of adding it over, unlike item.
+
+76
+00:04:36,290 --> 00:04:39,130
+I will await client SRM.
+
+77
+00:04:40,480 --> 00:04:45,070
+User likes key user ID and item ID.
+
+78
+00:04:49,870 --> 00:04:50,080
+Now.
+
+79
+00:04:50,080 --> 00:04:50,920
+Let's save this file.
+
+80
+00:04:51,430 --> 00:04:53,080
+I'm going to go back over.
+
+81
+00:04:55,600 --> 00:04:59,650
+Now, if I refresh the page, I should be able to click on the like button right here.
+
+82
+00:05:00,130 --> 00:05:06,130
+And unfortunately, it's going to initially appear like nothing is really happening whatsoever, even
+
+83
+00:05:06,130 --> 00:05:11,680
+though in theory we are definitely maintaining that set now and we are definitely say adding an item
+
+84
+00:05:11,680 --> 00:05:12,520
+ID into it.
+
+85
+00:05:12,790 --> 00:05:18,700
+There's still a couple of other elements that have to it put together inside of our application to actually
+
+86
+00:05:18,700 --> 00:05:19,810
+see a result right here.
+
+87
+00:05:20,380 --> 00:05:21,640
+So let's take a quick pause.
+
+88
+00:05:21,640 --> 00:05:25,120
+We'll come back in just a moment and I'll tell you what those other little parts are.

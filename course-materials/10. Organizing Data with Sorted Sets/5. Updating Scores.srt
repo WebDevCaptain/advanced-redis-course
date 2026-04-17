@@ -1,0 +1,131 @@
+1
+00:00:00,950 --> 00:00:05,780
+The next command we're going to take a look at is used to adjust a score of an existing member inside
+
+2
+00:00:05,780 --> 00:00:06,640
+of a sorted set.
+
+3
+00:00:07,130 --> 00:00:14,960
+So zinc-air by then products 15 and keyboard means go and find a member of keyboard and add 15 to its
+
+4
+00:00:14,960 --> 00:00:15,350
+score.
+
+5
+00:00:16,100 --> 00:00:17,590
+In this case, we'd find keyboard right here.
+
+6
+00:00:17,600 --> 00:00:24,620
+It has an existing score of 40, so would add 15 to that and it goes up with 55 after making that adjustment
+
+7
+00:00:24,950 --> 00:00:29,660
+registers, then going to resource these sorted set based upon the updated scores.
+
+8
+00:00:30,230 --> 00:00:36,560
+Now, because keyboard has a score greater than power, keyboard would go down underneath power like
+
+9
+00:00:36,560 --> 00:00:36,830
+so.
+
+10
+00:00:40,310 --> 00:00:45,200
+If we ever want to subtract from the score, we would call the anchor buy with a negative value instead.
+
+11
+00:00:45,830 --> 00:00:48,950
+So if I did a -25 on keyboard.
+
+12
+00:00:50,090 --> 00:00:52,260
+We then once again go and find you were right here.
+
+13
+00:00:52,280 --> 00:00:58,190
+We had subtract 25 in this case or at a -25, we would end up with 30.
+
+14
+00:00:58,610 --> 00:01:04,640
+And then once again, rightists would automatically resort all these numbers because power now has a
+
+15
+00:01:04,640 --> 00:01:05,510
+greater score.
+
+16
+00:01:05,780 --> 00:01:08,720
+Keyboard would be sorted or appear earlier in the list.
+
+17
+00:01:10,410 --> 00:01:10,750
+Okay.
+
+18
+00:01:10,750 --> 00:01:12,400
+So was the anchor by not too crazy.
+
+19
+00:01:12,420 --> 00:01:16,950
+Nonetheless, quick example the back of inside of our book I'll add new code cell.
+
+20
+00:01:18,190 --> 00:01:22,480
+I'm going to copy the Dell products with all the Z ads right here one more time.
+
+21
+00:01:24,690 --> 00:01:25,710
+Well, then do a.
+
+22
+00:01:27,250 --> 00:01:29,770
+Z anchor by products.
+
+23
+00:01:30,280 --> 00:01:31,260
+Let's try adjusting.
+
+24
+00:01:31,270 --> 00:01:32,320
+How about CPU?
+
+25
+00:01:32,860 --> 00:01:35,590
+I'm going to add on 15 to CPU.
+
+26
+00:01:36,760 --> 00:01:42,630
+Now, if we run this as is will be told the updated value of CPU, which in this case is 60, that is
+
+27
+00:01:42,630 --> 00:01:44,280
+the 45 plus the 15.
+
+28
+00:01:44,970 --> 00:01:52,620
+Just to verify that is the case, I'll then do a Z score products CPU and again still be told, yep,
+
+29
+00:01:52,620 --> 00:01:53,430
+definitely 60.
+
+30
+00:01:55,500 --> 00:02:00,030
+All right, so zinc-air buy just used very simply to adjust a member score.
+
+31
+00:02:00,570 --> 00:02:06,540
+This is the primary way in which we are ever going to update values inside of a sorted set between the
+
+32
+00:02:06,540 --> 00:02:10,500
+anchor by the RAM or Z Remove and Z add.
+
+33
+00:02:10,530 --> 00:02:14,370
+That's how we add update and remove members from a sorted set.

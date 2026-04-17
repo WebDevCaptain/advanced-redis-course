@@ -1,0 +1,271 @@
+1
+00:00:00,830 --> 00:00:05,600
+We're all done implementing the bid history feature and in general, we're pretty much done with the
+
+2
+00:00:05,600 --> 00:00:08,210
+primary section on lists for right now.
+
+3
+00:00:08,710 --> 00:00:12,920
+So we're going to move on and finish up some implementation around bids in general.
+
+4
+00:00:13,310 --> 00:00:16,910
+So we're going to make sure that users can bid on items and eventually win them as well.
+
+5
+00:00:17,480 --> 00:00:19,760
+We're also going to add in some validation logic as well.
+
+6
+00:00:20,150 --> 00:00:25,910
+So you might notice that right now I'm looking at an item whose auction ended one day ago, but I'm
+
+7
+00:00:25,910 --> 00:00:29,570
+still very easily able to place new bids on this item.
+
+8
+00:00:29,900 --> 00:00:33,380
+And I'm told that I have the winning bid even though this thing has expired.
+
+9
+00:00:34,250 --> 00:00:38,630
+You also noticed that we are not being told what the current high bid is, the number of bids this item
+
+10
+00:00:38,630 --> 00:00:39,020
+has.
+
+11
+00:00:39,560 --> 00:00:41,450
+Clearly there's still some work to be done.
+
+12
+00:00:41,840 --> 00:00:44,750
+So this is all stuff we're going to start to take care of in this section.
+
+13
+00:00:45,170 --> 00:00:49,550
+And as we start to go through some of the stuff, we're going to notice that there are possibly some
+
+14
+00:00:49,550 --> 00:00:52,160
+other big issues inside of our application.
+
+15
+00:00:52,430 --> 00:00:58,310
+If a lot of people try to bid on the same item at the exact same time, that's going to lead into a
+
+16
+00:00:58,310 --> 00:00:59,630
+deeper discussion later on.
+
+17
+00:01:00,380 --> 00:01:00,670
+Okay.
+
+18
+00:01:00,830 --> 00:01:05,060
+So let's kind of go over what we need to do to make bids work in our app.
+
+19
+00:01:06,480 --> 00:01:11,790
+In this diagram, I have the bid list history for a item with an idea of A-1.
+
+20
+00:01:12,450 --> 00:01:15,210
+And then right here, I've got the item hash as well.
+
+21
+00:01:15,900 --> 00:01:21,570
+So as a quick reminder of some of the properties that an item house has got, a name owner ID, image,
+
+22
+00:01:21,570 --> 00:01:25,920
+URL, description, those are all being pretty much set for us by other parts of the application right
+
+23
+00:01:25,920 --> 00:01:26,220
+now.
+
+24
+00:01:26,610 --> 00:01:34,680
+But then more interestingly, we have created at ending at number of views, number of bids, the current
+
+25
+00:01:34,680 --> 00:01:38,250
+high bid price, which is stored simply as price.
+
+26
+00:01:38,940 --> 00:01:46,170
+And then the ID of the user who created or has right now the highest bid and I'm putting on here 40,
+
+27
+00:01:46,170 --> 00:01:47,700
+but let's make it look like a real ID.
+
+28
+00:01:47,910 --> 00:01:48,420
+That's better.
+
+29
+00:01:51,070 --> 00:01:55,690
+At present, whenever a bit is created, we are not doing a couple of updates that we should probably
+
+30
+00:01:55,690 --> 00:01:56,020
+do.
+
+31
+00:01:56,290 --> 00:01:59,170
+Notably, we're not increasing the number of bids that the item has.
+
+32
+00:01:59,710 --> 00:02:05,380
+We are not setting the current price of the item, and we are also not setting the idea of the user
+
+33
+00:02:05,380 --> 00:02:06,760
+who currently has the highest bid.
+
+34
+00:02:07,300 --> 00:02:08,740
+So that's all stuff we need to take care of.
+
+35
+00:02:09,430 --> 00:02:12,520
+In addition, we also do also have take care of some validation.
+
+36
+00:02:13,150 --> 00:02:17,530
+So whenever someone tries to create a bid, we have to go through three validation steps.
+
+37
+00:02:17,920 --> 00:02:20,980
+First, we need to make sure that the item they are bidding on actually exists.
+
+38
+00:02:21,550 --> 00:02:24,220
+We need to make sure that item is still open for bids.
+
+39
+00:02:25,030 --> 00:02:29,770
+And we need to make sure that the amount of money that is being bid is greater than the current highest
+
+40
+00:02:29,770 --> 00:02:31,220
+bid because that's how an auction works.
+
+41
+00:02:31,600 --> 00:02:34,600
+If someone else bids $100, I can't later on bid.
+
+42
+00:02:34,690 --> 00:02:36,310
+$1 doesn't make any sense.
+
+43
+00:02:37,120 --> 00:02:38,950
+So we have to do those validation steps.
+
+44
+00:02:39,460 --> 00:02:43,870
+And then if we pass through all that validation, here's a list of everything we need to do to make
+
+45
+00:02:43,870 --> 00:02:45,880
+all the data on our backend consistent.
+
+46
+00:02:46,480 --> 00:02:48,520
+So we need to add the bid it to the bid history.
+
+47
+00:02:48,850 --> 00:02:49,750
+We're already doing that.
+
+48
+00:02:49,750 --> 00:02:50,410
+So that's all done.
+
+49
+00:02:51,070 --> 00:02:56,410
+We need to update the number of bids the item has, the items price and that highest user bid field.
+
+50
+00:02:56,860 --> 00:03:01,840
+So those are the three properties in that hash right here that I mentioned just a moment ago.
+
+51
+00:03:02,350 --> 00:03:03,190
+Those three right there.
+
+52
+00:03:04,960 --> 00:03:09,580
+And then in addition, another very small thing we do need to take care of.
+
+53
+00:03:09,880 --> 00:03:13,150
+We need to update the item score in the item price sorted set.
+
+54
+00:03:13,570 --> 00:03:16,550
+We have not touched on this sorted set yet at all.
+
+55
+00:03:16,870 --> 00:03:22,000
+But as you might be able to guess, this sorted set is what is going to allow us to eventually be able
+
+56
+00:03:22,000 --> 00:03:22,690
+to put together.
+
+57
+00:03:23,600 --> 00:03:27,050
+The section back on the landing page right here that says Most Expensive.
+
+58
+00:03:27,920 --> 00:03:33,560
+So we're going to get the list of items to show in the section by maintaining a sorted set organized
+
+59
+00:03:33,650 --> 00:03:39,560
+by item prices in the same way that we've really done already for, say, ending soonest and most views.
+
+60
+00:03:39,680 --> 00:03:40,850
+So very similar in nature.
+
+61
+00:03:41,850 --> 00:03:43,400
+We have not yet created that sword set.
+
+62
+00:03:43,410 --> 00:03:46,680
+So I'm just saying right here, hey, that's something we need to be aware of that we have to do in
+
+63
+00:03:46,680 --> 00:03:47,190
+the future.
+
+64
+00:03:48,030 --> 00:03:53,550
+But right now, what we really have to do is just this validation stuff and then update the item hash
+
+65
+00:03:53,550 --> 00:03:54,220
+appropriately.
+
+66
+00:03:54,240 --> 00:03:55,160
+So not too bad.
+
+67
+00:03:56,210 --> 00:03:56,450
+All right.
+
+68
+00:03:56,450 --> 00:04:00,980
+So now that we understand what's going on, let's work on implementation around all this in just a moment.

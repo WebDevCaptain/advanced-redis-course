@@ -1,0 +1,343 @@
+1
+00:00:01,610 --> 00:00:04,010
+Let's take care of all these different validation steps.
+
+2
+00:00:04,490 --> 00:00:09,530
+If we fail any validation step, we're just going to throw an error and say, Hey, sorry, but the
+
+3
+00:00:09,530 --> 00:00:13,250
+item doesn't exist or this item is closed for bids or the bid is too low.
+
+4
+00:00:13,940 --> 00:00:18,830
+All these validation checks will be implemented inside of our create bid function that we had previously
+
+5
+00:00:18,830 --> 00:00:19,280
+worked on.
+
+6
+00:00:20,000 --> 00:00:22,280
+So once again, inside of services, queries, bids.
+
+7
+00:00:22,520 --> 00:00:24,560
+Yes, here is created right here.
+
+8
+00:00:25,540 --> 00:00:29,980
+So inside of your first thing you have to do is find the item that the user is trying to bid on.
+
+9
+00:00:30,950 --> 00:00:33,220
+If figure out which item the user is trying to bid on.
+
+10
+00:00:33,230 --> 00:00:36,650
+We can look at this adders object once again number.
+
+11
+00:00:36,650 --> 00:00:39,350
+The address object has an item ID property.
+
+12
+00:00:39,590 --> 00:00:41,240
+That is the item we are trying to bid on.
+
+13
+00:00:42,300 --> 00:00:47,370
+And to actually get that item out of Redis, we can reuse a function we had put together previously.
+
+14
+00:00:47,520 --> 00:00:50,460
+Inside the items items dot to yes file.
+
+15
+00:00:51,840 --> 00:00:56,850
+So you might recall working on get item right here that is going to find an item by its ID and then
+
+16
+00:00:56,850 --> 00:00:58,740
+do you realize it for us automatically?
+
+17
+00:01:01,290 --> 00:01:02,160
+The back and side of bids.
+
+18
+00:01:02,400 --> 00:01:02,730
+Yes.
+
+19
+00:01:02,760 --> 00:01:05,310
+At the very top I will import yet item.
+
+20
+00:01:07,310 --> 00:01:08,810
+From dot slash items.
+
+21
+00:01:11,280 --> 00:01:12,390
+Inside of Crete bid.
+
+22
+00:01:12,450 --> 00:01:15,000
+I'm going to attempt to fetch our chosen item.
+
+23
+00:01:16,380 --> 00:01:19,800
+Looking for adders dot item id.
+
+24
+00:01:23,010 --> 00:01:27,240
+And then right after that, right here, we're going to put in three different statements.
+
+25
+00:01:27,570 --> 00:01:29,760
+Each one is going to run a different validation check.
+
+26
+00:01:30,900 --> 00:01:35,760
+So first, if for any reason we were not able to find the item that we were looking for.
+
+27
+00:01:36,210 --> 00:01:40,470
+We will throw a new air and say item does not exist.
+
+28
+00:01:44,680 --> 00:01:47,710
+Next if the items price.
+
+29
+00:01:48,850 --> 00:01:50,530
+Is greater than or equal to.
+
+30
+00:01:51,530 --> 00:01:53,050
+At resort amounts.
+
+31
+00:01:53,280 --> 00:01:55,040
+That's the amount of money that we are trying to bid.
+
+32
+00:01:56,000 --> 00:01:58,580
+Well, that means that we put in a bid that is too low.
+
+33
+00:01:58,610 --> 00:01:59,810
+So it's an invalid bid.
+
+34
+00:01:59,880 --> 00:02:01,250
+We want to throw it in the air as well.
+
+35
+00:02:02,160 --> 00:02:06,000
+They'll throw a new ere with bid to low.
+
+36
+00:02:08,570 --> 00:02:11,920
+And then finally, we need to make sure that this item is still up for auction.
+
+37
+00:02:12,460 --> 00:02:17,890
+So if the ending at time is greater than the current time, once again, we need to throw it in the
+
+38
+00:02:17,890 --> 00:02:18,160
+air.
+
+39
+00:02:19,030 --> 00:02:20,680
+Remember that the item itself.
+
+40
+00:02:20,740 --> 00:02:21,880
+So the item that we dispatched.
+
+41
+00:02:23,310 --> 00:02:29,760
+Once we serialize it, it has an ending at property and the DC revised version of the ending property
+
+42
+00:02:29,760 --> 00:02:33,690
+is not just this plane number, it is an actual datetime object.
+
+43
+00:02:34,790 --> 00:02:35,540
+So we can take a look.
+
+44
+00:02:36,950 --> 00:02:39,260
+In an if statement at item.
+
+45
+00:02:39,380 --> 00:02:43,370
+Dot ending at so that's going to be a datetime object.
+
+46
+00:02:45,790 --> 00:02:47,920
+Then to figure out that this thing is in the past.
+
+47
+00:02:47,920 --> 00:02:51,760
+We're going to add in a little bit of code here that's going to be slightly mysterious.
+
+48
+00:02:51,790 --> 00:02:57,280
+It's basically just using this Lexan library to figure out if ending at is in the past or not.
+
+49
+00:02:57,760 --> 00:03:04,060
+So to figure out what this thing is in the past, we're going to put on a dot diff then date time dot
+
+50
+00:03:04,060 --> 00:03:04,390
+now.
+
+51
+00:03:05,670 --> 00:03:10,440
+And outside of those two parentheses, I'll add on A to Millie's.
+
+52
+00:03:11,040 --> 00:03:13,710
+And I'm going to check to see if that value is negative.
+
+53
+00:03:14,730 --> 00:03:20,100
+That's how we're going to see if the ending at time occurred in the past and if it did once again.
+
+54
+00:03:20,210 --> 00:03:20,400
+What?
+
+55
+00:03:20,420 --> 00:03:21,560
+Throw a new air.
+
+56
+00:03:25,460 --> 00:03:26,960
+And I'll say I am close to betting.
+
+57
+00:03:28,410 --> 00:03:30,000
+Let's test this out really quickly.
+
+58
+00:03:30,620 --> 00:03:36,180
+Now, just as a reminder, the bid to low air is not going to work just yet because we are currently
+
+59
+00:03:36,180 --> 00:03:39,060
+not storing any items prices on item hashes.
+
+60
+00:03:39,690 --> 00:03:44,250
+So right now, all item prices are always being set to zero and there's no way to update it just yet.
+
+61
+00:03:45,060 --> 00:03:49,740
+But we can figure out whether or not the ending time is being correctly checked.
+
+62
+00:03:50,340 --> 00:03:52,110
+Sorry, I'm going to go back over to the browser.
+
+63
+00:03:52,860 --> 00:03:55,470
+I'm going to find an item that ended in the past.
+
+64
+00:03:55,770 --> 00:03:57,660
+So this one clearly ended one day ago.
+
+65
+00:03:58,260 --> 00:04:00,120
+Well, then attempt to place a bid for it.
+
+66
+00:04:00,900 --> 00:04:01,710
+So here's ten.
+
+67
+00:04:01,740 --> 00:04:04,410
+I'm going to place a bid and I'm told item close to bidding.
+
+68
+00:04:04,860 --> 00:04:05,220
+Good.
+
+69
+00:04:05,280 --> 00:04:06,060
+That's what we want.
+
+70
+00:04:07,180 --> 00:04:08,890
+If I go and create a brand new item.
+
+71
+00:04:10,340 --> 00:04:11,850
+I'll make another thing called Chair.
+
+72
+00:04:11,870 --> 00:04:12,300
+I'll have it.
+
+73
+00:04:12,300 --> 00:04:13,730
+And in 10 minutes.
+
+74
+00:04:15,030 --> 00:04:16,660
+So this is still open, forbidding.
+
+75
+00:04:17,250 --> 00:04:18,270
+And if I put in ten.
+
+76
+00:04:19,730 --> 00:04:20,750
+Now it works.
+
+77
+00:04:21,620 --> 00:04:21,910
+All right.
+
+78
+00:04:21,960 --> 00:04:22,520
+That looks good.
+
+79
+00:04:23,000 --> 00:04:26,390
+And in theory, our other pieces of validation should work as well.
+
+80
+00:04:26,750 --> 00:04:28,250
+So the price check should work.
+
+81
+00:04:28,250 --> 00:04:30,560
+And the item check right here definitely should work as well.
+
+82
+00:04:31,830 --> 00:04:32,100
+Yes.
+
+83
+00:04:32,100 --> 00:04:32,760
+This looks good.
+
+84
+00:04:32,790 --> 00:04:35,070
+We've taken care of these validation steps.
+
+85
+00:04:35,430 --> 00:04:40,260
+So now all we have to do once we've accepted the bid is update a couple of different properties on the
+
+86
+00:04:40,260 --> 00:04:41,850
+item hash and then save it.

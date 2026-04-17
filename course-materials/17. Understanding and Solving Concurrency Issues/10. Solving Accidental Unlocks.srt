@@ -1,0 +1,195 @@
+1
+00:00:01,170 --> 00:00:02,820
+Let's take a look at how we're going to solve this issue.
+
+2
+00:00:03,120 --> 00:00:07,740
+Now, believe it or not, it turns out that understanding this issue is a lot more challenging than
+
+3
+00:00:07,740 --> 00:00:08,460
+solving it.
+
+4
+00:00:08,790 --> 00:00:12,270
+So solving this problem is going to involve a very simple Lewis script.
+
+5
+00:00:12,510 --> 00:00:16,350
+It's going to take not a lot of time to put this together and fix this potential issue.
+
+6
+00:00:16,860 --> 00:00:17,910
+So here's what we're going to do.
+
+7
+00:00:18,600 --> 00:00:23,520
+Before I tell you in great detail on what's going on, there's a detail around Louis scripts I just
+
+8
+00:00:23,520 --> 00:00:24,450
+want you to remember.
+
+9
+00:00:24,840 --> 00:00:30,850
+Whenever we are executing a Louis script in Readies, Readies is not going to process any other commands.
+
+10
+00:00:31,530 --> 00:00:37,710
+So it doesn't matter if 50 clients start to send commands to Redis when it's executing a Louis script,
+
+11
+00:00:37,710 --> 00:00:41,550
+the script will go from start to finish without doing anything else.
+
+12
+00:00:42,030 --> 00:00:44,400
+And that's a super key element of our solution here.
+
+13
+00:00:45,560 --> 00:00:45,860
+All right.
+
+14
+00:00:45,860 --> 00:00:47,000
+So once again, we've got process.
+
+15
+00:00:47,000 --> 00:00:52,720
+One is going to acquire our luck with a token number that's a randomly generated string of high.
+
+16
+00:00:53,050 --> 00:00:54,920
+So we're going to store high right there.
+
+17
+00:00:55,910 --> 00:01:01,580
+Then when we are all done processing data and we're ready to release the lock rather than doing a direct
+
+18
+00:01:01,580 --> 00:01:04,430
+delete call, we're going to instead make use of a script.
+
+19
+00:01:05,330 --> 00:01:07,970
+So we're going to run behind the scenes through Node Redis.
+
+20
+00:01:07,970 --> 00:01:13,370
+Remember, we don't really run our store directly, but Node Redis is going to run something like email
+
+21
+00:01:13,370 --> 00:01:14,720
+store, script ID.
+
+22
+00:01:15,470 --> 00:01:18,260
+We're going to provide one key of lock item A1.
+
+23
+00:01:18,590 --> 00:01:20,300
+So that's that key right there.
+
+24
+00:01:21,290 --> 00:01:23,190
+And then a single argument of hi.
+
+25
+00:01:23,570 --> 00:01:25,670
+And that's really the token we have right there.
+
+26
+00:01:27,350 --> 00:01:33,860
+So we can imagine that we are sending off keys of one of like item A1 and HGV at one of high.
+
+27
+00:01:34,730 --> 00:01:37,190
+And then our script is going to look something like this right here.
+
+28
+00:01:38,410 --> 00:01:39,790
+I'm going to take the script.
+
+29
+00:01:39,850 --> 00:01:42,190
+This is not exactly what we're going to write, but it's awfully close.
+
+30
+00:01:42,370 --> 00:01:48,130
+And I'm going to substitute out the keys at one and RGV at one for the actual values.
+
+31
+00:01:48,710 --> 00:01:53,110
+We're going to essentially do a get of lock item, a one.
+
+32
+00:01:54,220 --> 00:01:55,990
+We're going to see if that is equal.
+
+33
+00:01:57,470 --> 00:01:58,340
+The string of high.
+
+34
+00:02:00,150 --> 00:02:05,340
+And if it is, then we're going to delete block item A1.
+
+35
+00:02:06,520 --> 00:02:07,060
+And that's it.
+
+36
+00:02:08,380 --> 00:02:10,270
+So why does this fix any problem?
+
+37
+00:02:10,660 --> 00:02:14,570
+What this really does is it makes sure that we are only deleting this token mixture.
+
+38
+00:02:14,590 --> 00:02:20,470
+We are only unlocking this thing if our process P1 is still in control of the lock.
+
+39
+00:02:21,560 --> 00:02:22,970
+If the automatic.
+
+40
+00:02:24,060 --> 00:02:28,550
+Lock expire right here has already kicked in and we've already deleted the value right here.
+
+41
+00:02:28,560 --> 00:02:33,930
+Then our Lewis script is not going to delete anything, so we are not going to risk accidentally unlocking
+
+42
+00:02:33,930 --> 00:02:36,540
+this thing just because we have some timing issues.
+
+43
+00:02:37,320 --> 00:02:44,100
+So the script is more or less saying Is the lock token here still what it was?
+
+44
+00:02:45,080 --> 00:02:45,770
+When we set it.
+
+45
+00:02:45,860 --> 00:02:47,000
+That's really what's going on.
+
+46
+00:02:48,380 --> 00:02:51,890
+And that's going to solve all of India or all the issues I mentioned in the last video.
+
+47
+00:02:52,670 --> 00:02:57,860
+Like I said, a lot easier to process the solution than to understand the underlying issue.
+
+48
+00:02:58,800 --> 00:03:03,270
+Now that we understand the solution, hopefully we'll start to put together this custom script in just
+
+49
+00:03:03,270 --> 00:03:03,630
+a moment.

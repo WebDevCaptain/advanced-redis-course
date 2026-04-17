@@ -1,0 +1,215 @@
+1
+00:00:00,810 --> 00:00:02,190
+The last thing I want to show you around.
+
+2
+00:00:02,190 --> 00:00:05,910
+Transactions right now are some very common patterns you're going to see in code.
+
+3
+00:00:06,810 --> 00:00:08,070
+Here's a very common pattern.
+
+4
+00:00:08,730 --> 00:00:14,310
+We might have a server that needs to make an update to, say, a color property by first fetching that
+
+5
+00:00:14,310 --> 00:00:19,770
+property, looking at what its current value is, and then making an update based upon its current value.
+
+6
+00:00:20,310 --> 00:00:25,170
+So this would lead to a classic concurrency issue scenario because we are trying to what read a value,
+
+7
+00:00:25,380 --> 00:00:27,840
+inspect it and then do a conditional write.
+
+8
+00:00:28,960 --> 00:00:32,350
+We can solve that concurrency issue by making use of the watch keyword.
+
+9
+00:00:33,130 --> 00:00:40,000
+We might do first a watch, then get some information out of Redis by doing a get an H, get all or
+
+10
+00:00:40,000 --> 00:00:41,500
+any other kind of commands.
+
+11
+00:00:42,400 --> 00:00:46,960
+We can then have some kind of processing step in here and represented by that arrow right there where
+
+12
+00:00:46,960 --> 00:00:51,220
+we will look at the value of color and decide how we want to update it or something like that.
+
+13
+00:00:52,710 --> 00:00:57,960
+Then we can set up our transaction by running multi Somerset operations and executing them.
+
+14
+00:00:58,440 --> 00:01:04,650
+And of course if anything occurred to either the value of color or accounts in between us executing
+
+15
+00:01:04,650 --> 00:01:09,120
+watch and then the transaction will automatically be canceled.
+
+16
+00:01:10,410 --> 00:01:13,890
+You could start to imagine how we could use this on our bid issue as well.
+
+17
+00:01:14,550 --> 00:01:21,900
+So back on our e-commerce application, make sure that we only update or create a bid correctly, and
+
+18
+00:01:21,900 --> 00:01:24,450
+don't try to create multiple different bids at the same time.
+
+19
+00:01:24,780 --> 00:01:26,970
+We could simply watch an items hash.
+
+20
+00:01:27,690 --> 00:01:32,760
+So when we go to create a brand new bid, we might look at item A1 or something like that.
+
+21
+00:01:33,420 --> 00:01:40,140
+We can then batch that item, hash read in the current bid amount and then start up our transaction.
+
+22
+00:01:40,290 --> 00:01:45,540
+So do the multiple to an H set and update our list of bids and then execute that.
+
+23
+00:01:47,100 --> 00:01:51,400
+If any other request comes in, in between us executing watch and exec.
+
+24
+00:01:51,480 --> 00:01:55,020
+So maybe another request comes in to modify the item and successfully does so.
+
+25
+00:01:55,410 --> 00:02:00,870
+And our execution right here, the entire transaction will be canceled and so we will no longer suffer
+
+26
+00:02:00,870 --> 00:02:05,640
+any concurrency issues that we currently have, where many different requests at the same time.
+
+27
+00:02:05,850 --> 00:02:08,220
+An update or create bids for a single item.
+
+28
+00:02:10,860 --> 00:02:12,450
+That's one common pattern you're going to see.
+
+29
+00:02:12,600 --> 00:02:15,990
+Basically start to watch that some data do the transaction.
+
+30
+00:02:16,680 --> 00:02:20,460
+There's one other thing I want you to be aware of, because as we start to implement this pattern right
+
+31
+00:02:20,460 --> 00:02:23,370
+here, you're going to notice a pretty good amount of additional code.
+
+32
+00:02:24,000 --> 00:02:28,380
+So the other thing I want you to be aware of is that whenever we start to make use of transactions,
+
+33
+00:02:28,680 --> 00:02:34,650
+we are going to be making multiple different connections to Redis right now on our server as we're running
+
+34
+00:02:34,650 --> 00:02:34,770
+it.
+
+35
+00:02:34,770 --> 00:02:40,620
+Currently, we're using one single connection for all the different commands we need to execute, regardless
+
+36
+00:02:40,620 --> 00:02:42,390
+of what request is coming in.
+
+37
+00:02:42,480 --> 00:02:45,660
+So we might have 20 different quest at the same time coming into our application.
+
+38
+00:02:45,960 --> 00:02:50,190
+They are all issuing commands against the exact same connection to our Redis server.
+
+39
+00:02:51,110 --> 00:02:56,590
+But as soon as we start to make use of transactions, any time we use the watch or multi keywords,
+
+40
+00:02:57,110 --> 00:03:00,620
+we are kind of painting or hijacking our connection.
+
+41
+00:03:00,950 --> 00:03:05,640
+And that connection should only be used for this transaction and nothing else whatsoever.
+
+42
+00:03:06,960 --> 00:03:08,790
+So one common pattern you're going to see.
+
+43
+00:03:10,410 --> 00:03:15,150
+We're going to have one connection that's being used on our server for any typical commands though a
+
+44
+00:03:15,150 --> 00:03:18,400
+usual sets and l'orange each get all or whatever else.
+
+45
+00:03:19,050 --> 00:03:24,330
+But as soon as we get a request that's going to need a transaction, we're going to create a new connection
+
+46
+00:03:24,660 --> 00:03:27,270
+just for the purposes of that transaction.
+
+47
+00:03:27,780 --> 00:03:34,140
+So create a new transact or a new connection and do our watch multi exec or whatever else, and then
+
+48
+00:03:34,140 --> 00:03:38,490
+close that connection, the one brand new connection or the transaction.
+
+49
+00:03:38,490 --> 00:03:39,170
+And that's it.
+
+50
+00:03:39,180 --> 00:03:40,530
+Close it immediately after.
+
+51
+00:03:42,190 --> 00:03:42,550
+All right.
+
+52
+00:03:42,550 --> 00:03:47,380
+So I think we've got a better idea on how transactions work now and how they can solve concurrency issues.
+
+53
+00:03:47,950 --> 00:03:52,870
+So let's start to implement transactions inside of our app to solve this issue around multiple bids
+
+54
+00:03:52,870 --> 00:03:53,710
+in just a moment.

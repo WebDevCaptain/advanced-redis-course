@@ -1,0 +1,475 @@
+1
+00:00:01,350 --> 00:00:01,650
+All right.
+
+2
+00:00:01,650 --> 00:00:04,740
+Let's take a look at why each set and each get all are a little bit weird.
+
+3
+00:00:04,740 --> 00:00:06,450
+Sometimes we make use of them from code.
+
+4
+00:00:06,900 --> 00:00:10,920
+So to get started, I'm going to first add in a couple more properties to this object right here.
+
+5
+00:00:11,250 --> 00:00:14,550
+I'm going to add in a engine that will be an object.
+
+6
+00:00:15,120 --> 00:00:20,730
+It's cylinders eight owner of null and service of undefined.
+
+7
+00:00:21,330 --> 00:00:26,250
+Right away we do get a little red squiggly error message right here from the object we're trying to
+
+8
+00:00:26,250 --> 00:00:27,710
+provide for engine fully.
+
+9
+00:00:27,720 --> 00:00:28,020
+Fine.
+
+10
+00:00:28,020 --> 00:00:29,340
+Just ignore that error.
+
+11
+00:00:29,550 --> 00:00:33,270
+The error that we see right here is not the source of the problem that we are about to run into.
+
+12
+00:00:34,170 --> 00:00:38,910
+The idea behind these additional properties is that maybe we want to store some specification around
+
+13
+00:00:38,910 --> 00:00:42,000
+the engine in the car, maybe we want to record who the owner is.
+
+14
+00:00:42,120 --> 00:00:47,220
+Maybe there is no owner right now, so we might store null and we might also want to record some record
+
+15
+00:00:47,220 --> 00:00:48,360
+of service around the vehicle.
+
+16
+00:00:48,720 --> 00:00:51,240
+And maybe this vehicle has never been serviced ever.
+
+17
+00:00:51,240 --> 00:00:54,030
+It's never been repaired had the oil changed or anything.
+
+18
+00:00:54,420 --> 00:00:56,520
+So we might store a value of undefined for that.
+
+19
+00:00:57,360 --> 00:01:02,190
+So I would say that these values, with the exception of the obvious kind of air right here, they look
+
+20
+00:01:02,190 --> 00:01:02,850
+pretty reasonable.
+
+21
+00:01:03,420 --> 00:01:04,530
+Let's save this.
+
+22
+00:01:05,100 --> 00:01:06,180
+Go back over to our terminal.
+
+23
+00:01:07,420 --> 00:01:10,240
+And we'll very quickly see that we get a giant air message here.
+
+24
+00:01:10,810 --> 00:01:11,950
+I'm going to scroll up a little bit.
+
+25
+00:01:13,260 --> 00:01:16,350
+And take a look at what the ear actually is.
+
+26
+00:01:16,380 --> 00:01:16,980
+Here it is right here.
+
+27
+00:01:16,980 --> 00:01:21,210
+It says cannot read properties of no reading to string.
+
+28
+00:01:22,310 --> 00:01:22,570
+Huh?
+
+29
+00:01:23,060 --> 00:01:24,830
+Well, that's kind of a weird error message.
+
+30
+00:01:25,250 --> 00:01:29,960
+I will tell you that the error we are seeing is not related to the red squiggly right here in any way.
+
+31
+00:01:30,170 --> 00:01:33,740
+As a matter of fact, it's actually related to the null property here instead.
+
+32
+00:01:34,580 --> 00:01:35,630
+So what's going on?
+
+33
+00:01:35,870 --> 00:01:39,350
+Well, of course, let's take a look at a couple diagrams and understand what is going on behind the
+
+34
+00:01:39,350 --> 00:01:39,710
+scenes.
+
+35
+00:01:41,230 --> 00:01:41,560
+Okay.
+
+36
+00:01:41,770 --> 00:01:42,490
+Here's what's happening.
+
+37
+00:01:43,030 --> 00:01:44,740
+We are building up this object right here.
+
+38
+00:01:44,920 --> 00:01:50,860
+We are handing it off to the Node Redis library and asking it to get this object ready to send over
+
+39
+00:01:50,860 --> 00:01:51,400
+to Redis.
+
+40
+00:01:51,820 --> 00:01:57,730
+We need to take this object and convert it in some way to an equivalent each set amount.
+
+41
+00:01:58,510 --> 00:02:03,670
+Remember, whenever we run the H that commands all the queues and values need to be listed out as strings
+
+42
+00:02:03,790 --> 00:02:05,140
+in alternating order.
+
+43
+00:02:05,770 --> 00:02:09,190
+So this object is not sent over in its plain form to Redis.
+
+44
+00:02:09,250 --> 00:02:15,070
+Instead, Node Reddest has to do some processing on it first, and it's in that processing step that
+
+45
+00:02:15,070 --> 00:02:16,570
+this error starts to come up.
+
+46
+00:02:19,300 --> 00:02:20,460
+Here's what Node Reddit does.
+
+47
+00:02:20,470 --> 00:02:26,230
+It says, All right, I need to take this entire object and turn it into a plain h, get all command
+
+48
+00:02:26,440 --> 00:02:30,040
+that Reddit can understand so it starts to build up a string.
+
+49
+00:02:30,790 --> 00:02:33,460
+The first part of the string has the H get all keyword.
+
+50
+00:02:34,180 --> 00:02:37,150
+Then the key that we are trying to set, which in this case is car.
+
+51
+00:02:37,690 --> 00:02:43,840
+And then it starts to alternate just the same as normal h get all command e value, e value, key value
+
+52
+00:02:43,840 --> 00:02:44,320
+and so on.
+
+53
+00:02:45,100 --> 00:02:49,450
+You'll notice that in this example string right here, which is all the gray boxes I've already put
+
+54
+00:02:49,450 --> 00:02:50,290
+in all the keys.
+
+55
+00:02:50,410 --> 00:02:52,390
+So you've got color, your engine owner service.
+
+56
+00:02:53,320 --> 00:02:59,350
+So it's taking now all these values and inserting them into this string that we start to run into trouble.
+
+57
+00:03:01,180 --> 00:03:01,500
+All right.
+
+58
+00:03:01,510 --> 00:03:05,950
+So here's how no treatise actually gets our values into this string.
+
+59
+00:03:06,460 --> 00:03:12,280
+It's going to take a look at each individual value inside this object over here and call the two string
+
+60
+00:03:12,280 --> 00:03:13,270
+method on it.
+
+61
+00:03:13,720 --> 00:03:15,400
+That's where we're running into trouble.
+
+62
+00:03:16,240 --> 00:03:17,980
+So to put in a value for color.
+
+63
+00:03:18,490 --> 00:03:20,860
+Note this is going to take a look at this string right here.
+
+64
+00:03:21,340 --> 00:03:26,530
+Hold it to string method on it and the result gets put in right here and it ends up being a plain string
+
+65
+00:03:26,530 --> 00:03:27,160
+of red.
+
+66
+00:03:28,480 --> 00:03:34,060
+It then moves on to year and it's going to call 1952 string.
+
+67
+00:03:34,630 --> 00:03:36,790
+We end up with this string of 1950.
+
+68
+00:03:38,390 --> 00:03:40,310
+They'll then move on to cylinders.
+
+69
+00:03:41,060 --> 00:03:42,760
+Not going to really update these arrows.
+
+70
+00:03:42,770 --> 00:03:45,200
+I think you understand it's going to put engine right there.
+
+71
+00:03:45,860 --> 00:03:48,980
+So for engine, we're going to take the object.
+
+72
+00:03:51,130 --> 00:03:53,380
+Cylinders eight and called to string on it.
+
+73
+00:03:53,980 --> 00:04:00,250
+Whenever you do a to string on a plain object without any further configuration around it, you end
+
+74
+00:04:00,250 --> 00:04:01,570
+up getting a string of.
+
+75
+00:04:04,110 --> 00:04:06,570
+Objects which you might have seen before.
+
+76
+00:04:06,690 --> 00:04:10,740
+When using note, I can tell you that's probably not what we really expect to have in there for the
+
+77
+00:04:10,740 --> 00:04:12,570
+value of engine, but that's pretty much what happens.
+
+78
+00:04:13,470 --> 00:04:16,200
+You then try to do, you know, dot to string.
+
+79
+00:04:16,530 --> 00:04:18,510
+And that's where we get our air from.
+
+80
+00:04:19,350 --> 00:04:26,760
+So whenever you try to access a property on a value of null or undefined in JavaScript and try to read
+
+81
+00:04:26,760 --> 00:04:32,010
+any property, call it any function on it, you immediately get an error message one identical to what
+
+82
+00:04:32,010 --> 00:04:33,720
+we're getting back inside of our terminal right now.
+
+83
+00:04:33,930 --> 00:04:37,830
+The one that says you not read properties of null reading to a string.
+
+84
+00:04:39,000 --> 00:04:40,220
+That's what's going on behind the scenes.
+
+85
+00:04:40,220 --> 00:04:41,540
+That's why we were getting an error.
+
+86
+00:04:42,020 --> 00:04:46,850
+Note Bettis does not want us to allow to allow us to store a null value.
+
+87
+00:04:47,370 --> 00:04:51,590
+If we try to store null, it's going to call to string on it, and we're going to end up seeing that
+
+88
+00:04:51,590 --> 00:04:53,240
+same exact error message.
+
+89
+00:04:54,220 --> 00:05:01,010
+Well, this is definitely unexpected behavior, because in so many other databases and so many other
+
+90
+00:05:01,280 --> 00:05:03,440
+database clients that you might make use of.
+
+91
+00:05:04,550 --> 00:05:10,330
+Storing null or undefined is really not an issue, but it is with no reticence.
+
+92
+00:05:10,670 --> 00:05:14,600
+And it is you're going to see with many other programming languages as well when you're making use of
+
+93
+00:05:14,600 --> 00:05:14,750
+red.
+
+94
+00:05:15,800 --> 00:05:20,660
+So to get around this problem, what we might do is either remove these properties right here.
+
+95
+00:05:22,260 --> 00:05:26,340
+Or alternatively, if you really want to keep them around, but make sure that it's very clear that
+
+96
+00:05:26,670 --> 00:05:28,080
+no value actually exists here.
+
+97
+00:05:28,830 --> 00:05:31,260
+You might put in or empty string.
+
+98
+00:05:33,170 --> 00:05:35,780
+And that might indicate that hey, there is no owner.
+
+99
+00:05:35,910 --> 00:05:37,940
+Owners empty string therefore doesn't exist.
+
+100
+00:05:37,940 --> 00:05:38,540
+Might be null.
+
+101
+00:05:39,200 --> 00:05:45,110
+Now obviously having a string value here even of empty string versus null really changes the semantics
+
+102
+00:05:45,110 --> 00:05:45,860
+of your application.
+
+103
+00:05:45,860 --> 00:05:50,390
+Having an owner of NULL might have a different meaning than having an owner of empty string.
+
+104
+00:05:51,170 --> 00:05:55,490
+And that kind of means that we have to accommodate for this in some way as we're writing our application.
+
+105
+00:05:55,730 --> 00:05:57,740
+But this is the reality is all we have to deal with.
+
+106
+00:05:59,050 --> 00:05:59,310
+Okay.
+
+107
+00:05:59,320 --> 00:06:00,730
+So now if I save this.
+
+108
+00:06:02,160 --> 00:06:03,090
+And flip back over.
+
+109
+00:06:04,540 --> 00:06:05,230
+To my terminal.
+
+110
+00:06:06,070 --> 00:06:11,830
+Now I'll see that the set has succeeded and I've now stored empty string for honor and service and sure
+
+111
+00:06:11,830 --> 00:06:12,490
+enough engine.
+
+112
+00:06:12,580 --> 00:06:18,310
+It did get converted into that object object, which again is probably not what we really expect.
+
+113
+00:06:18,730 --> 00:06:21,190
+But what happens if we try to store an object?
+
+114
+00:06:22,910 --> 00:06:23,300
+All right.
+
+115
+00:06:23,540 --> 00:06:24,950
+Now, last thing I want to show you.
+
+116
+00:06:27,680 --> 00:06:30,500
+Very quickly, I'm going to remove those additional properties right there.
+
+117
+00:06:32,020 --> 00:06:37,150
+And we're going to take a look at some also interesting behavior around H get all but rather than let
+
+118
+00:06:37,150 --> 00:06:41,110
+this video get too long let's take a look at why each get all can sometimes be a little bit weird in
+
+119
+00:06:41,110 --> 00:06:41,680
+just a moment.

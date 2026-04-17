@@ -1,0 +1,515 @@
+1
+00:00:01,180 --> 00:00:06,280
+As I've hinted at several times, we are going to revisit the idea of concurrency inside of our application.
+
+2
+00:00:06,760 --> 00:00:09,550
+We have previously put together some work around concurrency.
+
+3
+00:00:09,580 --> 00:00:14,890
+Notably, we made use of transactions and that Watch Command solve a couple of problems around our bidding
+
+4
+00:00:14,890 --> 00:00:15,460
+process.
+
+5
+00:00:15,910 --> 00:00:20,650
+But in this video, I'm going to show you a couple of issues with using that watch command, and I'm
+
+6
+00:00:20,650 --> 00:00:23,590
+going to show you those issues in action as well.
+
+7
+00:00:24,190 --> 00:00:28,780
+We're then going to learn a little bit more about concurrency and eventually use a loose script to put
+
+8
+00:00:28,780 --> 00:00:32,050
+together a slightly better solution to our concurrency problem.
+
+9
+00:00:32,740 --> 00:00:33,610
+Okay, so let's get to it.
+
+10
+00:00:34,150 --> 00:00:37,030
+First, very fast reminder on the issue we previously had.
+
+11
+00:00:37,690 --> 00:00:43,240
+We've got some logic inside of our app to create a bid on an item, and as a part of that process,
+
+12
+00:00:43,540 --> 00:00:45,280
+we attempt to get an item hash.
+
+13
+00:00:45,910 --> 00:00:49,210
+We then take a look at the amount of money currently bid on that item.
+
+14
+00:00:49,870 --> 00:00:53,530
+We compare that against the amount of money that's being bid and the incoming request.
+
+15
+00:00:53,890 --> 00:00:59,380
+And as long as that is greater than that amount right there, then this person now has the winning bid.
+
+16
+00:00:59,740 --> 00:01:03,580
+We'll update that amount and update the hash back inside of this.
+
+17
+00:01:04,340 --> 00:01:05,530
+That'll work just fine.
+
+18
+00:01:05,950 --> 00:01:10,060
+But we very quickly saw that there were some issues any time that we have multiple bids coming in at
+
+19
+00:01:10,060 --> 00:01:11,680
+the same time for the same item.
+
+20
+00:01:12,580 --> 00:01:16,000
+So in this scenario, I've got a bid for $10 and a bid for 15.
+
+21
+00:01:16,750 --> 00:01:20,650
+So my server's going to try to process both these requests at the same time.
+
+22
+00:01:22,170 --> 00:01:26,490
+At the same time, they're both going to try to get the Item House, so they're both going to get a
+
+23
+00:01:26,490 --> 00:01:30,150
+copy of the item hash where the current bid is only $5.
+
+24
+00:01:31,080 --> 00:01:35,250
+They're both then going to take a look at the current amounts and compare against the amount in the
+
+25
+00:01:35,250 --> 00:01:36,090
+incoming request.
+
+26
+00:01:37,060 --> 00:01:39,220
+In both cases, these are valid bids.
+
+27
+00:01:39,850 --> 00:01:44,200
+So maybe we try to process or resolve this request right here first.
+
+28
+00:01:44,650 --> 00:01:49,510
+We're going to take that 15 right there and save that 15 as the most recent bid on the item.
+
+29
+00:01:50,750 --> 00:01:52,010
+That request is now complete.
+
+30
+00:01:52,790 --> 00:01:57,860
+And then simultaneously somewhere else on the server, we have another line of execution right here
+
+31
+00:01:58,100 --> 00:02:00,830
+where we are trying to take a look at a bid amount of ten.
+
+32
+00:02:01,370 --> 00:02:04,190
+In this case, our server thinks that the current bid amount is five.
+
+33
+00:02:04,460 --> 00:02:06,470
+So this is considered to be a valid bid.
+
+34
+00:02:07,130 --> 00:02:10,720
+We go and update our hash over here and we go backwards.
+
+35
+00:02:10,730 --> 00:02:13,760
+We go down to $10 where it was previously 15.
+
+36
+00:02:14,390 --> 00:02:19,520
+We are implementing an auction platform, the most recent highest value, which should always be the
+
+37
+00:02:19,520 --> 00:02:19,850
+winner.
+
+38
+00:02:20,300 --> 00:02:25,250
+We're now seeing a scenario where we are accidentally decreasing the current amount of money being bid
+
+39
+00:02:25,250 --> 00:02:25,820
+on this item.
+
+40
+00:02:26,240 --> 00:02:28,760
+That's definitely something we do not want to have happen.
+
+41
+00:02:29,950 --> 00:02:30,820
+Yes, that was the issue.
+
+42
+00:02:30,880 --> 00:02:36,340
+Now, as a reminder on how we fixed it, we made use of a watch command along with a transaction.
+
+43
+00:02:37,300 --> 00:02:39,010
+Let's go find the code for that very quickly.
+
+44
+00:02:39,840 --> 00:02:42,790
+The back inside my editor, I will find services, queries, bids.
+
+45
+00:02:43,060 --> 00:02:43,420
+Yes.
+
+46
+00:02:43,720 --> 00:02:44,680
+And here it is right here.
+
+47
+00:02:45,710 --> 00:02:49,880
+At the group ID function, we created a new connection to our Reddit server.
+
+48
+00:02:50,830 --> 00:02:52,840
+We then did a watch on the Item House.
+
+49
+00:02:53,290 --> 00:02:54,790
+Remember what a watch does?
+
+50
+00:02:55,330 --> 00:03:01,390
+The watch statement is going to watch a particular key stored inside of us, and if that key ever changes,
+
+51
+00:03:01,750 --> 00:03:04,420
+then the next transaction is going to automatically fail.
+
+52
+00:03:05,720 --> 00:03:07,370
+But we added in this step right here.
+
+53
+00:03:08,750 --> 00:03:10,360
+We said, watch this hash.
+
+54
+00:03:10,790 --> 00:03:12,530
+If that thing changes, then fail.
+
+55
+00:03:12,540 --> 00:03:14,930
+The update that we're going to make in just a moment.
+
+56
+00:03:16,020 --> 00:03:18,630
+But once again, we can imagine what's going to go on behind the scenes.
+
+57
+00:03:19,290 --> 00:03:20,790
+We've got these two lines of execution.
+
+58
+00:03:21,760 --> 00:03:22,720
+We fetch the hash.
+
+59
+00:03:25,030 --> 00:03:28,300
+Once again, we'll imagine that this over here is going to be processed first.
+
+60
+00:03:29,220 --> 00:03:31,000
+We go and update the inmate to 15.
+
+61
+00:03:31,390 --> 00:03:33,060
+Now, that hash has been changed.
+
+62
+00:03:33,070 --> 00:03:35,380
+The key stored there has changed in some way.
+
+63
+00:03:36,830 --> 00:03:39,050
+Now we will process this request over here.
+
+64
+00:03:39,590 --> 00:03:42,710
+It looks like the amount is valid and we go to update the amount.
+
+65
+00:03:43,010 --> 00:03:46,160
+But sure enough, that amount or this hash has changed.
+
+66
+00:03:46,730 --> 00:03:51,350
+So the watch statement is going to cause the update on this request handler to fail.
+
+67
+00:03:52,320 --> 00:03:55,140
+So it fails entirely and we do not make an update to the house.
+
+68
+00:03:56,410 --> 00:03:58,130
+Now everything there looks good.
+
+69
+00:03:58,150 --> 00:04:02,950
+At first glance, it appears that everything's going to work as intended and we are not going to accidentally
+
+70
+00:04:03,280 --> 00:04:05,770
+regress the amount of money being bid on this item.
+
+71
+00:04:06,370 --> 00:04:11,740
+I don't want you to really think about what this means for our application and really for the business
+
+72
+00:04:11,740 --> 00:04:15,130
+that we might be trying to bid or build around this application.
+
+73
+00:04:16,040 --> 00:04:18,320
+We're really talking about two different scenarios here.
+
+74
+00:04:19,560 --> 00:04:25,470
+There's one scenario in which we first process the $15 bid and another scenario in which we first process
+
+75
+00:04:25,470 --> 00:04:26,430
+the $10 bid.
+
+76
+00:04:27,500 --> 00:04:33,410
+Then the case where we first processed the $15 bid, we update our item hash with $15 and our watch
+
+77
+00:04:33,410 --> 00:04:35,420
+statement would cancel the bid for $10.
+
+78
+00:04:35,540 --> 00:04:38,810
+That's why I just showed you a moment to go on the diagram, and that was good.
+
+79
+00:04:39,140 --> 00:04:40,280
+That is what we wanted.
+
+80
+00:04:40,670 --> 00:04:44,240
+The $10 bid would have been invalid and we definitely wanted to cancel it.
+
+81
+00:04:45,080 --> 00:04:47,030
+However, think about scenario two.
+
+82
+00:04:48,520 --> 00:04:49,420
+And scenario to you.
+
+83
+00:04:49,720 --> 00:04:57,910
+If we process the $10 bid first, when we go to apply the $15 bid and update the item house that watch
+
+84
+00:04:57,910 --> 00:04:59,530
+or the transaction would fail.
+
+85
+00:05:00,190 --> 00:05:05,110
+That is actually when we think about it and we think about the goal of our application, that is really,
+
+86
+00:05:05,110 --> 00:05:05,920
+really bad.
+
+87
+00:05:06,280 --> 00:05:09,280
+We just canceled a bid that was completely valid.
+
+88
+00:05:09,790 --> 00:05:10,450
+Absolutely.
+
+89
+00:05:10,450 --> 00:05:16,720
+A $15 bid is completely valid because it is the latest and highest amount of money that has been bid
+
+90
+00:05:16,720 --> 00:05:17,320
+on this item.
+
+91
+00:05:18,070 --> 00:05:22,090
+But because of our concurrency solution, we failed that request.
+
+92
+00:05:22,540 --> 00:05:27,110
+And so any user who might be trying to bid $15 might say, Oh, the bid failed.
+
+93
+00:05:27,130 --> 00:05:29,020
+Well, I'm just not going to bid any money.
+
+94
+00:05:29,350 --> 00:05:33,010
+And they might walk away and not try to apply their bid at all again.
+
+95
+00:05:33,640 --> 00:05:38,800
+So we might have just lost out on $5 here because of a very simple concurrency issue.
+
+96
+00:05:39,740 --> 00:05:44,060
+Again, even though it appears that everything is working well, I think that we need to figure out
+
+97
+00:05:44,060 --> 00:05:45,290
+a better solution.
+
+98
+00:05:46,440 --> 00:05:48,600
+Now there is one very obvious solution.
+
+99
+00:05:48,650 --> 00:05:50,790
+We could put it the obvious solution.
+
+100
+00:05:52,390 --> 00:05:57,580
+Do this fact that we are possibly failing otherwise valid transactions is that we could implement a
+
+101
+00:05:57,580 --> 00:05:58,720
+retry mechanism.
+
+102
+00:05:59,730 --> 00:06:06,390
+So whenever a request fails or a transaction fails due to a watch command, we could just have a little
+
+103
+00:06:06,420 --> 00:06:09,120
+bit of code that tries to rerun this entire block.
+
+104
+00:06:09,960 --> 00:06:15,120
+Though, if this entire block right here fails due to a watch error, we could say just go ahead and
+
+105
+00:06:15,120 --> 00:06:16,260
+try to run it again.
+
+106
+00:06:16,710 --> 00:06:18,360
+Maybe try to run it ten times get.
+
+107
+00:06:19,810 --> 00:06:20,980
+There's two problems with that.
+
+108
+00:06:21,550 --> 00:06:24,670
+First, this approach doesn't really scale all that well.
+
+109
+00:06:25,090 --> 00:06:29,930
+We're going to quickly see that using the watch commands quite a bit is going to slow down our read
+
+110
+00:06:29,930 --> 00:06:33,520
+a server a little bit compared to another alternative that is available to us.
+
+111
+00:06:34,390 --> 00:06:39,640
+Secondly, if we wanted to retry this, it would introduce a lot of additional load on our read a server
+
+112
+00:06:39,880 --> 00:06:43,300
+just from the additional requests for getting information.
+
+113
+00:06:43,960 --> 00:06:48,580
+Remember, every single time that we tried to retry this block right here, we would have to get the
+
+114
+00:06:48,580 --> 00:06:50,080
+latest item details.
+
+115
+00:06:50,470 --> 00:06:56,350
+This entire point here is we always want to see the latest item hash every time we tried to do the retry.
+
+116
+00:06:56,530 --> 00:07:02,440
+All of our DNA fetching logic would have to run again and again and again and again until our transaction
+
+117
+00:07:02,440 --> 00:07:03,430
+eventually succeeded.
+
+118
+00:07:04,180 --> 00:07:09,250
+So even though we could implement a retry mechanism here and it might work out well, it would probably
+
+119
+00:07:09,250 --> 00:07:11,800
+introduce a lot of additional load on already server.
+
+120
+00:07:13,190 --> 00:07:17,030
+So as you guess, we're going to take a look at a better solution to this problem.
+
+121
+00:07:17,270 --> 00:07:20,660
+We're not going to use the watch command at all, which is great.
+
+122
+00:07:20,660 --> 00:07:22,640
+And it can definitely work in some cases.
+
+123
+00:07:22,850 --> 00:07:25,520
+But in other cases we're getting a lot of incoming requests.
+
+124
+00:07:25,520 --> 00:07:27,950
+It's going to fail far too many transactions.
+
+125
+00:07:29,190 --> 00:07:29,540
+Okay.
+
+126
+00:07:29,550 --> 00:07:32,430
+So we're going to take a quick pause right here before this video gets too long.
+
+127
+00:07:32,820 --> 00:07:34,140
+We're going to come back the next video.
+
+128
+00:07:34,410 --> 00:07:37,740
+I'm going to show you some issues with Watch in action.
+
+129
+00:07:37,980 --> 00:07:41,010
+And we're going to take a look at a better solution to this concurrency stuff.

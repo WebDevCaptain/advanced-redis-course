@@ -1,0 +1,307 @@
+1
+00:00:01,370 --> 00:00:05,540
+While we are discussing how search works, I want to show you two different commands you can use to
+
+2
+00:00:05,540 --> 00:00:07,550
+better understand the search process.
+
+3
+00:00:08,140 --> 00:00:09,290
+The first is explained.
+
+4
+00:00:09,290 --> 00:00:14,900
+Seelye We're going to run this with a name of an index and a query that we want to try to run explain.
+
+5
+00:00:14,900 --> 00:00:17,360
+Seelye is not going to actually execute the query.
+
+6
+00:00:17,540 --> 00:00:22,370
+Instead, it's going to take a look at your query and give you some information about how it understands
+
+7
+00:00:22,370 --> 00:00:25,580
+the query and how it thinks it should actually be executed.
+
+8
+00:00:26,450 --> 00:00:31,100
+We're going to use, explained Seelye, usually to make sure that our queries are being interpreted
+
+9
+00:00:31,100 --> 00:00:31,760
+correctly.
+
+10
+00:00:31,910 --> 00:00:35,460
+And I'm going to show you an example of when you think you might be writing out a query correctly,
+
+11
+00:00:35,480 --> 00:00:37,490
+but it turns out there's actually an issue with it.
+
+12
+00:00:38,210 --> 00:00:41,240
+Okay, so let's go over to our book and try out this command very quick.
+
+13
+00:00:42,670 --> 00:00:46,750
+So over in our book I'm going to do a PhD, explains Seelye.
+
+14
+00:00:47,760 --> 00:00:51,590
+I'd items and then my query is going to be simply chair.
+
+15
+00:00:53,060 --> 00:00:53,870
+Here's our results.
+
+16
+00:00:54,910 --> 00:00:59,680
+Now, the first thing I want to highlight here is the word that says plus chair expanded.
+
+17
+00:01:00,280 --> 00:01:05,020
+You might recall that a little bit ago I spoke about that concept of swimming inside of ready search.
+
+18
+00:01:05,590 --> 00:01:13,390
+That is where Ready Search might take a word like chairs, chaired or chairing or some other variations.
+
+19
+00:01:13,750 --> 00:01:18,820
+And it's going to assume that all those different variations really mean the same thing as the word
+
+20
+00:01:18,850 --> 00:01:19,330
+chair.
+
+21
+00:01:20,200 --> 00:01:25,240
+So stimming is where we can go from some of these more complex terms down to a more simple term.
+
+22
+00:01:26,360 --> 00:01:27,770
+And you see expanded right here.
+
+23
+00:01:27,800 --> 00:01:29,690
+We're kind of doing the opposite of stimming.
+
+24
+00:01:30,380 --> 00:01:36,380
+So Chair expanded means take the base word of chair and try to come up with some different variations
+
+25
+00:01:36,380 --> 00:01:38,750
+or some expanded forms of the word chair.
+
+26
+00:01:39,640 --> 00:01:44,860
+So when you do a query on share, that will be automatically expanded into searching not only chair
+
+27
+00:01:44,860 --> 00:01:47,260
+but also chairs chaired in chairing.
+
+28
+00:01:50,990 --> 00:01:55,850
+Then in addition to those extra searches, it is, of course, going to do a search on the original
+
+29
+00:01:55,850 --> 00:02:00,320
+search term and then across all of these different queries, all these different terms that are being
+
+30
+00:02:00,320 --> 00:02:00,950
+searched for.
+
+31
+00:02:01,220 --> 00:02:03,050
+We're going to take the union of all those.
+
+32
+00:02:03,620 --> 00:02:09,430
+That means do a search for chair, do a search for all the different expanded forms of chair in all
+
+33
+00:02:09,450 --> 00:02:10,640
+these different search results.
+
+34
+00:02:10,850 --> 00:02:16,820
+Get the scores for all them and then put them all together into one search results set sorted by all
+
+35
+00:02:16,820 --> 00:02:19,700
+the different search result rankings or the different scores.
+
+36
+00:02:21,920 --> 00:02:26,960
+Now, as we start to add in a more complex story here, we're going to see how this explain can really
+
+37
+00:02:26,960 --> 00:02:28,430
+start to get a little bit more complex.
+
+38
+00:02:29,240 --> 00:02:32,600
+I'm going to try to do chair minus desk.
+
+39
+00:02:33,440 --> 00:02:39,950
+So this query means find chair, find all the desks and don't show any results for desk inside the final
+
+40
+00:02:39,950 --> 00:02:40,400
+results.
+
+41
+00:02:41,700 --> 00:02:42,420
+If I do that.
+
+42
+00:02:43,620 --> 00:02:47,700
+Now we're still going to do the original union of chair and Chair expanded.
+
+43
+00:02:48,270 --> 00:02:54,000
+We're also going to do a separate search of find everything that does not contain a desk and then do
+
+44
+00:02:54,000 --> 00:03:01,080
+the intersection between these two groups of results to find what is common between the union and the
+
+45
+00:03:01,140 --> 00:03:02,250
+nuts operation.
+
+46
+00:03:04,750 --> 00:03:07,090
+Now this is definitely useful for just understanding.
+
+47
+00:03:07,090 --> 00:03:07,540
+Okay?
+
+48
+00:03:07,540 --> 00:03:12,160
+This is kind of what is going on behind the scenes are it's doing a union and not an intersection,
+
+49
+00:03:12,370 --> 00:03:14,860
+but at the end of the day, it's not really the most useful thing.
+
+50
+00:03:15,370 --> 00:03:19,000
+Let me show you what I mentioned a little bit ago, a real use case I've explained.
+
+51
+00:03:19,000 --> 00:03:24,730
+Seelye Just a little bit ago, we put together a command back inside of our editor.
+
+52
+00:03:26,050 --> 00:03:27,010
+So this one right here.
+
+53
+00:03:27,250 --> 00:03:32,590
+And you might recall, I mentioned in passing, we have to put the parentheses around each individual
+
+54
+00:03:32,590 --> 00:03:33,070
+field.
+
+55
+00:03:33,790 --> 00:03:36,610
+So what would happen if we didn't add in those parentheses?
+
+56
+00:03:37,890 --> 00:03:40,260
+Let's try it out really quickly with, explains Eli.
+
+57
+00:03:40,710 --> 00:03:42,570
+They're going to do that name.
+
+58
+00:03:44,150 --> 00:03:47,270
+Chair or at description.
+
+59
+00:03:49,030 --> 00:03:49,420
+Share.
+
+60
+00:03:51,210 --> 00:03:51,960
+If I run that.
+
+61
+00:03:53,510 --> 00:03:56,170
+You'll notice that the explain run successfully.
+
+62
+00:03:56,180 --> 00:03:57,140
+I get back results.
+
+63
+00:03:57,200 --> 00:04:01,490
+So as far as ready search is concerned, this is absolutely a valid query.
+
+64
+00:04:01,970 --> 00:04:06,860
+But if you look at the actual very plan right here, you're going to notice something really unexpected.
+
+65
+00:04:07,610 --> 00:04:11,930
+The entire description field, for some reason got converted to null.
+
+66
+00:04:12,560 --> 00:04:17,180
+So if we actually run this search right here, we run the query like this, we will probably have it
+
+67
+00:04:17,180 --> 00:04:21,530
+succeed, but we're probably not going to get what we really want because for some reason, even though
+
+68
+00:04:21,530 --> 00:04:27,140
+this is interpreted as being a valid query, the description field got turned into null instead.
+
+69
+00:04:28,270 --> 00:04:31,090
+If I then add on some parentheses around each term.
+
+70
+00:04:33,160 --> 00:04:33,700
+Like so.
+
+71
+00:04:35,500 --> 00:04:36,850
+And then rerun the explain.
+
+72
+00:04:37,150 --> 00:04:39,070
+Now it's definitely working as expected.
+
+73
+00:04:39,670 --> 00:04:40,720
+The do name.
+
+74
+00:04:41,860 --> 00:04:45,760
+You description and then join those two separate groups together.
+
+75
+00:04:47,900 --> 00:04:48,170
+Okay.
+
+76
+00:04:48,170 --> 00:04:49,490
+So that is explain, Seeley.
+
+77
+00:04:49,970 --> 00:04:52,880
+There's one other debug command we're going to look at in just a moment.

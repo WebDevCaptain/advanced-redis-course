@@ -1,0 +1,623 @@
+1
+00:00:00,710 --> 00:00:03,530
+I'd like to give you a very quick tour over this sample project.
+
+2
+00:00:03,860 --> 00:00:06,860
+So I'm back inside my editor, still inside the RB project directory.
+
+3
+00:00:07,250 --> 00:00:11,330
+I want to point out two folders in particular where we are going to spend a lot of time.
+
+4
+00:00:12,230 --> 00:00:18,750
+Let's open the SIRC folder, find services, and then inside there we're going to find queries right
+
+5
+00:00:18,750 --> 00:00:19,020
+here.
+
+6
+00:00:19,910 --> 00:00:21,440
+And Red is right underneath it.
+
+7
+00:00:22,310 --> 00:00:27,410
+We're going to spend a lot of time in both queries and reds where it contains many different files.
+
+8
+00:00:27,650 --> 00:00:29,660
+So maybe 15 total or so.
+
+9
+00:00:30,140 --> 00:00:33,980
+Just about every file has a couple of empty functions to find inside of it.
+
+10
+00:00:34,670 --> 00:00:39,920
+These are where we are going to write in some number of commands, reach out to Redis and store information
+
+11
+00:00:39,920 --> 00:00:41,450
+or retrieve information.
+
+12
+00:00:42,110 --> 00:00:47,720
+So again, right now, the application doesn't really have any data storage or any data fetching implemented.
+
+13
+00:00:47,930 --> 00:00:49,010
+And that is our goal.
+
+14
+00:00:49,040 --> 00:00:51,410
+That's what we need to implement to make this app work.
+
+15
+00:00:52,040 --> 00:00:57,440
+And in general, we don't have to worry just about at all about the front end of the app or actual any
+
+16
+00:00:57,440 --> 00:01:00,320
+actual HTML or stuff like that that runs in the browser.
+
+17
+00:01:00,890 --> 00:01:04,700
+Again, if you're not familiar with TypeScript or Web development, totally fine.
+
+18
+00:01:05,810 --> 00:01:06,140
+All right.
+
+19
+00:01:06,170 --> 00:01:06,680
+Next thing.
+
+20
+00:01:07,870 --> 00:01:11,950
+Inside that red folder, you'll notice that there is a client's file.
+
+21
+00:01:12,640 --> 00:01:17,290
+Just want to point out this file very quickly, because this file is where we make a connection to our
+
+22
+00:01:17,290 --> 00:01:18,520
+running registered database.
+
+23
+00:01:19,270 --> 00:01:23,710
+This connection is being made using a JavaScript library called Node Redis.
+
+24
+00:01:24,810 --> 00:01:27,150
+Right here is where we are making use of some of those.
+
+25
+00:01:28,440 --> 00:01:30,990
+Credentials that you entered into the end of your file.
+
+26
+00:01:31,290 --> 00:01:36,870
+So read as host, port and password, and then at the bottom is where we actually connect to that database.
+
+27
+00:01:38,020 --> 00:01:42,250
+I want to give you a couple of notes around reddest client libraries like the one that we're using right
+
+28
+00:01:42,250 --> 00:01:43,300
+here to access.
+
+29
+00:01:43,300 --> 00:01:44,470
+Read us from code.
+
+30
+00:01:44,920 --> 00:01:50,950
+As it turns out that these things are kind of interesting, maybe not the way you would expect.
+
+31
+00:01:53,080 --> 00:01:53,460
+All right.
+
+32
+00:01:53,470 --> 00:01:55,240
+So here's our observer on the left hand side.
+
+33
+00:01:55,810 --> 00:02:01,480
+We are making use of a language specific writers client library called specifically Node Red is the
+
+34
+00:02:01,480 --> 00:02:02,010
+term here.
+
+35
+00:02:02,020 --> 00:02:06,790
+Language specific just means that depending upon what programming language you are using, you're going
+
+36
+00:02:06,790 --> 00:02:08,680
+to use a slightly different library.
+
+37
+00:02:09,280 --> 00:02:13,330
+They might recall in the last video I mentioned that we are using TypeScript and that might be a little
+
+38
+00:02:13,330 --> 00:02:18,130
+bit of a downer as you might want to understand how to use Redis with say specifically Java or something
+
+39
+00:02:18,130 --> 00:02:18,550
+like that.
+
+40
+00:02:19,090 --> 00:02:21,340
+But again, don't sweat that too much.
+
+41
+00:02:21,370 --> 00:02:25,540
+I'm going to tell you why it's not a big deal that we're using TypeScript here over the next minute
+
+42
+00:02:25,540 --> 00:02:25,990
+or two.
+
+43
+00:02:27,050 --> 00:02:32,210
+So these different libraries that we make use of or with JavaScript or Java or Python or whatever else
+
+44
+00:02:32,420 --> 00:02:37,490
+are going to give us a set of functions we can call, which ultimately are going to run the same commands
+
+45
+00:02:37,490 --> 00:02:40,970
+that we've been learning about so far in other commands we're going to learn about in the future.
+
+46
+00:02:41,660 --> 00:02:42,920
+So quick example.
+
+47
+00:02:44,610 --> 00:02:44,970
+Okay.
+
+48
+00:02:45,300 --> 00:02:51,690
+So we have learned about get set and set with some arguments regardless of what client's library you
+
+49
+00:02:51,690 --> 00:02:52,290
+are using.
+
+50
+00:02:52,470 --> 00:02:55,080
+So one for Java, one for JavaScript, one for go.
+
+51
+00:02:55,440 --> 00:03:00,780
+Just about all these different raw commands we've been learning about are going to map up two functions
+
+52
+00:03:00,780 --> 00:03:05,100
+that look nearly identical regardless of what language you are using.
+
+53
+00:03:06,070 --> 00:03:09,970
+So this is how a gift would be executed with no jazz.
+
+54
+00:03:10,090 --> 00:03:11,140
+Note read his library.
+
+55
+00:03:11,170 --> 00:03:12,790
+It is client docket color.
+
+56
+00:03:13,840 --> 00:03:20,140
+The same kind of raw command could be executed in, say, Java or go with almost identical syntax,
+
+57
+00:03:20,140 --> 00:03:22,600
+almost identical function name, identical everything.
+
+58
+00:03:23,170 --> 00:03:26,920
+Again, even though we're using JavaScript TypeScript here, really not a big deal.
+
+59
+00:03:26,950 --> 00:03:30,700
+You're going to walk away with the knowledge of how to use this stuff with your particular language
+
+60
+00:03:30,700 --> 00:03:31,120
+as well.
+
+61
+00:03:32,670 --> 00:03:39,150
+Something like a set command will still be a client that sets the key value and then some options provided
+
+62
+00:03:39,150 --> 00:03:40,530
+in an additional object.
+
+63
+00:03:41,860 --> 00:03:45,340
+I want to give you a couple of other notes around these client libraries very quickly.
+
+64
+00:03:47,690 --> 00:03:49,880
+Here's one thing to really keep in mind.
+
+65
+00:03:50,630 --> 00:03:56,710
+If you've ever used a sequel type database before and you've interacted with it using a sequel forum,
+
+66
+00:03:57,080 --> 00:04:03,170
+you might be familiar with some kind of issue like this where you might be using an arm that allows
+
+67
+00:04:03,170 --> 00:04:09,140
+you to write out queries using a very abbreviated syntax, something that allows you to express what
+
+68
+00:04:09,140 --> 00:04:13,790
+kind of information you are looking up without having to worry about the underlying SQL that is generated
+
+69
+00:04:14,600 --> 00:04:15,110
+right here.
+
+70
+00:04:15,230 --> 00:04:20,660
+I've got an example of using an arm with a popular JavaScript library, and then on the left hand side,
+
+71
+00:04:20,660 --> 00:04:24,890
+I've got almost just about the equivalent SQL query being executed.
+
+72
+00:04:25,870 --> 00:04:30,790
+You'll notice that in between these two, using the one on the right hand side, probably a little bit
+
+73
+00:04:31,000 --> 00:04:31,960
+easier to figure out.
+
+74
+00:04:32,500 --> 00:04:36,760
+In this case, you can probably read this code and kind of have a reasonable idea of what's going on.
+
+75
+00:04:37,790 --> 00:04:42,740
+It's trying to find a user just one where their username is that string right there.
+
+76
+00:04:43,710 --> 00:04:46,860
+And we also want to fetch that user's profile as well.
+
+77
+00:04:47,760 --> 00:04:52,500
+You can probably put together a query using an Orem like this without really understanding what the
+
+78
+00:04:52,500 --> 00:04:54,450
+database is doing, how it's structured.
+
+79
+00:04:55,260 --> 00:04:59,910
+You could probably do without even understanding SQL at all because you didn't have to go through writing
+
+80
+00:04:59,910 --> 00:05:01,350
+out the actual SQL query.
+
+81
+00:05:02,160 --> 00:05:04,500
+Redis is very different in nature.
+
+82
+00:05:05,130 --> 00:05:11,460
+With Redis, we get access to these different functions that directly mirror the underlying, raw,
+
+83
+00:05:11,490 --> 00:05:12,570
+basic commands.
+
+84
+00:05:13,440 --> 00:05:15,080
+No read is quite library out there.
+
+85
+00:05:15,090 --> 00:05:19,800
+Or I should say very few are going to give you these really fancy APIs that help you query your data
+
+86
+00:05:19,800 --> 00:05:21,630
+without understanding the raw commands.
+
+87
+00:05:22,050 --> 00:05:27,060
+You have to understand the plain commands to use all of these different client libraries.
+
+88
+00:05:27,810 --> 00:05:32,010
+And that's why I told you a little bit ago using the official library document, assuming the official
+
+89
+00:05:32,010 --> 00:05:37,710
+command documentation is always very, very good practice because at the end of the day, that's what
+
+90
+00:05:37,710 --> 00:05:42,930
+your client library is doing, is just taking your raw commands or your function calls and turning them
+
+91
+00:05:42,930 --> 00:05:48,180
+into plain raw commands with very little translate translation in there, unlike what some of those
+
+92
+00:05:48,180 --> 00:05:49,590
+SQL or IMS do for you.
+
+93
+00:05:50,880 --> 00:05:57,570
+The other thing to take note of is that some of these libraries are going to have a truly zero documentation
+
+94
+00:05:57,570 --> 00:05:59,220
+on individual commands.
+
+95
+00:06:00,360 --> 00:06:00,680
+Okay.
+
+96
+00:06:00,690 --> 00:06:04,530
+So with all this in mind, I wanna show you one or two popular client libraries.
+
+97
+00:06:04,530 --> 00:06:08,220
+Very quickly, take a look at the documentation and just help you understand what you're kind of getting
+
+98
+00:06:08,220 --> 00:06:08,760
+into.
+
+99
+00:06:08,970 --> 00:06:13,440
+Once you start using these client libraries, you do not have to open up the websites.
+
+100
+00:06:13,440 --> 00:06:14,460
+I'm about to show you this.
+
+101
+00:06:14,490 --> 00:06:15,720
+Just a very quick demonstration.
+
+102
+00:06:16,840 --> 00:06:17,070
+All right.
+
+103
+00:06:17,080 --> 00:06:20,020
+So first, I'm at No Treatise on GitHub.
+
+104
+00:06:21,160 --> 00:06:23,680
+This is the library that we are using inside of our project.
+
+105
+00:06:24,310 --> 00:06:26,230
+I'm going to go to their official homepage.
+
+106
+00:06:27,440 --> 00:06:28,820
+Here's their official page right here.
+
+107
+00:06:30,020 --> 00:06:33,350
+And on the left hand side, I'm going to go to the section that says, Read his commands.
+
+108
+00:06:33,770 --> 00:06:37,700
+Now, I don't know about you, but if I saw a section that says Red is commands, I would expect to
+
+109
+00:06:37,700 --> 00:06:42,210
+have documentation on all the different commands that are available using this library.
+
+110
+00:06:42,770 --> 00:06:48,440
+But you're going to notice very quickly that there is no such documentation in this entire library that
+
+111
+00:06:48,440 --> 00:06:49,610
+is extremely popular.
+
+112
+00:06:49,760 --> 00:06:55,820
+There is not a single comprehensive, publicly web available source saying, Hey, here's a list of
+
+113
+00:06:55,820 --> 00:06:57,530
+all the different commands and how to use them.
+
+114
+00:06:58,190 --> 00:07:03,140
+Instead, the authors pretty much point you off to the official documentation and say, Oh, well,
+
+115
+00:07:03,140 --> 00:07:07,130
+if you want to figure out what commands are available through this library, just go look at the official
+
+116
+00:07:07,130 --> 00:07:09,860
+documentation and we pretty much implement all of these.
+
+117
+00:07:10,520 --> 00:07:11,780
+And so that is the reality.
+
+118
+00:07:11,790 --> 00:07:16,670
+A lot of these client libraries, they're not going to tell you how these commands actually work in
+
+119
+00:07:16,670 --> 00:07:17,900
+their own documentation.
+
+120
+00:07:18,140 --> 00:07:20,720
+Instead, they're just going to say, go up to the red stalks.
+
+121
+00:07:20,900 --> 00:07:25,520
+And we pretty much have functions that mirror each of these different commands listed in the documentation.
+
+122
+00:07:26,030 --> 00:07:28,280
+And in theory, they all just about work the same.
+
+123
+00:07:30,480 --> 00:07:32,460
+I want to give you one other very quick example.
+
+124
+00:07:34,180 --> 00:07:35,770
+This is a library called Jedis.
+
+125
+00:07:36,520 --> 00:07:39,640
+It is a Java client library.
+
+126
+00:07:39,820 --> 00:07:43,660
+So if you are in Java, you will probably use Jedis or something very similar.
+
+127
+00:07:44,740 --> 00:07:48,130
+I'm going to go through some documentation on a very particular function.
+
+128
+00:07:49,850 --> 00:07:54,910
+But here's some documentation on the assets method that exists inside this Jedi's library.
+
+129
+00:07:55,660 --> 00:08:01,780
+So this is the same set as the set that we have been doing, like the set right here to set some kind
+
+130
+00:08:01,780 --> 00:08:04,870
+of key value pair, optionally with some arguments.
+
+131
+00:08:05,850 --> 00:08:10,860
+So in this case, Jedis at least does say, hey, there's a set function out there, and here are the
+
+132
+00:08:10,860 --> 00:08:13,470
+type of arguments that you can expect to receive.
+
+133
+00:08:14,250 --> 00:08:17,160
+Or at least Jedis gives you a little bit of a hint of what's going on.
+
+134
+00:08:17,190 --> 00:08:19,320
+Unlike the Node Reddit library that we are using.
+
+135
+00:08:19,950 --> 00:08:23,730
+But even then, it still falls short on the official documentation.
+
+136
+00:08:24,450 --> 00:08:29,880
+Notice that as the return type signature, they say that a string will be returned, but they never
+
+137
+00:08:29,880 --> 00:08:36,210
+actually say in a very easily linked fashion inside of your exactly what that string is going to be.
+
+138
+00:08:36,960 --> 00:08:41,790
+For that, you have to go back over to the official documentation for the set commands, which we have
+
+139
+00:08:41,790 --> 00:08:42,510
+looked at before.
+
+140
+00:08:43,590 --> 00:08:49,140
+And then once here you can go down and take a look at the documentation around return value to understand
+
+141
+00:08:49,260 --> 00:08:53,730
+what actually is going to be returned to you and what the meaning of that string is going to be.
+
+142
+00:08:54,630 --> 00:09:00,150
+Even in a well-documented library like Jedis, it's still not giving you really the full story that
+
+143
+00:09:00,150 --> 00:09:02,010
+the official documentation does.
+
+144
+00:09:02,980 --> 00:09:03,330
+Okay.
+
+145
+00:09:03,340 --> 00:09:04,870
+So a lot of ranting here on my part.
+
+146
+00:09:05,290 --> 00:09:10,480
+All I'm really trying to get across is that these client libraries are really just mirroring the exact
+
+147
+00:09:10,480 --> 00:09:13,060
+underlying commands that Redis implements.
+
+148
+00:09:13,660 --> 00:09:19,060
+So understanding the commands themselves is way more important than understanding how any individual
+
+149
+00:09:19,060 --> 00:09:20,260
+client library works.
+
+150
+00:09:21,190 --> 00:09:26,410
+And the second big point here is that we really want to use the official documentation as our source
+
+151
+00:09:26,410 --> 00:09:31,210
+of understanding how these commands work, because the individual libraries don't really document these
+
+152
+00:09:31,390 --> 00:09:33,910
+commands very well or at all in some cases.
+
+153
+00:09:35,040 --> 00:09:35,910
+And that's pretty much it.
+
+154
+00:09:36,750 --> 00:09:42,060
+Okay, so now that we've got a kick off year for this project, let's start working on one of those
+
+155
+00:09:42,060 --> 00:09:43,190
+empty functions.
+
+156
+00:09:43,200 --> 00:09:45,540
+We're going to put together the implementation in just a moment.

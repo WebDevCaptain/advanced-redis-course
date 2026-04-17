@@ -1,0 +1,139 @@
+1
+00:00:01,510 --> 00:00:07,270
+The three comparison commands of s union, SDF and s inter all have a very small variation.
+
+2
+00:00:07,840 --> 00:00:11,920
+You can run s union store as if store and inter store.
+
+3
+00:00:12,370 --> 00:00:15,550
+Each of these three commands are going to run at the underlying operation.
+
+4
+00:00:15,580 --> 00:00:20,410
+So a union, a difference or an intersection and then store the results at a brand new key.
+
+5
+00:00:21,010 --> 00:00:26,200
+They're pretty simple in nature, just a very small variation that that saves the output in Redis.
+
+6
+00:00:26,680 --> 00:00:30,580
+We'll take a look at s store because once you understand this one, you're going to have a good idea
+
+7
+00:00:30,580 --> 00:00:32,110
+of what's going on with all three.
+
+8
+00:00:33,290 --> 00:00:33,650
+Okay.
+
+9
+00:00:33,860 --> 00:00:38,090
+So back over inside of our book, I'm going to do an S enter store.
+
+10
+00:00:39,080 --> 00:00:44,870
+And the first argument here is going to be where we want to see the results of our intersection.
+
+11
+00:00:45,630 --> 00:00:47,800
+So I'm going to save the results of an intersection.
+
+12
+00:00:47,810 --> 00:00:50,250
+AT How about others?
+
+13
+00:00:50,270 --> 00:00:51,320
+Colin Results.
+
+14
+00:00:52,340 --> 00:00:57,410
+And then I will do an intersection on colors one, colors two and colors three.
+
+15
+00:01:00,140 --> 00:01:06,800
+I get back 1 to 1 here means that there is one element inside of the intersection between all three
+
+16
+00:01:06,800 --> 00:01:07,280
+elements.
+
+17
+00:01:08,180 --> 00:01:09,800
+We can now do a s.
+
+18
+00:01:11,370 --> 00:01:11,880
+Back up here.
+
+19
+00:01:11,880 --> 00:01:12,840
+Just a quick reminder.
+
+20
+00:01:13,830 --> 00:01:19,860
+We go s members on colors results and will be told about all the elements that are inside that intersection.
+
+21
+00:01:20,890 --> 00:01:23,800
+So I will do a as members.
+
+22
+00:01:26,990 --> 00:01:29,810
+On colors results and I get just blue.
+
+23
+00:01:29,930 --> 00:01:34,220
+So clearly I did successfully find the intersection and store it at this Nike.
+
+24
+00:01:35,220 --> 00:01:36,290
+Well, that's pretty much it.
+
+25
+00:01:36,300 --> 00:01:41,010
+That's a variation on those three different commands with a store keyword on it, or just taking the
+
+26
+00:01:41,010 --> 00:01:43,620
+results of the operation and storing it at a brand new key.
+
+27
+00:01:44,250 --> 00:01:46,560
+Now, you might be curious, though, why would we ever use store?
+
+28
+00:01:46,800 --> 00:01:51,150
+Well, we would want to use it any time that the comparison so the intersection union or difference
+
+29
+00:01:51,300 --> 00:01:52,260
+was expensive.
+
+30
+00:01:52,620 --> 00:01:57,510
+So we had really, really, really large sets and it took a lot of time to run a union between them.
+
+31
+00:01:57,690 --> 00:02:02,190
+We probably don't want to do that union all the time, so we might just run the union once and then
+
+32
+00:02:02,190 --> 00:02:08,580
+stored at some key and then only rerun that union operation once every day or week or month or whatever
+
+33
+00:02:08,580 --> 00:02:09,540
+is most appropriate.
+
+34
+00:02:10,460 --> 00:02:10,710
+All right.
+
+35
+00:02:10,730 --> 00:02:12,290
+Couple more commands in the next video.

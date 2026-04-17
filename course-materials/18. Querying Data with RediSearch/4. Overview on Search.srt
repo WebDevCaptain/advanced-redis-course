@@ -1,0 +1,223 @@
+1
+00:00:00,840 --> 00:00:04,110
+The first module that we are going to discuss is called Ready Search.
+
+2
+00:00:04,560 --> 00:00:07,380
+Let me first tell you why we are using this module at all.
+
+3
+00:00:08,100 --> 00:00:12,600
+One thing that you might have noticed earlier on inside this course as we are building the e-commerce
+
+4
+00:00:12,600 --> 00:00:18,420
+application, is that implementing any kind of query operation on a collection of different hashes was
+
+5
+00:00:18,420 --> 00:00:19,410
+kind of challenging.
+
+6
+00:00:19,950 --> 00:00:25,890
+For example, if we wanted to find all the items that were ending soonest were the items that had the
+
+7
+00:00:25,890 --> 00:00:31,230
+most views or the items that were most expensive, we had to create some accessory data structures.
+
+8
+00:00:31,680 --> 00:00:36,030
+So we had to create some sorted sets on the side and maintain those structures over time.
+
+9
+00:00:36,510 --> 00:00:40,860
+That was a lot of extra work and definitely something that I personally would not really want to have
+
+10
+00:00:40,860 --> 00:00:41,760
+to do all the time.
+
+11
+00:00:42,760 --> 00:00:46,600
+Redis search is going to allow us to skip that entire process.
+
+12
+00:00:47,080 --> 00:00:53,470
+So 3D search, we get the ability to run arbitrary queries over a collection of different hashes without
+
+13
+00:00:53,470 --> 00:00:59,320
+having to maintain a bunch of structures on site like sorted sets, sets, lists and so on.
+
+14
+00:01:00,310 --> 00:01:06,190
+In addition, Ready Search allows us to do queries with multiple different pieces of criteria so we
+
+15
+00:01:06,190 --> 00:01:10,990
+can do a query like the one you see right here where we try to find all the items with a price less
+
+16
+00:01:10,990 --> 00:01:13,510
+than 45 and a color of green.
+
+17
+00:01:14,290 --> 00:01:18,970
+Implementing something like this with just plain lettuce would be a little bit more challenging.
+
+18
+00:01:19,330 --> 00:01:21,940
+So ready search really is fantastic.
+
+19
+00:01:23,260 --> 00:01:24,160
+The use ready search.
+
+20
+00:01:24,580 --> 00:01:26,800
+We're going to go through two separate steps.
+
+21
+00:01:27,460 --> 00:01:29,890
+Step one, we're going to create an index.
+
+22
+00:01:30,400 --> 00:01:36,490
+An index is a data type that points to all of the different records that we want to be able to search.
+
+23
+00:01:37,210 --> 00:01:41,350
+We only have to do this one time for any group of records that we want to search.
+
+24
+00:01:41,980 --> 00:01:46,510
+So if we want to search over all of our different items, we have to create one index one time.
+
+25
+00:01:47,290 --> 00:01:52,120
+If we want to search over all of our different users, we have to create a second index one time.
+
+26
+00:01:52,720 --> 00:01:56,650
+If we want to search over, say, all the different bids, that's going to be another index.
+
+27
+00:01:56,650 --> 00:01:58,480
+And it only has to be created once.
+
+28
+00:01:59,830 --> 00:02:03,160
+Whenever we make an index, we have to specify two different things.
+
+29
+00:02:03,670 --> 00:02:07,000
+The first is going to be which records we want to build a search for.
+
+30
+00:02:07,330 --> 00:02:10,030
+And we do this by providing a prefix.
+
+31
+00:02:11,100 --> 00:02:14,350
+So this right here is treated as a key prefix.
+
+32
+00:02:14,370 --> 00:02:19,500
+It means find all the different hashes that start with a string, or I should say all the different
+
+33
+00:02:19,500 --> 00:02:21,990
+hashes that have a key of items out.
+
+34
+00:02:23,390 --> 00:02:25,100
+When ready search creates the index.
+
+35
+00:02:25,100 --> 00:02:30,290
+It's going to go to Redis, find all the different keys that start with items pounds and then say,
+
+36
+00:02:30,290 --> 00:02:31,490
+okay, there's a hash here.
+
+37
+00:02:31,670 --> 00:02:34,580
+The user must want to be able to search for this record.
+
+38
+00:02:35,970 --> 00:02:37,320
+For each of these different hashes.
+
+39
+00:02:37,740 --> 00:02:45,000
+Ready search is then going to record a tiny piece of info about that hashes, name, color and price.
+
+40
+00:02:46,860 --> 00:02:52,770
+Once the index has been created, we can then use it as many times as we want to run the query so we
+
+41
+00:02:52,770 --> 00:02:58,020
+can run the query and look for some item with a particular name, colour price and so on.
+
+42
+00:02:59,960 --> 00:03:04,190
+And for each of these different steps, we're going to learn about just one single command.
+
+43
+00:03:04,760 --> 00:03:10,490
+But to create an index, we only need to understand one command called for dot create and for running
+
+44
+00:03:10,490 --> 00:03:11,000
+a query.
+
+45
+00:03:11,030 --> 00:03:14,540
+We only have to understand one single command to dot search.
+
+46
+00:03:15,170 --> 00:03:17,210
+Now, this might make everything sound really simple.
+
+47
+00:03:17,450 --> 00:03:18,080
+Everything around.
+
+48
+00:03:18,080 --> 00:03:18,290
+Ready?
+
+49
+00:03:18,290 --> 00:03:19,670
+Search for just two commands.
+
+50
+00:03:19,730 --> 00:03:25,490
+That sounds really simple, but in reality, it turns out that there are a tremendous number of variations
+
+51
+00:03:25,700 --> 00:03:27,050
+around these two commands.
+
+52
+00:03:27,440 --> 00:03:30,900
+So we really can spend a lot of time just learning about how these things work.
+
+53
+00:03:32,210 --> 00:03:32,540
+Okay.
+
+54
+00:03:32,570 --> 00:03:33,660
+So let's take a pause right here.
+
+55
+00:03:33,680 --> 00:03:34,880
+We're going to come back in just a moment.
+
+56
+00:03:35,060 --> 00:03:38,840
+We're going to build our first index and run the query in the next video.

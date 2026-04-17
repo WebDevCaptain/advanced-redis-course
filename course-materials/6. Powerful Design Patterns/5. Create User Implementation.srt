@@ -1,0 +1,711 @@
+1
+00:00:01,000 --> 00:00:02,530
+I'm to work on some implementation.
+
+2
+00:00:02,920 --> 00:00:08,110
+So in this video and the next couple, we're going to work on storing and retrieving users sessions
+
+3
+00:00:08,110 --> 00:00:08,800
+and items.
+
+4
+00:00:09,910 --> 00:00:14,080
+The first function we're going to work on is the create user function, which will allow us to store
+
+5
+00:00:14,080 --> 00:00:15,310
+a user inside of Redis.
+
+6
+00:00:15,760 --> 00:00:18,670
+We'll go over the implementation of this function very closely.
+
+7
+00:00:18,850 --> 00:00:24,910
+But first, one small reminder inside of your code editor, we're going to find the CRC folder and then
+
+8
+00:00:24,910 --> 00:00:26,560
+services and then keys.
+
+9
+00:00:26,980 --> 00:00:27,340
+Yes.
+
+10
+00:00:28,670 --> 00:00:30,410
+Inside the ski resorts file.
+
+11
+00:00:30,500 --> 00:00:35,120
+You might recall that we are going to put together a couple different functions that just make it easier
+
+12
+00:00:35,120 --> 00:00:35,690
+to generate.
+
+13
+00:00:35,690 --> 00:00:37,580
+The different keys that we want to access.
+
+14
+00:00:37,580 --> 00:00:42,470
+Inside of red is the only goal of these different functions is to avoid having to write out these strings
+
+15
+00:00:42,470 --> 00:00:46,820
+all over the place inside of our code base, which would definitely result in some typos.
+
+16
+00:00:47,540 --> 00:00:50,990
+So I'm going to immediately add in a new key function inside of here.
+
+17
+00:00:51,290 --> 00:00:57,890
+The goal of it is to give us a key where we can store a hash for a user or a hash that represents a
+
+18
+00:00:57,890 --> 00:00:58,220
+user.
+
+19
+00:00:58,790 --> 00:01:00,290
+So here's the user hash.
+
+20
+00:01:00,330 --> 00:01:04,790
+We're going to eventually store users username and password and possibly some other information.
+
+21
+00:01:05,210 --> 00:01:10,520
+We are writing the function that is going to generate the key that is referring to that hash.
+
+22
+00:01:12,270 --> 00:01:12,440
+Yeah.
+
+23
+00:01:12,510 --> 00:01:14,820
+So I'm going to create a new function and export it.
+
+24
+00:01:15,450 --> 00:01:17,640
+I'm going to call it user's key.
+
+25
+00:01:19,640 --> 00:01:25,310
+This will take as an argument the user's ID, so I'm going to call it user ID and it's going to be a
+
+26
+00:01:25,310 --> 00:01:25,700
+string.
+
+27
+00:01:26,360 --> 00:01:31,100
+So we're going to say that every user inside of our application is going to have a unique ID, we're
+
+28
+00:01:31,100 --> 00:01:37,520
+going to take the string users pounds and then join that together with that unique user ID.
+
+29
+00:01:38,150 --> 00:01:41,390
+And that's how we can refer to any user that is stored inside of Redis.
+
+30
+00:01:42,260 --> 00:01:48,710
+So as an example of this inside of lettuce, we might eventually have a key of users pound and then
+
+31
+00:01:48,710 --> 00:01:50,540
+some unique ID right after it's.
+
+32
+00:01:52,010 --> 00:01:57,260
+So if we now had that unique I.D. right there or if someone gave us that I.D., they provide it to our
+
+33
+00:01:57,260 --> 00:02:03,530
+application and they asked us to find a user with that ID, we would put that ID into that function.
+
+34
+00:02:04,650 --> 00:02:06,870
+It would give us back this entire key.
+
+35
+00:02:07,710 --> 00:02:13,170
+We would look up that entire key inside of lettuce, and we would get back our hash data structure that
+
+36
+00:02:13,170 --> 00:02:15,120
+has all the information about our user.
+
+37
+00:02:16,640 --> 00:02:16,980
+Okay.
+
+38
+00:02:17,330 --> 00:02:21,740
+Now, as a reminder, you don't have to join together strings in JavaScript or TypeScript like this
+
+39
+00:02:21,740 --> 00:02:22,520
+if you don't want to.
+
+40
+00:02:22,850 --> 00:02:26,420
+So optionally, you can replace the single quotes with back ticks.
+
+41
+00:02:26,780 --> 00:02:32,720
+And then right after that pound sign put in a dollar sign user ID all the optional don't have to do
+
+42
+00:02:32,720 --> 00:02:33,410
+it if you don't want to.
+
+43
+00:02:35,210 --> 00:02:35,450
+Okay.
+
+44
+00:02:35,540 --> 00:02:36,110
+That looks good.
+
+45
+00:02:37,980 --> 00:02:40,410
+Now we'll start to work on the it creates user function.
+
+46
+00:02:41,740 --> 00:02:45,010
+So to find that function, I'm going to again go to my services directory.
+
+47
+00:02:45,520 --> 00:02:46,780
+I'm going to go to Redis.
+
+48
+00:02:47,140 --> 00:02:47,980
+To me, queries.
+
+49
+00:02:48,700 --> 00:02:49,840
+And then users got to.
+
+50
+00:02:49,840 --> 00:02:50,110
+Yes.
+
+51
+00:02:50,110 --> 00:02:51,150
+Inside the queries folder.
+
+52
+00:02:53,830 --> 00:02:59,380
+There are three functions inside of your right now it user by username, get user buy ID and create
+
+53
+00:02:59,380 --> 00:02:59,770
+user.
+
+54
+00:03:00,250 --> 00:03:02,170
+We're going to first work on create user.
+
+55
+00:03:02,890 --> 00:03:05,350
+So let's take a look at how this function is going to work.
+
+56
+00:03:07,310 --> 00:03:07,670
+Here we go.
+
+57
+00:03:09,370 --> 00:03:13,240
+So inside of our application, someone is eventually going to make a request to sign up as a brand new
+
+58
+00:03:13,240 --> 00:03:13,600
+user.
+
+59
+00:03:14,080 --> 00:03:17,080
+So a user is going to give us a username and password.
+
+60
+00:03:18,150 --> 00:03:24,210
+That username and password is going to be put into a plain JavaScript argument and provided as an argument
+
+61
+00:03:24,210 --> 00:03:26,010
+to the create user function.
+
+62
+00:03:26,930 --> 00:03:29,870
+You can verify that very easily by finding great use right here.
+
+63
+00:03:30,500 --> 00:03:32,600
+You'll notice there is an argument called ATRs.
+
+64
+00:03:33,140 --> 00:03:38,060
+So that is an object that contains the username and password that the user wants to sign up with.
+
+65
+00:03:38,810 --> 00:03:43,370
+If you mouse over, create user adders right here and hold down the command or control key on your keyboard,
+
+66
+00:03:43,670 --> 00:03:44,170
+you'll notice.
+
+67
+00:03:44,180 --> 00:03:44,450
+Yep.
+
+68
+00:03:44,480 --> 00:03:48,680
+TypeScript says that this is an object that has a username and password.
+
+69
+00:03:48,740 --> 00:03:49,490
+That's all it is.
+
+70
+00:03:54,010 --> 00:03:58,810
+So that object will be provided to create user inside the create user function.
+
+71
+00:03:59,020 --> 00:04:01,300
+We have to do a couple of different things.
+
+72
+00:04:02,110 --> 00:04:05,440
+First, we have to generate a unique ID for this user.
+
+73
+00:04:06,070 --> 00:04:11,830
+Reddest does not generate IDs for us, so we need to come up with some unique ID that refers to the
+
+74
+00:04:11,830 --> 00:04:13,090
+user that we are about to create.
+
+75
+00:04:13,980 --> 00:04:15,790
+So we might generate an ID inside of your.
+
+76
+00:04:17,040 --> 00:04:19,560
+Of something like, I don't know, something like that right there.
+
+77
+00:04:20,540 --> 00:04:26,330
+Once we have generated this ID, we can then use it to store this brand new user as a hash.
+
+78
+00:04:27,110 --> 00:04:32,420
+So we're going to take that ID, we're going to put it into the key function that we just put together.
+
+79
+00:04:32,660 --> 00:04:39,710
+And so we're going to end up with a key of users account and then that unique ID that we just generated.
+
+80
+00:04:41,420 --> 00:04:45,260
+And then we're going to store at that key our hash, which has a username.
+
+81
+00:04:46,960 --> 00:04:47,770
+And a password.
+
+82
+00:04:50,750 --> 00:04:55,680
+And then from the great user function, we're going to return the ID of the user that was just created.
+
+83
+00:04:55,730 --> 00:04:57,920
+So the idea that we just randomly generated.
+
+84
+00:04:59,230 --> 00:04:59,650
+That's it.
+
+85
+00:04:59,680 --> 00:05:01,360
+That's what's going on inside of create user.
+
+86
+00:05:02,080 --> 00:05:06,250
+Now, just, you know, the only reason that we are returning the idea right here is because another
+
+87
+00:05:06,250 --> 00:05:10,090
+part of the application that's going to eventually called create user just needs to know the idea.
+
+88
+00:05:10,090 --> 00:05:11,380
+The person that was just created.
+
+89
+00:05:11,410 --> 00:05:11,830
+That's it.
+
+90
+00:05:12,190 --> 00:05:16,360
+It's not strictly required that we always return the ID from these functions or anything like that.
+
+91
+00:05:16,570 --> 00:05:18,160
+It's just how I built this application.
+
+92
+00:05:19,610 --> 00:05:19,850
+All right.
+
+93
+00:05:19,850 --> 00:05:26,000
+So now that we've got the overview of what's going on here back inside of user, yes, I have already
+
+94
+00:05:26,000 --> 00:05:32,750
+imported a function right here called Gen ID that we can use to randomly create a brand new unique ID.
+
+95
+00:05:33,770 --> 00:05:37,650
+So that's what we're how we're going to create the unique I.D. We're going to use that function that
+
+96
+00:05:37,650 --> 00:05:38,930
+they already imported for us.
+
+97
+00:05:40,090 --> 00:05:43,960
+In addition to that import, I'm also going to import our red clients.
+
+98
+00:05:47,460 --> 00:05:50,520
+And I'm also going to import that key function that we just put together.
+
+99
+00:05:50,820 --> 00:05:53,280
+So that's user's key from.
+
+100
+00:05:55,020 --> 00:05:55,740
+Services.
+
+101
+00:05:56,630 --> 00:05:57,080
+He's.
+
+102
+00:06:00,170 --> 00:06:00,470
+Okay.
+
+103
+00:06:00,500 --> 00:06:01,160
+So now, finally.
+
+104
+00:06:02,750 --> 00:06:04,610
+We can put together our creat user function.
+
+105
+00:06:04,940 --> 00:06:10,820
+So inside of here I going to first generates our brand new random ID to identify the person we are about
+
+106
+00:06:10,820 --> 00:06:11,300
+to create.
+
+107
+00:06:12,940 --> 00:06:18,670
+And then going to use our red list clients to store our information inside of reddish reds using the
+
+108
+00:06:18,670 --> 00:06:19,960
+h set commands.
+
+109
+00:06:20,770 --> 00:06:23,800
+I will do and await client dot.
+
+110
+00:06:24,310 --> 00:06:24,740
+H.
+
+111
+00:06:25,030 --> 00:06:25,420
+That's.
+
+112
+00:06:26,720 --> 00:06:30,500
+The first argument to set is going to be the key where we want to store our hash.
+
+113
+00:06:30,950 --> 00:06:34,490
+So in other words, that entire key right there, that whole big string.
+
+114
+00:06:35,480 --> 00:06:42,890
+So the first argument we will put in users key and provide that the ID so remember that's going to generate
+
+115
+00:06:43,130 --> 00:06:47,330
+our whole big key, the place inside of Redis where we are storing our house.
+
+116
+00:06:48,770 --> 00:06:50,360
+Then as the second argument.
+
+117
+00:06:51,860 --> 00:06:57,470
+I'm going to provide an object that lists out all the key value pairs I want to store inside of Redis.
+
+118
+00:06:58,100 --> 00:07:01,250
+Now, this is very different than the set command we used.
+
+119
+00:07:01,250 --> 00:07:03,680
+Back inside of red is cloud.
+
+120
+00:07:04,040 --> 00:07:09,050
+Just a moment ago, the here is the documentation or the notebook we just put together.
+
+121
+00:07:09,410 --> 00:07:15,350
+So we made use of H sets and when we used H that, we put in the key where we wanted to store our information
+
+122
+00:07:15,860 --> 00:07:17,870
+and then we alternated key value.
+
+123
+00:07:17,870 --> 00:07:18,830
+Key value.
+
+124
+00:07:19,100 --> 00:07:23,180
+And those key value pairs were the information we wanted to store inside of our hash.
+
+125
+00:07:24,670 --> 00:07:28,360
+ENCODE registry library that we are using does not work in the same way.
+
+126
+00:07:28,570 --> 00:07:34,840
+Instead, the H set command expects to receive an object that lists out all the different key value
+
+127
+00:07:34,840 --> 00:07:37,090
+pairs that we want to store inside this hash.
+
+128
+00:07:37,730 --> 00:07:39,400
+So we're going to put in an object right here.
+
+129
+00:07:40,120 --> 00:07:42,610
+And just to be super clear about what's going on.
+
+130
+00:07:42,730 --> 00:07:45,120
+We're going to write out manually the key value pairs.
+
+131
+00:07:45,120 --> 00:07:46,630
+So we're going to store inside Redis.
+
+132
+00:07:47,730 --> 00:07:51,060
+It's going to be a username that comes from Adam Scott username.
+
+133
+00:07:52,200 --> 00:07:54,990
+And a password that comes from at her source password.
+
+134
+00:07:58,430 --> 00:08:04,250
+And then finally after doing that h that operation, we can finally return the ID that was created,
+
+135
+00:08:04,250 --> 00:08:07,010
+which you will recall I said, is not strictly required.
+
+136
+00:08:07,010 --> 00:08:11,840
+When we're using Redis, we are just returning the ID because another part of our application expects
+
+137
+00:08:11,840 --> 00:08:12,710
+to get that ID.
+
+138
+00:08:15,670 --> 00:08:16,000
+Okay.
+
+139
+00:08:16,030 --> 00:08:16,750
+Two notes here.
+
+140
+00:08:17,110 --> 00:08:17,770
+First note.
+
+141
+00:08:19,090 --> 00:08:24,070
+The Outers object that we are receiving is basically identical to the Adders or this object that we're
+
+142
+00:08:24,070 --> 00:08:26,530
+putting in as a second argument to each set.
+
+143
+00:08:27,310 --> 00:08:28,510
+There is a reason for that.
+
+144
+00:08:28,510 --> 00:08:30,730
+There's a reason we're basically recreating this object.
+
+145
+00:08:30,760 --> 00:08:32,360
+I'll show you why in just one moment.
+
+146
+00:08:32,380 --> 00:08:33,490
+There's a very good reason for it.
+
+147
+00:08:34,470 --> 00:08:37,680
+Second thing, I just want to remind you about the set command.
+
+148
+00:08:38,690 --> 00:08:39,680
+If you are following it.
+
+149
+00:08:39,680 --> 00:08:46,820
+The official documentation uses this key value in a simple list, but when we are using this particular
+
+150
+00:08:46,820 --> 00:08:52,010
+client, they use a different syntax for the set command and that is give us an object with all the
+
+151
+00:08:52,010 --> 00:08:52,700
+key value pairs.
+
+152
+00:08:52,700 --> 00:08:54,050
+You want to store it inside of Redis.
+
+153
+00:08:55,260 --> 00:08:59,130
+Third note I just remembered there's one other note very quickly, just, you know, usually when we
+
+154
+00:08:59,130 --> 00:09:04,050
+store passwords inside of a database, we salt and hash these passwords for security purposes.
+
+155
+00:09:05,180 --> 00:09:07,520
+Just you know, I'm already doing that operation for us.
+
+156
+00:09:07,760 --> 00:09:13,220
+So if a user tries to sign up with a password of three three, another part of the application is automatically
+
+157
+00:09:13,400 --> 00:09:14,750
+salting and hashing this thing.
+
+158
+00:09:14,780 --> 00:09:17,570
+So the actual password that gets stored is something like that.
+
+159
+00:09:19,030 --> 00:09:19,360
+Okay.
+
+160
+00:09:19,930 --> 00:09:20,460
+That's it.
+
+161
+00:09:20,470 --> 00:09:22,360
+We've got great user put together.
+
+162
+00:09:23,510 --> 00:09:23,780
+Now.
+
+163
+00:09:23,780 --> 00:09:26,570
+I'm still going to tell you why we are duplicating this object right here in just a moment.
+
+164
+00:09:27,080 --> 00:09:29,330
+Two other things I want to mention as well very quickly.
+
+165
+00:09:29,690 --> 00:09:34,040
+First off, there are some other checks that we might want to do when we are storing a user.
+
+166
+00:09:34,070 --> 00:09:38,810
+For example, we want to make sure that the user name that they are trying to sign up with is unique.
+
+167
+00:09:39,260 --> 00:09:42,440
+We might want to make sure that the idea is unique, but definitely the username.
+
+168
+00:09:42,890 --> 00:09:44,600
+That is something that we will add in later on.
+
+169
+00:09:44,600 --> 00:09:48,980
+We'll make sure that the user that a person is signing up with is unique and is not in use by anyone
+
+170
+00:09:48,980 --> 00:09:49,340
+else.
+
+171
+00:09:50,030 --> 00:09:54,470
+The other thing I want to mention, I know this video has been very long for a very small amount of
+
+172
+00:09:54,470 --> 00:09:55,070
+code right here.
+
+173
+00:09:55,400 --> 00:09:59,780
+Don't worry, as we add in more functions to this project, we're going to go through these much, much
+
+174
+00:09:59,780 --> 00:10:00,260
+faster.
+
+175
+00:10:00,320 --> 00:10:03,610
+Right now, I just want make sure that everything is super, super, crystal clear.
+
+176
+00:10:03,620 --> 00:10:07,580
+So I know adding in code to an existing project can sometimes be really confusing.
+
+177
+00:10:08,270 --> 00:10:09,080
+Okay, so that's it.
+
+178
+00:10:09,110 --> 00:10:13,610
+Just one or two quick notes around this second argument right here in just a moment.

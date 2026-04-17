@@ -1,0 +1,199 @@
+1
+00:00:01,170 --> 00:00:03,060
+Another section, another data type.
+
+2
+00:00:03,450 --> 00:00:08,730
+So in this section, we're going to be focusing on lists in this diagram up here at the very top, I've
+
+3
+00:00:08,730 --> 00:00:10,290
+got an example of a list.
+
+4
+00:00:10,710 --> 00:00:15,420
+So this is storing a collection of different strings in some very particular order.
+
+5
+00:00:16,460 --> 00:00:22,310
+In this example in particular, I've got the temperature recorded at, say, some weather station once
+
+6
+00:00:22,310 --> 00:00:22,910
+per day.
+
+7
+00:00:23,270 --> 00:00:27,830
+And so moving from left to right, I've got the newest records on the right hand side and the oldest
+
+8
+00:00:27,830 --> 00:00:29,120
+records on the left hand side.
+
+9
+00:00:29,750 --> 00:00:30,800
+It's on the far right right here.
+
+10
+00:00:30,800 --> 00:00:33,890
+I might have today's temperature than the element right before it is.
+
+11
+00:00:33,890 --> 00:00:36,260
+Maybe yesterday's the day before it's the day before it.
+
+12
+00:00:36,260 --> 00:00:37,400
+The day before it and so on.
+
+13
+00:00:38,710 --> 00:00:43,060
+Now, as soon as you learn about this, you might start to think that they're really useful and just
+
+14
+00:00:43,060 --> 00:00:43,720
+fantastic.
+
+15
+00:00:43,730 --> 00:00:48,970
+But there are a couple of very big downsides to lists specifically around their performance.
+
+16
+00:00:49,300 --> 00:00:54,760
+If you use them in an incorrect way, in a later section, we're going to be discussing a lot of performance
+
+17
+00:00:54,760 --> 00:00:57,520
+characteristics of Redis, which we haven't really done just yet.
+
+18
+00:00:57,790 --> 00:01:03,580
+So I will tell you exactly why in great detail why you don't want to very often use lists, but just
+
+19
+00:01:03,580 --> 00:01:11,410
+understand right now that in general you often less you frequently do not want to use lists, even though
+
+20
+00:01:11,410 --> 00:01:13,240
+you might think you might want to use one.
+
+21
+00:01:13,810 --> 00:01:17,500
+And that'll make a lot more sense as soon as we start to go over their performance characteristics.
+
+22
+00:01:18,460 --> 00:01:20,650
+Couple other quick notes on lists right now.
+
+23
+00:01:21,100 --> 00:01:24,220
+So in general, just use your store and ordered list of strengths.
+
+24
+00:01:24,940 --> 00:01:26,230
+Very important for you to understand.
+
+25
+00:01:26,260 --> 00:01:27,760
+These are not arrays.
+
+26
+00:01:27,790 --> 00:01:28,630
+Not arrays.
+
+27
+00:01:28,630 --> 00:01:31,060
+They don't follow typical array implementations.
+
+28
+00:01:31,330 --> 00:01:38,050
+Instead, behind the scenes, they are implemented as a doubly linked list that has big impacts on their
+
+29
+00:01:38,050 --> 00:01:38,620
+performance.
+
+30
+00:01:38,620 --> 00:01:40,150
+And again, we'll discuss that later on.
+
+31
+00:01:40,970 --> 00:01:45,070
+The most common use case of lists that I find are for time series data.
+
+32
+00:01:45,460 --> 00:01:50,830
+So any time where I'm adding on new elements over time to the very end of the list.
+
+33
+00:01:50,840 --> 00:01:55,120
+And that's why in this particular example, I chose to use temperature being recorded once per day.
+
+34
+00:01:55,930 --> 00:02:00,370
+For this list, if I imagined implementing it inside of a real application, I would only be adding
+
+35
+00:02:00,370 --> 00:02:02,950
+on elements to the very end over time.
+
+36
+00:02:03,340 --> 00:02:04,540
+And lists are very good for that.
+
+37
+00:02:04,570 --> 00:02:07,090
+They're very good whenever we are trying to add on elements.
+
+38
+00:02:07,330 --> 00:02:12,850
+So the very end or it's the very start, it's when we start to try to iterate over all the elements
+
+39
+00:02:13,120 --> 00:02:18,040
+or whenever we start to try to access elements at the very middle of the list that we start to run into
+
+40
+00:02:18,040 --> 00:02:18,400
+trouble.
+
+41
+00:02:21,520 --> 00:02:23,170
+Lastly, I want to mention red list right now.
+
+42
+00:02:23,380 --> 00:02:27,820
+There are a couple of commands around them that are not very often used these days.
+
+43
+00:02:28,390 --> 00:02:33,010
+Lists used to be used to implement a couple of other very important features in red.
+
+44
+00:02:33,640 --> 00:02:34,930
+That was many, many years ago.
+
+45
+00:02:35,320 --> 00:02:41,290
+And these days, redesigns added in new structures and new commands that made some of these obsolete
+
+46
+00:02:41,320 --> 00:02:43,630
+list commands a little bit less useful.
+
+47
+00:02:44,080 --> 00:02:48,790
+So I will point out some of these less useful commands that I don't think you're going to use just because,
+
+48
+00:02:48,790 --> 00:02:52,040
+again, there's better ways of doing some of these particular operations in red is.
+
+49
+00:02:52,060 --> 00:02:57,520
+Now, having said that, let's take a pause right here and start to dive into a couple of commands around
+
+50
+00:02:57,520 --> 00:02:58,510
+lists in just a moment.

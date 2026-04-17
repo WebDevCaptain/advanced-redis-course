@@ -1,0 +1,275 @@
+1
+00:00:01,680 --> 00:00:06,360
+In this video, we're going to start looking at a couple of different commands that operate on multiple
+
+2
+00:00:06,360 --> 00:00:07,530
+different sets put together.
+
+3
+00:00:07,980 --> 00:00:11,070
+These are union stiff and inter.
+
+4
+00:00:11,760 --> 00:00:14,890
+Each of these three commands have related sub commands as well.
+
+5
+00:00:14,910 --> 00:00:19,350
+So for example, related to s inter is s inter store and s inter card.
+
+6
+00:00:19,860 --> 00:00:23,400
+We're going to first start off with just the base commands and then learn about the variations very
+
+7
+00:00:23,400 --> 00:00:24,090
+shortly after.
+
+8
+00:00:24,870 --> 00:00:25,170
+Okay.
+
+9
+00:00:25,180 --> 00:00:29,400
+So to get started, a little bit of pieces of terminology, we're going to first start off with just
+
+10
+00:00:29,400 --> 00:00:30,540
+union by itself.
+
+11
+00:00:31,170 --> 00:00:37,290
+So a union is defined as all the unique elements from a number of different sets put together into a
+
+12
+00:00:37,290 --> 00:00:37,740
+new set.
+
+13
+00:00:38,300 --> 00:00:40,360
+And in plain English, that doesn't make a lot of sense.
+
+14
+00:00:40,380 --> 00:00:41,520
+So quick diagram.
+
+15
+00:00:42,830 --> 00:00:44,690
+Let's imagine that we have three different sets.
+
+16
+00:00:44,970 --> 00:00:46,370
+Well, there's one, two and three.
+
+17
+00:00:46,700 --> 00:00:49,790
+And each one has a string representing a color inside of it.
+
+18
+00:00:50,390 --> 00:00:55,880
+If we wanted to find the union, that means we want to take all these strings and put them together
+
+19
+00:00:55,880 --> 00:00:57,200
+inside of a new set.
+
+20
+00:00:57,560 --> 00:01:00,260
+And we want to only keep the unique elements.
+
+21
+00:01:01,220 --> 00:01:05,090
+So one way we could do that is just adding in each element one by one.
+
+22
+00:01:05,450 --> 00:01:08,600
+And if it already exists inside the union, then we will not add it.
+
+23
+00:01:09,380 --> 00:01:10,880
+Let's see what that looks like in action.
+
+24
+00:01:11,720 --> 00:01:13,640
+The first I would add in red.
+
+25
+00:01:14,740 --> 00:01:17,650
+I would then add in blue that doesn't already exist inside the union.
+
+26
+00:01:18,400 --> 00:01:20,350
+Orange does not exist inside the union.
+
+27
+00:01:20,380 --> 00:01:21,640
+So add that in as well.
+
+28
+00:01:22,880 --> 00:01:26,450
+I'll then move on to the next set as blue exists inside the union.
+
+29
+00:01:26,690 --> 00:01:27,440
+Yes, it does.
+
+30
+00:01:27,590 --> 00:01:29,930
+So I'm not going to add it again as green?
+
+31
+00:01:30,490 --> 00:01:30,740
+Nope.
+
+32
+00:01:30,830 --> 00:01:32,690
+So that is purple?
+
+33
+00:01:32,930 --> 00:01:33,260
+Nope.
+
+34
+00:01:33,380 --> 00:01:34,130
+So I'll add that.
+
+35
+00:01:34,970 --> 00:01:36,800
+And then finally, blue already exists.
+
+36
+00:01:37,310 --> 00:01:38,360
+Red already exists.
+
+37
+00:01:38,780 --> 00:01:40,160
+And purple already exists.
+
+38
+00:01:41,300 --> 00:01:41,770
+That's it.
+
+39
+00:01:41,780 --> 00:01:43,790
+That's my union of all three sets.
+
+40
+00:01:45,180 --> 00:01:51,060
+Now, just to test this out, let's go and run the Union Command very quickly over inside of RBA.
+
+41
+00:01:53,120 --> 00:01:53,950
+The back over here.
+
+42
+00:01:55,540 --> 00:01:58,360
+I'm going to first begin by creating three separate sets.
+
+43
+00:01:59,550 --> 00:02:00,570
+So add.
+
+44
+00:02:02,060 --> 00:02:02,960
+There's one.
+
+45
+00:02:04,270 --> 00:02:09,850
+And then when we do an ad, we can add in as many elements inside of one command as we want.
+
+46
+00:02:10,690 --> 00:02:12,910
+So we can add in red, green, blue right here if we wanted to.
+
+47
+00:02:13,420 --> 00:02:17,230
+Now, just to keep these examples very consistent, I can use the exact same colors.
+
+48
+00:02:17,620 --> 00:02:19,720
+The first set has red, blue, orange.
+
+49
+00:02:22,420 --> 00:02:24,880
+Well then do in sad colors too.
+
+50
+00:02:25,860 --> 00:02:27,900
+The second one has blue, green, purple.
+
+51
+00:02:32,150 --> 00:02:33,500
+And then sad colours.
+
+52
+00:02:33,500 --> 00:02:35,780
+Three as blue.
+
+53
+00:02:35,780 --> 00:02:36,410
+Red, purple.
+
+54
+00:02:41,360 --> 00:02:41,620
+All right.
+
+55
+00:02:41,630 --> 00:02:42,350
+I'm going to run that.
+
+56
+00:02:44,350 --> 00:02:50,890
+And then on another code window down here, I'm going to do s union among all three sets.
+
+57
+00:02:51,250 --> 00:02:52,720
+We should do colors one.
+
+58
+00:02:53,080 --> 00:02:54,400
+Colors two.
+
+59
+00:02:56,000 --> 00:02:57,230
+And Colors three.
+
+60
+00:02:58,700 --> 00:03:02,180
+Now if I run, that's all add up end up at the union.
+
+61
+00:03:02,330 --> 00:03:03,950
+So green, blue, orange.
+
+62
+00:03:03,950 --> 00:03:04,490
+Red, purple.
+
+63
+00:03:04,760 --> 00:03:05,020
+Yep.
+
+64
+00:03:05,030 --> 00:03:05,750
+Looks right to me.
+
+65
+00:03:07,070 --> 00:03:07,360
+All right.
+
+66
+00:03:07,370 --> 00:03:12,590
+So this first command union around these kind of comparison commands might not look, again, like the
+
+67
+00:03:12,590 --> 00:03:17,930
+most useful thing, but it's really amazing how many interesting features you can put together using
+
+68
+00:03:17,930 --> 00:03:21,710
+these otherwise simple looking commands like S Union, S and S2.
+
+69
+00:03:22,370 --> 00:03:25,580
+Let's continue on with S intersection in just a moment.

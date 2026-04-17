@@ -1,0 +1,371 @@
+1
+00:00:00,850 --> 00:00:05,680
+As I mentioned, we're going to start to understand how acknowledgment or action a message works in
+
+2
+00:00:05,680 --> 00:00:06,190
+this video.
+
+3
+00:00:06,610 --> 00:00:12,010
+The entire idea behind asking is handling the case in which we deliver a message to some worker, and
+
+4
+00:00:12,010 --> 00:00:15,370
+then that worker crashes before processing the message in any way.
+
+5
+00:00:16,000 --> 00:00:18,460
+So ideally, our worker would receive the message.
+
+6
+00:00:18,940 --> 00:00:19,660
+Process it.
+
+7
+00:00:19,670 --> 00:00:24,100
+So maybe send an email or do whatever is required and then acknowledge the message.
+
+8
+00:00:24,940 --> 00:00:26,620
+Okay, so let's understand how this works.
+
+9
+00:00:26,800 --> 00:00:29,290
+I'm going to first do a little bit of setup over in Arabic.
+
+10
+00:00:29,890 --> 00:00:32,650
+So I'm going to reset my entire state by running the first cell right here.
+
+11
+00:00:33,590 --> 00:00:39,500
+I'm then going to do an X-rated group and assigned the first message to worker one.
+
+12
+00:00:40,650 --> 00:00:44,910
+So now worker one has ownership of message with ID ten zero.
+
+13
+00:00:46,430 --> 00:00:48,230
+That message is now in a pending states.
+
+14
+00:00:48,710 --> 00:00:50,180
+We got something like this right here.
+
+15
+00:00:50,660 --> 00:00:53,000
+So we need to acknowledge that pending message.
+
+16
+00:00:53,540 --> 00:00:55,820
+To do so, we're going to run the command x ec.
+
+17
+00:00:56,270 --> 00:00:57,080
+That's pretty much it.
+
+18
+00:00:57,140 --> 00:00:58,130
+Pretty straightforward command.
+
+19
+00:00:58,790 --> 00:00:59,750
+We'll do an exact.
+
+20
+00:01:00,600 --> 00:01:05,970
+The name of our stream, the name of the group, and then the idea of the message that we are trying
+
+21
+00:01:05,970 --> 00:01:06,690
+to acknowledge.
+
+22
+00:01:07,500 --> 00:01:09,480
+Then this case would be ten dash zero.
+
+23
+00:01:11,060 --> 00:01:12,200
+Let's try this out really quickly.
+
+24
+00:01:12,800 --> 00:01:18,620
+Underneath the X read group, I'm going to add in another code cell and I'll do an exact.
+
+25
+00:01:19,460 --> 00:01:21,380
+Roots roots group.
+
+26
+00:01:21,890 --> 00:01:24,140
+And then the idea, the message is ten zero.
+
+27
+00:01:25,190 --> 00:01:27,910
+If I run that, I get back a one saying, okay, sounds good.
+
+28
+00:01:27,920 --> 00:01:29,500
+Message has been acknowledged.
+
+29
+00:01:30,750 --> 00:01:34,800
+We can then do an x info groups and see that there are zero messages pending.
+
+30
+00:01:35,950 --> 00:01:41,350
+I can also do an x info consumers and it looks like worker one has zero pending.
+
+31
+00:01:41,980 --> 00:01:45,180
+So the message that was sent to it has been acknowledged.
+
+32
+00:01:46,190 --> 00:01:47,450
+That's kind of a happy case.
+
+33
+00:01:47,600 --> 00:01:49,480
+That's a case in which we get our message.
+
+34
+00:01:49,490 --> 00:01:50,300
+We process it.
+
+35
+00:01:50,510 --> 00:01:52,040
+Everything goes just fine.
+
+36
+00:01:52,730 --> 00:01:58,490
+But what happens if we deliver this message to Worker one and then before doing anything with it whatsoever?
+
+37
+00:01:58,700 --> 00:02:00,080
+Worker one crashes.
+
+38
+00:02:01,010 --> 00:02:04,610
+So now we're left in a scenario where we kind of have this outstanding message.
+
+39
+00:02:05,000 --> 00:02:06,800
+It needs to be processed by someone.
+
+40
+00:02:06,950 --> 00:02:10,070
+But how do we get it over to another worker such as worker two?
+
+41
+00:02:11,740 --> 00:02:15,210
+You get these messages that have been left hanging or stuck in a pending state?
+
+42
+00:02:15,480 --> 00:02:18,810
+We're going to use another command called X Auto Claim.
+
+43
+00:02:19,910 --> 00:02:23,330
+Exotic claim does exactly what we need it to do, basically.
+
+44
+00:02:24,290 --> 00:02:28,940
+It's going to take a look at all the different messages that have been left in a pending state for some
+
+45
+00:02:28,940 --> 00:02:33,170
+amount of time and then assign that message to another available worker.
+
+46
+00:02:33,860 --> 00:02:40,520
+So we'll run X Auto Claim here, the stream name of the group and then the place where we want to assign
+
+47
+00:02:40,580 --> 00:02:42,260
+the outstanding messages to.
+
+48
+00:02:42,620 --> 00:02:46,130
+So in this case, maybe worker two because worker two is still up and running.
+
+49
+00:02:48,060 --> 00:02:49,860
+Well, then put in a timeout right here.
+
+50
+00:02:50,160 --> 00:02:51,270
+This is not quite a timeout.
+
+51
+00:02:51,270 --> 00:02:52,230
+It's more like a filter.
+
+52
+00:02:52,410 --> 00:02:59,580
+This means go and find all the messages that have been unacknowledged for over 10,000 milliseconds or
+
+53
+00:02:59,580 --> 00:03:00,330
+10 seconds.
+
+54
+00:03:01,430 --> 00:03:05,060
+We can, of course, change this value so we can instead look for messages that have been pending for
+
+55
+00:03:05,060 --> 00:03:06,800
+30 seconds or whatever else.
+
+56
+00:03:08,230 --> 00:03:13,330
+And then the last argument means find any pending messages that exist after this particular issue.
+
+57
+00:03:13,810 --> 00:03:14,990
+So we put in zero zero.
+
+58
+00:03:15,100 --> 00:03:19,570
+That means go back to the very first message and then from there forward, find any that are stuck in
+
+59
+00:03:19,570 --> 00:03:20,410
+this pending state.
+
+60
+00:03:22,210 --> 00:03:24,010
+Let's test out ex auto claim really quickly.
+
+61
+00:03:25,820 --> 00:03:26,720
+Hey, back over here.
+
+62
+00:03:26,990 --> 00:03:29,150
+I'm going to again reset my state at the top.
+
+63
+00:03:31,070 --> 00:03:35,480
+I'll then do an X redo group and assign the first message to Worker one.
+
+64
+00:03:38,160 --> 00:03:42,390
+Now we're going to wait a couple of seconds for this message to basically we can imagine it's time out
+
+65
+00:03:42,390 --> 00:03:42,900
+right now.
+
+66
+00:03:43,230 --> 00:03:44,970
+WORKER one is just not doing its job.
+
+67
+00:03:44,970 --> 00:03:46,620
+It's not acknowledging the message.
+
+68
+00:03:47,490 --> 00:03:53,010
+And so now we probably want to find that message and claim its or really assign it over to worker two
+
+69
+00:03:53,010 --> 00:03:53,430
+instead.
+
+70
+00:03:54,980 --> 00:03:59,270
+So instead of doing the exact down here, I'm going to do an x auto claim.
+
+71
+00:04:00,210 --> 00:04:02,460
+We're going to look at fruits rights group.
+
+72
+00:04:02,850 --> 00:04:05,490
+We want to assign any pending messages to worker to.
+
+73
+00:04:06,350 --> 00:04:10,430
+Our time out is going to be 10 seconds, which I think have definitely passed by this point in time.
+
+74
+00:04:11,320 --> 00:04:15,070
+And we want to start at message with it zero zero and move forward from there.
+
+75
+00:04:16,680 --> 00:04:17,020
+Okay.
+
+76
+00:04:17,130 --> 00:04:17,850
+I'm going to run that.
+
+77
+00:04:18,330 --> 00:04:23,910
+And now as a response, we get back all the messages that have been claimed or moved over to Worker
+
+78
+00:04:23,910 --> 00:04:25,290
+Two's responsibility.
+
+79
+00:04:26,160 --> 00:04:27,450
+So in this case, it was one message.
+
+80
+00:04:27,450 --> 00:04:28,800
+It was the ten zero message.
+
+81
+00:04:30,050 --> 00:04:32,090
+We can now do the x info commands.
+
+82
+00:04:32,700 --> 00:04:33,560
+Let's do groups.
+
+83
+00:04:34,220 --> 00:04:35,720
+We'll see that there's still one pending.
+
+84
+00:04:37,430 --> 00:04:42,050
+And if we look at the consumers in that group, we'll see that worker one has zero messages pending.
+
+85
+00:04:42,650 --> 00:04:44,180
+And Worker two has one.
+
+86
+00:04:44,900 --> 00:04:50,390
+So that single message has now been moved over to worker two and worker two is now in charge of processing
+
+87
+00:04:50,390 --> 00:04:50,590
+it.
+
+88
+00:04:51,920 --> 00:04:52,240
+Okay.
+
+89
+00:04:52,250 --> 00:04:52,820
+So that's it.
+
+90
+00:04:53,540 --> 00:04:55,480
+So that's pretty much it on stream.
+
+91
+00:04:55,550 --> 00:04:56,510
+That's all we're going to cover.
+
+92
+00:04:56,720 --> 00:05:02,300
+But I think you can kind of get the idea or the picture of how we could take this idea of consumer groups
+
+93
+00:05:02,510 --> 00:05:07,060
+and use it to put together a working or a work processing framework.

@@ -1,0 +1,111 @@
+1
+00:00:01,400 --> 00:00:03,470
+Our next comparison is intersection.
+
+2
+00:00:03,890 --> 00:00:09,200
+An intersection operation is when we take a look at two or more sets and we return only the elements
+
+3
+00:00:09,200 --> 00:00:11,210
+that exist in all of those sets.
+
+4
+00:00:11,930 --> 00:00:13,640
+So another quick example.
+
+5
+00:00:14,640 --> 00:00:17,000
+So again, we've got the same colors here in the same sets.
+
+6
+00:00:17,480 --> 00:00:22,520
+So inside the intersection, we only want colors that exist in all three of these.
+
+7
+00:00:23,420 --> 00:00:24,590
+So we'll go one by one.
+
+8
+00:00:24,920 --> 00:00:26,510
+Does Red exist in all three?
+
+9
+00:00:26,720 --> 00:00:28,340
+Nope, because it's not in color.
+
+10
+00:00:28,340 --> 00:00:30,710
+Two is blue exists in all three?
+
+11
+00:00:30,980 --> 00:00:31,610
+Yes, it does.
+
+12
+00:00:31,820 --> 00:00:32,510
+It's right here.
+
+13
+00:00:32,510 --> 00:00:33,590
+Right here and right here.
+
+14
+00:00:34,010 --> 00:00:35,210
+So I would add blue in.
+
+15
+00:00:37,780 --> 00:00:38,500
+About Orange?
+
+16
+00:00:38,830 --> 00:00:39,170
+Nope.
+
+17
+00:00:39,190 --> 00:00:39,910
+It's nowhere else.
+
+18
+00:00:40,690 --> 00:00:44,590
+Now, the interesting thing about an intersection is that we only have to go through all the elements
+
+19
+00:00:44,590 --> 00:00:49,990
+inside of one set, because if it's not a color list in here, then it's definitely not going to be
+
+20
+00:00:49,990 --> 00:00:51,370
+added into the intersection.
+
+21
+00:00:52,920 --> 00:00:56,520
+Well, we can go and test out this command inside of our book very quickly as well.
+
+22
+00:00:58,130 --> 00:00:59,540
+I'll add in another code cell.
+
+23
+00:01:00,770 --> 00:01:08,390
+I'm going to do se inter inter being short for intersection and then colors one, colors two and colors
+
+24
+00:01:08,390 --> 00:01:08,720
+three.
+
+25
+00:01:10,800 --> 00:01:11,610
+Sure enough, Blue.
+
+26
+00:01:12,920 --> 00:01:13,760
+All right, simple enough.
+
+27
+00:01:13,880 --> 00:01:15,890
+One last variation that's different.
+
+28
+00:01:15,950 --> 00:01:17,270
+We'll take care of that in just a moment.

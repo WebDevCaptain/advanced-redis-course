@@ -1,0 +1,139 @@
+1
+00:00:01,160 --> 00:00:02,300
+To make use of modules.
+
+2
+00:00:02,300 --> 00:00:05,280
+We're going to get the raw source code for the module we want to use.
+
+3
+00:00:05,510 --> 00:00:08,180
+So we might get the raw source code for registration.
+
+4
+00:00:08,810 --> 00:00:15,200
+We will then compile that code on our local computer, will then load that module up into Metis by using
+
+5
+00:00:15,200 --> 00:00:17,180
+a command called module load.
+
+6
+00:00:18,050 --> 00:00:22,400
+Now, this entire process, even though I'm showing it with a very simple diagram, ends up being really
+
+7
+00:00:22,400 --> 00:00:27,800
+tedious and a little bit error prone because we have to download some source code and copilot.
+
+8
+00:00:27,860 --> 00:00:30,650
+That can be a huge challenge in its own right.
+
+9
+00:00:31,220 --> 00:00:36,590
+As I was getting started on this course, I swapped over my personal laptop and laptop and used you
+
+10
+00:00:36,590 --> 00:00:37,020
+right now.
+
+11
+00:00:37,040 --> 00:00:44,150
+I started using an Apple MacBook with a M1 processor inside of it, and it turns out that compiling
+
+12
+00:00:44,150 --> 00:00:50,510
+Reddit's JSON for use on an M1 processor platform right now is rather challenging.
+
+13
+00:00:50,510 --> 00:00:54,110
+And I spent a lot of time debugging and getting this thing compiled.
+
+14
+00:00:54,830 --> 00:01:00,260
+Once I got it compiled, I was able to do the module load rather easily, but just compiling registration
+
+15
+00:01:00,380 --> 00:01:01,730
+was a big pain.
+
+16
+00:01:02,780 --> 00:01:06,290
+The manually setting up these modules can be a little bit of a challenge.
+
+17
+00:01:07,070 --> 00:01:11,630
+Fortunately, there is an alternative available to us and it's called Redis Stack.
+
+18
+00:01:12,410 --> 00:01:17,540
+So this is an alternative copy of Redis that you can download at Register IO and I'll show you a link
+
+19
+00:01:17,540 --> 00:01:18,350
+here in just a moment.
+
+20
+00:01:19,040 --> 00:01:24,380
+If we download read a stack, it includes a bunch of different modules pre-installed that we can make
+
+21
+00:01:24,380 --> 00:01:26,350
+use of without any additional setup.
+
+22
+00:01:27,250 --> 00:01:32,110
+You might have seen a reference to read a stack a while ago, much earlier on inside the course when
+
+23
+00:01:32,110 --> 00:01:34,360
+we were at red escort's io.
+
+24
+00:01:34,960 --> 00:01:35,890
+So this page right here.
+
+25
+00:01:36,810 --> 00:01:37,200
+At Red.
+
+26
+00:01:37,200 --> 00:01:37,890
+It's not EO.
+
+27
+00:01:38,130 --> 00:01:41,790
+If I hover over, get started, I'll be shown red reds and red is stack.
+
+28
+00:01:42,630 --> 00:01:44,220
+The red is is red is core.
+
+29
+00:01:44,460 --> 00:01:50,460
+It's the very base version of red is that includes just a bunch of very simple basic data types.
+
+30
+00:01:51,500 --> 00:01:57,290
+But if I make use of read a stack instead I'm getting some basic copy of ES with a bunch of different
+
+31
+00:01:57,290 --> 00:01:59,120
+modules preloaded inside of it.
+
+32
+00:01:59,750 --> 00:02:05,510
+So this is going to include Ready Search Readiness, JSON, and then a couple of other modules called
+
+33
+00:02:05,510 --> 00:02:07,490
+read as Graph Time Series and Blue.
+
+34
+00:02:08,470 --> 00:02:13,900
+When General where possible, we kind of like to use read a stack because it includes all these additional
+
+35
+00:02:13,900 --> 00:02:17,260
+capabilities without us having to do a bunch of additional setup.

@@ -1,0 +1,175 @@
+1
+00:00:01,030 --> 00:00:01,930
+Back inside of bids.
+
+2
+00:00:02,200 --> 00:00:07,150
+Yes, we can now import the Whitlock function we just put together and then implement the callback where
+
+3
+00:00:07,150 --> 00:00:10,630
+we need to fetch the item, do the validation, and then write some data to Redis.
+
+4
+00:00:11,560 --> 00:00:15,400
+So to get started, I'll find where I am importing clients right here.
+
+5
+00:00:15,670 --> 00:00:19,960
+And in addition to importing client, I will also import with lock.
+
+6
+00:00:22,750 --> 00:00:26,530
+Then inside of Whitlock, we need to go through these three steps.
+
+7
+00:00:27,070 --> 00:00:30,760
+We have already implemented those inside of execute isolated.
+
+8
+00:00:31,450 --> 00:00:35,140
+So we're going to copy some code from execute isolated and paste it up into.
+
+9
+00:00:35,170 --> 00:00:41,920
+Whitlock The lines we're going to copy are everything from contact item right here down pass the if
+
+10
+00:00:41,920 --> 00:00:42,460
+statements.
+
+11
+00:00:44,210 --> 00:00:47,840
+And then all the way up to you, but not including the exact statement.
+
+12
+00:00:49,350 --> 00:00:53,730
+So I'm going to copy all that will then go up to the Whitlock.
+
+13
+00:00:55,400 --> 00:00:56,270
+And I'll do a paste.
+
+14
+00:00:59,690 --> 00:01:01,310
+So here is the updated Whitlock.
+
+15
+00:01:02,950 --> 00:01:08,770
+We no longer have an isolated client inside this and we don't need the multi anymore either because
+
+16
+00:01:08,770 --> 00:01:12,220
+we're not going to be using a transaction to handle this concurrency stuff anymore.
+
+17
+00:01:13,060 --> 00:01:14,680
+So we need to remove those two lines.
+
+18
+00:01:16,010 --> 00:01:18,890
+We do still, of course, have to run these three commands.
+
+19
+00:01:19,370 --> 00:01:24,170
+We can run all three of those by just making use of a pipeline, which we've covered several times before.
+
+20
+00:01:24,920 --> 00:01:27,830
+So to create the pipeline, I'm going to add on client.
+
+21
+00:01:28,810 --> 00:01:30,880
+Clients and clients.
+
+22
+00:01:33,540 --> 00:01:38,160
+And I'm going to pass all three of these commands off to a promise that all.
+
+23
+00:01:40,780 --> 00:01:42,910
+Remember, we need to pass in a ray into promise.
+
+24
+00:01:42,910 --> 00:01:43,270
+Not all.
+
+25
+00:01:43,360 --> 00:01:43,720
+So I'll.
+
+26
+00:01:43,720 --> 00:01:44,440
+Do you promise?
+
+27
+00:01:44,440 --> 00:01:47,530
+Dot all parentheses, open square brackets.
+
+28
+00:01:48,400 --> 00:01:54,010
+And then on the other side of all three commands, I'll put in a closing square brackets and a parentheses.
+
+29
+00:01:56,260 --> 00:01:59,740
+And then after each the client commands, I'm going to add in a comma.
+
+30
+00:01:59,830 --> 00:02:00,850
+So comma right there.
+
+31
+00:02:01,660 --> 00:02:02,560
+Comma right here.
+
+32
+00:02:03,620 --> 00:02:06,380
+And we don't have to put one right there, but if you want to go for it.
+
+33
+00:02:08,360 --> 00:02:11,360
+And then finally, I'm going to make sure I return the promised all.
+
+34
+00:02:13,950 --> 00:02:14,300
+Okay.
+
+35
+00:02:14,310 --> 00:02:15,780
+So that should be it.
+
+36
+00:02:15,810 --> 00:02:20,850
+Again, the lock implementation is not perfect, but it's pretty much there.
+
+37
+00:02:21,210 --> 00:02:23,580
+So we do have to fix a couple of very small things around it.
+
+38
+00:02:23,850 --> 00:02:26,580
+We at least have enough now to do a quick test.
+
+39
+00:02:27,180 --> 00:02:28,180
+So let's pause here.
+
+40
+00:02:28,200 --> 00:02:29,250
+We'll come back in just a moment.
+
+41
+00:02:29,460 --> 00:02:34,710
+I'm going to do a little bit more benchmarking for you on my augmented server setup, where I have a
+
+42
+00:02:34,710 --> 00:02:38,220
+couple of servers running with a couple of different separate bidders as well.
+
+43
+00:02:38,460 --> 00:02:43,440
+We're going to make sure that the bid implementation or really the lock implementation is working as
+
+44
+00:02:43,440 --> 00:02:43,980
+expected.

@@ -1,0 +1,451 @@
+1
+00:00:00,790 --> 00:00:02,320
+To really understand consumer groups.
+
+2
+00:00:02,320 --> 00:00:06,040
+We need to play around with them a little bit and that's what we're going to do starting in this video.
+
+3
+00:00:06,340 --> 00:00:10,360
+We're going to learn about a couple of commands we can use to make a group and then add some workers
+
+4
+00:00:10,360 --> 00:00:10,710
+to it.
+
+5
+00:00:11,080 --> 00:00:15,940
+So our first command is X group creates, which as you guess is going to create a new consumer group
+
+6
+00:00:16,030 --> 00:00:17,080
+tied to a stream.
+
+7
+00:00:17,830 --> 00:00:18,880
+So we're going to run this command.
+
+8
+00:00:19,240 --> 00:00:24,280
+The first argument is going to be the key of a stream will then provide the name of our group.
+
+9
+00:00:25,060 --> 00:00:27,250
+Then the next argument is a little bit tricky.
+
+10
+00:00:27,850 --> 00:00:32,290
+We can create a group for either a new stream or an existing stream.
+
+11
+00:00:32,890 --> 00:00:38,380
+If we make a group or an existing stream, we need to decide what we want to do about all the messages
+
+12
+00:00:38,380 --> 00:00:40,270
+that already exist inside the stream.
+
+13
+00:00:41,020 --> 00:00:47,350
+We can put in an ID right here, like say something like that, which you mean make this new group and
+
+14
+00:00:47,350 --> 00:00:53,560
+consider all the messages from this idea on to not have been processed by the group in any way.
+
+15
+00:00:54,550 --> 00:01:00,490
+We could put in a00, which means consider all the messages in the existing stream to not be processed
+
+16
+00:01:00,490 --> 00:01:07,870
+by this group or a dollar sign, which means consider only messages added from this point on to be needed
+
+17
+00:01:07,870 --> 00:01:09,630
+to be consumed by the group.
+
+18
+00:01:11,680 --> 00:01:16,270
+And then the last argument is going to be whether or not we want to use an existing stream or just create
+
+19
+00:01:16,270 --> 00:01:16,690
+a new one.
+
+20
+00:01:17,380 --> 00:01:22,900
+So if we are trying to create a group for a stream that does not yet exist, we can run or add on the
+
+21
+00:01:22,900 --> 00:01:24,310
+argument of make stream.
+
+22
+00:01:25,280 --> 00:01:29,870
+Now, everything we do, you and I, in this course around consumer groups, is going to assume that
+
+23
+00:01:29,870 --> 00:01:32,270
+we are creating a brand new empty stream.
+
+24
+00:01:32,720 --> 00:01:38,540
+So we are going to use an argument of either a dollar sign right there or zero zero, and we will always
+
+25
+00:01:38,540 --> 00:01:40,400
+add on the make stream argument.
+
+26
+00:01:41,300 --> 00:01:44,780
+Let's go over to our book and we're going to try to run this command ourselves really quickly.
+
+27
+00:01:46,340 --> 00:01:48,920
+Now over here, we've already got a stream called fruits.
+
+28
+00:01:49,490 --> 00:01:51,720
+I want to create another stream called fruits.
+
+29
+00:01:51,740 --> 00:01:52,010
+What?
+
+30
+00:01:52,010 --> 00:01:56,960
+I want to be really picky about what data we add to it, because as we start to work with this consumer
+
+31
+00:01:56,960 --> 00:02:02,120
+group, we're going to eventually have to be very cognizant of what messages exist inside there.
+
+32
+00:02:02,870 --> 00:02:08,810
+So I'm going to delete the existing cells I have and then I'm going to delete the stream we had created.
+
+33
+00:02:08,900 --> 00:02:10,750
+So I'll do a Dell Fruits.
+
+34
+00:02:11,720 --> 00:02:13,430
+I'm starting over from scratch here.
+
+35
+00:02:15,100 --> 00:02:20,410
+I'm going to leave the adult fruits inside of here because we're going to eventually delete our stream
+
+36
+00:02:20,590 --> 00:02:24,460
+and the consumer group several times as we explore how consumer groups work.
+
+37
+00:02:25,330 --> 00:02:29,080
+After running the model all then do our command.
+
+38
+00:02:29,080 --> 00:02:31,030
+We just learned about sale to an x group creates.
+
+39
+00:02:35,070 --> 00:02:37,320
+My name is going to be Roots.
+
+40
+00:02:37,920 --> 00:02:39,690
+The group name will be Fruits Group.
+
+41
+00:02:40,560 --> 00:02:46,380
+I'm going to start from Dollar Sign and I'll add on make stream to make sure that it's really clear
+
+42
+00:02:46,380 --> 00:02:48,360
+that I want to create the stream from scratch.
+
+43
+00:02:49,580 --> 00:02:51,620
+I'm going to run that and that's pretty much it.
+
+44
+00:02:51,740 --> 00:02:55,100
+So now made the stream and we have a group tied to it.
+
+45
+00:02:55,990 --> 00:02:58,360
+By default, this group is going to be completely empty.
+
+46
+00:02:58,750 --> 00:03:01,060
+So we need to add in some actual consumers to it.
+
+47
+00:03:01,750 --> 00:03:06,020
+To add in a consumer, we're going to use another command called X Group Create Consumer.
+
+48
+00:03:06,790 --> 00:03:08,890
+So this, as a guess, makes a new consumer.
+
+49
+00:03:09,610 --> 00:03:13,870
+Now, an important thing to note here is that on some of these diagrams I've shown you, I've kind of
+
+50
+00:03:13,870 --> 00:03:18,980
+made it seem like a consumer group is something that exists outside of Redis, but it's not.
+
+51
+00:03:19,000 --> 00:03:21,610
+It's a data structure that exists inside of Reddit's.
+
+52
+00:03:21,970 --> 00:03:26,680
+Reddit's has some record of all the different consumers that are a member of this given group.
+
+53
+00:03:27,100 --> 00:03:31,600
+So we're not just carefully configuring a client or something like that to connect to a consumer group.
+
+54
+00:03:31,960 --> 00:03:37,480
+We are specifically telling Reddit's that a consumer group, it exists and it will eventually have some
+
+55
+00:03:37,480 --> 00:03:40,840
+different members whose names are this, this and this.
+
+56
+00:03:43,370 --> 00:03:48,110
+So we're going to make sure consumers, one is going to have a name of Fruits one.
+
+57
+00:03:48,140 --> 00:03:50,000
+The second will have a name of fruits, too.
+
+58
+00:03:50,660 --> 00:03:56,030
+The arguments to X group create consumer are the key of our stream and the name of our group and then
+
+59
+00:03:56,030 --> 00:03:57,110
+the name of the consumer.
+
+60
+00:03:57,110 --> 00:03:57,770
+We want to add.
+
+61
+00:03:58,400 --> 00:03:59,300
+Let's try adding this.
+
+62
+00:04:00,570 --> 00:04:04,470
+I will do in the same cell an ex group create consumer.
+
+63
+00:04:05,770 --> 00:04:07,540
+Our stream is at key fruits.
+
+64
+00:04:08,290 --> 00:04:10,210
+We are adding to the fruits group.
+
+65
+00:04:11,440 --> 00:04:14,250
+And then we're going to first add in a worker called Fruits.
+
+66
+00:04:14,260 --> 00:04:16,370
+What should I call it?
+
+67
+00:04:16,390 --> 00:04:16,960
+Yeah, fruits.
+
+68
+00:04:16,960 --> 00:04:18,940
+One can also call that worker one.
+
+69
+00:04:19,450 --> 00:04:23,410
+Maybe that would be a little bit more clear, just so we don't have the word fruits all over the place.
+
+70
+00:04:23,890 --> 00:04:24,460
+I'll call this one.
+
+71
+00:04:24,460 --> 00:04:25,000
+Worker one.
+
+72
+00:04:26,030 --> 00:04:30,230
+And I'm going to copy paste that down and add in a second worker called Worker two.
+
+73
+00:04:32,230 --> 00:04:34,780
+I'm going to run this and it looks like everything worked.
+
+74
+00:04:36,180 --> 00:04:40,860
+Now at this point, rather than trying to add in any messages or anything like that, I want to just
+
+75
+00:04:40,860 --> 00:04:45,990
+make sure that we have successfully created our stream and the group and the two workers.
+
+76
+00:04:46,790 --> 00:04:50,760
+Let's take a look at a couple of commands that allow us to examine the state of our consumer group.
+
+77
+00:04:52,120 --> 00:04:56,020
+So two commands to understand what's going on with our stream and the consumer group.
+
+78
+00:04:56,650 --> 00:04:58,390
+First is info groups.
+
+79
+00:04:59,080 --> 00:05:03,040
+This is going to list all the different consumer groups that are tied to a given stream.
+
+80
+00:05:04,300 --> 00:05:09,280
+And then to understand a little bit more about the consumers inside there, we can do X info consumers.
+
+81
+00:05:10,340 --> 00:05:13,190
+Let's try doing just x info groups first.
+
+82
+00:05:14,510 --> 00:05:16,100
+So on the next code cell down.
+
+83
+00:05:17,710 --> 00:05:18,940
+We'll do an x info.
+
+84
+00:05:19,910 --> 00:05:20,360
+Groups.
+
+85
+00:05:21,490 --> 00:05:23,830
+On the fruits stream.
+
+86
+00:05:25,310 --> 00:05:26,060
+I'm going to run that.
+
+87
+00:05:27,360 --> 00:05:31,930
+And then we will be told very simply here that there is currently one group tied to the stream.
+
+88
+00:05:32,340 --> 00:05:33,630
+It has a name for its group.
+
+89
+00:05:33,840 --> 00:05:34,860
+There are two consumers.
+
+90
+00:05:35,310 --> 00:05:40,620
+There are no pending messages, so no messages that need to be processed by this group.
+
+91
+00:05:41,160 --> 00:05:46,050
+And then we can also see that, yes, it does, in fact, keep track of what the last delivered ID is
+
+92
+00:05:46,350 --> 00:05:47,310
+for this entire group.
+
+93
+00:05:50,350 --> 00:05:52,750
+Let's also take a look at info consumers.
+
+94
+00:05:54,380 --> 00:05:55,640
+On the next code cell down.
+
+95
+00:05:56,980 --> 00:05:59,260
+I'll do an x info consumers.
+
+96
+00:06:02,040 --> 00:06:02,910
+Look at fruits.
+
+97
+00:06:03,920 --> 00:06:04,450
+Rights group.
+
+98
+00:06:04,460 --> 00:06:07,700
+And remember, France, right here is the name of the stream and we have the name of the group.
+
+99
+00:06:08,810 --> 00:06:09,620
+So I'm going to run that.
+
+100
+00:06:10,130 --> 00:06:13,250
+And then we'll be told about the two workers that we have created.
+
+101
+00:06:13,880 --> 00:06:15,050
+I've got a name of worker one.
+
+102
+00:06:15,560 --> 00:06:17,240
+It has zero messages pending.
+
+103
+00:06:18,110 --> 00:06:21,710
+It has not tried to process any messages in the last 95 seconds.
+
+104
+00:06:22,160 --> 00:06:25,940
+We can see some similar info down here with worker number two as well.
+
+105
+00:06:27,030 --> 00:06:32,520
+As soon as we start to actually process messages by these new workers, we're going to see some additional
+
+106
+00:06:32,520 --> 00:06:34,320
+information added into these things.
+
+107
+00:06:34,740 --> 00:06:38,460
+So we'll come back and run this command a couple of times again, just to understand what's going on
+
+108
+00:06:38,460 --> 00:06:39,080
+inside of our group.
+
+109
+00:06:40,370 --> 00:06:40,730
+Okay.
+
+110
+00:06:40,740 --> 00:06:41,960
+So we've got the group created.
+
+111
+00:06:41,990 --> 00:06:43,970
+We can now inspect the group to some degree.
+
+112
+00:06:44,210 --> 00:06:48,200
+Now it's time to actually add some messages into our stream and try to process them.
+
+113
+00:06:48,350 --> 00:06:49,690
+So let's take care of that in just a moment.

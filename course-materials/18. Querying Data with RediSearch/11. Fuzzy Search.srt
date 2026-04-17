@@ -1,0 +1,207 @@
+1
+00:00:00,850 --> 00:00:04,030
+Let's take a look at our first variation on text searching.
+
+2
+00:00:04,540 --> 00:00:09,100
+So one thing that a lot of users do when they are searching for some information is, of course, make
+
+3
+00:00:09,100 --> 00:00:09,700
+a typo.
+
+4
+00:00:09,850 --> 00:00:15,530
+So let's imagine a user is trying to search for a car, but they accidentally enter D.R. instead.
+
+5
+00:00:16,180 --> 00:00:18,670
+And well, of course, we're going to get back to your results.
+
+6
+00:00:18,670 --> 00:00:23,920
+But it sure would be nice if we could somehow figure out that the user might have meant to say car right
+
+7
+00:00:23,920 --> 00:00:24,220
+here.
+
+8
+00:00:24,640 --> 00:00:26,860
+But that's a technique we're going to cover in this video.
+
+9
+00:00:27,840 --> 00:00:28,200
+Okay.
+
+10
+00:00:28,740 --> 00:00:33,690
+So whenever we are trying to do some kind of fuzzy matching between what a user entered as a search
+
+11
+00:00:33,690 --> 00:00:37,920
+string and what they're actually looking for, we can make use of the percent sign.
+
+12
+00:00:38,520 --> 00:00:40,590
+The percent sign is not a wild card.
+
+13
+00:00:40,620 --> 00:00:41,880
+I want to clear that up right away.
+
+14
+00:00:42,330 --> 00:00:46,260
+So we do not make use of percent to do a wild card or anything like that.
+
+15
+00:00:46,620 --> 00:00:52,020
+Instead, the percent symbol is going to try to find the number of characters mismatch between what
+
+16
+00:00:52,020 --> 00:00:55,470
+a user typed in and what they actually were trying to search for.
+
+17
+00:00:56,040 --> 00:01:01,980
+Let's imagine a user meant to search for car, but they accidentally entered in D.R. instead.
+
+18
+00:01:02,580 --> 00:01:06,000
+In this case, there is a one character mismatch between these two strings.
+
+19
+00:01:06,480 --> 00:01:13,110
+So to account for that in the query, we can wrap this string right here with percents on either side.
+
+20
+00:01:14,140 --> 00:01:17,380
+A percent on either side, once again is not a wild card.
+
+21
+00:01:17,560 --> 00:01:23,830
+Instead, the percent means try to allow for a one character mismatch inside the string and any possible
+
+22
+00:01:23,830 --> 00:01:24,250
+results.
+
+23
+00:01:25,050 --> 00:01:31,000
+If I now run that, I will get back all the results that have car C.A.R. inside the name.
+
+24
+00:01:32,130 --> 00:01:35,310
+We can use the same technique if you're looking for, say, a string of fast.
+
+25
+00:01:35,970 --> 00:01:40,470
+So if the user was looking for fast, but they accidentally typed in gas instead.
+
+26
+00:01:40,890 --> 00:01:42,180
+There's a one character difference.
+
+27
+00:01:42,570 --> 00:01:44,550
+So that's going to match up with fast.
+
+28
+00:01:45,090 --> 00:01:45,330
+Yep.
+
+29
+00:01:45,330 --> 00:01:45,780
+There we go.
+
+30
+00:01:47,760 --> 00:01:53,130
+Percent that we add on on either side, as I mentioned, is only going to allow for one character mismatch.
+
+31
+00:01:53,610 --> 00:01:58,560
+If I enter in a second incorrect character here now I'm going to get back zero results.
+
+32
+00:02:00,260 --> 00:02:04,460
+But if we want to, we can add in additional percent signs.
+
+33
+00:02:04,640 --> 00:02:09,620
+So let's say that a user meant to look for car, but they actually typed in DJR.
+
+34
+00:02:10,010 --> 00:02:12,050
+In this case there is a two character mismatch.
+
+35
+00:02:12,380 --> 00:02:17,750
+So we can account for that by putting in an extra set of parentheses, not parentheses, but percent
+
+36
+00:02:17,750 --> 00:02:18,170
+signs.
+
+37
+00:02:19,090 --> 00:02:19,900
+On either side.
+
+38
+00:02:20,290 --> 00:02:22,720
+I'll put in the air.
+
+39
+00:02:23,700 --> 00:02:27,870
+Now there is a two character mismatch, and if I run that, I'm going to find all the cars with the
+
+40
+00:02:27,870 --> 00:02:28,620
+name of car.
+
+41
+00:02:29,860 --> 00:02:33,220
+We can go up to 3% signs on both sides.
+
+42
+00:02:33,580 --> 00:02:36,370
+That's going to allow for three characters of Mismatch.
+
+43
+00:02:36,830 --> 00:02:42,490
+Now, if I put in D a RR, that's three character mismatch against car.
+
+44
+00:02:42,610 --> 00:02:43,990
+So I'm still going to get back results.
+
+45
+00:02:44,940 --> 00:02:46,980
+But if I put in another character here.
+
+46
+00:02:48,030 --> 00:02:49,230
+About Da e.
+
+47
+00:02:49,980 --> 00:02:53,700
+Now I've got four character mismatch and so I'm going to get back zero results.
+
+48
+00:02:55,760 --> 00:02:56,110
+Okay.
+
+49
+00:02:56,120 --> 00:03:01,040
+So as you'd imagine, using this percent technique is really, really handy when we want to allow for
+
+50
+00:03:01,040 --> 00:03:06,620
+users to put in perhaps a small typo or two when they are actually searching for something and still
+
+51
+00:03:06,620 --> 00:03:08,270
+give them back some intelligent results.
+
+52
+00:03:09,530 --> 00:03:12,740
+We're going to take a look at one other technique similar to this in just a moment.

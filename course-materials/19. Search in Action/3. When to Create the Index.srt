@@ -1,0 +1,371 @@
+1
+00:00:00,860 --> 00:00:05,960
+As we just saw a moment ago, trying to create the same index twice is going to lead to an error.
+
+2
+00:00:06,440 --> 00:00:10,580
+So before we try to create our index, we should probably actually check and make sure that it needs
+
+3
+00:00:10,580 --> 00:00:11,360
+to be created.
+
+4
+00:00:11,810 --> 00:00:14,450
+We should probably do this whenever our application starts up.
+
+5
+00:00:14,930 --> 00:00:16,420
+So here's the general idea.
+
+6
+00:00:16,430 --> 00:00:17,900
+Here's what we're going to try to implement.
+
+7
+00:00:18,650 --> 00:00:24,170
+We're going to say that whenever our application starts up and we first connect to Redis, we're going
+
+8
+00:00:24,170 --> 00:00:28,210
+to look into Redis and get a list of all the different indexes that already exist.
+
+9
+00:00:29,110 --> 00:00:33,010
+We're then going to see if the index that we're trying to make has already been created.
+
+10
+00:00:33,520 --> 00:00:36,910
+If it does, then we're not going to do anything otherwise.
+
+11
+00:00:36,940 --> 00:00:39,790
+If our index has not yet been created, go ahead and create it.
+
+12
+00:00:40,540 --> 00:00:43,210
+So in theory, pretty simple and straightforward.
+
+13
+00:00:43,960 --> 00:00:48,100
+The first thing we need to figure out, however, is how do we get a list of all the different indexes
+
+14
+00:00:48,100 --> 00:00:49,150
+that already exist?
+
+15
+00:00:49,870 --> 00:00:53,680
+There's another command we can use to get a list of all these different indexes.
+
+16
+00:00:53,920 --> 00:00:57,010
+Let me show you how to use it back inside of our book really quickly.
+
+17
+00:00:58,060 --> 00:01:04,840
+The back over here at the very bottom, I'm going to add in a new code cell and do a FC dot underscore
+
+18
+00:01:04,840 --> 00:01:05,320
+list.
+
+19
+00:01:06,040 --> 00:01:06,370
+That's a.
+
+20
+00:01:07,370 --> 00:01:09,890
+If we run that command, we'll get back an array of strings.
+
+21
+00:01:10,190 --> 00:01:13,160
+These are the keys of all the different indexes that exist.
+
+22
+00:01:13,790 --> 00:01:17,480
+You'll notice that in my application I've already gone and created the items index.
+
+23
+00:01:17,720 --> 00:01:22,640
+So you're probably only going to see index cars right now, which is totally fine, totally to be expected.
+
+24
+00:01:22,820 --> 00:01:25,550
+I just kind of jumped ahead a little bit and made the index already.
+
+25
+00:01:27,540 --> 00:01:30,870
+So before we make our index, we're going to run underscore list.
+
+26
+00:01:31,440 --> 00:01:34,080
+We're going to see if the index we're trying to create has already been created.
+
+27
+00:01:34,650 --> 00:01:36,170
+If it has returned early.
+
+28
+00:01:36,180 --> 00:01:37,590
+Otherwise make the index.
+
+29
+00:01:37,620 --> 00:01:38,130
+That's it.
+
+30
+00:01:38,820 --> 00:01:39,420
+Let's get to it.
+
+31
+00:01:40,390 --> 00:01:41,320
+I can send my editor.
+
+32
+00:01:42,860 --> 00:01:44,450
+I'm going to find Crete indexes.
+
+33
+00:01:49,070 --> 00:01:49,850
+Inside of here.
+
+34
+00:01:51,220 --> 00:01:56,920
+I'm going to two fine indexes as a weight client to underscore list.
+
+35
+00:01:59,960 --> 00:02:01,850
+That's going to give us back an array of strengths.
+
+36
+00:02:02,360 --> 00:02:05,360
+We're going to iterate through that and try to find the index we are trying to create.
+
+37
+00:02:06,320 --> 00:02:11,420
+So I'm going to do exists is indexes not find.
+
+38
+00:02:12,410 --> 00:02:14,840
+And for each index I'm going to return.
+
+39
+00:02:14,840 --> 00:02:15,290
+True.
+
+40
+00:02:15,500 --> 00:02:17,390
+If index is equal to.
+
+41
+00:02:19,060 --> 00:02:22,420
+The key where our index is going to be stored at, which is items index key.
+
+42
+00:02:22,930 --> 00:02:25,270
+So items index key.
+
+43
+00:02:30,490 --> 00:02:32,050
+If we are able to find a match.
+
+44
+00:02:32,050 --> 00:02:34,990
+So if exists, then return early.
+
+45
+00:02:37,180 --> 00:02:39,340
+Otherwise go on and create the index.
+
+46
+00:02:41,160 --> 00:02:41,510
+All right.
+
+47
+00:02:41,520 --> 00:02:45,420
+So that's going to take care of making sure we don't try to what creepy index when it's already been
+
+48
+00:02:45,420 --> 00:02:45,750
+made.
+
+49
+00:02:46,350 --> 00:02:51,030
+So now we just need to make sure that we actually call this create indexes function when our app first
+
+50
+00:02:51,030 --> 00:02:51,990
+connects to Redis.
+
+51
+00:02:52,620 --> 00:02:57,150
+To do so we can go back over to our Reddit's clients file.
+
+52
+00:02:57,780 --> 00:02:58,560
+Your ID is right here.
+
+53
+00:03:01,560 --> 00:03:06,800
+After we create our clients, we can add on a callback function and say once we successfully connect
+
+54
+00:03:06,810 --> 00:03:09,780
+threads, try to call that create indexes function.
+
+55
+00:03:10,960 --> 00:03:15,370
+At the top of this file I'm going to import creates indexes.
+
+56
+00:03:17,460 --> 00:03:19,050
+From create indexes.
+
+57
+00:03:20,950 --> 00:03:22,840
+And then down at the very bottom of the file.
+
+58
+00:03:26,860 --> 00:03:30,340
+Right after the connect statement or right before, it doesn't make a big difference.
+
+59
+00:03:30,700 --> 00:03:33,370
+I'm going to add in a client dot on connect.
+
+60
+00:03:34,270 --> 00:03:36,910
+So this will be called as soon as we connect to Redis.
+
+61
+00:03:37,630 --> 00:03:40,450
+And inside of here I want to do and await.
+
+62
+00:03:41,650 --> 00:03:43,110
+Creates indexes.
+
+63
+00:03:44,320 --> 00:03:46,570
+And I need to mark the enclosing function as async.
+
+64
+00:03:47,910 --> 00:03:53,250
+We should also add in just a little bit of air handling around us just to capture the scenario in which
+
+65
+00:03:53,460 --> 00:03:54,900
+the index fails for some reason.
+
+66
+00:03:55,350 --> 00:04:01,650
+Who knows, maybe we accidentally try to create some index with invalid syntax or any variety of different
+
+67
+00:04:01,650 --> 00:04:02,190
+issues.
+
+68
+00:04:02,520 --> 00:04:05,130
+So I'm going to wrap this with a try.
+
+69
+00:04:10,070 --> 00:04:12,080
+And if anything goes wrong, I'll do a console.
+
+70
+00:04:12,380 --> 00:04:13,790
+Air of the air.
+
+71
+00:04:16,190 --> 00:04:16,480
+Okay.
+
+72
+00:04:16,490 --> 00:04:17,210
+So that should be it.
+
+73
+00:04:17,810 --> 00:04:25,070
+So now if I save the application and go back over to my browser and refresh the app as soon as I refresh
+
+74
+00:04:25,070 --> 00:04:29,590
+the app, that will ensure that I am issuing a or creating a connection over to Redis.
+
+75
+00:04:29,840 --> 00:04:32,330
+So now, in theory, our index should have been created.
+
+76
+00:04:33,080 --> 00:04:36,200
+If I go to my terminal, I shouldn't see any errors over here.
+
+77
+00:04:36,470 --> 00:04:36,920
+I don't.
+
+78
+00:04:36,930 --> 00:04:38,300
+So that means everything looks good.
+
+79
+00:04:39,170 --> 00:04:44,510
+So now, in theory, the index has been created to verify that we can go back to our book, which is
+
+80
+00:04:44,510 --> 00:04:48,560
+connected to the same instance for me as our e-commerce application.
+
+81
+00:04:49,190 --> 00:04:53,720
+As long as you are connected to the same instance, we should be able to now do an FTA dot underscore
+
+82
+00:04:53,720 --> 00:04:56,540
+list and see the items index has been created.
+
+83
+00:04:58,030 --> 00:04:58,300
+Okay.
+
+84
+00:04:58,300 --> 00:04:59,260
+So that's pretty good.
+
+85
+00:05:00,170 --> 00:05:04,280
+Now, one thing that we have not really touched on is how we can update this index.
+
+86
+00:05:04,970 --> 00:05:09,470
+So if we decide to add additional fields to the index at some point in time, how would we take care
+
+87
+00:05:09,470 --> 00:05:09,800
+of that?
+
+88
+00:05:10,280 --> 00:05:10,820
+Don't worry.
+
+89
+00:05:10,820 --> 00:05:12,960
+We're going to touch on that a little bit later on.
+
+90
+00:05:12,980 --> 00:05:15,350
+As soon as we finish up this search operation.
+
+91
+00:05:16,780 --> 00:05:19,030
+So let's pause here when we come back in the next video.
+
+92
+00:05:19,240 --> 00:05:24,760
+Make sure that a user can type into that text input right here and actually see some search results
+
+93
+00:05:24,760 --> 00:05:25,240
+come back.

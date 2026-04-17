@@ -1,0 +1,103 @@
+1
+00:00:01,560 --> 00:00:06,060
+As we just saw a little bit ago, the last argument to the X read command is a timestamp value.
+
+2
+00:00:06,480 --> 00:00:11,340
+So whatever timestamp we put in there pretty much means look for new messages that have been added after
+
+3
+00:00:11,340 --> 00:00:12,450
+that point in time.
+
+4
+00:00:13,390 --> 00:00:17,980
+When we are making use of the block argument, it's very common for us to want to start watching for
+
+5
+00:00:17,980 --> 00:00:20,740
+messages that have been added after.
+
+6
+00:00:20,860 --> 00:00:21,640
+Exactly.
+
+7
+00:00:21,640 --> 00:00:22,640
+Right now.
+
+8
+00:00:22,720 --> 00:00:28,060
+In other words, we might say block for 5 seconds watching for messages that have been added from right
+
+9
+00:00:28,060 --> 00:00:33,110
+now on having to figure out exactly what time to put in here to represent.
+
+10
+00:00:33,130 --> 00:00:34,990
+Now can be a little bit challenging.
+
+11
+00:00:35,470 --> 00:00:41,590
+So as a shortcut, we can put in a dollar sign and the dollar sign really just means block for 3 seconds
+
+12
+00:00:41,800 --> 00:00:46,210
+watching for any new messages that have been added from right now on.
+
+13
+00:00:47,220 --> 00:00:48,810
+Let's try out this variation really quickly.
+
+14
+00:00:50,310 --> 00:00:51,030
+Back over here.
+
+15
+00:00:51,990 --> 00:00:54,510
+I'm going to do a dollar sign.
+
+16
+00:00:55,680 --> 00:00:56,700
+Instead of a time stamp.
+
+17
+00:00:57,800 --> 00:00:59,210
+Well, then go to the ad.
+
+18
+00:00:59,270 --> 00:01:02,630
+I'm going to change color to yellow and name to pineapple.
+
+19
+00:01:03,960 --> 00:01:05,700
+I'll then run the X rewrite here.
+
+20
+00:01:05,880 --> 00:01:10,710
+So I'm going to block four data for 3 seconds and we're watching for any new messages from right now
+
+21
+00:01:11,040 --> 00:01:11,430
+on.
+
+22
+00:01:12,840 --> 00:01:14,670
+Of course, no new messages are being added.
+
+23
+00:01:14,670 --> 00:01:17,160
+So the command teams out without actually retrieving any data.
+
+24
+00:01:18,090 --> 00:01:18,900
+Now, I'm going to run it.
+
+25
+00:01:19,080 --> 00:01:23,460
+I'm going to do the ad and I will see Pineapple immediately returned right there.
+
+26
+00:01:24,280 --> 00:01:29,430
+So, again, just a little shortcut to represent looking for messages right now going on into the future.

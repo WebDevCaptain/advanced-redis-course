@@ -1,0 +1,23 @@
+1
+00:00:00,890 --> 00:00:04,960
+One very quick note on something I missed out on in a client's file.
+
+2
+00:00:04,970 --> 00:00:06,710
+I'm going to scroll down a little bit.
+
+3
+00:00:07,010 --> 00:00:11,960
+You might recall we have that client out on Connect statement right here where we are running a custom
+
+4
+00:00:11,960 --> 00:00:13,490
+script and then console.log in the results.
+
+5
+00:00:13,640 --> 00:00:16,790
+I'm just going to make sure that I delete that little block very quickly.
+
+6
+00:00:17,030 --> 00:00:17,390
+That's all.

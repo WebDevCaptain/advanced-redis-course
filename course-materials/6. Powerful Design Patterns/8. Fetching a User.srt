@@ -1,0 +1,255 @@
+1
+00:00:01,110 --> 00:00:04,220
+Next up, let's work on our git user buy ID function.
+
+2
+00:00:04,650 --> 00:00:05,700
+So inside this function.
+
+3
+00:00:06,580 --> 00:00:13,270
+I'm going to use the as clients and I want to reach into Redis and get a hash in all the keys and value
+
+4
+00:00:13,280 --> 00:00:14,230
+stored in that hash.
+
+5
+00:00:14,860 --> 00:00:18,700
+You might recall that we learned about a command a little bit ago that allows us to retrieve an entire
+
+6
+00:00:18,700 --> 00:00:21,160
+hash is called H get all.
+
+7
+00:00:21,700 --> 00:00:23,220
+So that's the function we're going to use here.
+
+8
+00:00:23,230 --> 00:00:24,850
+H gets all.
+
+9
+00:00:26,010 --> 00:00:30,720
+And then the argument to this command is going to be the key that we want to retrieve out of Redis.
+
+10
+00:00:31,440 --> 00:00:36,150
+We've got our users key function that we use to generate the key of the user we are looking for.
+
+11
+00:00:36,360 --> 00:00:38,190
+So I'm going to put that in right here as well.
+
+12
+00:00:39,670 --> 00:00:41,800
+In passing the idea the user that I'm looking for.
+
+13
+00:00:43,080 --> 00:00:44,490
+That will give us back our user.
+
+14
+00:00:47,420 --> 00:00:52,940
+Now before we just return our user, we really need to think about what this object is right here and
+
+15
+00:00:52,940 --> 00:00:54,500
+what properties it contains.
+
+16
+00:00:55,070 --> 00:01:01,850
+So remember, we are storing a user inside of us and our user is a hash that has a username and password
+
+17
+00:01:01,850 --> 00:01:02,570
+and nothing else.
+
+18
+00:01:03,690 --> 00:01:08,610
+Now, when we send this hash back over to our application, we end up with an object with the exact
+
+19
+00:01:08,610 --> 00:01:09,350
+same properties.
+
+20
+00:01:09,360 --> 00:01:11,250
+So it has just a username and password.
+
+21
+00:01:11,970 --> 00:01:17,310
+But remember one reason that we used serialize functions when we passed this object around our app.
+
+22
+00:01:17,340 --> 00:01:22,050
+It's very common for us to want to also know the idea of this person.
+
+23
+00:01:22,680 --> 00:01:25,170
+So we might want to know that this is the user with ID.
+
+24
+00:01:25,350 --> 00:01:26,080
+One, two, three.
+
+25
+00:01:26,100 --> 00:01:29,790
+There might be many parts of our application that require that piece of info.
+
+26
+00:01:30,330 --> 00:01:33,210
+But right now, what we got out of practice doesn't have the ID.
+
+27
+00:01:34,110 --> 00:01:36,750
+So we are going to build a d serialize function.
+
+28
+00:01:37,380 --> 00:01:42,870
+DC realized function is going to take the hash that we just got out of Redis and the idea of the user
+
+29
+00:01:42,870 --> 00:01:48,600
+that we just retrieve, that's going to return a new object that has all three properties put together
+
+30
+00:01:48,750 --> 00:01:50,190
+in one single object.
+
+31
+00:01:51,460 --> 00:01:52,360
+Let's go back over.
+
+32
+00:01:53,350 --> 00:01:58,720
+At the very bottom of this file, I'm going to create a d serialize function.
+
+33
+00:02:02,600 --> 00:02:05,960
+So this will take arguments of an ID that is a string.
+
+34
+00:02:07,030 --> 00:02:08,560
+And then a user.
+
+35
+00:02:09,250 --> 00:02:11,980
+And this is going to have a little bit of a complicated type annotation.
+
+36
+00:02:12,190 --> 00:02:14,590
+I'm going to put in some curly braces right there.
+
+37
+00:02:15,280 --> 00:02:21,250
+And then a square brackets will say key string, string like.
+
+38
+00:02:21,250 --> 00:02:27,550
+So I pretty much just means we have a plain JavaScript object that has a couple of keys and the values
+
+39
+00:02:27,550 --> 00:02:28,360
+are all strings.
+
+40
+00:02:29,740 --> 00:02:33,460
+Then inside of here, I'm going to return an object.
+
+41
+00:02:35,880 --> 00:02:40,500
+And this is going to be our nicely formatted object that has all the properties with the appropriate
+
+42
+00:02:40,500 --> 00:02:41,490
+types of values.
+
+43
+00:02:42,150 --> 00:02:46,410
+So I want this object that we're going to pass around our entire application to have the idea, the
+
+44
+00:02:46,410 --> 00:02:48,780
+user username and the password.
+
+45
+00:02:49,500 --> 00:02:50,700
+I'll say ID.
+
+46
+00:02:52,780 --> 00:02:55,840
+My username will be user account username.
+
+47
+00:02:56,810 --> 00:02:58,760
+And my password is user password.
+
+48
+00:03:00,040 --> 00:03:06,220
+And we can condense this just a little bit down to I'd like so because the key and the value are the
+
+49
+00:03:06,220 --> 00:03:06,550
+same.
+
+50
+00:03:08,540 --> 00:03:08,750
+All right.
+
+51
+00:03:08,750 --> 00:03:12,830
+So now we can make use of DC realized up inside of our get function.
+
+52
+00:03:14,470 --> 00:03:16,450
+Go back up here at git user buy id.
+
+53
+00:03:17,470 --> 00:03:22,960
+I'm going to ask as in the user that we just fetched into it d serialize.
+
+54
+00:03:27,230 --> 00:03:29,150
+And you notice I'm getting an air here.
+
+55
+00:03:29,840 --> 00:03:31,250
+I did not provide the ID.
+
+56
+00:03:31,490 --> 00:03:31,880
+There we go.
+
+57
+00:03:31,910 --> 00:03:32,390
+That's better.
+
+58
+00:03:34,620 --> 00:03:34,950
+Okay.
+
+59
+00:03:35,580 --> 00:03:36,390
+Well, this looks good.
+
+60
+00:03:36,420 --> 00:03:40,650
+So we've now got our get user buy ID and our creat user functions put together.
+
+61
+00:03:41,190 --> 00:03:44,310
+Now we're not going to work on git user by username just yet.
+
+62
+00:03:44,700 --> 00:03:47,340
+And you might be kind of curious when we would even use that function.
+
+63
+00:03:47,350 --> 00:03:50,280
+I'll explain why we're using it at all or why it exists.
+
+64
+00:03:50,460 --> 00:03:53,580
+In just a moment, when we start to talk about our authentication system.

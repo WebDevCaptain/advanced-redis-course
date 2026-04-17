@@ -1,0 +1,315 @@
+1
+00:00:00,980 --> 00:00:01,970
+Last two commands.
+
+2
+00:00:02,210 --> 00:00:05,920
+First one is l insert as the name of the command implies.
+
+3
+00:00:05,930 --> 00:00:08,420
+We use this to insert a new value into our list.
+
+4
+00:00:08,840 --> 00:00:13,370
+But rather than adding in a new value to the far left or the far right hand sides, it allows us to
+
+5
+00:00:13,370 --> 00:00:18,200
+look for an existing element and then add in a new value right before it or right after it.
+
+6
+00:00:18,920 --> 00:00:19,580
+Without a doubt.
+
+7
+00:00:19,610 --> 00:00:20,300
+See an example.
+
+8
+00:00:20,300 --> 00:00:22,480
+This is the best way to understand inserts.
+
+9
+00:00:22,520 --> 00:00:23,840
+So let's go back over to Arbor.
+
+10
+00:00:24,940 --> 00:00:25,150
+All right.
+
+11
+00:00:25,150 --> 00:00:26,800
+Back over here yet again.
+
+12
+00:00:26,830 --> 00:00:27,580
+Another new cell.
+
+13
+00:00:27,970 --> 00:00:30,760
+I'm going to copy the Dell and R pushes from above.
+
+14
+00:00:33,240 --> 00:00:37,380
+Now let's say that we want to add in a new element right before 30.
+
+15
+00:00:37,860 --> 00:00:45,900
+So I want to have 25, 27, 25, and then a new value right here, something like 15 and then 30 to
+
+16
+00:00:45,900 --> 00:00:46,350
+do so.
+
+17
+00:00:47,400 --> 00:00:50,400
+We would write out l inserts.
+
+18
+00:00:51,330 --> 00:00:51,720
+Temps.
+
+19
+00:00:53,100 --> 00:00:56,250
+Well then say before the value of 30.
+
+20
+00:00:56,790 --> 00:00:58,680
+Insert a new value of 15.
+
+21
+00:01:00,400 --> 00:01:04,150
+So that would be at index 0123.
+
+22
+00:01:04,420 --> 00:01:11,080
+So to make sure that it works correctly, I would then do a L index of temps at index three.
+
+23
+00:01:13,180 --> 00:01:14,110
+Turn out to get 15.
+
+24
+00:01:15,770 --> 00:01:18,270
+Just to double check that I'll do an R person.
+
+25
+00:01:18,270 --> 00:01:22,670
+The L range on temps and let's go from 0 to -1.
+
+26
+00:01:23,870 --> 00:01:29,480
+Now we get 25, 27, 25, the new value of 15 right there and then the rest of the list.
+
+27
+00:01:30,410 --> 00:01:35,390
+One very small alteration on this command will be to put in after instead of before.
+
+28
+00:01:35,870 --> 00:01:41,150
+So if I do after, as you guess, that means go and find the value 30 and then put in the new value
+
+29
+00:01:41,210 --> 00:01:47,480
+right after it or one that I get 25, 3015 now and then the 24.
+
+30
+00:01:51,110 --> 00:01:53,060
+Last command for right now around this.
+
+31
+00:01:53,210 --> 00:01:56,120
+This one is the most complicated, but it's still really not that bad.
+
+32
+00:01:56,330 --> 00:01:59,720
+El Ram allows us to remove some elements from a list.
+
+33
+00:02:00,670 --> 00:02:04,270
+So the big kind of variation here is this second argument that we put in.
+
+34
+00:02:04,280 --> 00:02:08,120
+That's the kind of complicated parts may show you a couple diagrams to help you understand what's going
+
+35
+00:02:08,120 --> 00:02:08,720
+on with it.
+
+36
+00:02:09,290 --> 00:02:15,230
+So if I do a l rem temps and then negative two, here's what the negative two is really saying.
+
+37
+00:02:15,800 --> 00:02:17,300
+The fact that it is negative.
+
+38
+00:02:17,510 --> 00:02:23,420
+So negative two specifically means starting at the right hand side, move over to the left.
+
+39
+00:02:23,570 --> 00:02:31,550
+So starting right here, go back to the left and try to find and remove two copies of 25, specifically
+
+40
+00:02:31,730 --> 00:02:34,040
+25, because that's the value we put in right there.
+
+41
+00:02:35,590 --> 00:02:37,090
+So we would start at 24.
+
+42
+00:02:37,690 --> 00:02:38,680
+Go to the left.
+
+43
+00:02:39,190 --> 00:02:40,150
+There's a 25.
+
+44
+00:02:40,420 --> 00:02:43,690
+We're going to remove one and then keep going until remove a second copy.
+
+45
+00:02:43,690 --> 00:02:45,070
+And we'd remove that one right there.
+
+46
+00:02:47,540 --> 00:02:52,400
+If we put in a positive value, that means starting at the left hand side and going to the right.
+
+47
+00:02:52,670 --> 00:02:58,340
+Remove one copy of 25, though, in this case, right here at the very first element is 25.
+
+48
+00:02:58,340 --> 00:03:00,200
+So I would remove it and that's it.
+
+49
+00:03:00,200 --> 00:03:01,190
+I remove the one copy.
+
+50
+00:03:01,190 --> 00:03:02,600
+I don't need to remove anything else.
+
+51
+00:03:03,950 --> 00:03:09,620
+And then finally lrm temps of zero means just plain remove all copies of 25.
+
+52
+00:03:09,950 --> 00:03:11,360
+So we would dump photos.
+
+53
+00:03:13,750 --> 00:03:14,080
+Okay.
+
+54
+00:03:14,320 --> 00:03:15,520
+Last quick example.
+
+55
+00:03:17,260 --> 00:03:19,810
+So once again, Dell, our push is you get the idea.
+
+56
+00:03:20,170 --> 00:03:21,520
+We've done that many times now.
+
+57
+00:03:22,150 --> 00:03:23,320
+So I'll throw those in.
+
+58
+00:03:27,120 --> 00:03:30,330
+And then do a LRM on temps.
+
+59
+00:03:30,930 --> 00:03:33,930
+Let's start off with a how about a zero and 25?
+
+60
+00:03:34,140 --> 00:03:36,760
+So that would remove the 25 right there and 25 right there.
+
+61
+00:03:37,170 --> 00:03:41,520
+And then I will do an L range on temps from 0 to -1.
+
+62
+00:03:42,270 --> 00:03:44,560
+So I just took off all instances of 25.
+
+63
+00:03:45,360 --> 00:03:52,170
+If I put in a one, I mean, starting at the left hand side or the start removed the first copy of 25,
+
+64
+00:03:52,170 --> 00:03:53,610
+but leave all others.
+
+65
+00:03:54,150 --> 00:03:58,140
+So I would now remove that first copy and still leave the 25 in the middle.
+
+66
+00:03:59,130 --> 00:04:02,760
+And then finally, if I put in a negative, I mean, starting at the very end and going up.
+
+67
+00:04:03,060 --> 00:04:06,000
+Or alternatively, starting at the right hand side and going to the left.
+
+68
+00:04:06,210 --> 00:04:09,180
+So I remove the 25 right here and there we go.
+
+69
+00:04:10,390 --> 00:04:10,680
+Okay.
+
+70
+00:04:10,690 --> 00:04:12,840
+So that's it list again.
+
+71
+00:04:12,880 --> 00:04:18,130
+These commands are really just tedious more than anything else, and I apologize for what has probably
+
+72
+00:04:18,130 --> 00:04:22,270
+been a rather boring stretch of videos because these are just not super interesting.
+
+73
+00:04:22,600 --> 00:04:29,110
+This is another one of those areas where reticence giving you a lot of an A basic operations and it's
+
+74
+00:04:29,110 --> 00:04:34,150
+up to you to figure out interesting use cases for each of these because as you just look at these things,
+
+75
+00:04:34,150 --> 00:04:37,870
+you might be sitting there saying, where would I ever use this in practicality?
+
+76
+00:04:37,930 --> 00:04:42,040
+Well, you have to be a little bit clever and think of some interesting way of making use of it.
+
+77
+00:04:42,640 --> 00:04:47,230
+So having said that, we are naturally going to make use of lists inside of our application.
+
+78
+00:04:47,620 --> 00:04:51,790
+Let's start to take a look at some use cases around lists and how we're going to use them inside of
+
+79
+00:04:51,790 --> 00:04:53,140
+our app in the next video.

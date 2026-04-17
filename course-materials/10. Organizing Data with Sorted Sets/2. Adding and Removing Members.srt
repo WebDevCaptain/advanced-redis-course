@@ -1,0 +1,267 @@
+1
+00:00:00,950 --> 00:00:05,120
+The first couple of commands we're going to look at are just about adding a new members to a sorted
+
+2
+00:00:05,120 --> 00:00:08,180
+set, removing members and retrieving them as well.
+
+3
+00:00:08,900 --> 00:00:09,290
+All right.
+
+4
+00:00:09,290 --> 00:00:13,250
+So first, very basic commands, Z Add and Z score.
+
+5
+00:00:13,840 --> 00:00:17,360
+Ziad is used to add in a member score paired to a sorted set.
+
+6
+00:00:17,870 --> 00:00:24,950
+So if we do something like Z, Add Products 45 monitor, we would end up with accessing the sorted set
+
+7
+00:00:24,950 --> 00:00:26,720
+stored at the key of products.
+
+8
+00:00:27,200 --> 00:00:31,640
+We would add in a member of Monitor and then a score of 45.
+
+9
+00:00:32,510 --> 00:00:37,430
+Now one thing to be really aware of here is that the order of these two arguments right here, little
+
+10
+00:00:37,430 --> 00:00:42,650
+bit opposite from what you might expect it to be, you might expect it to first be the member and then
+
+11
+00:00:42,650 --> 00:00:43,160
+the score.
+
+12
+00:00:43,340 --> 00:00:44,540
+Note That's not the case.
+
+13
+00:00:44,660 --> 00:00:45,650
+It is the opposite.
+
+14
+00:00:45,890 --> 00:00:50,510
+First we put in the score, so that's always going to be a number number and then the member right after.
+
+15
+00:00:52,570 --> 00:00:54,490
+That can command is z-score.
+
+16
+00:00:54,850 --> 00:00:59,590
+And this gives us the score of a member that is already stored inside of our sorted sets.
+
+17
+00:01:00,160 --> 00:01:06,460
+So if we had something like Monitor 45 right here and then we ran at the score products monitor, we
+
+18
+00:01:06,460 --> 00:01:08,470
+would get back that number of 45.
+
+19
+00:01:09,590 --> 00:01:11,480
+All right, let's try out these two commands very quickly.
+
+20
+00:01:12,680 --> 00:01:14,360
+So back over inside of our book.
+
+21
+00:01:14,840 --> 00:01:16,130
+I'm going to do a A-Z.
+
+22
+00:01:17,170 --> 00:01:18,940
+Ad products.
+
+23
+00:01:20,370 --> 00:01:22,140
+45 monitor.
+
+24
+00:01:23,010 --> 00:01:26,010
+If I run that, I get back a one just to say, yeah, okay.
+
+25
+00:01:26,010 --> 00:01:27,180
+We added this value in.
+
+26
+00:01:28,460 --> 00:01:30,890
+And then immediately after that, if I do a Z score.
+
+27
+00:01:31,970 --> 00:01:33,470
+Of products.
+
+28
+00:01:35,910 --> 00:01:39,540
+With Monitor, I'll get back my value of 45.
+
+29
+00:01:41,450 --> 00:01:47,210
+Now keep in mind that as we stored numbers inside of lettuce, all the implication here is that these
+
+30
+00:01:47,210 --> 00:01:49,520
+are kind of being treated like strings.
+
+31
+00:01:49,790 --> 00:01:53,810
+So when we get our score back, it is going to come back to us as a string.
+
+32
+00:01:54,500 --> 00:01:59,510
+So for whatever different client library we are using, we might have to take that string and parse
+
+33
+00:01:59,510 --> 00:02:00,470
+it into a number.
+
+34
+00:02:02,900 --> 00:02:06,240
+Last command I want to show you very quickly is Z, Remove or Z.
+
+35
+00:02:06,290 --> 00:02:12,710
+R.E.M. And as your guest, this just allows us to remove a member from a sorted set that if we did Xyrem
+
+36
+00:02:13,010 --> 00:02:17,780
+products monitor, we would go and find that monitor member right there and just delete it.
+
+37
+00:02:19,130 --> 00:02:20,690
+Maybe we could try that out very quickly as well.
+
+38
+00:02:22,000 --> 00:02:30,220
+I'll do a REM products monitor, and then immediately after removing it, I'll do another Z-SCORE.
+
+39
+00:02:31,090 --> 00:02:31,930
+Products monitor.
+
+40
+00:02:33,000 --> 00:02:33,660
+So add.
+
+41
+00:02:34,320 --> 00:02:35,040
+Get the score.
+
+42
+00:02:35,460 --> 00:02:36,020
+Remove.
+
+43
+00:02:36,180 --> 00:02:37,020
+Get the score again.
+
+44
+00:02:37,940 --> 00:02:38,690
+If I run this.
+
+45
+00:02:40,000 --> 00:02:42,130
+And then click on the dot, dot, dot right there.
+
+46
+00:02:42,130 --> 00:02:44,560
+I can see the output from all four commands.
+
+47
+00:02:45,460 --> 00:02:46,130
+We can see.
+
+48
+00:02:46,150 --> 00:02:46,720
+Okay.
+
+49
+00:02:46,900 --> 00:02:48,280
+Nothing has been added up here.
+
+50
+00:02:48,280 --> 00:02:51,010
+We got a zero because we had already added in products.
+
+51
+00:02:51,430 --> 00:02:52,510
+We didn't get back the score.
+
+52
+00:02:53,110 --> 00:02:58,300
+We then remove that that member and then we do another Z score and we get back null to indicate that
+
+53
+00:02:58,510 --> 00:03:00,340
+we don't have that member inside there anymore.
+
+54
+00:03:01,720 --> 00:03:07,870
+Lastly I want to mention is around the Ziyad command, very similar to the set commands that we looked
+
+55
+00:03:07,870 --> 00:03:08,490
+at previously.
+
+56
+00:03:08,500 --> 00:03:12,640
+There are a variety of different arguments that we can append on to the Ziad command.
+
+57
+00:03:13,000 --> 00:03:16,060
+So if you look at the official documentation, you'll see, here's the ad.
+
+58
+00:03:16,510 --> 00:03:22,540
+We've got some familiar, vaguely looking arguments in here, such as Annex and Xbox, which allows
+
+59
+00:03:22,540 --> 00:03:28,570
+us to say, Hey, only attempt to add in this new score number pair if this value is not already set
+
+60
+00:03:28,780 --> 00:03:30,040
+or does not already exist.
+
+61
+00:03:31,460 --> 00:03:33,200
+There are a couple other arguments as well.
+
+62
+00:03:33,250 --> 00:03:35,370
+I mean, let's you take a look at the documentation around these.
+
+63
+00:03:35,390 --> 00:03:38,210
+We're not going to actually use them at all inside of our application.
+
+64
+00:03:38,480 --> 00:03:41,810
+So not super critical for us to spend a lot of time on them right now.
+
+65
+00:03:43,040 --> 00:03:43,340
+Okay.
+
+66
+00:03:43,340 --> 00:03:46,830
+So three basic commands, but of course, still many others to go over.
+
+67
+00:03:46,850 --> 00:03:49,820
+So let's start to take a look at some of the more complex commands in the next video.

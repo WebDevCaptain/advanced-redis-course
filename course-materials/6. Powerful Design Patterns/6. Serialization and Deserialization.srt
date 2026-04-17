@@ -1,0 +1,691 @@
+1
+00:00:01,170 --> 00:00:05,280
+In this video, we're going to discuss why we created that separate object right there as opposed to
+
+2
+00:00:05,280 --> 00:00:08,040
+just directly passing in the Outers arguments.
+
+3
+00:00:08,580 --> 00:00:12,690
+Remember, ATRs is going to be an object that has a username and password.
+
+4
+00:00:13,050 --> 00:00:18,330
+And rather than just passing that argument directly through, I said, let's create a separate object
+
+5
+00:00:18,330 --> 00:00:22,140
+and be really explicit about what data we are trying to save in Redis.
+
+6
+00:00:22,560 --> 00:00:25,350
+Now I want to show you why that is in a series of different diagrams.
+
+7
+00:00:26,010 --> 00:00:26,330
+All right.
+
+8
+00:00:26,370 --> 00:00:27,450
+A lot of stuff going on here.
+
+9
+00:00:27,480 --> 00:00:28,320
+So let's just dive right.
+
+10
+00:00:29,890 --> 00:00:33,550
+Let's imagine for just a little bit that we were working on a different application that is all about
+
+11
+00:00:33,550 --> 00:00:35,860
+storing company info inside of Redis.
+
+12
+00:00:36,550 --> 00:00:39,580
+So we might have a company object like what you see right here.
+
+13
+00:00:39,910 --> 00:00:43,330
+It has an ID, name, screenshots and a revenue value.
+
+14
+00:00:43,990 --> 00:00:47,290
+So we want to save this entire object into Redis as a hash.
+
+15
+00:00:47,830 --> 00:00:54,490
+Let's imagine that we build a save company function and its goal is to save that object into a hash
+
+16
+00:00:54,490 --> 00:00:55,480
+that looks like this right here.
+
+17
+00:00:56,690 --> 00:01:00,980
+Now, one thing to keep in mind is that whenever we save a number into us, like one, two, three,
+
+18
+00:01:00,980 --> 00:01:06,680
+four, internally that gets saved as a string, a one, two, three, four, as the ID would show up
+
+19
+00:01:06,680 --> 00:01:08,330
+as one, two, three, four, as a string.
+
+20
+00:01:09,520 --> 00:01:18,460
+Then concrete co revenue would be the string 89 and an over here credit at is a JavaScript date object.
+
+21
+00:01:20,010 --> 00:01:24,750
+Now internally whenever the node readies library that we are using and remember that is the library
+
+22
+00:01:24,750 --> 00:01:27,030
+we are using to communicate with Redis.
+
+23
+00:01:27,450 --> 00:01:34,980
+Whenever we provide a value like a JavaScript date object to it node Redis is going to call the two
+
+24
+00:01:34,980 --> 00:01:36,990
+string method on this object right here.
+
+25
+00:01:37,140 --> 00:01:42,570
+Automatically, even though we are putting in a date object node, Redis is going to turn that thing
+
+26
+00:01:42,570 --> 00:01:46,980
+into a string to the best of its abilities by calling the two string method.
+
+27
+00:01:47,820 --> 00:01:52,110
+The result is that we would end up with a created at value right here.
+
+28
+00:01:52,500 --> 00:01:55,530
+That is a string with some kind of weird formatting to it.
+
+29
+00:01:55,950 --> 00:02:01,440
+It is essentially the default way in which a date object gets represented as a string in JavaScript,
+
+30
+00:02:01,590 --> 00:02:12,300
+so would end up as something like Tuesday, March three, 1915, and then 90304 Central Time or something
+
+31
+00:02:12,300 --> 00:02:12,720
+like that.
+
+32
+00:02:13,820 --> 00:02:17,220
+That would be the string representation of a JavaScript object, date object.
+
+33
+00:02:17,640 --> 00:02:19,740
+There's nothing inherently wrong about that string.
+
+34
+00:02:20,130 --> 00:02:23,410
+The issue is that it's really hard to query in any reasonable way.
+
+35
+00:02:23,820 --> 00:02:25,200
+Not a super common format.
+
+36
+00:02:25,530 --> 00:02:31,050
+In addition, it is formatted according to your local time zone and we might want to have it in a different
+
+37
+00:02:31,050 --> 00:02:31,560
+time zone.
+
+38
+00:02:32,770 --> 00:02:36,970
+They're just relying upon the default behavior of note reticence, not the best thing in the world.
+
+39
+00:02:37,920 --> 00:02:38,370
+There are.
+
+40
+00:02:38,760 --> 00:02:40,590
+There's one other small issue here as well.
+
+41
+00:02:41,890 --> 00:02:47,560
+So when we store that object in Redis, not only do we start to run into this issue around the date
+
+42
+00:02:47,560 --> 00:02:49,330
+formatting as it shows up in Redis.
+
+43
+00:02:49,930 --> 00:02:53,740
+The other issue is that we included the ID in the hash.
+
+44
+00:02:53,950 --> 00:02:56,860
+So in other words, that ID right there is included.
+
+45
+00:02:57,550 --> 00:02:59,080
+Is that inherently a problem?
+
+46
+00:02:59,590 --> 00:03:00,670
+Not really.
+
+47
+00:03:01,210 --> 00:03:02,980
+But let me tell you what I mean.
+
+48
+00:03:04,040 --> 00:03:08,810
+Whenever we want to look up some value inside of Redis, specifically for a hash, we are always going
+
+49
+00:03:08,810 --> 00:03:11,630
+to need to know the idea of the hash that we're trying to find.
+
+50
+00:03:12,110 --> 00:03:16,730
+So in other words, if we want to find this hash right here, we need to know that we are looking for
+
+51
+00:03:17,060 --> 00:03:18,800
+the hash with ID.
+
+52
+00:03:18,920 --> 00:03:19,790
+One, two, three, four.
+
+53
+00:03:20,510 --> 00:03:26,210
+And if we have that ID, well, rather than trying to find some hash that has ID, one, two, three,
+
+54
+00:03:26,210 --> 00:03:29,960
+four, we can just take that ID and use it to generate our key.
+
+55
+00:03:31,060 --> 00:03:36,370
+So we can create a key company at one t34 and immediately get access to this entire hash.
+
+56
+00:03:37,210 --> 00:03:43,300
+But what I'm trying to say is we don't really need to store the ID as a key value pair inside the hash
+
+57
+00:03:43,900 --> 00:03:46,720
+because we already know what record this it it is.
+
+58
+00:03:46,840 --> 00:03:48,130
+It is the company with I.D..
+
+59
+00:03:48,140 --> 00:03:48,950
+One, two, three, four.
+
+60
+00:03:48,970 --> 00:03:51,540
+It is recorded right there inside the key.
+
+61
+00:03:53,310 --> 00:03:55,300
+I recording the ID inside of our house.
+
+62
+00:03:55,320 --> 00:04:01,020
+We're just using up a little bit of extra memory and remembering, remember, whenever we stored information
+
+63
+00:04:01,020 --> 00:04:01,620
+in memory.
+
+64
+00:04:01,770 --> 00:04:07,020
+Memory costs more in general than hard drive space, so we usually want to pare down our records with
+
+65
+00:04:07,020 --> 00:04:08,820
+readies to be as small as we possibly can.
+
+66
+00:04:09,330 --> 00:04:12,480
+Removing that ID field is generally a little bit desirable.
+
+67
+00:04:13,700 --> 00:04:14,000
+Okay.
+
+68
+00:04:14,000 --> 00:04:19,310
+So these are two distinct issues that we run into when we start to try to save a plane JavaScript object.
+
+69
+00:04:20,090 --> 00:04:22,520
+Now, I want to look at the flip side of the equation here.
+
+70
+00:04:22,910 --> 00:04:26,240
+What happens when we try to pull out information from Redis?
+
+71
+00:04:27,680 --> 00:04:28,030
+Okay.
+
+72
+00:04:28,040 --> 00:04:33,560
+So let's imagine that we put in a couple of corrections and we now have a company stored in Redis without
+
+73
+00:04:33,560 --> 00:04:38,540
+an ID and we have also formatted that created app field in a slightly better format.
+
+74
+00:04:39,290 --> 00:04:44,840
+Now let's imagine that we tried to get this information out of Redis by implementing a function called
+
+75
+00:04:44,840 --> 00:04:45,800
+Get Company.
+
+76
+00:04:46,620 --> 00:04:52,890
+So get company is going to find this hash right here, get access to it as a plain JavaScript object,
+
+77
+00:04:53,340 --> 00:04:56,360
+and then return that object for the rest of our application to use.
+
+78
+00:04:57,850 --> 00:05:01,030
+So this is what gets returns whenever you call get company.
+
+79
+00:05:02,010 --> 00:05:04,410
+Now there are a couple of issues with this object as well.
+
+80
+00:05:04,920 --> 00:05:06,440
+Let's lay out what the issues are.
+
+81
+00:05:07,610 --> 00:05:12,140
+First off, when we make this object available to the rest of our application, we probably want other
+
+82
+00:05:12,140 --> 00:05:15,470
+parts of our application to know what the idea of this record is.
+
+83
+00:05:15,950 --> 00:05:20,630
+But because we didn't directly save that idea with our hash, well, it doesn't really get communicated
+
+84
+00:05:20,630 --> 00:05:21,710
+to the rest of our application.
+
+85
+00:05:22,670 --> 00:05:28,520
+Secondly, whenever we pull a hash out of Redis, it shows up inside of our application with all the
+
+86
+00:05:28,550 --> 00:05:31,250
+number values still encoded as strings.
+
+87
+00:05:32,000 --> 00:05:34,040
+The revenue would be a string of 89.
+
+88
+00:05:35,990 --> 00:05:42,200
+Finally we did figure out or we kind of are imagining that created out was stored as a useful string
+
+89
+00:05:42,200 --> 00:05:45,020
+right here with useful formatting that is easy to query.
+
+90
+00:05:45,350 --> 00:05:48,770
+But when we pull it out of lettuce, that string is still going to be the string.
+
+91
+00:05:48,770 --> 00:05:55,370
+15th March 1915 and the rest of our application might expect created out to be a JavaScript date and
+
+92
+00:05:55,370 --> 00:05:56,510
+not a plain string.
+
+93
+00:05:57,590 --> 00:05:57,830
+All right.
+
+94
+00:05:57,830 --> 00:05:59,810
+So let's kind of review where we are at right now.
+
+95
+00:06:00,440 --> 00:06:06,290
+The issue that we are running into is that if we just rely upon the default behavior of the note ratings
+
+96
+00:06:06,300 --> 00:06:12,230
+library that we're using and readies itself when we save info in treatise, it is kind of being saved
+
+97
+00:06:12,230 --> 00:06:14,390
+in a format that we don't really like.
+
+98
+00:06:15,050 --> 00:06:16,640
+And when we pull information out.
+
+99
+00:06:17,690 --> 00:06:18,530
+It is coming out.
+
+100
+00:06:19,010 --> 00:06:21,080
+Not quite in the way we really want.
+
+101
+00:06:21,110 --> 00:06:22,300
+Not in a way that's super useful.
+
+102
+00:06:22,310 --> 00:06:23,990
+We don't know what the idea of this record is.
+
+103
+00:06:24,410 --> 00:06:27,500
+We don't have our numbers as true numbers.
+
+104
+00:06:28,010 --> 00:06:32,750
+And some things like, say, a JavaScript date object might be in a format that we don't really care
+
+105
+00:06:32,750 --> 00:06:33,080
+for.
+
+106
+00:06:33,950 --> 00:06:35,630
+So how are we going to solve all these problems?
+
+107
+00:06:36,140 --> 00:06:41,450
+Well, we're going to solve them by introducing two functions that we're going to use rather often whenever
+
+108
+00:06:41,450 --> 00:06:44,690
+we are saving data in treatise or matching data.
+
+109
+00:06:45,720 --> 00:06:49,530
+The name of these functions are serialize and serialize.
+
+110
+00:06:50,370 --> 00:06:55,660
+Now, one thing to be clear about right away, the name Serialize as a helper function.
+
+111
+00:06:55,920 --> 00:06:58,500
+There's nothing special about the name of this function.
+
+112
+00:06:58,860 --> 00:07:01,050
+This is not plugging into any library.
+
+113
+00:07:01,320 --> 00:07:04,410
+It is not plugging into any framework or anything like that.
+
+114
+00:07:04,950 --> 00:07:07,200
+The only reason that I'm calling these serialized.
+
+115
+00:07:07,380 --> 00:07:13,920
+Serialized is that many engineers understand the words serialize and de serialize in general, in web
+
+116
+00:07:13,920 --> 00:07:16,320
+development and in systems program in general.
+
+117
+00:07:16,650 --> 00:07:23,010
+Serialize means take some information and encode it to be sent off and stored or used by some other
+
+118
+00:07:23,010 --> 00:07:23,790
+kind of system.
+
+119
+00:07:24,600 --> 00:07:31,350
+And the term e serialize in general means receive some information that might be encoded in a strange
+
+120
+00:07:31,350 --> 00:07:36,870
+way and prepare this information to be used in a format that is readily consumed by our application.
+
+121
+00:07:37,470 --> 00:07:39,750
+Again, the names serialize and de serialize.
+
+122
+00:07:39,960 --> 00:07:41,250
+Nothing special about them.
+
+123
+00:07:43,460 --> 00:07:45,620
+So whenever we are going to save information.
+
+124
+00:07:45,860 --> 00:07:48,560
+Internet is not always but vast majority of time.
+
+125
+00:07:49,070 --> 00:07:53,930
+Rather than just take this entire object right here and throw it directly into lettuce and allow red
+
+126
+00:07:53,930 --> 00:07:57,850
+s and the note read as library to format all the keys and values in there as it pleases.
+
+127
+00:07:58,190 --> 00:08:00,860
+We're going to instead do the formatting on our own.
+
+128
+00:08:01,550 --> 00:08:09,080
+We're going to use a serialize function to take that object and possibly remove fields from it, or
+
+129
+00:08:09,080 --> 00:08:13,800
+encode other fields in a way that we are happy storing inside of lettuce.
+
+130
+00:08:14,450 --> 00:08:17,390
+So, for example, Serialize might take that big object.
+
+131
+00:08:17,900 --> 00:08:23,960
+It might decide to remove the I.D fields, and we might decide to take that date object and encode it
+
+132
+00:08:23,960 --> 00:08:25,220
+in a more useful way.
+
+133
+00:08:25,940 --> 00:08:28,730
+That is all serialized and I just want repeat one more time.
+
+134
+00:08:28,910 --> 00:08:30,470
+Nothing special about the name here.
+
+135
+00:08:31,220 --> 00:08:33,910
+It is not plugging into any library or any framework.
+
+136
+00:08:33,920 --> 00:08:37,400
+It is just a pattern that we like to follow as software engineers.
+
+137
+00:08:37,590 --> 00:08:39,620
+Anytime we are storing information in Redis.
+
+138
+00:08:41,380 --> 00:08:44,290
+Those same thing with DC realized, but it works in the opposite direction.
+
+139
+00:08:44,830 --> 00:08:50,380
+Whenever we pull information not 100% on time, but very often when we pull information out of Redis,
+
+140
+00:08:50,620 --> 00:08:53,230
+we are going to run it through a serialize function.
+
+141
+00:08:53,820 --> 00:08:56,930
+It's going to take the object that gets returned from Redis.
+
+142
+00:08:56,980 --> 00:08:58,240
+So pretty much that thing right there.
+
+143
+00:08:58,810 --> 00:09:05,650
+And it's going to do things like say add in the ID that might turn any numbers from strings back into
+
+144
+00:09:05,650 --> 00:09:11,380
+true numbers and it might take a encoded deep value and turn it back into a date object.
+
+145
+00:09:12,920 --> 00:09:13,250
+Okay.
+
+146
+00:09:13,580 --> 00:09:15,590
+So that's serialize and serialize.
+
+147
+00:09:16,190 --> 00:09:20,900
+The serialize is whenever we are trying to put information into red as DC relies is when we want to
+
+148
+00:09:20,900 --> 00:09:22,010
+get information out.
+
+149
+00:09:22,730 --> 00:09:27,320
+And I'm saying here that serialize might remove the ID, it might turn a date into a better format.
+
+150
+00:09:27,500 --> 00:09:28,580
+Those are just examples.
+
+151
+00:09:28,590 --> 00:09:29,900
+It's not 100% of the time.
+
+152
+00:09:30,260 --> 00:09:33,440
+There might be scenarios where you do want to store an ID inside of a house.
+
+153
+00:09:33,860 --> 00:09:38,840
+There might be other examples where you just want to allow a date to behave as it is and not do any
+
+154
+00:09:38,840 --> 00:09:40,010
+special formatting around it.
+
+155
+00:09:40,340 --> 00:09:42,320
+Same thing with DC serialize as well.
+
+156
+00:09:43,220 --> 00:09:47,570
+Do you realize in D.C. your lives are just patterns that we often use to make sure that the information
+
+157
+00:09:47,570 --> 00:09:52,820
+going into and coming out of retests are always consistent and in the format that we truly expect.
+
+158
+00:09:53,850 --> 00:09:55,950
+So how does that relate back here?
+
+159
+00:09:57,230 --> 00:10:03,350
+Well, we are essentially doing the serialization step right here in line, just not really using a
+
+160
+00:10:03,350 --> 00:10:04,100
+separate function.
+
+161
+00:10:04,160 --> 00:10:05,270
+That's all that's really going on.
+
+162
+00:10:06,070 --> 00:10:07,550
+So we're going to take a quick pause right here.
+
+163
+00:10:07,640 --> 00:10:12,560
+When we come back, the next video we're going to write out an extremely simple serialize function.
+
+164
+00:10:13,130 --> 00:10:18,140
+The serialize function will take in that address argument and it's going to return basically exactly
+
+165
+00:10:18,140 --> 00:10:19,250
+that same object.
+
+166
+00:10:19,910 --> 00:10:24,250
+Right now, our serialized function that we're going to implement, it's not really doing anything whatsoever,
+
+167
+00:10:24,260 --> 00:10:25,010
+nothing special.
+
+168
+00:10:25,250 --> 00:10:30,740
+We are just setting ourselves up so that in the future, if we decide that there's any additional special
+
+169
+00:10:30,740 --> 00:10:35,660
+stuff we want to do around the user as we save them, we can easily implement that inside of our serialize
+
+170
+00:10:35,660 --> 00:10:35,990
+function.
+
+171
+00:10:36,970 --> 00:10:37,390
+All right.
+
+172
+00:10:37,480 --> 00:10:38,410
+So long video.
+
+173
+00:10:38,440 --> 00:10:42,850
+I apologize, but hopefully we got a better idea of what's going on with these two functions.

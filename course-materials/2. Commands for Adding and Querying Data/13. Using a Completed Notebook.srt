@@ -1,0 +1,159 @@
+1
+00:00:00,850 --> 00:00:04,030
+Throughout this course, we're going to be using this Arbor tool a pretty good amount.
+
+2
+00:00:04,270 --> 00:00:07,260
+As a reminder, you do not have to use this tool if you don't want to.
+
+3
+00:00:07,270 --> 00:00:12,280
+I'm going to show you how you can use red ac alai instead and also, of course, what Red Acela is in
+
+4
+00:00:12,280 --> 00:00:13,450
+just a couple videos.
+
+5
+00:00:13,930 --> 00:00:18,640
+I do, however, recommend you use Arbor because it gives you a nice little kind of notebook where you
+
+6
+00:00:18,640 --> 00:00:21,610
+can put together some documentation and refer to this stuff in the future.
+
+7
+00:00:22,090 --> 00:00:25,960
+I made this tool for you, but just to be clear, I don't get anything from you using it.
+
+8
+00:00:25,960 --> 00:00:28,030
+As a matter of fact, I pay to keep this tool running.
+
+9
+00:00:28,240 --> 00:00:32,110
+So when I say I recommend you use it, it's not because it's in my interest per se.
+
+10
+00:00:32,110 --> 00:00:36,970
+To do so is because I really think that you would be well-served to have some documentation on what
+
+11
+00:00:36,970 --> 00:00:37,510
+we're doing here.
+
+12
+00:00:38,480 --> 00:00:43,550
+Now in this video, what I want to do at the end of every single section, I'm going to give you a single
+
+13
+00:00:43,550 --> 00:00:43,910
+file.
+
+14
+00:00:45,360 --> 00:00:50,490
+That contains all of the completed notes from our the like basically the previous section.
+
+15
+00:00:50,850 --> 00:00:54,420
+And I will have put in a lot of extra documentation and whatnot as well.
+
+16
+00:00:54,630 --> 00:00:58,920
+So you can see in this case I went back to our basic strings notebook and I put in some quick notes
+
+17
+00:00:58,920 --> 00:01:00,570
+around all these different commands we wrote out.
+
+18
+00:01:01,380 --> 00:01:03,570
+And so I got just about every single one of them documented.
+
+19
+00:01:04,530 --> 00:01:08,580
+You can find the completed notebook attached to the previous lecture.
+
+20
+00:01:08,580 --> 00:01:10,590
+The one right before this one was a text lecture.
+
+21
+00:01:10,710 --> 00:01:14,070
+You should have found a file called Basic Strings Complete a dot JSON.
+
+22
+00:01:14,610 --> 00:01:19,620
+So if you want to use this kind of completed version I put together, just go back to the main page
+
+23
+00:01:19,620 --> 00:01:25,290
+of Object Cloud, click on upload notebook and then you can just do a drag and drop like so.
+
+24
+00:01:26,640 --> 00:01:29,010
+And then here is the notebook that was just created.
+
+25
+00:01:30,320 --> 00:01:31,310
+And you could see all the notes.
+
+26
+00:01:32,210 --> 00:01:37,610
+I'm going to attach these completed notebooks at the end of every section or really wherever is appropriate,
+
+27
+00:01:37,820 --> 00:01:41,450
+really wherever we have a good set of notes that warrants some documentation.
+
+28
+00:01:41,960 --> 00:01:43,040
+So again, totally optional.
+
+29
+00:01:43,050 --> 00:01:44,840
+You don't have to upload these things if you don't want to.
+
+30
+00:01:45,080 --> 00:01:46,610
+But again, I kind of recommend it.
+
+31
+00:01:47,120 --> 00:01:52,520
+Lastly, want to mention all the notebooks that are getting uploaded here are tied to your browser session.
+
+32
+00:01:52,790 --> 00:01:57,830
+So in other words, if you ever change browsers, change computers, or reset your cookies in your browser,
+
+33
+00:01:58,010 --> 00:01:59,870
+you will lose your notebooks.
+
+34
+00:02:00,290 --> 00:02:04,340
+So if holding on to these things is really important to you, I would recommend that you export your
+
+35
+00:02:04,340 --> 00:02:05,300
+notebooks every now and then.
+
+36
+00:02:05,540 --> 00:02:07,610
+It just downloads a simple JSON file.
+
+37
+00:02:07,800 --> 00:02:12,650
+You can then very easily re-upload using the upload tool very simply.
+
+38
+00:02:13,280 --> 00:02:13,560
+Okay.
+
+39
+00:02:13,610 --> 00:02:14,030
+That's it.
+
+40
+00:02:14,180 --> 00:02:15,170
+So let's continue on.

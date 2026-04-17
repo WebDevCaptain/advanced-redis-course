@@ -1,0 +1,555 @@
+1
+00:00:01,080 --> 00:00:02,670
+We have updated our index.
+
+2
+00:00:02,790 --> 00:00:05,910
+So now I'm going to go back to my queries items by user.
+
+3
+00:00:06,170 --> 00:00:06,780
+Yes, file.
+
+4
+00:00:07,350 --> 00:00:10,710
+This is a function that's going to be called whenever a user goes to that dashboard page.
+
+5
+00:00:11,220 --> 00:00:16,200
+So we need to return some items from this function right here that are going to be displayed on that
+
+6
+00:00:16,200 --> 00:00:16,590
+table.
+
+7
+00:00:17,400 --> 00:00:21,930
+When this function is called, we're going to be told the user idea, the person who is currently visiting
+
+8
+00:00:21,930 --> 00:00:22,680
+their dashboard.
+
+9
+00:00:22,980 --> 00:00:25,860
+So we need to find all the items that were created by that person.
+
+10
+00:00:26,680 --> 00:00:29,380
+As a second arguments, we'll be given some options.
+
+11
+00:00:29,980 --> 00:00:34,360
+The options object right here is going to have all the different properties you see inside this interface
+
+12
+00:00:34,360 --> 00:00:34,750
+up here.
+
+13
+00:00:35,170 --> 00:00:41,170
+So it will have a page, upper page, a sorts by field, the which attribute or which field you want
+
+14
+00:00:41,170 --> 00:00:44,410
+to start by and the direction of our sorting as well.
+
+15
+00:00:46,020 --> 00:00:47,430
+When we return results here.
+
+16
+00:00:47,430 --> 00:00:49,110
+We're not actually going to return a plane array.
+
+17
+00:00:49,410 --> 00:00:53,670
+We're going to return an object that has a total pages property.
+
+18
+00:00:54,090 --> 00:00:58,740
+I'm going to put in a zero for right now and a list of serialized items.
+
+19
+00:00:59,250 --> 00:01:00,690
+So that's what we are trying to return.
+
+20
+00:01:01,290 --> 00:01:05,580
+I have dummy values inside of here right now, but we're going to replace those with actual search results
+
+21
+00:01:05,580 --> 00:01:06,360
+in just a little bit.
+
+22
+00:01:08,740 --> 00:01:10,120
+Back over inside the browser.
+
+23
+00:01:10,390 --> 00:01:11,860
+Just make sure everything is really clear.
+
+24
+00:01:13,500 --> 00:01:19,080
+Whenever a user clicks on a name, that means we want to do a search for all the items created by the
+
+25
+00:01:19,080 --> 00:01:20,520
+user who is currently signed in.
+
+26
+00:01:21,030 --> 00:01:26,030
+And we want to sort by the name of the item and we want to do it in a descending behavior.
+
+27
+00:01:26,160 --> 00:01:29,910
+So we want to start from the list, go up to the most.
+
+28
+00:01:29,910 --> 00:01:30,840
+Now that's ascending.
+
+29
+00:01:30,840 --> 00:01:32,880
+We want to go from the most and least descending order.
+
+30
+00:01:33,930 --> 00:01:34,710
+Anything with price.
+
+31
+00:01:35,310 --> 00:01:38,250
+If I click price again, I want to sort by ascending order.
+
+32
+00:01:38,880 --> 00:01:40,140
+And then same thing for time left.
+
+33
+00:01:40,350 --> 00:01:41,160
+Number of bids.
+
+34
+00:01:41,370 --> 00:01:42,990
+Number of views and number of likes.
+
+35
+00:01:44,690 --> 00:01:45,920
+That's worth trying to go for here.
+
+36
+00:01:46,370 --> 00:01:49,280
+So with all that in mind, let's work on some more implementation.
+
+37
+00:01:51,410 --> 00:01:51,740
+Okay.
+
+38
+00:01:51,770 --> 00:01:53,180
+Inside of items by user.
+
+39
+00:01:53,240 --> 00:01:56,570
+We're definitely going to have to do a search over our items index.
+
+40
+00:01:57,080 --> 00:01:58,920
+We're going to get back a bunch of item hashes.
+
+41
+00:01:58,940 --> 00:02:02,330
+So we're going to have to DC realize all those hashes and total.
+
+42
+00:02:02,330 --> 00:02:05,930
+I think we need to import three things into this file at the very top.
+
+43
+00:02:06,530 --> 00:02:07,460
+We need to import.
+
+44
+00:02:10,450 --> 00:02:11,470
+Our read his clients.
+
+45
+00:02:12,550 --> 00:02:13,630
+From services this.
+
+46
+00:02:15,230 --> 00:02:16,670
+We need to get our items.
+
+47
+00:02:16,670 --> 00:02:17,780
+Index key.
+
+48
+00:02:19,410 --> 00:02:20,640
+From Services Keys.
+
+49
+00:02:21,810 --> 00:02:27,120
+And then our DC realized function from the same directory DC relies.
+
+50
+00:02:32,450 --> 00:02:32,960
+Next up.
+
+51
+00:02:33,440 --> 00:02:38,930
+Inside of our function, we can first begin by creating the query that we want to search with.
+
+52
+00:02:39,680 --> 00:02:41,960
+So our query here is going to be very, very simple.
+
+53
+00:02:42,200 --> 00:02:48,920
+We are trying to find all of the item hashes where the owner ID field is equal to what the user ID that
+
+54
+00:02:48,920 --> 00:02:50,270
+is being passed into this function.
+
+55
+00:02:50,840 --> 00:02:51,310
+That's it.
+
+56
+00:02:52,310 --> 00:02:53,960
+So to write out a query that does that.
+
+57
+00:02:55,540 --> 00:02:57,820
+We'll say query is going to be a template string.
+
+58
+00:02:58,600 --> 00:03:01,960
+We're going to look at the owner ID field of every hash.
+
+59
+00:03:02,590 --> 00:03:05,710
+Remember that owner ID inside of our index is a tag.
+
+60
+00:03:06,310 --> 00:03:10,360
+And to do a query with a tag, we use curly braces instead of parentheses.
+
+61
+00:03:11,980 --> 00:03:13,390
+Inside of those curly braces.
+
+62
+00:03:13,600 --> 00:03:14,590
+I'll do a dollar sign.
+
+63
+00:03:14,590 --> 00:03:16,240
+Curly brace user ID.
+
+64
+00:03:18,460 --> 00:03:19,090
+That's a query.
+
+65
+00:03:19,120 --> 00:03:19,870
+That's all it takes.
+
+66
+00:03:22,760 --> 00:03:25,310
+Next up, we're going to do our source criteria.
+
+67
+00:03:25,760 --> 00:03:29,210
+Right now, we're going to write out the code for this and then we'll explain what it means in just
+
+68
+00:03:29,210 --> 00:03:29,540
+a moment.
+
+69
+00:03:30,750 --> 00:03:32,460
+We'll say sort criteria.
+
+70
+00:03:34,450 --> 00:03:37,510
+Is going to be options or ops sought sort by.
+
+71
+00:03:39,590 --> 00:03:41,750
+And Scott's direction.
+
+72
+00:03:43,050 --> 00:03:43,530
+And.
+
+73
+00:03:44,690 --> 00:03:46,130
+I'll put in an object right here.
+
+74
+00:03:48,080 --> 00:03:48,500
+I.
+
+75
+00:03:49,590 --> 00:03:50,730
+What's not sought by.
+
+76
+00:03:53,660 --> 00:03:54,560
+And direction.
+
+77
+00:03:55,320 --> 00:03:56,600
+It's not direction.
+
+78
+00:03:58,650 --> 00:04:01,410
+Notice that by indirection or in all the capitals.
+
+79
+00:04:02,730 --> 00:04:03,690
+What's going on with this line.
+
+80
+00:04:03,840 --> 00:04:09,450
+It's just saying that if we were provided with a source field, so which field to sort by and a direction
+
+81
+00:04:09,960 --> 00:04:12,900
+that we want to assign this object to sort criteria.
+
+82
+00:04:13,020 --> 00:04:13,920
+That's all we're saying there.
+
+83
+00:04:15,770 --> 00:04:21,650
+Otherwise, if we were not given both a sort by and a direction, don't try to assign anything to sort
+
+84
+00:04:21,650 --> 00:04:22,190
+criteria.
+
+85
+00:04:22,490 --> 00:04:26,180
+Sort criteria is either going to be this object or undefined.
+
+86
+00:04:29,060 --> 00:04:34,700
+And it's time for us to do our actual search and our source and the pagination as well.
+
+87
+00:04:34,700 --> 00:04:38,300
+Because remember, we only want to get back a certain page of results.
+
+88
+00:04:40,340 --> 00:04:43,160
+We'll say contest total and documents.
+
+89
+00:04:45,120 --> 00:04:47,910
+Is going to be a wait line for search.
+
+90
+00:04:50,230 --> 00:04:53,080
+Our first argument will be our items index key.
+
+91
+00:04:54,300 --> 00:04:54,930
+Then the query.
+
+92
+00:04:55,380 --> 00:04:56,230
+That's the easy stuff.
+
+93
+00:04:56,250 --> 00:04:57,420
+We know what those arguments are.
+
+94
+00:04:58,350 --> 00:05:00,360
+I'll put in another object here.
+
+95
+00:05:02,530 --> 00:05:04,840
+We're going to specify some of these different options.
+
+96
+00:05:05,350 --> 00:05:08,780
+But once again, we want to do a search on some hashes.
+
+97
+00:05:08,810 --> 00:05:10,120
+So I'll put in an on hash.
+
+98
+00:05:11,980 --> 00:05:14,080
+We want to do a sorts by.
+
+99
+00:05:14,770 --> 00:05:15,580
+Of sorts.
+
+100
+00:05:16,590 --> 00:05:17,280
+Criteria.
+
+101
+00:05:20,880 --> 00:05:21,960
+And then a limit's.
+
+102
+00:05:23,570 --> 00:05:28,640
+With from offstage times OP starts for page.
+
+103
+00:05:29,630 --> 00:05:31,700
+And size of object per.
+
+104
+00:05:32,740 --> 00:05:33,130
+H.
+
+105
+00:05:34,200 --> 00:05:38,790
+And once again, we're running into a little issue with the typescript definitions here.
+
+106
+00:05:38,820 --> 00:05:42,600
+So going to mark this entire object with as any just to get that air to go away.
+
+107
+00:05:43,720 --> 00:05:46,210
+Now I know I'm kind of speeding over this sort by thing.
+
+108
+00:05:46,210 --> 00:05:51,460
+And the limit thing, the supply is just to say, here's what we are trying to well, sort by.
+
+109
+00:05:51,760 --> 00:05:57,610
+So we are trying to sort by whatever field was passed into our function as sort by and our direction
+
+110
+00:05:57,610 --> 00:05:59,530
+is going to be either descending or ascending.
+
+111
+00:06:00,670 --> 00:06:03,310
+And then the limit is how we are implementing pagination.
+
+112
+00:06:03,610 --> 00:06:07,420
+We've seen many examples of limits throughout this course already.
+
+113
+00:06:07,690 --> 00:06:10,930
+We're using limit here just to constrain the number of results we get back.
+
+114
+00:06:12,790 --> 00:06:15,130
+Just to make sure that everything is working as expected.
+
+115
+00:06:15,310 --> 00:06:18,580
+Let's try to console.log out total and documents the right.
+
+116
+00:06:18,580 --> 00:06:20,920
+After I do my search, I'll do a console.log of total.
+
+117
+00:06:22,050 --> 00:06:22,860
+And documents.
+
+118
+00:06:25,150 --> 00:06:26,680
+And then going to go over to my browser.
+
+119
+00:06:28,100 --> 00:06:32,310
+I'm going to make sure I'm signed in and I'm going to create a brand new item to make sure that there's
+
+120
+00:06:32,320 --> 00:06:33,540
+actually an item to return.
+
+121
+00:06:34,110 --> 00:06:38,580
+I'm going to put in an item with the name of new chair the duration of one day.
+
+122
+00:06:40,150 --> 00:06:41,500
+And then go back to my dashboard.
+
+123
+00:06:42,100 --> 00:06:45,370
+Dashboard still will be empty, but I should have a console.log.
+
+124
+00:06:45,940 --> 00:06:46,990
+If I go over to my terminal.
+
+125
+00:06:47,590 --> 00:06:48,430
+Hey, how about that?
+
+126
+00:06:48,440 --> 00:06:49,780
+I actually see a result here.
+
+127
+00:06:50,850 --> 00:06:52,800
+So I can see a new chair, which I just created.
+
+128
+00:06:53,160 --> 00:06:57,120
+I will also see some other items I created in the past couple of videos.
+
+129
+00:06:58,410 --> 00:07:00,630
+And my total number of results is three.
+
+130
+00:07:00,810 --> 00:07:02,550
+That's how many items I have created.
+
+131
+00:07:03,240 --> 00:07:03,630
+The three.
+
+132
+00:07:03,630 --> 00:07:05,430
+These should all be items I made.
+
+133
+00:07:05,640 --> 00:07:08,040
+They should not be any items that are made by anyone else.
+
+134
+00:07:09,060 --> 00:07:09,920
+Let's say this looks good.
+
+135
+00:07:09,930 --> 00:07:11,490
+We're definitely on the right path here.
+
+136
+00:07:12,060 --> 00:07:13,140
+Now, the last thing we have to do.
+
+137
+00:07:15,350 --> 00:07:22,370
+Is take it all in documents and use those two values to return our total number of pages and this items
+
+138
+00:07:22,370 --> 00:07:22,940
+array as well.
+
+139
+00:07:23,300 --> 00:07:25,250
+Let's take care of those last steps in just a moment.

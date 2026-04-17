@@ -1,0 +1,259 @@
+1
+00:00:01,030 --> 00:00:02,950
+Let's get started on our implementation.
+
+2
+00:00:03,370 --> 00:00:05,680
+There are three distinct tasks that we need to go through.
+
+3
+00:00:06,070 --> 00:00:08,470
+First, we need to create a new key function.
+
+4
+00:00:08,740 --> 00:00:11,980
+So that function that's going to generate the key of simply usernames.
+
+5
+00:00:12,400 --> 00:00:12,700
+Number.
+
+6
+00:00:12,700 --> 00:00:16,480
+We've been creating these these key functions throughout the rest of the course whenever we need to
+
+7
+00:00:16,480 --> 00:00:19,660
+generate a key, even if it doesn't have any IDs in it.
+
+8
+00:00:20,820 --> 00:00:28,290
+So back inside my editor, I'm going to find the services he's got to file and add in a new key function
+
+9
+00:00:29,100 --> 00:00:30,000
+of usernames.
+
+10
+00:00:30,060 --> 00:00:30,480
+Key?
+
+11
+00:00:37,280 --> 00:00:41,840
+And then going to find once again the queries users not to yes file.
+
+12
+00:00:43,240 --> 00:00:48,100
+And I will implement the or import the usernames key function at the top.
+
+13
+00:00:51,570 --> 00:00:51,900
+All right.
+
+14
+00:00:51,930 --> 00:00:52,650
+That's step one.
+
+15
+00:00:53,250 --> 00:00:54,240
+Now, step two.
+
+16
+00:00:54,930 --> 00:00:59,130
+Step two is whenever someone tries to sign up to our application.
+
+17
+00:00:59,700 --> 00:01:00,990
+But here's the sign up flow.
+
+18
+00:01:01,620 --> 00:01:07,770
+We need to take the idea that we generate for this this person, and we need to add that ID along with
+
+19
+00:01:07,770 --> 00:01:11,670
+this person's username into this new set that we are talking about there.
+
+20
+00:01:11,670 --> 00:01:12,720
+During sign up.
+
+21
+00:01:12,960 --> 00:01:17,760
+We need to add in this username as a member along with their ID as a score.
+
+22
+00:01:18,360 --> 00:01:21,840
+Now in the last video I mentioned at the very end that we were going to run into an issue.
+
+23
+00:01:22,110 --> 00:01:27,180
+This is where the issue is going to come up specifically as we tried to add in the idea of the user.
+
+24
+00:01:27,690 --> 00:01:29,760
+But we'll see what the issue is in just a moment.
+
+25
+00:01:31,320 --> 00:01:34,800
+First we'll take care of the implementation back over inside of users.
+
+26
+00:01:34,870 --> 00:01:36,870
+Yes, I will find create user.
+
+27
+00:01:37,020 --> 00:01:39,840
+This is the function that gets called whenever someone tries to sign up.
+
+28
+00:01:40,470 --> 00:01:41,790
+This is where we generate an ID.
+
+29
+00:01:42,910 --> 00:01:48,460
+So after we generate the ID and we make sure that this username is not already in use, we can then
+
+30
+00:01:49,180 --> 00:01:54,490
+set the user hash, add in their username to our username set and then right after that is probably
+
+31
+00:01:54,490 --> 00:01:58,720
+a good place for us to add in a new record to our sorted set.
+
+32
+00:01:59,560 --> 00:02:09,850
+I'm going to do and await client z add usernames key and then to add in a new member score pair using
+
+33
+00:02:10,150 --> 00:02:16,570
+the node read client, we put in a second argument of an object that is going to have a value.
+
+34
+00:02:17,700 --> 00:02:18,570
+And a score.
+
+35
+00:02:20,630 --> 00:02:24,980
+So with no protests, they don't call it a member, they call it a value instead.
+
+36
+00:02:25,000 --> 00:02:26,750
+But value is members the same thing.
+
+37
+00:02:28,130 --> 00:02:30,200
+So the value is going to be our username.
+
+38
+00:02:31,720 --> 00:02:36,110
+Our username and be looked up through that adders object.
+
+39
+00:02:36,310 --> 00:02:39,060
+So adders has a property of not username.
+
+40
+00:02:39,070 --> 00:02:41,320
+We used it back right there just a little bit ago.
+
+41
+00:02:42,290 --> 00:02:45,200
+So we can put in our value as adders dot username.
+
+42
+00:02:46,180 --> 00:02:50,020
+And then the score is going to be the ID, which we had generated right there.
+
+43
+00:02:50,720 --> 00:02:55,910
+I'm going to put in ID and right there is where we're going to run into our issue, like I said.
+
+44
+00:02:56,020 --> 00:03:00,430
+So we expected this to come up and this is a error that I really want you to see and I really want you
+
+45
+00:03:00,430 --> 00:03:01,960
+to see the work around to it.
+
+46
+00:03:02,770 --> 00:03:08,200
+The error is specifically by hover over this, you know, really long error here that says type string
+
+47
+00:03:08,500 --> 00:03:10,600
+is not assignable to type number.
+
+48
+00:03:11,260 --> 00:03:12,550
+So what's that all about?
+
+49
+00:03:13,180 --> 00:03:19,770
+Well, remember, our sorted sets, all sorted sets in red is the value or the score.
+
+50
+00:03:19,780 --> 00:03:22,510
+Over here on the right hand side must be a number.
+
+51
+00:03:22,900 --> 00:03:27,040
+And in all these diagrams I've been showing them as numbers, even in this diagram right here, I'm
+
+52
+00:03:27,040 --> 00:03:28,750
+showing the ID as a number.
+
+53
+00:03:29,380 --> 00:03:29,950
+However.
+
+54
+00:03:30,910 --> 00:03:33,760
+The function that we're using to generate an ID right here.
+
+55
+00:03:34,030 --> 00:03:36,940
+Returns a string of a mouse over ID.
+
+56
+00:03:37,360 --> 00:03:38,620
+That is a string right there.
+
+57
+00:03:39,550 --> 00:03:43,480
+An I.D. function creates a ID that looks kind of something like this.
+
+58
+00:03:45,160 --> 00:03:49,390
+It's a string that represents a number encoded in hexadecimal.
+
+59
+00:03:49,630 --> 00:03:55,840
+So we get this kind of collection of alphanumeric characters, though it appears at first glance that
+
+60
+00:03:55,840 --> 00:04:01,600
+we will not be able to use the ID as a score inside of our user username.
+
+61
+00:04:01,600 --> 00:04:01,990
+Sorted.
+
+62
+00:04:01,990 --> 00:04:02,350
+Set.
+
+63
+00:04:03,300 --> 00:04:04,440
+Well, that's definitely an issue.
+
+64
+00:04:04,950 --> 00:04:05,970
+Let's take a pause right here.
+
+65
+00:04:06,000 --> 00:04:10,020
+We'll come back in just a moment and I'll show you how we can very easily get around this limitation.

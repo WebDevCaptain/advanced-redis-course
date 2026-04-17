@@ -1,0 +1,79 @@
+1
+00:00:00,680 --> 00:00:01,730
+Hello and welcome.
+
+2
+00:00:01,820 --> 00:00:05,960
+My name is Stephen Greiner and I'm really excited to teach you everything I know about Redis.
+
+3
+00:00:06,410 --> 00:00:10,760
+Before we dive into our first technical topic, however, I just want to make sure that you have a couple
+
+4
+00:00:10,760 --> 00:00:15,500
+of notes on how to get unstuck if you ever run into any trouble inside this course.
+
+5
+00:00:16,100 --> 00:00:19,010
+So if you ever get stuck or you have any big questions, come up.
+
+6
+00:00:19,330 --> 00:00:20,570
+A couple of quick tips here.
+
+7
+00:00:20,990 --> 00:00:23,790
+The first thing you might try to do is do a search on the course.
+
+8
+00:00:24,560 --> 00:00:26,300
+There's a lot of discussion going on in the queue.
+
+9
+00:00:26,750 --> 00:00:30,920
+So always do a quick search there because if you have a question, chances are someone else might have
+
+10
+00:00:30,920 --> 00:00:32,780
+already asked it at some point in time.
+
+11
+00:00:33,650 --> 00:00:36,560
+Second, you can ask a question on our Discord server.
+
+12
+00:00:37,010 --> 00:00:39,080
+Discord is a free chat application.
+
+13
+00:00:39,350 --> 00:00:42,390
+You can find a link to our Discord server in the next lecture.
+
+14
+00:00:42,420 --> 00:00:43,700
+It's the one right after this one.
+
+15
+00:00:44,390 --> 00:00:47,660
+And then finally, don't forget, you've always got Google at hand as well.
+
+16
+00:00:48,050 --> 00:00:52,790
+Redis is a very popular database, and just about every problem that has ever come up with rightists
+
+17
+00:00:52,970 --> 00:00:55,580
+has been asked at some point in time somewhere online.
+
+18
+00:00:55,970 --> 00:00:59,720
+So you can always do a search and try to find a solution somewhere online.
+
+19
+00:01:00,620 --> 00:01:01,490
+Okay, so that's it.
+
+20
+00:01:01,520 --> 00:01:05,180
+Let's get started on some actual technical stuff in the next video.

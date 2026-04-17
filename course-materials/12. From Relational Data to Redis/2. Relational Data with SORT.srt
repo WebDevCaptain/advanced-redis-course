@@ -1,0 +1,367 @@
+1
+00:00:00,850 --> 00:00:05,710
+Now seeing one example of loading up a bunch of relational data using a simple pipeline.
+
+2
+00:00:05,740 --> 00:00:06,820
+So that's what we just did.
+
+3
+00:00:07,330 --> 00:00:10,180
+Now, this definitely worked, and it was a pretty simple and straightforward approach.
+
+4
+00:00:10,420 --> 00:00:13,180
+But it had one simple downside to it.
+
+5
+00:00:13,480 --> 00:00:17,050
+And a downside was that it takes two separate quest to load up our data.
+
+6
+00:00:17,380 --> 00:00:22,540
+We had one request to fetch all the relevant keys out of our sorted set, and then we had to make a
+
+7
+00:00:22,540 --> 00:00:25,300
+second request to do our each get calls.
+
+8
+00:00:25,420 --> 00:00:26,790
+And there's really no way around that.
+
+9
+00:00:26,800 --> 00:00:28,840
+It's always going to take two separate requests.
+
+10
+00:00:29,820 --> 00:00:30,320
+Three going, go.
+
+11
+00:00:30,450 --> 00:00:33,540
+Now take a look at a second way of loading up some of our data.
+
+12
+00:00:33,810 --> 00:00:37,620
+In this case, we're going to use a command that we've not yet discussed, called sort.
+
+13
+00:00:38,460 --> 00:00:40,950
+Now, understanding sort is rather challenging.
+
+14
+00:00:40,950 --> 00:00:44,280
+It's one of the more challenging commands in red is to understand.
+
+15
+00:00:44,820 --> 00:00:50,160
+So in this video, we're going to write out a little bit of of code just to prove that we can load up
+
+16
+00:00:50,160 --> 00:00:54,390
+our data, this relational data, with one single command using source.
+
+17
+00:00:54,900 --> 00:00:58,860
+And then after that we're going to do a deep dive on the source command itself will then come back to
+
+18
+00:00:58,860 --> 00:01:01,620
+our application and kind of patch up our query a little bit more.
+
+19
+00:01:01,980 --> 00:01:05,100
+So again, right now, little bit of code writing just to make use of sort.
+
+20
+00:01:05,250 --> 00:01:10,800
+We're not going to dive into sort too much, come back, understand sorts and then eventually finish
+
+21
+00:01:10,800 --> 00:01:11,640
+up the implementation.
+
+22
+00:01:12,300 --> 00:01:12,630
+Okay.
+
+23
+00:01:13,020 --> 00:01:20,310
+So back inside my editor, I'm going to find our I views knots file inside the queries items directory.
+
+24
+00:01:22,340 --> 00:01:25,970
+This file is identical to the ending time file that we were just working on.
+
+25
+00:01:26,360 --> 00:01:30,920
+There's a single function inside of here that's going to be called with some order argument, offsets
+
+26
+00:01:30,920 --> 00:01:31,610
+and count.
+
+27
+00:01:32,150 --> 00:01:38,960
+And our goal is to return an array of items that have been serialized that have the most views.
+
+28
+00:01:40,650 --> 00:01:45,120
+Like I said, we're going to write out the implementation very quickly and then just kind of make sure
+
+29
+00:01:45,120 --> 00:01:47,720
+it's somewhat works and then do a deeper dive on source.
+
+30
+00:01:47,730 --> 00:01:50,160
+So let's get to it at the very top.
+
+31
+00:01:50,160 --> 00:01:52,500
+I'm going to first begin by importing client.
+
+32
+00:01:53,780 --> 00:01:55,010
+From services.
+
+33
+00:01:56,750 --> 00:01:57,050
+This.
+
+34
+00:01:58,260 --> 00:02:02,580
+Then our items key and items by views key.
+
+35
+00:02:07,630 --> 00:02:07,880
+Okay.
+
+36
+00:02:07,930 --> 00:02:14,950
+Then inside this function you can write out results is a weight client sorts.
+
+37
+00:02:16,920 --> 00:02:19,950
+I'm going to put in items by the use key.
+
+38
+00:02:19,980 --> 00:02:21,780
+So that's the key of our sorted set.
+
+39
+00:02:21,780 --> 00:02:26,520
+That's recording all these different item IDs with respect to the number of use they have.
+
+40
+00:02:27,390 --> 00:02:31,980
+And as a second argument, I'm going to put in an options object and here's where things are going to
+
+41
+00:02:31,980 --> 00:02:33,010
+get a little bit strange.
+
+42
+00:02:33,030 --> 00:02:34,470
+So just bear with me for right now.
+
+43
+00:02:34,650 --> 00:02:39,300
+Like I said, we're going to come back and go over all the code a lot more once we understand sort by
+
+44
+00:02:39,300 --> 00:02:39,660
+itself.
+
+45
+00:02:40,730 --> 00:02:45,640
+The first option we're going to put into the options object is capital G.
+
+46
+00:02:45,670 --> 00:02:46,700
+It gets.
+
+47
+00:02:47,880 --> 00:02:52,740
+This will be an array and we're going to put a couple of rather strange strings inside of here.
+
+48
+00:02:53,430 --> 00:02:54,960
+I'm going to put in a pound.
+
+49
+00:02:57,120 --> 00:02:58,140
+And then going to put in.
+
+50
+00:02:59,850 --> 00:03:00,860
+A template string.
+
+51
+00:03:00,870 --> 00:03:02,090
+So that is a back tick.
+
+52
+00:03:02,100 --> 00:03:04,830
+It is not a single quote, it is a back tick.
+
+53
+00:03:04,890 --> 00:03:06,900
+That's a character to the left of the one on your keyboard.
+
+54
+00:03:07,780 --> 00:03:09,780
+Inside if you're going to do a dollar sign.
+
+55
+00:03:09,790 --> 00:03:10,570
+Curly brace.
+
+56
+00:03:11,540 --> 00:03:12,530
+Items key.
+
+57
+00:03:15,020 --> 00:03:15,560
+Star.
+
+58
+00:03:17,550 --> 00:03:22,050
+Then right outside of the curly braces dash.
+
+59
+00:03:23,100 --> 00:03:23,820
+Greater than.
+
+60
+00:03:24,840 --> 00:03:25,350
+Name.
+
+61
+00:03:26,190 --> 00:03:29,520
+I'm then going to copy that down once and change name to views.
+
+62
+00:03:29,730 --> 00:03:33,760
+Now please, please, please triple check what you've got right here on these two lines.
+
+63
+00:03:33,780 --> 00:03:35,070
+These are two very tricky lines.
+
+64
+00:03:35,100 --> 00:03:37,020
+Just make sure you have the correct syntax.
+
+65
+00:03:40,920 --> 00:03:42,210
+After we've got that get in there.
+
+66
+00:03:42,210 --> 00:03:45,240
+I'm going to add on one or two more options I'll put in by.
+
+67
+00:03:46,230 --> 00:03:46,740
+Score.
+
+68
+00:03:46,770 --> 00:03:49,140
+And once again notice that by is all capitals.
+
+69
+00:03:51,780 --> 00:03:54,660
+All right, finally, I'm going to do it down here.
+
+70
+00:03:54,660 --> 00:03:56,910
+A console.log of results.
+
+71
+00:03:58,070 --> 00:03:58,790
+I'll save the file.
+
+72
+00:04:00,330 --> 00:04:03,210
+Then to test all this out, I'm going to go back over to my browser.
+
+73
+00:04:03,510 --> 00:04:08,280
+I'm going to refresh the landing page and then go back over to my terminal to see the console.log.
+
+74
+00:04:09,220 --> 00:04:11,320
+And now I get a result right here.
+
+75
+00:04:11,320 --> 00:04:14,860
+And the result is a little bit challenging to read, but let me kind of interpret it for you.
+
+76
+00:04:15,460 --> 00:04:21,760
+Inside of this array of strings, I've got the idea of an item, the title of an item, and the number
+
+77
+00:04:21,760 --> 00:04:22,960
+of views of the item.
+
+78
+00:04:23,560 --> 00:04:25,390
+And it looks like that order is repeating.
+
+79
+00:04:25,390 --> 00:04:30,040
+So I see it title views, i.e. title views, i.e. title views and so on.
+
+80
+00:04:31,300 --> 00:04:33,400
+Now, this is a little bit unexpected.
+
+81
+00:04:33,760 --> 00:04:34,780
+I shouldn't say unexpected.
+
+82
+00:04:34,780 --> 00:04:35,770
+It's totally unexpected.
+
+83
+00:04:35,920 --> 00:04:39,070
+But this is a kind of data that we've definitely not worked with before.
+
+84
+00:04:39,460 --> 00:04:45,670
+It's rather clear now that we are somehow working with a sorted set, but also simultaneously accessing
+
+85
+00:04:45,670 --> 00:04:47,650
+data that is stored inside of hashes.
+
+86
+00:04:48,250 --> 00:04:52,330
+So this is the sort command in action beyond just sorting data.
+
+87
+00:04:52,450 --> 00:04:57,760
+It also allows us to join together data from different sources into one single structure.
+
+88
+00:04:58,750 --> 00:04:59,110
+Okay.
+
+89
+00:04:59,320 --> 00:05:03,940
+So now that we've got this little bit of code put together, we do, of course, have to come back and
+
+90
+00:05:03,940 --> 00:05:05,950
+do some more implementation, like I mentioned.
+
+91
+00:05:06,220 --> 00:05:10,870
+But first, we're going to do a quick aside and get a much better understanding of the Sorte Command
+
+92
+00:05:10,900 --> 00:05:12,490
+because it is a tricky one.

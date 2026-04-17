@@ -1,0 +1,583 @@
+1
+00:00:01,820 --> 00:00:04,130
+To understand a little bit more around consumer groups.
+
+2
+00:00:04,130 --> 00:00:06,830
+I would like to add in a couple of elements to our stream.
+
+3
+00:00:07,370 --> 00:00:11,360
+So inside this first code cell, I'm going to add in a couple lines here at the bottom.
+
+4
+00:00:11,600 --> 00:00:14,330
+In total, I'm going to add in three messages to the fruit stream.
+
+5
+00:00:14,810 --> 00:00:20,600
+I'll do an X, add a fruits, and then remember, usually we would put in a star right here, which
+
+6
+00:00:20,600 --> 00:00:23,780
+means that we want Redis to put in a timestamp for us automatically.
+
+7
+00:00:24,380 --> 00:00:28,970
+We're going to override that behavior just to make this example in the diagrams around it a little bit
+
+8
+00:00:28,970 --> 00:00:30,140
+easier to understand.
+
+9
+00:00:30,740 --> 00:00:38,600
+So I'm going to override the automatic ID creation and put in a hardcoded ID of ten dash zero instead.
+
+10
+00:00:39,570 --> 00:00:42,510
+Remember, we would normally not do this on any real project.
+
+11
+00:00:42,750 --> 00:00:46,410
+We would always want to default to allowing readers to assign the timestamp for us.
+
+12
+00:00:46,800 --> 00:00:49,590
+We're only doing this to make these diagrams make a little bit more sense.
+
+13
+00:00:50,970 --> 00:00:55,260
+And they're going to add in a name of banana and a color of yellow.
+
+14
+00:00:56,100 --> 00:00:58,500
+And then I'm going to duplicate that line down twice.
+
+15
+00:00:59,590 --> 00:01:02,890
+On the next one, I'll give an idea of 20 and then 30.
+
+16
+00:01:05,130 --> 00:01:09,690
+On the second one, I'll do a name of Apple and a color of red.
+
+17
+00:01:10,500 --> 00:01:13,920
+And then finally, a name of orange and a color of orange.
+
+18
+00:01:14,550 --> 00:01:17,220
+What's going to add a comment on here that just makes it super clear?
+
+19
+00:01:17,910 --> 00:01:19,790
+Don't specify an idea.
+
+20
+00:01:20,250 --> 00:01:22,680
+Let Red s do it with Star.
+
+21
+00:01:22,710 --> 00:01:24,540
+Just as a reminder to ourselves in the future.
+
+22
+00:01:27,060 --> 00:01:28,050
+Okay, Arun, that's.
+
+23
+00:01:28,170 --> 00:01:29,490
+So now we've got our stream.
+
+24
+00:01:29,490 --> 00:01:34,080
+We've got a consumer group, two consumers and three messages inside of the stream.
+
+25
+00:01:34,950 --> 00:01:39,780
+Now we're going to understand how we can read messages out of a stream using a consumer group.
+
+26
+00:01:40,740 --> 00:01:45,180
+To do so we're going to use a command very similar to X Reid, just a little variation on it called
+
+27
+00:01:45,180 --> 00:01:48,870
+x Reid Group, so it behaves very similar to X read.
+
+28
+00:01:49,080 --> 00:01:52,890
+It just follows all the semantics we discussed around consumer groups a moment ago.
+
+29
+00:01:53,890 --> 00:01:56,200
+The first argument is going to be the name of our group.
+
+30
+00:01:56,350 --> 00:01:57,670
+So group for each group.
+
+31
+00:01:58,790 --> 00:02:02,120
+We're then going to specify who we want to pretend that we are.
+
+32
+00:02:02,690 --> 00:02:04,670
+So we're going to put in a worker name right here.
+
+33
+00:02:05,300 --> 00:02:10,970
+So remember, whenever we are creating a group, this is not really something that is tied very closely
+
+34
+00:02:10,970 --> 00:02:15,650
+to the individual clients or the API servers or anything like that that we are interacting with the
+
+35
+00:02:15,650 --> 00:02:16,160
+writers with.
+
+36
+00:02:16,400 --> 00:02:21,500
+Instead, this entire idea of a consumer group is something that exists entirely inside of Redis.
+
+37
+00:02:22,370 --> 00:02:27,440
+So whenever we interact with a consumer group, we need to be very specific and say we are interacting
+
+38
+00:02:27,440 --> 00:02:33,650
+with this group, pretending that we are currently worker one or worker two, three or four or whatever
+
+39
+00:02:33,650 --> 00:02:33,920
+else.
+
+40
+00:02:35,910 --> 00:02:37,830
+We then have two optional arguments once again.
+
+41
+00:02:37,830 --> 00:02:39,750
+So count one and block 2000.
+
+42
+00:02:40,660 --> 00:02:42,970
+And then here is another interesting addition.
+
+43
+00:02:43,330 --> 00:02:46,030
+We're going to specify which streams we want to read from.
+
+44
+00:02:46,690 --> 00:02:49,240
+And we're also going to put in a special symbol right here.
+
+45
+00:02:49,840 --> 00:02:56,680
+We can put in the idea of where we want to start reading from our stream from, but we usually are going
+
+46
+00:02:56,680 --> 00:03:01,330
+to use a shortcut instead of just a greater than sine this greater than sine means.
+
+47
+00:03:01,510 --> 00:03:07,600
+Give us any undelivered messages, any messages that have not yet been delivered to or processed by
+
+48
+00:03:07,600 --> 00:03:09,430
+anyone else inside the consumer group.
+
+49
+00:03:10,930 --> 00:03:11,150
+Yes.
+
+50
+00:03:11,160 --> 00:03:12,920
+Let's try running this command really quickly.
+
+51
+00:03:13,580 --> 00:03:14,090
+Back over here.
+
+52
+00:03:14,090 --> 00:03:16,610
+I'm going to add in a new code cell underneath the first one.
+
+53
+00:03:18,310 --> 00:03:19,900
+And then we will do an X.
+
+54
+00:03:21,160 --> 00:03:22,030
+Reid group.
+
+55
+00:03:23,510 --> 00:03:25,190
+The group is brutes group.
+
+56
+00:03:25,820 --> 00:03:27,740
+I want to pretend that I am worker one.
+
+57
+00:03:28,630 --> 00:03:31,960
+I only want to get one element so I can do a count one.
+
+58
+00:03:33,230 --> 00:03:36,560
+And then streams roots greater than.
+
+59
+00:03:37,440 --> 00:03:38,550
+That's all on one line.
+
+60
+00:03:40,570 --> 00:03:46,570
+I'm going to run that and we should get back our idea of ten banana color yellow.
+
+61
+00:03:46,690 --> 00:03:48,460
+And sure enough, that's exactly what happens.
+
+62
+00:03:50,950 --> 00:03:53,680
+Now at this point, it looks like we got the message and that's it.
+
+63
+00:03:53,740 --> 00:03:56,530
+But there's a lot of stuff going on behind the scenes now.
+
+64
+00:03:56,870 --> 00:04:01,540
+I want to show you a diagram and help you really start to picture and visualize what just occurred.
+
+65
+00:04:03,350 --> 00:04:03,750
+Okay.
+
+66
+00:04:03,800 --> 00:04:04,270
+Here we go.
+
+67
+00:04:06,080 --> 00:04:06,890
+So here's Regis.
+
+68
+00:04:07,400 --> 00:04:08,270
+We've got our stream.
+
+69
+00:04:08,300 --> 00:04:09,890
+There are three messages inside of it.
+
+70
+00:04:10,460 --> 00:04:13,640
+We've got a stream log that doesn't really have a lot of info in it just yet.
+
+71
+00:04:14,240 --> 00:04:17,330
+We've then got worker one and Worker two inside of our consumer group.
+
+72
+00:04:17,870 --> 00:04:19,700
+We just ran this command right here.
+
+73
+00:04:20,710 --> 00:04:23,260
+So this means saying or pretending that we are.
+
+74
+00:04:23,260 --> 00:04:29,950
+Worker one Go into our stream, get one message and we want to get the first message that has not been
+
+75
+00:04:29,950 --> 00:04:31,100
+delivered to anyone else.
+
+76
+00:04:31,120 --> 00:04:32,290
+That's what the greater that means.
+
+77
+00:04:33,650 --> 00:04:36,050
+The readies internally is going to look at its stream log.
+
+78
+00:04:36,060 --> 00:04:37,830
+It's going to look at the last delivered ID.
+
+79
+00:04:38,190 --> 00:04:40,820
+It's going to see that nothing has ever been delivered before.
+
+80
+00:04:41,340 --> 00:04:45,990
+So it's going to go and find the very first message and send it off to worker one.
+
+81
+00:04:47,800 --> 00:04:51,940
+After sending that off to work or one Reddit will immediately make an update to the stream log.
+
+82
+00:04:52,150 --> 00:04:57,190
+It's going to say I sent ten zero to worker one.
+
+83
+00:04:58,620 --> 00:05:03,220
+They have not acknowledged the message yet.
+
+84
+00:05:04,060 --> 00:05:07,740
+Remember, every message has to be acknowledged by the worker at some point in time.
+
+85
+00:05:07,950 --> 00:05:12,390
+Otherwise, Red is going to think that it's still pending and it's still waiting to be processed by
+
+86
+00:05:12,390 --> 00:05:12,960
+that worker.
+
+87
+00:05:13,860 --> 00:05:17,490
+We're going to cover the entire process of acknowledging a message in just a little bit.
+
+88
+00:05:17,520 --> 00:05:18,720
+We have not discussed that yet.
+
+89
+00:05:19,900 --> 00:05:22,280
+Readers will then also update this last delivered ID.
+
+90
+00:05:22,720 --> 00:05:24,400
+210 dash zero.
+
+91
+00:05:26,360 --> 00:05:30,220
+Now remember reticent generally does not delete that message out of the stream.
+
+92
+00:05:30,230 --> 00:05:31,130
+It still exists.
+
+93
+00:05:31,640 --> 00:05:35,420
+Any other worker or any other consumer can still read from the stream.
+
+94
+00:05:35,450 --> 00:05:39,890
+Normally, we can even have multiple consumer groups operating on a single stream.
+
+95
+00:05:40,490 --> 00:05:43,730
+So the consumer group doesn't change the behavior of the stream itself.
+
+96
+00:05:43,910 --> 00:05:46,260
+It just really adds on this additional data structure.
+
+97
+00:05:46,280 --> 00:05:49,220
+The stream log for this particular consumer group.
+
+98
+00:05:50,240 --> 00:05:51,860
+So the original message still there.
+
+99
+00:05:54,020 --> 00:06:01,370
+Let's now imagine that we do a second x ray group are we're going to change the worker name to worker
+
+100
+00:06:01,370 --> 00:06:03,710
+two and everything else can stay the same.
+
+101
+00:06:04,280 --> 00:06:05,300
+What would happen in this case?
+
+102
+00:06:06,170 --> 00:06:10,310
+Well, WORKER two We're going to imagine is going to need to get another message.
+
+103
+00:06:10,730 --> 00:06:13,130
+So this is going to look at the last delivered ID.
+
+104
+00:06:13,910 --> 00:06:16,340
+It's going to see that the last delivered one was ten zero.
+
+105
+00:06:16,610 --> 00:06:20,000
+So it's going to go and find the next message, which in this case is 20 zero.
+
+106
+00:06:21,110 --> 00:06:26,900
+You'll will send it off to work or to and then update the stream log to say I sent one zero to work
+
+107
+00:06:26,900 --> 00:06:27,350
+or to.
+
+108
+00:06:30,470 --> 00:06:31,910
+They have not asked the message yet.
+
+109
+00:06:32,180 --> 00:06:34,530
+And then it will also update the last delivered it.
+
+110
+00:06:35,690 --> 00:06:37,650
+And I think you can see where this is going.
+
+111
+00:06:37,670 --> 00:06:39,920
+If we now did another X Reid group.
+
+112
+00:06:42,270 --> 00:06:43,110
+With Worker one.
+
+113
+00:06:43,590 --> 00:06:45,120
+We will now get 30.
+
+114
+00:06:45,390 --> 00:06:46,710
+Send it off to worker one.
+
+115
+00:06:48,590 --> 00:06:51,290
+We would put in this updated message into our stream log.
+
+116
+00:06:52,590 --> 00:06:52,890
+Now.
+
+117
+00:06:52,890 --> 00:06:54,780
+Our last delivered ID would be 30.
+
+118
+00:06:56,070 --> 00:06:57,780
+That's everything that's going on behind the scenes.
+
+119
+00:06:58,530 --> 00:07:00,470
+Let's go and run a couple more commands now.
+
+120
+00:07:00,480 --> 00:07:02,220
+We're going to do some more X regroups.
+
+121
+00:07:02,220 --> 00:07:06,840
+We're also going to run those X info commands and just verify that this is all how things are working.
+
+122
+00:07:07,530 --> 00:07:08,130
+At this point.
+
+123
+00:07:08,130 --> 00:07:14,070
+I've only read the ten zero, so let's try doing an x info groups.
+
+124
+00:07:16,150 --> 00:07:18,400
+We'll see that the last delivered ID is ten zero.
+
+125
+00:07:19,090 --> 00:07:20,510
+There's one message pending.
+
+126
+00:07:20,530 --> 00:07:22,810
+So that's the message that we sent to Worker one.
+
+127
+00:07:22,810 --> 00:07:24,520
+But it has not yet been asked.
+
+128
+00:07:24,700 --> 00:07:26,980
+So pending means not acknowledged yet.
+
+129
+00:07:28,040 --> 00:07:33,170
+And then if we get some info on the group itself, we'll see that worker one has one message pending.
+
+130
+00:07:34,830 --> 00:07:35,760
+And Worker two.
+
+131
+00:07:36,000 --> 00:07:37,170
+Nothing pending just yet.
+
+132
+00:07:38,720 --> 00:07:40,340
+All right, let's do another X, regroup.
+
+133
+00:07:41,210 --> 00:07:43,910
+I'm going to change the worker name to worker two.
+
+134
+00:07:45,730 --> 00:07:46,360
+I'll run that.
+
+135
+00:07:46,580 --> 00:07:49,930
+So now we get 20 8-0 only as expected.
+
+136
+00:07:51,320 --> 00:07:57,560
+If we do another X info groups, we'll now see that two messages are pending that those are waiting
+
+137
+00:07:57,560 --> 00:07:58,030
+to be asked.
+
+138
+00:07:58,430 --> 00:07:59,720
+Last delivered idea of 20.
+
+139
+00:08:00,560 --> 00:08:06,560
+And as you guessed, if we do an x info, consumers will now see that worker number two has a pending
+
+140
+00:08:06,560 --> 00:08:07,460
+message as well.
+
+141
+00:08:09,640 --> 00:08:09,970
+Okay.
+
+142
+00:08:10,360 --> 00:08:12,260
+So we've gotten pretty far on consumer groups.
+
+143
+00:08:12,290 --> 00:08:18,190
+I think the last big ticket item for us to understand here is what it really means to ask a message.
+
+144
+00:08:19,170 --> 00:08:24,570
+Acting is the real key concept here that's going to help us recover if some worker gets delivered a
+
+145
+00:08:24,570 --> 00:08:27,690
+message and then just mysteriously crashes for some reason.
+
+146
+00:08:28,290 --> 00:08:30,180
+So let's take a look at acting in the next video.

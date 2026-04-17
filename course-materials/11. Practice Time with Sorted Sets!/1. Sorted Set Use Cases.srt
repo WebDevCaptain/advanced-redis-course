@@ -1,0 +1,575 @@
+1
+00:00:01,270 --> 00:00:06,190
+As I mentioned, previously sorted sets are very flexible and we can use them in a wide variety of different
+
+2
+00:00:06,190 --> 00:00:06,820
+applications.
+
+3
+00:00:07,240 --> 00:00:12,310
+We're going to focus right now on two very particular use cases around sorted sets, because I think
+
+4
+00:00:12,310 --> 00:00:15,430
+that they're probably going to be the most common use cases you run into.
+
+5
+00:00:16,150 --> 00:00:23,860
+The first use case is going to be tabulating the most of or the least of some attributes of a collection
+
+6
+00:00:23,860 --> 00:00:25,340
+of related hashes.
+
+7
+00:00:26,260 --> 00:00:29,740
+Now, that probably in plain English does not make any sense whatsoever.
+
+8
+00:00:29,980 --> 00:00:31,420
+So quick diagram.
+
+9
+00:00:32,850 --> 00:00:33,200
+All right.
+
+10
+00:00:33,210 --> 00:00:38,610
+So let's imagine we are making some kind of book purchasing application, say something like Amazon
+
+11
+00:00:39,390 --> 00:00:41,760
+and we are using Redis as our primary data store.
+
+12
+00:00:42,450 --> 00:00:46,890
+Well, to make a book purchasing application, the first thing we need to do is store information about
+
+13
+00:00:46,890 --> 00:00:47,820
+individual books.
+
+14
+00:00:48,420 --> 00:00:53,910
+Let's imagine that for every different book that we have, we create a separate hash.
+
+15
+00:00:54,450 --> 00:00:56,100
+So here is a book with I5.
+
+16
+00:00:56,700 --> 00:01:00,120
+It's got a hash with a key of some title and some author.
+
+17
+00:01:00,840 --> 00:01:01,610
+And then same thing.
+
+18
+00:01:01,620 --> 00:01:03,810
+Another book with an idea of 18.
+
+19
+00:01:04,930 --> 00:01:09,790
+And of course, we could try to list out all these different hashes to the user and just make them some
+
+20
+00:01:09,790 --> 00:01:10,480
+big list.
+
+21
+00:01:11,170 --> 00:01:14,970
+But we would want to apply some ordering to list of books that we show to a user.
+
+22
+00:01:14,980 --> 00:01:19,510
+We might want to list out the books with the most reviews or ratings or purchases.
+
+23
+00:01:20,550 --> 00:01:23,810
+And to list out the books in some particular order.
+
+24
+00:01:23,880 --> 00:01:26,160
+That's where a sorted set would come into play.
+
+25
+00:01:27,280 --> 00:01:32,950
+But we might want to list out to users the books sorted by which have the most reviews, which have
+
+26
+00:01:32,950 --> 00:01:35,770
+the best ratings and which had the most purchases.
+
+27
+00:01:36,310 --> 00:01:39,340
+For each of these three different attributes, we would have a separate sorted set.
+
+28
+00:01:40,240 --> 00:01:46,240
+So to answer which book has the most reviews, we can have a sorted set where the members are the keys
+
+29
+00:01:46,240 --> 00:01:48,550
+of our different book hashes.
+
+30
+00:01:49,260 --> 00:01:55,060
+I've got this book right here stored as a member, and when I say stored as a member, I mean just the
+
+31
+00:01:55,060 --> 00:01:56,210
+key of that book.
+
+32
+00:01:56,230 --> 00:01:57,730
+Just the key is stored as a member.
+
+33
+00:01:58,450 --> 00:02:02,080
+And then a score would be the number of reviews that this book has received.
+
+34
+00:02:02,950 --> 00:02:07,600
+I've also got books 18 right here, and maybe this one has only gotten five reviews.
+
+35
+00:02:09,200 --> 00:02:14,030
+But now with this sorted set, I could very easily answer the question Which book has the most reviews?
+
+36
+00:02:14,300 --> 00:02:20,240
+I would do a very simple Z range operation on this and maybe get the book with just the top level,
+
+37
+00:02:20,430 --> 00:02:22,070
+the absolute most reviews.
+
+38
+00:02:23,110 --> 00:02:30,030
+Well, I could do that with a very simple Z range, with a reverse argument and then a limit of one.
+
+39
+00:02:31,320 --> 00:02:32,880
+Technically a limit of zero one.
+
+40
+00:02:34,790 --> 00:02:36,370
+That would give me books five.
+
+41
+00:02:37,000 --> 00:02:40,390
+I would then take that key right there and do a separate lookup.
+
+42
+00:02:40,390 --> 00:02:46,480
+So a second query and get the books at five right here that give me back my cache and I'd have the title
+
+43
+00:02:46,480 --> 00:02:48,850
+and the author of the book with the most reviews.
+
+44
+00:02:49,940 --> 00:02:53,960
+We can then repeat very similar operations to answer the question Which book has the highest rating
+
+45
+00:02:54,200 --> 00:02:56,030
+and which book has the most purchases?
+
+46
+00:02:57,330 --> 00:03:00,780
+Now in each of these sorted set examples here, one thing I want to point out very quickly.
+
+47
+00:03:01,110 --> 00:03:06,060
+As the member, I'm putting in the full key of, say, books, 18 books, five and so on.
+
+48
+00:03:06,930 --> 00:03:10,060
+But just to save space, we don't really have to store that entire key right there.
+
+49
+00:03:10,080 --> 00:03:12,840
+We might instead store just the idea of this book.
+
+50
+00:03:12,850 --> 00:03:15,840
+So just say 18 or just five right there.
+
+51
+00:03:16,200 --> 00:03:17,920
+We don't have to store the entire key, the hash.
+
+52
+00:03:17,940 --> 00:03:19,440
+It can be just the ID by itself.
+
+53
+00:03:21,260 --> 00:03:21,530
+All right.
+
+54
+00:03:21,530 --> 00:03:27,740
+So that is one possible use case any time where we want to store the most of or the least of some attributes
+
+55
+00:03:27,920 --> 00:03:29,600
+of a couple of different hashes.
+
+56
+00:03:31,230 --> 00:03:32,820
+Second very common use case.
+
+57
+00:03:32,820 --> 00:03:37,080
+And again, we're going to run to this quite a bit on our e-commerce application is any time we want
+
+58
+00:03:37,080 --> 00:03:43,740
+to create relationships between records and we want to sort those relationships based on some criteria.
+
+59
+00:03:44,400 --> 00:03:46,170
+So again, let me show you an example.
+
+60
+00:03:48,090 --> 00:03:48,450
+Okay.
+
+61
+00:03:48,480 --> 00:03:53,760
+Once again, let's imagine we are making a book sort of application, something related to books or
+
+62
+00:03:53,760 --> 00:03:55,170
+writing books or something like that.
+
+63
+00:03:55,290 --> 00:04:00,060
+Maybe in this case we are allowing people to write books or author books on our platform.
+
+64
+00:04:01,190 --> 00:04:04,700
+We might have a list of authors and a list of books that are being written.
+
+65
+00:04:06,060 --> 00:04:07,770
+And maybe we'll say that our book is a.
+
+66
+00:04:08,130 --> 00:04:11,250
+Or our application is a collaborative book writing platform.
+
+67
+00:04:11,910 --> 00:04:14,910
+So two different authors and work on the same book.
+
+68
+00:04:15,090 --> 00:04:21,450
+We'll say maybe Samantha and Alex are both working together on a book called.
+
+69
+00:04:22,870 --> 00:04:23,650
+A biography.
+
+70
+00:04:24,720 --> 00:04:29,100
+And they are also both working together on another book called History Book.
+
+71
+00:04:32,160 --> 00:04:32,730
+There we go.
+
+72
+00:04:34,910 --> 00:04:37,580
+Now we've got a relationship between these different records.
+
+73
+00:04:38,360 --> 00:04:43,970
+The story, this kind of relationship inside of red is we might first create a hash to represent each
+
+74
+00:04:43,970 --> 00:04:46,400
+individual author and each individual book.
+
+75
+00:04:46,850 --> 00:04:48,390
+And so we'd end up with something like this.
+
+76
+00:04:49,310 --> 00:04:54,860
+We've got the author with a name of Samantha, an author with the name of Alex, and then the hash for
+
+77
+00:04:55,220 --> 00:04:57,650
+the first book and a house for the second book.
+
+78
+00:04:58,380 --> 00:05:00,530
+Now we need to add in some more data here.
+
+79
+00:05:00,550 --> 00:05:06,230
+We need to somehow relate together the fact that Samantha and Alex are both working on different both
+
+80
+00:05:06,230 --> 00:05:07,010
+these different books.
+
+81
+00:05:07,520 --> 00:05:14,030
+And in addition to that, we might also want to order this relationship based upon a number of reviews
+
+82
+00:05:14,030 --> 00:05:16,160
+or something like that that each book has received.
+
+83
+00:05:16,850 --> 00:05:19,490
+Well, let's just go to the next diagram and I'll show you what I mean by that.
+
+84
+00:05:21,370 --> 00:05:21,670
+Okay.
+
+85
+00:05:22,990 --> 00:05:30,800
+So I've added in two sorted sets down here, the first sorted sets doors information about what books
+
+86
+00:05:31,370 --> 00:05:34,790
+the author with Id4 has worked on.
+
+87
+00:05:35,480 --> 00:05:38,420
+So this would be a sorted set dedicated entirely.
+
+88
+00:05:39,400 --> 00:05:41,650
+You author with four for that is Samantha.
+
+89
+00:05:43,490 --> 00:05:49,640
+So inside of our sorted set a member might be the idea of each book that Samantha has worked on.
+
+90
+00:05:50,250 --> 00:05:54,100
+In this case, it's telling you that Samantha has worked on the book with it.
+
+91
+00:05:54,170 --> 00:05:54,590
+Five.
+
+92
+00:05:55,040 --> 00:05:55,940
+That's this one up here.
+
+93
+00:05:57,460 --> 00:06:00,760
+And Samantha has also worked on a book with i-D 43.
+
+94
+00:06:00,790 --> 00:06:01,870
+That's that one right there.
+
+95
+00:06:03,890 --> 00:06:08,240
+Now just knowing that there is a relationship between that author and those books, that's definitely
+
+96
+00:06:08,240 --> 00:06:08,780
+useful.
+
+97
+00:06:08,850 --> 00:06:12,380
+Like I said, in many cases we want to sort this relationship in some way.
+
+98
+00:06:13,100 --> 00:06:17,330
+So as a score for each of these individual books we might store.
+
+99
+00:06:18,450 --> 00:06:21,990
+As a score right there, the number of copies that has been sold.
+
+100
+00:06:22,940 --> 00:06:30,680
+So we might have look with 85 has sold 560 copies book with 8043 has sold 4500 copies.
+
+101
+00:06:31,460 --> 00:06:37,700
+Now, we not only know that Samantha has worked on this book and this book, we also have an ordering
+
+102
+00:06:37,700 --> 00:06:38,630
+to that relationship.
+
+103
+00:06:38,990 --> 00:06:44,600
+So if you ever wanted to answer the question, what books has Samantha worked on that are the most popular?
+
+104
+00:06:44,930 --> 00:06:46,490
+We could use this sorted, set right here.
+
+105
+00:06:46,490 --> 00:06:51,500
+We would go into the sorted set, go to the very last row, and we'd be guaranteed that that would be
+
+106
+00:06:51,500 --> 00:06:54,470
+a reference to the book that has sold the most copies.
+
+107
+00:06:54,710 --> 00:06:56,420
+So book with 8043.
+
+108
+00:06:58,420 --> 00:07:01,540
+We would then repeat the same process for the other author as well.
+
+109
+00:07:03,800 --> 00:07:05,810
+So over here, we got the second sorted sets.
+
+110
+00:07:06,230 --> 00:07:07,670
+This belongs to you, Alex.
+
+111
+00:07:08,060 --> 00:07:08,320
+So I.
+
+112
+00:07:08,450 --> 00:07:08,990
+14.
+
+113
+00:07:10,020 --> 00:07:11,890
+And it's going to tell us exact same data.
+
+114
+00:07:11,910 --> 00:07:14,490
+What books has Alex worked on?
+
+115
+00:07:14,640 --> 00:07:19,980
+So 85 and 43 and the scores, the identical because they worked on the same books.
+
+116
+00:07:20,520 --> 00:07:27,180
+So Alex or a book five had sold 560 copies and 4500 copies per book with 8043.
+
+117
+00:07:28,730 --> 00:07:29,000
+Okay.
+
+118
+00:07:29,000 --> 00:07:35,030
+So once again, any time where we are creating relationships between records and we want that relationship
+
+119
+00:07:35,030 --> 00:07:40,240
+to be sorted by some criteria, again, I got to repeat, this is extremely common.
+
+120
+00:07:40,250 --> 00:07:44,660
+It turns out that any time that you've got a relationship between different records inside of an application,
+
+121
+00:07:44,930 --> 00:07:47,720
+you usually want it to be ordered in some way.
+
+122
+00:07:48,750 --> 00:07:54,480
+Now, maybe the number of copies sold isn't super common, but another criteria that you might want
+
+123
+00:07:54,480 --> 00:07:58,140
+to sort by that is very common is maybe a created ad date.
+
+124
+00:07:58,590 --> 00:08:03,330
+Let's say we want to say or find out books that author with 84 has written.
+
+125
+00:08:03,510 --> 00:08:07,850
+Sorted by author date or maybe by author date.
+
+126
+00:08:07,860 --> 00:08:09,930
+I mean, when was the book actually written?
+
+127
+00:08:10,930 --> 00:08:18,250
+So in this case, as a score we could store when each book was created stored as you next time.
+
+128
+00:08:18,630 --> 00:08:24,880
+I could put in a Unix time stamp right here, so something like that and maybe something like that.
+
+129
+00:08:27,470 --> 00:08:33,080
+Remember Unix time is the number of seconds or in some cases milliseconds that have elapsed since January
+
+130
+00:08:33,080 --> 00:08:34,400
+1st, 1970.
+
+131
+00:08:35,180 --> 00:08:40,040
+Now, if I ever wanted to figure out what was the first book that author 34, worked on?
+
+132
+00:08:40,580 --> 00:08:45,440
+Well, I would go to the very first element inside of this sorted set that would be told, well, the
+
+133
+00:08:45,440 --> 00:08:49,430
+first element or first book that this author worked on was the book with 85.
+
+134
+00:08:49,940 --> 00:08:51,590
+And what is the most recent book?
+
+135
+00:08:51,590 --> 00:08:53,000
+Let be the last record.
+
+136
+00:08:53,000 --> 00:08:58,850
+Inside the sorted sets begin sorting relationships by some kind of criteria.
+
+137
+00:08:59,030 --> 00:09:03,740
+Extremely common occurs on an incredible number of different applications you work on.
+
+138
+00:09:04,820 --> 00:09:09,680
+So usually, not always, but usually whenever we are trying to reflect some kind of relationship between
+
+139
+00:09:09,680 --> 00:09:16,220
+records, even though we have used a plain set in the past, we will very often instead use sorted sets
+
+140
+00:09:16,230 --> 00:09:16,940
+moving forward.
+
+141
+00:09:16,970 --> 00:09:21,140
+Now that we understand what these things are, because again, usually we want to sort our relationships
+
+142
+00:09:21,140 --> 00:09:21,800
+in some way.
+
+143
+00:09:23,130 --> 00:09:24,240
+All right, enough theory.
+
+144
+00:09:24,510 --> 00:09:28,020
+Time to actually put this stuff into practice on our e-commerce application.

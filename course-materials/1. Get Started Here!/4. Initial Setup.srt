@@ -1,0 +1,171 @@
+1
+00:00:00,660 --> 00:00:03,300
+In this video, we're going to go through a very small amount of setup.
+
+2
+00:00:03,480 --> 00:00:05,310
+Now, please do not skip this video.
+
+3
+00:00:05,490 --> 00:00:09,810
+You have to go through this setup even if you have a running copy of Redis on your computer already.
+
+4
+00:00:10,410 --> 00:00:11,390
+Okay, so let's get to it.
+
+5
+00:00:13,030 --> 00:00:15,100
+The first piece of set up that we're going to go through.
+
+6
+00:00:15,100 --> 00:00:19,780
+We need a copy of Redis, something where we can actually store data, run commands and so on.
+
+7
+00:00:20,380 --> 00:00:23,320
+In this course, you have two options for running Redis.
+
+8
+00:00:23,710 --> 00:00:27,880
+You can either create a free instance of Redis on RedState.com.
+
+9
+00:00:28,000 --> 00:00:33,130
+This is a publicly available website that you can use to run Redis or alternatively, you can install
+
+10
+00:00:33,130 --> 00:00:34,930
+and run Redis on your local computer.
+
+11
+00:00:35,610 --> 00:00:41,710
+And for right now, I really, really recommend you create an instance of reticence on RedState.com.
+
+12
+00:00:42,590 --> 00:00:47,330
+And I'm going to show you that in this video later on Inside the course, I will show you how to install
+
+13
+00:00:47,330 --> 00:00:49,100
+and run this on your local computer.
+
+14
+00:00:49,490 --> 00:00:54,260
+The only reason I'm not showing you that right away is that sometimes the setup is a little bit complicated,
+
+15
+00:00:54,530 --> 00:00:56,420
+in particular if you're running on windows.
+
+16
+00:00:57,140 --> 00:01:01,460
+So again, for right now, I really recommend you follow along and create an instance on red is cloud.
+
+17
+00:01:01,940 --> 00:01:02,780
+So let's get to it.
+
+18
+00:01:03,620 --> 00:01:07,790
+To get started, I'm going to open up a new browser tab and navigate to Red Ask.com.
+
+19
+00:01:09,520 --> 00:01:13,360
+At RedState.com, you'll see a page that looks like this on the top right hand side.
+
+20
+00:01:13,510 --> 00:01:16,420
+Find the button that says either try free or log in.
+
+21
+00:01:18,940 --> 00:01:23,200
+You can then sign up with either Google GitHub or use an email address.
+
+22
+00:01:23,230 --> 00:01:26,920
+I'll leave it up to you to actually sign up once you are signed up.
+
+23
+00:01:27,610 --> 00:01:28,990
+You will see a page that looks like this.
+
+24
+00:01:30,170 --> 00:01:35,940
+So once you log into this cloud, you're going to see something that says you have no active subscriptions.
+
+25
+00:01:35,960 --> 00:01:37,430
+Or you might see a welcome screen, of course.
+
+26
+00:01:37,430 --> 00:01:38,300
+But this is what I see.
+
+27
+00:01:39,360 --> 00:01:42,720
+The to create a database, we first have to create something called a subscription.
+
+28
+00:01:42,990 --> 00:01:46,650
+We'll go into more detail later on on what a subscription is versus a database.
+
+29
+00:01:46,680 --> 00:01:48,900
+Right now, we're just going to make a subscription.
+
+30
+00:01:50,450 --> 00:01:52,100
+Well, click on that new subscription button.
+
+31
+00:01:53,210 --> 00:01:56,090
+Well then make sure that I have fixed plans selected.
+
+32
+00:01:57,990 --> 00:01:59,250
+Well, then scroll down to the bottom.
+
+33
+00:02:02,250 --> 00:02:05,820
+And the only thing I really have to do on this page is enter in a name for this subscription.
+
+34
+00:02:06,540 --> 00:02:10,200
+I'm going to give it a name of three dash sub.
+
+35
+00:02:14,580 --> 00:02:18,480
+Once the subscription has then been created, we can then make an actual database.
+
+36
+00:02:19,170 --> 00:02:21,690
+So on the right hand side, I'll click on new database.
+
+37
+00:02:23,380 --> 00:02:27,040
+I'm going to give this a name of free dash DB.
+
+38
+00:02:29,930 --> 00:02:33,140
+And then on the top, right inside, I'll click on Activate database.
+
+39
+00:02:35,480 --> 00:02:37,940
+Now creating the database might take a couple of seconds.
+
+40
+00:02:38,090 --> 00:02:43,010
+So we're going to wait for that little yellow icon right there to turn green once it's turned green.
+
+41
+00:02:43,250 --> 00:02:45,710
+Our database has been created and we are good to go.
+
+42
+00:02:46,490 --> 00:02:47,840
+We're going to pause this video right here.
+
+43
+00:02:47,870 --> 00:02:50,930
+We're going to come back in just a moment and do just a touch more set up.

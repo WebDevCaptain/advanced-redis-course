@@ -1,0 +1,271 @@
+1
+00:00:00,990 --> 00:00:02,880
+We've got a message inside of our stream.
+
+2
+00:00:02,890 --> 00:00:08,130
+And so now we would want a message consumer to somehow read this message out and process it in some
+
+3
+00:00:08,130 --> 00:00:08,430
+way.
+
+4
+00:00:09,000 --> 00:00:11,700
+To do so, we're going to use the command called X Read.
+
+5
+00:00:12,180 --> 00:00:14,850
+This is used whenever we want to read messages out of our stream.
+
+6
+00:00:15,360 --> 00:00:20,280
+So we'll do a x, read streams and the key of the stream we want to read from.
+
+7
+00:00:20,730 --> 00:00:25,800
+And then immediately after that, we're going to add in an argument designating the range of elements
+
+8
+00:00:26,310 --> 00:00:28,650
+or the range of messages that we want to actually retrieve.
+
+9
+00:00:29,250 --> 00:00:34,440
+If we put in zero zero, that means read all messages that have ever been added to this stream.
+
+10
+00:00:35,310 --> 00:00:38,010
+We can also put in a full timestamp value there as well.
+
+11
+00:00:38,370 --> 00:00:42,420
+So we do an X, read streams, fruits and then a Unix timestamp.
+
+12
+00:00:42,750 --> 00:00:48,900
+That means read all messages that have been added to the stream after, but not including this particular
+
+13
+00:00:48,900 --> 00:00:49,440
+timestamp.
+
+14
+00:00:50,440 --> 00:00:55,870
+So we can use X Reid to either get all messages or just filter down to messages after some particular
+
+15
+00:00:55,870 --> 00:00:56,590
+area in time.
+
+16
+00:00:57,460 --> 00:00:58,630
+Okay, so let's try it out.
+
+17
+00:00:58,960 --> 00:01:00,190
+Back over inside of our book.
+
+18
+00:01:00,580 --> 00:01:03,700
+I will do a x read streams.
+
+19
+00:01:04,770 --> 00:01:06,690
+Our stream is stored at a key of fruits.
+
+20
+00:01:06,840 --> 00:01:08,670
+And then right now, I'll do just zero.
+
+21
+00:01:08,670 --> 00:01:09,540
+Dash zero.
+
+22
+00:01:11,260 --> 00:01:13,990
+And there is my single message that I've added already.
+
+23
+00:01:14,680 --> 00:01:17,020
+So we get the name of the stream that we just read from.
+
+24
+00:01:17,930 --> 00:01:22,250
+And then we get the idea of that message and then the key value pairs that make it up.
+
+25
+00:01:23,540 --> 00:01:27,040
+Zales try using a little bit more specific time stamp in here.
+
+26
+00:01:27,580 --> 00:01:31,420
+I'm going to find the idea of the message we just added in the last video.
+
+27
+00:01:31,960 --> 00:01:36,430
+We're going to copy it and put it in right there in place of the zero zero.
+
+28
+00:01:37,400 --> 00:01:43,100
+Now this means read all messages that have been added after this time stamp, not including that stamp.
+
+29
+00:01:44,430 --> 00:01:47,190
+So if I run that, I'll get null because we did not find anything.
+
+30
+00:01:48,110 --> 00:01:53,750
+But if I subtract one from this timestamp, so if I change that four into a three, for example.
+
+31
+00:01:55,940 --> 00:01:59,480
+Now I'm going to get all messages after that millisecond in the past.
+
+32
+00:01:59,600 --> 00:02:01,730
+So that would include the message I had previously added.
+
+33
+00:02:04,240 --> 00:02:09,190
+Now, one thing to take note of, and we're kind of seeing it in action right here when we read a message,
+
+34
+00:02:09,190 --> 00:02:11,560
+it is not deleted from the original stream.
+
+35
+00:02:11,740 --> 00:02:15,970
+It still sits around, it's still there, and we can read it as often as we want to.
+
+36
+00:02:16,390 --> 00:02:20,890
+But just because we're doing an X read right now, the original message is not destroyed or deleted
+
+37
+00:02:20,890 --> 00:02:21,610
+in any way.
+
+38
+00:02:22,540 --> 00:02:24,670
+That's going to become rather important later on.
+
+39
+00:02:24,700 --> 00:02:25,990
+So just keep in mind for a little bit.
+
+40
+00:02:27,360 --> 00:02:30,120
+There's one other variation on X read I want you to be aware of.
+
+41
+00:02:30,720 --> 00:02:36,090
+In some cases, we might have a stream that has hundreds or thousands or tens of thousands of messages
+
+42
+00:02:36,090 --> 00:02:36,660
+inside of it.
+
+43
+00:02:37,140 --> 00:02:40,140
+So in many cases, we want to limit how many elements we get back.
+
+44
+00:02:40,530 --> 00:02:42,750
+We could do so by adding on the accounts arguments.
+
+45
+00:02:43,480 --> 00:02:50,280
+So if we add X read count two, that means read up to but no more than two messages.
+
+46
+00:02:52,510 --> 00:02:53,260
+Let's try that out.
+
+47
+00:02:54,320 --> 00:02:55,580
+Back over here really quickly.
+
+48
+00:02:55,580 --> 00:02:58,070
+I'm going to run the ad up here once again.
+
+49
+00:02:58,250 --> 00:03:02,960
+I'm going to change the color to yellow with the name of banana.
+
+50
+00:03:04,790 --> 00:03:06,770
+Now my stream has two messages inside of it.
+
+51
+00:03:07,750 --> 00:03:12,460
+If I do an x reid with zero zero, I will see both messages.
+
+52
+00:03:12,820 --> 00:03:13,630
+There's the first.
+
+53
+00:03:14,230 --> 00:03:14,980
+There's the second.
+
+54
+00:03:16,040 --> 00:03:18,170
+And if I add on a count of one.
+
+55
+00:03:19,270 --> 00:03:21,340
+Now I will just get the first message.
+
+56
+00:03:21,700 --> 00:03:24,070
+One with a colour of red and a name of strawberry.
+
+57
+00:03:25,160 --> 00:03:27,170
+If I do a count of two, I'll see both them.
+
+58
+00:03:28,350 --> 00:03:33,080
+And of course, if I do a count of three X, Reid is just going to try to read up to three.
+
+59
+00:03:33,090 --> 00:03:34,920
+But if there aren't three available, that's fine.
+
+60
+00:03:34,920 --> 00:03:36,060
+It's going to return what it gets.
+
+61
+00:03:36,660 --> 00:03:41,790
+So if I do a count of three, I'm still going to get back the strawberry right here and the banana right
+
+62
+00:03:41,790 --> 00:03:42,060
+there.
+
+63
+00:03:43,530 --> 00:03:43,800
+Okay.
+
+64
+00:03:43,800 --> 00:03:45,480
+So that's ex right now.
+
+65
+00:03:45,480 --> 00:03:49,500
+Although the exact amount in x read seem pretty simple and straightforward.
+
+66
+00:03:49,590 --> 00:03:54,240
+Well, naturally there is little variation on these commands that make them a little bit more challenging
+
+67
+00:03:54,240 --> 00:03:54,840
+to understand.
+
+68
+00:03:55,050 --> 00:03:58,620
+Let's take a look at the first variation of X read in the next video.

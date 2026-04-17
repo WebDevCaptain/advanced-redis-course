@@ -1,0 +1,339 @@
+1
+00:00:01,090 --> 00:00:03,220
+I'm back inside of our likes not to yes file.
+
+2
+00:00:03,580 --> 00:00:07,140
+We're going to add in some additional implementation around like item and unlike item.
+
+3
+00:00:07,720 --> 00:00:10,570
+There's just one little detail here that I want to repeat one more time.
+
+4
+00:00:11,320 --> 00:00:16,480
+Whenever we get a request for a user to like an item, there's always the possibility we always have
+
+5
+00:00:16,480 --> 00:00:22,240
+to be aware of this, that a user might click the like button twice in very, very quick succession.
+
+6
+00:00:22,960 --> 00:00:27,940
+So we might accidentally get two requests in a row where the same user is trying to like the same item.
+
+7
+00:00:28,600 --> 00:00:32,440
+In this scenario, we would not want to increment likes by two.
+
+8
+00:00:32,620 --> 00:00:34,630
+We would still want to make sure that we only incremented.
+
+9
+00:00:34,630 --> 00:00:40,960
+By one way, we're going to handle that is by a little bit of behavior around the s add function.
+
+10
+00:00:41,560 --> 00:00:45,130
+So remember we are using that right here whenever a user likes an item.
+
+11
+00:00:46,030 --> 00:00:50,770
+When we call Asad, we're going to get back a number, either zero or one.
+
+12
+00:00:51,590 --> 00:00:56,230
+I'm going to take the return value of Asad right here and assign it to a variable called inserted.
+
+13
+00:00:56,770 --> 00:00:58,670
+Inserted is going to be equal to one.
+
+14
+00:00:58,690 --> 00:01:05,470
+If we truly did just add a new value into our sets, it will be equal to zero if we did not add anything.
+
+15
+00:01:06,310 --> 00:01:10,210
+That's how we are going to account for two requests coming in in quick succession.
+
+16
+00:01:10,750 --> 00:01:14,680
+We only want to increment this Lykes value right here inside of the items hash.
+
+17
+00:01:15,250 --> 00:01:19,240
+When we attempt to add an item into the set and we get back a value of one.
+
+18
+00:01:21,620 --> 00:01:21,970
+Okay.
+
+19
+00:01:22,130 --> 00:01:24,860
+So right after inserted, we'll say if inserted.
+
+20
+00:01:25,670 --> 00:01:26,840
+That's that's pretty much it.
+
+21
+00:01:26,870 --> 00:01:29,540
+That's going to take care of accidental duplicate requests.
+
+22
+00:01:30,690 --> 00:01:36,180
+Then inside of here, we want to take a look at this particular item and we want to make sure that's
+
+23
+00:01:36,180 --> 00:01:41,080
+clear that this thing just got another, like all the items that we are currently storing inside of
+
+24
+00:01:41,080 --> 00:01:47,580
+bread is already have a like value that starts off at zero that already belongs to all the items and
+
+25
+00:01:47,580 --> 00:01:49,560
+all the hashes that we have stored inside of lettuce.
+
+26
+00:01:50,280 --> 00:01:54,630
+All we have to do is take a look at that likes property and increment it by one.
+
+27
+00:01:55,020 --> 00:01:55,710
+That's pretty much it.
+
+28
+00:01:56,640 --> 00:01:59,280
+To increment a number stored inside the hash by one.
+
+29
+00:01:59,610 --> 00:02:02,280
+We can make use of a command that we discussed a while ago.
+
+30
+00:02:02,790 --> 00:02:04,390
+So backyard Arbuckle out.
+
+31
+00:02:04,480 --> 00:02:08,070
+Just a quick reminder, there's the H anchor by command.
+
+32
+00:02:08,670 --> 00:02:12,480
+And this allows us to adjust a value stored inside of a hash very easily.
+
+33
+00:02:13,110 --> 00:02:16,980
+We can use h anchor by the key for the house we want to look up.
+
+34
+00:02:18,520 --> 00:02:19,990
+The key inside the house.
+
+35
+00:02:20,170 --> 00:02:21,910
+So in our case, it would be likes right there.
+
+36
+00:02:22,210 --> 00:02:24,040
+And then we want to increment by one.
+
+37
+00:02:25,150 --> 00:02:27,370
+That's how we can make sure that we add one to that.
+
+38
+00:02:27,370 --> 00:02:27,850
+Like about.
+
+39
+00:02:29,130 --> 00:02:34,380
+And to actually use that h anchor bike means we are going to have to look up the hash or really the
+
+40
+00:02:34,380 --> 00:02:38,790
+key where the hash is stored inside of Redis for this particular item ID, that means that we need our
+
+41
+00:02:38,790 --> 00:02:40,890
+items key function inside of here as well.
+
+42
+00:02:41,700 --> 00:02:42,600
+Let's go up to the top.
+
+43
+00:02:44,060 --> 00:02:44,600
+Import.
+
+44
+00:02:45,890 --> 00:02:46,880
+Items key.
+
+45
+00:02:48,930 --> 00:02:52,170
+Then down side of our statement, we can do a return.
+
+46
+00:02:53,200 --> 00:02:55,360
+Client H inker by.
+
+47
+00:02:56,870 --> 00:02:58,940
+We're going to look at the hash stored at items key.
+
+48
+00:03:00,590 --> 00:03:01,190
+Item ID.
+
+49
+00:03:02,270 --> 00:03:07,460
+I want to look at the field inside there of likes and I want to increment it by one.
+
+50
+00:03:08,930 --> 00:03:09,440
+And that's it.
+
+51
+00:03:11,630 --> 00:03:16,010
+Now we're going to do the exact, exact opposite operation for unlike item.
+
+52
+00:03:17,160 --> 00:03:17,940
+We are going to.
+
+53
+00:03:18,890 --> 00:03:20,000
+On SE run right here.
+
+54
+00:03:20,300 --> 00:03:23,770
+SRM does a very similar return value as s add.
+
+55
+00:03:24,230 --> 00:03:27,950
+So it's going to return one if we actually removed this given value.
+
+56
+00:03:28,400 --> 00:03:31,850
+So if we actually removed that item ID from the users like set.
+
+57
+00:03:33,550 --> 00:03:34,420
+We'll get back one.
+
+58
+00:03:34,420 --> 00:03:39,190
+Otherwise we'll get zero if removed and we will return.
+
+59
+00:03:39,190 --> 00:03:40,410
+Client H.
+
+60
+00:03:40,420 --> 00:03:41,350
+Anchor by.
+
+61
+00:03:42,270 --> 00:03:49,830
+Item ski with item ID likes, and this time we are going to increment by negative one to subtract one.
+
+62
+00:03:53,100 --> 00:03:54,150
+All right, let's save this.
+
+63
+00:03:54,900 --> 00:03:55,860
+We now flip back over.
+
+64
+00:03:57,510 --> 00:03:58,260
+Go to our item.
+
+65
+00:04:00,290 --> 00:04:01,550
+I'm going to refresh really quickly.
+
+66
+00:04:03,440 --> 00:04:05,720
+I'm then going to click on this thing to unlock it.
+
+67
+00:04:05,960 --> 00:04:12,170
+And now unfortunately, because I just added in all this code when I was in a like state, when I deselect
+
+68
+00:04:12,170 --> 00:04:15,140
+it, I'm now subtracting one and I'm going into the negatives now.
+
+69
+00:04:15,740 --> 00:04:17,750
+So our code does work correctly.
+
+70
+00:04:17,750 --> 00:04:20,750
+It's just because I implemented this change at a not awkward time.
+
+71
+00:04:20,750 --> 00:04:21,350
+So I'll tell you what.
+
+72
+00:04:21,530 --> 00:04:24,740
+Very quickly, just to make sure this thing works, I'm going to sign out.
+
+73
+00:04:25,040 --> 00:04:27,470
+I'm going to sign back up with a brand new account.
+
+74
+00:04:29,370 --> 00:04:31,080
+I will make a new item very quickly.
+
+75
+00:04:32,880 --> 00:04:35,910
+And now if I click on like that should go up to one perfect.
+
+76
+00:04:36,630 --> 00:04:38,730
+And if I click it again, I go back to zero.
+
+77
+00:04:39,480 --> 00:04:39,870
+Awesome.
+
+78
+00:04:41,320 --> 00:04:44,500
+All right, so now we can like and unlike her, as much as we wish.
+
+79
+00:04:45,430 --> 00:04:46,660
+Well, this looks pretty good.
+
+80
+00:04:47,470 --> 00:04:52,810
+Now we've got this little bit of a like system put together, really everything related to this main
+
+81
+00:04:52,810 --> 00:04:53,890
+landing page for an item.
+
+82
+00:04:54,280 --> 00:04:57,730
+Last thing, if do is take care of the seller profile page as well.
+
+83
+00:04:58,390 --> 00:05:01,690
+So on this page we need to show items that I like and this person likes.
+
+84
+00:05:02,170 --> 00:05:05,920
+Same thing down here, except we're going to show just the items that this person likes.
+
+85
+00:05:07,730 --> 00:05:10,250
+Let's take care of these last two sections in just a moment.

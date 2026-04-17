@@ -1,0 +1,343 @@
+1
+00:00:00,750 --> 00:00:05,520
+In the last two videos, I've made it seem like these different modules are just the best thing in the
+
+2
+00:00:05,520 --> 00:00:09,480
+world and they make us better, and there's no question about it whatsoever.
+
+3
+00:00:09,930 --> 00:00:15,060
+So you might be kind of curious, why didn't we just start using these modules at the very beginning
+
+4
+00:00:15,060 --> 00:00:15,750
+of the course?
+
+5
+00:00:16,080 --> 00:00:21,480
+There's a very important answer to that very important answer that you understand this is extremely
+
+6
+00:00:21,480 --> 00:00:21,870
+critical.
+
+7
+00:00:22,590 --> 00:00:28,680
+So depending upon how you deploy your application or specifically how you run Redis in a production
+
+8
+00:00:28,680 --> 00:00:32,670
+environment, you might not be able to use modules.
+
+9
+00:00:33,210 --> 00:00:38,460
+So I want to expand on that in this video and help you understand when you are able to use modules and
+
+10
+00:00:38,460 --> 00:00:39,240
+when you can't.
+
+11
+00:00:40,160 --> 00:00:40,520
+Okay.
+
+12
+00:00:42,220 --> 00:00:47,110
+Though we are developing an application right now, our e-commerce application, and in theory we might
+
+13
+00:00:47,500 --> 00:00:52,570
+eventually want to go and deploy it to some provider such as IWC or Google Cloud.
+
+14
+00:00:53,170 --> 00:00:58,330
+When we deploy our application, we're going to have to connect to a production instance of Redis.
+
+15
+00:00:58,870 --> 00:01:02,200
+The question here is how are we going to create this instance?
+
+16
+00:01:04,480 --> 00:01:06,460
+We're going to take a look at three different options.
+
+17
+00:01:06,850 --> 00:01:12,070
+The first option is possibly the easiest, but there's a very clear downside to it in option number
+
+18
+00:01:12,070 --> 00:01:12,340
+one.
+
+19
+00:01:12,550 --> 00:01:17,620
+We can ask MWC or Google Cloud to run a copy of Redis for us.
+
+20
+00:01:18,070 --> 00:01:22,990
+We refer to this as a managed copy of Redis because someone else is managing.
+
+21
+00:01:22,990 --> 00:01:23,710
+Read it for us.
+
+22
+00:01:24,310 --> 00:01:31,510
+DWC or Google Cloud is going to handle the setup, the security updates, general updates, handle backups
+
+23
+00:01:31,510 --> 00:01:32,140
+and so on.
+
+24
+00:01:32,590 --> 00:01:35,980
+They're going to deal with everything related to managing Redis.
+
+25
+00:01:36,610 --> 00:01:42,190
+That's absolutely fantastic because it frees us as developers up from having to do a lot of extra work.
+
+26
+00:01:42,850 --> 00:01:47,740
+But the clear downside here that is very important to understand, as you see in this huge red box,
+
+27
+00:01:47,920 --> 00:01:54,910
+when you are using these managed offerings provided directly by IWC and Google Cloud, you cannot use
+
+28
+00:01:54,910 --> 00:01:55,990
+Redis modules.
+
+29
+00:01:57,550 --> 00:02:02,980
+So if you are running your application on ABC or Google Cloud and you definitely have to be using a
+
+30
+00:02:02,980 --> 00:02:05,710
+managed copy of it, you can't use modules.
+
+31
+00:02:05,920 --> 00:02:10,570
+And that's why it's important for you to understand all the different basic data types we've learned
+
+32
+00:02:10,570 --> 00:02:10,930
+so far.
+
+33
+00:02:10,930 --> 00:02:11,470
+In the course.
+
+34
+00:02:12,100 --> 00:02:17,020
+You have to understand how to use strings, sorted sets, lists and so on, because if you can't use
+
+35
+00:02:17,020 --> 00:02:20,470
+modules, you're going to be relying upon those basic structures.
+
+36
+00:02:22,730 --> 00:02:23,090
+Now.
+
+37
+00:02:23,090 --> 00:02:24,590
+Not all hope is lost here.
+
+38
+00:02:24,950 --> 00:02:30,350
+Even if you do have to run your application on IWC, there are still some scenarios, very common zeros
+
+39
+00:02:30,350 --> 00:02:32,780
+as a matter of fact, where you can make use of modules.
+
+40
+00:02:33,010 --> 00:02:38,720
+So let me show you two other options on how we can run our application on IWC or Google Cloud and still
+
+41
+00:02:38,720 --> 00:02:39,380
+use modules.
+
+42
+00:02:40,770 --> 00:02:41,910
+So the second option.
+
+43
+00:02:43,920 --> 00:02:45,930
+Is if we just run readies ourselves.
+
+44
+00:02:46,380 --> 00:02:51,230
+So we might create a virtual machine or a container run readies inside of ourselves.
+
+45
+00:02:51,240 --> 00:02:57,360
+And in the scenario we are allowed to use modules, we can freely load up Redis, JSON or ready search
+
+46
+00:02:58,050 --> 00:02:58,680
+and everything.
+
+47
+00:02:58,680 --> 00:02:59,580
+Everything's going to work just fine.
+
+48
+00:02:59,790 --> 00:03:03,300
+We can use any module we want if we run Redis ourselves.
+
+49
+00:03:04,020 --> 00:03:08,160
+The downside to this approach is that it just requires a lot of additional setup on our side.
+
+50
+00:03:08,580 --> 00:03:09,990
+We have to do the initial setup.
+
+51
+00:03:10,170 --> 00:03:15,180
+We have to install these modules, we have to do security updates, we have to handle backups and so
+
+52
+00:03:15,180 --> 00:03:15,390
+on.
+
+53
+00:03:15,630 --> 00:03:19,920
+So that's a lot of additional developer time just to set up all that infrastructure in Manjit.
+
+54
+00:03:21,880 --> 00:03:22,120
+All right.
+
+55
+00:03:22,150 --> 00:03:25,300
+On to option number three, which I think is really a happy medium.
+
+56
+00:03:27,250 --> 00:03:30,460
+And option number three, we're going to rely upon the company.
+
+57
+00:03:31,120 --> 00:03:35,110
+So there is a company called Redis to run Redis for us.
+
+58
+00:03:36,220 --> 00:03:39,130
+Now, let me give you some more information about this, because it's a little bit more challenging
+
+59
+00:03:39,130 --> 00:03:39,910
+to understand.
+
+60
+00:03:40,720 --> 00:03:46,330
+You might recall much earlier on inside the course, we went to RedState.com, we signed up for an account,
+
+61
+00:03:46,330 --> 00:03:49,720
+and then we created a free read as instance on a dashboard that looks like this.
+
+62
+00:03:50,530 --> 00:03:57,640
+When you created that free Redis instance, it was actually created on AWB or Google Cloud or Microsoft
+
+63
+00:03:57,640 --> 00:03:58,120
+Azure.
+
+64
+00:03:58,690 --> 00:04:04,120
+So it's a red instance that is still being executed or running on these cloud providers.
+
+65
+00:04:04,660 --> 00:04:10,540
+You can see right now I have two separate instances and they are both truly running on AWB and these
+
+66
+00:04:10,540 --> 00:04:15,400
+are managed instances, which means I don't have to worry about security updates, backups and so on.
+
+67
+00:04:16,720 --> 00:04:22,120
+So the only difference here is that someone else is doing the managing for us as opposed to just IWC
+
+68
+00:04:22,120 --> 00:04:23,740
+or Google Cloud directly.
+
+69
+00:04:24,550 --> 00:04:29,260
+The nice thing about having Redis do the managing for us is that in this scenario we are allowed to
+
+70
+00:04:29,260 --> 00:04:35,170
+use a couple of very specific modules so we can make use of read as JSON, ready search and all the
+
+71
+00:04:35,170 --> 00:04:37,540
+others that are listed under read a stack right here.
+
+72
+00:04:38,510 --> 00:04:44,540
+So if you are using RedState.com to run your copy of Read, is it still going to be hosted on IWC or
+
+73
+00:04:44,540 --> 00:04:45,320
+Google Cloud?
+
+74
+00:04:45,650 --> 00:04:50,600
+So your application can still connect to it directly without having to go to some external cloud provider?
+
+75
+00:04:51,020 --> 00:04:54,740
+It is still managed and we still get to use all these different modules.
+
+76
+00:04:55,640 --> 00:04:59,810
+So personally, I think ops number three right here is a very happy medium.
+
+77
+00:05:00,110 --> 00:05:04,970
+We still get our copy of Redis publicly located with the application, but we still get all the modules
+
+78
+00:05:04,970 --> 00:05:05,480
+as well.
+
+79
+00:05:06,320 --> 00:05:09,140
+So this is the approach that we're going to focus on in this course.
+
+80
+00:05:09,410 --> 00:05:15,050
+Because again, happy medium, I'm only giving you all this information because if you are working at
+
+81
+00:05:15,050 --> 00:05:20,480
+some company that is already making use of a copy of Redis, well, you might be in scenario one right
+
+82
+00:05:20,480 --> 00:05:26,810
+here where you might be working on an application that has to use an existing managed copy of Redis.
+
+83
+00:05:27,020 --> 00:05:29,510
+And so modules might not be available to you.
+
+84
+00:05:30,970 --> 00:05:31,330
+Okay.
+
+85
+00:05:31,390 --> 00:05:36,220
+So now that we have this little caveat here in mind, we're now going to start to focus on these modules
+
+86
+00:05:36,220 --> 00:05:38,800
+themselves and just understand how to make use of them.

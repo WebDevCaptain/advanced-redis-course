@@ -1,0 +1,311 @@
+1
+00:00:00,620 --> 00:00:03,020
+Let's take a look at a couple of basic commands around houses.
+
+2
+00:00:03,380 --> 00:00:08,120
+We're going to first look at the commands that we use to create and retrieve data from a house.
+
+3
+00:00:08,540 --> 00:00:09,680
+Those are H sets.
+
+4
+00:00:09,980 --> 00:00:11,720
+H, get an H, get all.
+
+5
+00:00:12,200 --> 00:00:16,880
+In general, these commands are very similar to the string equivalent commands of jets and set.
+
+6
+00:00:18,280 --> 00:00:18,550
+All right.
+
+7
+00:00:18,550 --> 00:00:21,610
+To take a look at these commands, we are going to use Arbuckle out again.
+
+8
+00:00:21,970 --> 00:00:25,810
+So at Arbuckle Out, I've already created a new notebook called Hashes.
+
+9
+00:00:26,470 --> 00:00:29,740
+The first command that we're going to take a look at is the H set command.
+
+10
+00:00:30,100 --> 00:00:33,340
+And this is what we use to create and store a hash inside of Redis.
+
+11
+00:00:34,480 --> 00:00:38,100
+When we call each set, the first argument is going to be the name of the key.
+
+12
+00:00:38,110 --> 00:00:41,380
+Inside of red is where we want to store the hash data structure.
+
+13
+00:00:42,010 --> 00:00:46,990
+So if we did something like each set and then company, that means that inside of red is we're going
+
+14
+00:00:46,990 --> 00:00:50,680
+to create a new hash structure at a key of company.
+
+15
+00:00:51,780 --> 00:00:57,720
+Then immediately after that first argument, we are going to alternate E value, key and value.
+
+16
+00:00:58,380 --> 00:01:03,060
+So we put in name company CO and age 1915.
+
+17
+00:01:03,390 --> 00:01:05,490
+We would end up with a structure like this right here.
+
+18
+00:01:06,520 --> 00:01:09,840
+I've got a key of name and a value of concrete.
+
+19
+00:01:09,840 --> 00:01:10,170
+Go.
+
+20
+00:01:11,260 --> 00:01:16,510
+Then a key of age up there be age right there and a value of 1915.
+
+21
+00:01:18,430 --> 00:01:18,730
+Okay.
+
+22
+00:01:18,810 --> 00:01:19,750
+Let's give this a shot.
+
+23
+00:01:20,820 --> 00:01:24,090
+Back over in our book, I will do an H set.
+
+24
+00:01:25,110 --> 00:01:25,560
+Company.
+
+25
+00:01:26,850 --> 00:01:28,770
+Name of concrete co.
+
+26
+00:01:29,870 --> 00:01:32,060
+And age or creative, that doesn't really matter.
+
+27
+00:01:32,810 --> 00:01:35,090
+I'll put in 1915 in this case.
+
+28
+00:01:36,460 --> 00:01:41,290
+Then if I run that, I'm going to get back rather than the OC that we had seen previously.
+
+29
+00:01:41,290 --> 00:01:46,060
+When we were setting a plane string or a plane number, we instead get a number of two.
+
+30
+00:01:46,540 --> 00:01:51,880
+That is meant to indicate that we have updated two key value pairs in this case, name and age.
+
+31
+00:01:53,280 --> 00:01:55,020
+That's pretty much it or h set.
+
+32
+00:01:55,320 --> 00:01:56,160
+Now just be clear.
+
+33
+00:01:56,160 --> 00:01:58,890
+You can add on as many key value pairs as you want.
+
+34
+00:01:59,490 --> 00:02:03,000
+So I can add in in addition to just name and age.
+
+35
+00:02:03,000 --> 00:02:04,410
+Something like industry.
+
+36
+00:02:06,320 --> 00:02:07,670
+Concrete or about materials.
+
+37
+00:02:09,410 --> 00:02:14,690
+Maybe then another field of revenue and have that be something like, say, 5.3.
+
+38
+00:02:16,080 --> 00:02:22,140
+Now I would expect to get back a value of two in this case because although we have set four different
+
+39
+00:02:22,140 --> 00:02:28,230
+key value pairs, we have only added in or really made two additional updates to our hash.
+
+40
+00:02:28,800 --> 00:02:33,870
+If I run this command a third time, I'll get back zero because we have not made any additional updates
+
+41
+00:02:34,020 --> 00:02:34,650
+to the hash.
+
+42
+00:02:36,440 --> 00:02:36,740
+Okay.
+
+43
+00:02:36,800 --> 00:02:40,450
+So that's how we can store value or store a hash inside of Redis.
+
+44
+00:02:40,700 --> 00:02:46,070
+Now, let's take a look at the other two commands very quickly, each git, which allows us to get a
+
+45
+00:02:46,070 --> 00:02:47,360
+single field from a hash.
+
+46
+00:02:48,110 --> 00:02:50,330
+Let's make a quick example of that.
+
+47
+00:02:51,290 --> 00:02:55,670
+I'll do an H, get on company and I'll try to get the field name.
+
+48
+00:02:56,490 --> 00:02:58,010
+This will give me back concrete co.
+
+49
+00:02:58,760 --> 00:03:01,160
+I could just as well do something like say revenue.
+
+50
+00:03:02,180 --> 00:03:03,500
+Get back 5.3.
+
+51
+00:03:05,430 --> 00:03:10,530
+The other canard that we used to retrieve data from a hash is h get all this is going to give us all
+
+52
+00:03:10,530 --> 00:03:12,630
+the different key value pairs that are stored inside of a hash.
+
+53
+00:03:14,720 --> 00:03:15,950
+So if we do a.
+
+54
+00:03:16,980 --> 00:03:18,810
+Each get all of company.
+
+55
+00:03:20,790 --> 00:03:21,330
+There we go.
+
+56
+00:03:23,200 --> 00:03:25,240
+So there is our entire hash right there.
+
+57
+00:03:26,470 --> 00:03:31,570
+But one thing to be aware of is that if I click on this little paint icon right here on the right hand
+
+58
+00:03:31,570 --> 00:03:35,020
+side, that will cause the raw response to come back from red.
+
+59
+00:03:35,090 --> 00:03:36,700
+So the raw response to be printed out right here.
+
+60
+00:03:36,940 --> 00:03:41,410
+What you see currently, what looks like an object, that is our book, Taking Back the return value
+
+61
+00:03:41,410 --> 00:03:44,650
+and formatted it nicely for you in this kind of object structure.
+
+62
+00:03:45,100 --> 00:03:50,140
+But what actually gets returned from Redis is an array of values.
+
+63
+00:03:51,180 --> 00:03:54,180
+And this array that you get back, we get the key.
+
+64
+00:03:54,180 --> 00:04:00,150
+And then a value key value, key value key value in some is clients that you're going to use for your
+
+65
+00:04:00,150 --> 00:04:01,350
+particular programming language.
+
+66
+00:04:01,620 --> 00:04:06,750
+They will give you back an array like this and you might have to manually take these different key value
+
+67
+00:04:06,750 --> 00:04:10,020
+errors and assemble them into an object other right.
+
+68
+00:04:10,020 --> 00:04:14,700
+As clients such as the node readies client that we're using inside of our e-commerce application is
+
+69
+00:04:14,700 --> 00:04:19,710
+going to take that response and automatically form it for you into an object that just a very small
+
+70
+00:04:19,710 --> 00:04:22,590
+thing to be aware of some right as clients you might get back response.
+
+71
+00:04:22,590 --> 00:04:25,950
+That's not quite expected, but it does have all the correct data inside of it.
+
+72
+00:04:26,160 --> 00:04:28,260
+This requires you to go through one additional step.
+
+73
+00:04:29,660 --> 00:04:29,990
+Okay.
+
+74
+00:04:30,080 --> 00:04:31,820
+So not the worst commands here.
+
+75
+00:04:32,180 --> 00:04:35,630
+Hashes are one of the easiest data structures we're going to take a look at.
+
+76
+00:04:36,290 --> 00:04:37,760
+Let's continue on in the next video.
+
+77
+00:04:37,790 --> 00:04:42,410
+We're going to get through a couple more commands very quickly because in general, these are all rather
+
+78
+00:04:42,410 --> 00:04:43,370
+straightforward in nature.

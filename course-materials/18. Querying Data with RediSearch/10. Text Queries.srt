@@ -1,0 +1,331 @@
+1
+00:00:00,880 --> 00:00:03,210
+Let's start to take a look at text queries.
+
+2
+00:00:03,540 --> 00:00:05,340
+Once again, we write out a text query.
+
+3
+00:00:09,130 --> 00:00:15,850
+Using a set of parentheses so I can find the name of all cars that includes, say, fast.
+
+4
+00:00:17,190 --> 00:00:18,780
+Or old.
+
+5
+00:00:19,800 --> 00:00:21,540
+Or a car or whatever else.
+
+6
+00:00:22,230 --> 00:00:24,030
+As I've hinted out several times.
+
+7
+00:00:24,240 --> 00:00:28,980
+Understanding the syntax around these text queries can be a little bit challenging.
+
+8
+00:00:29,430 --> 00:00:33,450
+So in this video, I want to give you a kind of a high level overview on some of the easier to understand
+
+9
+00:00:33,450 --> 00:00:33,930
+topics.
+
+10
+00:00:34,260 --> 00:00:36,990
+Then we'll go into some deeper things in the next video.
+
+11
+00:00:38,120 --> 00:00:38,480
+Okay.
+
+12
+00:00:38,600 --> 00:00:42,080
+So when we are doing a text query, some important things to understand.
+
+13
+00:00:42,440 --> 00:00:49,190
+First is the actual query text in addition to the text that exists inside of your hash field as well,
+
+14
+00:00:49,190 --> 00:00:51,740
+is going to go through a little bit of a preprocessing step.
+
+15
+00:00:52,430 --> 00:00:54,980
+So all the different stop words are going to be removed.
+
+16
+00:00:55,130 --> 00:00:58,880
+Remember, stop words are like a or the and so on.
+
+17
+00:00:59,750 --> 00:01:03,770
+All spaces are going to be removed and all punctuation is removed as well.
+
+18
+00:01:04,460 --> 00:01:11,510
+So if we ever enter into a hash field or a text query, something like a fast, fast car, then it's
+
+19
+00:01:11,510 --> 00:01:13,970
+going to be actually processed or kind of reduced down.
+
+20
+00:01:13,970 --> 00:01:15,920
+We can imagine behind the scenes just something like this.
+
+21
+00:01:16,100 --> 00:01:17,660
+Just fast, fast and car.
+
+22
+00:01:19,010 --> 00:01:20,090
+Second thing to understand.
+
+23
+00:01:21,370 --> 00:01:25,210
+Is that reticence going to apply a technique called stimming to your queries?
+
+24
+00:01:25,840 --> 00:01:30,700
+This is where a complicated word that might have a prefix or a suffix on it are going to be reduced
+
+25
+00:01:30,700 --> 00:01:35,590
+down to a more common form of that word in whatever language you are using for your searching.
+
+26
+00:01:36,450 --> 00:01:40,020
+Understanding stimming is really easiest if we make use of a quick demo.
+
+27
+00:01:40,620 --> 00:01:43,470
+So I'm going to open up my browser and go to the link shown right here.
+
+28
+00:01:43,860 --> 00:01:48,060
+We're going to try entering a couple of terms and just understand how this stimming thing works.
+
+29
+00:01:49,100 --> 00:01:49,400
+All right.
+
+30
+00:01:49,400 --> 00:01:50,510
+So over in my browser.
+
+31
+00:01:51,840 --> 00:01:52,560
+Here's that page.
+
+32
+00:01:54,260 --> 00:01:59,240
+Now on the left hand side, I'm going to enter in some English word and then I'm going to be shown on
+
+33
+00:01:59,240 --> 00:02:00,080
+the right hand side.
+
+34
+00:02:00,470 --> 00:02:03,980
+The actual term that red is would be using whenever it does a search.
+
+35
+00:02:04,870 --> 00:02:06,850
+So if I enter in the word fast.
+
+36
+00:02:07,750 --> 00:02:09,570
+Gas is going to be used in the actual query.
+
+37
+00:02:10,150 --> 00:02:16,000
+If I put in fast Lee, even though that's not actually a word, the algorithm that this library uses
+
+38
+00:02:16,000 --> 00:02:18,670
+is still going to reduce that down to just the word fast.
+
+39
+00:02:19,540 --> 00:02:26,230
+So in theory, if I do a query right now on our for cars and I search for fast Lee, I should see the
+
+40
+00:02:26,230 --> 00:02:28,180
+car marked as fast car.
+
+41
+00:02:28,420 --> 00:02:29,650
+I'm going to try that really quickly.
+
+42
+00:02:29,970 --> 00:02:30,730
+So back over here.
+
+43
+00:02:30,940 --> 00:02:32,200
+I'll try doing fast.
+
+44
+00:02:32,230 --> 00:02:35,140
+Lee And sure enough, I do actually get a result.
+
+45
+00:02:37,330 --> 00:02:40,270
+Stemming some can sometimes give you unexpected results.
+
+46
+00:02:40,600 --> 00:02:45,280
+So for example, you might expect something like faster to reduce down to just fast.
+
+47
+00:02:45,490 --> 00:02:46,420
+Nope, not the case.
+
+48
+00:02:46,630 --> 00:02:48,490
+We get still just faster.
+
+49
+00:02:49,360 --> 00:02:50,320
+If I do it faster.
+
+50
+00:02:50,320 --> 00:02:54,820
+LI Which is once again not an actual word that is also reduced down to just faster.
+
+51
+00:02:55,600 --> 00:03:00,580
+So stimming is usually going to make all of your search terms a little bit more flexible in nature.
+
+52
+00:03:01,090 --> 00:03:07,000
+Users can add on a suffix to a word, and it's still going to match up with the more common non suffix
+
+53
+00:03:07,000 --> 00:03:07,960
+version of that word.
+
+54
+00:03:08,770 --> 00:03:11,530
+So in general, we do not want stimming inside of any given app.
+
+55
+00:03:13,680 --> 00:03:14,010
+Okay.
+
+56
+00:03:14,280 --> 00:03:19,320
+So now a couple of basic forms of syntax and we'll start going into the much more complicated stuff.
+
+57
+00:03:19,920 --> 00:03:24,510
+A lot of the different forms of these queries are very similar to what we saw around tags and numbers.
+
+58
+00:03:25,020 --> 00:03:30,720
+But one important exception, and that is if we put in just a plain string by itself as the query without
+
+59
+00:03:30,720 --> 00:03:36,270
+doing any ATS or anything like that, then already search is going to take that string right there and
+
+60
+00:03:36,270 --> 00:03:39,750
+use it to search over all the different fields marked as type text.
+
+61
+00:03:40,860 --> 00:03:41,820
+It was a quick example.
+
+62
+00:03:43,210 --> 00:03:47,710
+If we do just fast by itself, we're still going to get our fast car.
+
+63
+00:03:48,310 --> 00:03:52,450
+And of course, I can also do fast Lee and I get the result as well.
+
+64
+00:03:53,820 --> 00:03:55,770
+That's only true of text queries.
+
+65
+00:03:56,010 --> 00:03:58,620
+We cannot use this little shortcut with number or tag.
+
+66
+00:03:59,160 --> 00:04:01,750
+With that in mind, I really recommend you don't use this too much.
+
+67
+00:04:01,770 --> 00:04:06,660
+It's usually better to just be a little bit more explicit and say, I want to specifically search these
+
+68
+00:04:06,660 --> 00:04:08,160
+fields for the term fast.
+
+69
+00:04:09,840 --> 00:04:15,450
+If we ever put in multiple words into a query that is going to be interpreted as being an end statement.
+
+70
+00:04:16,020 --> 00:04:20,010
+So find me all the different cars with the name of Fast and Car.
+
+71
+00:04:21,420 --> 00:04:26,280
+We can split up these words with a height symbol once again, and that's interpreted as an author statement.
+
+72
+00:04:27,070 --> 00:04:30,030
+Now, one thing to note here is that this is not an either or.
+
+73
+00:04:30,300 --> 00:04:36,050
+It's not going to exclude any cars that have fast and a car in the word or in their name.
+
+74
+00:04:37,700 --> 00:04:38,570
+Quick example of that.
+
+75
+00:04:38,570 --> 00:04:45,170
+If we do an ad name fast or car, we're still going to see NASCAR in here.
+
+76
+00:04:45,500 --> 00:04:47,060
+So it's not an either or.
+
+77
+00:04:47,090 --> 00:04:54,680
+It's a give me all the cars with a name and or of asking me all the cars of the name of fast and or
+
+78
+00:04:54,680 --> 00:04:55,040
+car.
+
+79
+00:04:57,410 --> 00:05:02,960
+And then we can also use that same dash technique as an negation that we do minus at name fast.
+
+80
+00:05:03,170 --> 00:05:05,780
+Give us all the cars that do not include the term fast.
+
+81
+00:05:06,880 --> 00:05:07,150
+All right.
+
+82
+00:05:07,150 --> 00:05:08,600
+So that's the easy stuff, though.
+
+83
+00:05:08,640 --> 00:05:12,070
+Let's start to take a look at the more complicated things in just a moment.

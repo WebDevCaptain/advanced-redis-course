@@ -1,0 +1,427 @@
+1
+00:00:00,870 --> 00:00:02,430
+Let's take a look at two more commands.
+
+2
+00:00:02,640 --> 00:00:04,170
+First of all, is going to be l'orange.
+
+3
+00:00:04,410 --> 00:00:07,680
+This is going to give us a range of elements coming out of a list.
+
+4
+00:00:08,040 --> 00:00:11,430
+Again, pretty simple in nature as a very quick test.
+
+5
+00:00:11,580 --> 00:00:13,770
+I'm going to go back over adding a new code cell.
+
+6
+00:00:14,880 --> 00:00:19,410
+And then as we start to run commands inside of this notebook, we're going to be adding and removing
+
+7
+00:00:19,410 --> 00:00:20,340
+elements quite a bit.
+
+8
+00:00:20,520 --> 00:00:26,700
+So at the very start of this command, I'm going to delete the temp list we had already created.
+
+9
+00:00:26,700 --> 00:00:27,780
+Or do we call it temps?
+
+10
+00:00:28,290 --> 00:00:28,710
+Temps.
+
+11
+00:00:29,520 --> 00:00:32,550
+And I'm going to add in a couple of values immediately in the cell.
+
+12
+00:00:32,560 --> 00:00:34,560
+So we always know that we're working with clean data.
+
+13
+00:00:35,130 --> 00:00:40,320
+So I will do a R push temps of how about 25?
+
+14
+00:00:41,290 --> 00:00:42,760
+Copy that down a couple of times.
+
+15
+00:00:44,120 --> 00:00:46,880
+I'll do a 27, another 25.
+
+16
+00:00:47,450 --> 00:00:48,200
+A 30.
+
+17
+00:00:49,180 --> 00:00:50,260
+And a 24.
+
+18
+00:00:54,240 --> 00:00:56,300
+Now try using the command.
+
+19
+00:00:56,310 --> 00:00:57,780
+We're just looking at L range.
+
+20
+00:00:58,200 --> 00:01:04,260
+I can look at my temps list and I'm going to add all the elements starting at index zero and going up
+
+21
+00:01:04,260 --> 00:01:06,060
+to and including three.
+
+22
+00:01:06,240 --> 00:01:08,220
+So that would give me back four elements total.
+
+23
+00:01:09,290 --> 00:01:10,740
+I'll do a L range.
+
+24
+00:01:12,110 --> 00:01:13,100
+0 to 3.
+
+25
+00:01:13,970 --> 00:01:15,290
+And there's my four elements.
+
+26
+00:01:15,480 --> 00:01:16,820
+So first four on the list.
+
+27
+00:01:17,480 --> 00:01:20,720
+Naturally, if I wanted to, I could start at index one instead.
+
+28
+00:01:21,110 --> 00:01:24,350
+That would give me everything from 27, 25, 30.
+
+29
+00:01:26,330 --> 00:01:27,050
+Brought to for.
+
+30
+00:01:27,820 --> 00:01:28,930
+We can go out of bounds.
+
+31
+00:01:29,980 --> 00:01:30,880
+And that's totally fine.
+
+32
+00:01:31,270 --> 00:01:33,670
+We can also make use of negative numbers as well.
+
+33
+00:01:34,120 --> 00:01:40,030
+So if I did everything from 0 to -1, that means start right here, start the very first element and
+
+34
+00:01:40,030 --> 00:01:44,230
+go all the way to the very last element that will give me the entire list.
+
+35
+00:01:44,920 --> 00:01:50,380
+If I did a negative two, that would be start at zero and then go all the way up to the second to last
+
+36
+00:01:50,380 --> 00:01:52,120
+element, which in this case would be 30.
+
+37
+00:01:52,450 --> 00:01:54,730
+I'll get 25, 27, 25, 30.
+
+38
+00:01:55,810 --> 00:01:56,500
+And that's it.
+
+39
+00:01:57,860 --> 00:01:58,130
+All right.
+
+40
+00:01:58,130 --> 00:01:59,480
+So again, not too bad.
+
+41
+00:02:00,110 --> 00:02:02,570
+Let's move on to a little bit more challenging command.
+
+42
+00:02:02,690 --> 00:02:07,430
+Now, it's not challenging in what it does, but is just challenging to understand a couple of different
+
+43
+00:02:07,430 --> 00:02:08,960
+options you can provide to it.
+
+44
+00:02:09,500 --> 00:02:11,390
+The command is L ports.
+
+45
+00:02:11,960 --> 00:02:14,600
+This is essentially a query or a search.
+
+46
+00:02:14,990 --> 00:02:19,730
+So we're going to provide a value in this case that we are looking for inside the list.
+
+47
+00:02:20,150 --> 00:02:25,490
+L paths will tell us where that element or the index of that element if it does exist inside the list.
+
+48
+00:02:26,210 --> 00:02:30,020
+So the most basic implementation, this command is just what you see up here.
+
+49
+00:02:30,470 --> 00:02:31,310
+Not that bad.
+
+50
+00:02:31,490 --> 00:02:35,270
+Like I said, it's once you start adding these arguments that things get a little bit more strange.
+
+51
+00:02:35,930 --> 00:02:38,180
+So let's try the base version of L parse.
+
+52
+00:02:42,160 --> 00:02:42,510
+All right.
+
+53
+00:02:42,520 --> 00:02:48,910
+I'm going to do a little pause on temps and let's try looking for the value about 27.
+
+54
+00:02:51,600 --> 00:02:52,590
+So it's at index one.
+
+55
+00:02:53,190 --> 00:02:56,960
+I can do an l odds of 30, albeit index three right there.
+
+56
+00:02:56,970 --> 00:02:59,790
+And if I do at 24, I would get index or.
+
+57
+00:03:01,210 --> 00:03:03,430
+If I try to look for a value that does not exist, I'll get back.
+
+58
+00:03:03,430 --> 00:03:03,760
+Not.
+
+59
+00:03:06,170 --> 00:03:06,530
+All right.
+
+60
+00:03:06,810 --> 00:03:09,680
+And yet again, just like I said, basic version.
+
+61
+00:03:09,680 --> 00:03:10,310
+Not too bad.
+
+62
+00:03:10,850 --> 00:03:13,280
+Let's now start looking at some of these different arguments we can provide.
+
+63
+00:03:13,730 --> 00:03:14,790
+The first is rank.
+
+64
+00:03:15,440 --> 00:03:18,320
+So in a list, there's no guarantee of uniqueness.
+
+65
+00:03:18,770 --> 00:03:24,140
+So the El Lpas, we might want to find multiple copies or skip over some copy of a value.
+
+66
+00:03:24,770 --> 00:03:26,390
+We can use rank or count to do.
+
+67
+00:03:27,320 --> 00:03:33,170
+Rank is used to say ignore say the first or the second or the third instance of the value we're looking
+
+68
+00:03:33,170 --> 00:03:33,470
+for.
+
+69
+00:03:33,590 --> 00:03:35,210
+And give me the fourth instead.
+
+70
+00:03:35,720 --> 00:03:42,350
+So if I do a rank two, that means ignore the first instance of 25 and instead find the second instance.
+
+71
+00:03:43,580 --> 00:03:44,410
+We could try that out.
+
+72
+00:03:44,440 --> 00:03:46,420
+We do have 25 in here twice.
+
+73
+00:03:46,990 --> 00:03:51,280
+So if I do El Paso temps 25, I'll get zero.
+
+74
+00:03:51,340 --> 00:03:52,180
+That's the first one.
+
+75
+00:03:52,690 --> 00:03:57,010
+But if I do a rank two, that means find the second instance.
+
+76
+00:03:57,970 --> 00:03:59,530
+That one is at index two.
+
+77
+00:04:00,540 --> 00:04:05,400
+Naturally, if I do a rank of three, there's no third instance of 25 in my list.
+
+78
+00:04:05,550 --> 00:04:06,900
+So I get null in that case.
+
+79
+00:04:08,670 --> 00:04:11,100
+In addition to rank, you also have counts.
+
+80
+00:04:11,880 --> 00:04:15,450
+So Count is going to give us back a array of indexes.
+
+81
+00:04:16,020 --> 00:04:20,400
+So count two means find two instances of the value 25.
+
+82
+00:04:22,520 --> 00:04:27,080
+I'm going to add in a new code cell for this one, just so I have an example of rank by itself.
+
+83
+00:04:29,740 --> 00:04:31,030
+I'll do a l pause.
+
+84
+00:04:31,050 --> 00:04:31,600
+Temps.
+
+85
+00:04:31,630 --> 00:04:32,380
+25.
+
+86
+00:04:33,100 --> 00:04:35,650
+I want to find two copies of 25.
+
+87
+00:04:35,950 --> 00:04:37,360
+Tell me where those indexes are.
+
+88
+00:04:37,630 --> 00:04:38,770
+They're at zero and two.
+
+89
+00:04:40,540 --> 00:04:45,820
+If we put in a three right here, we are not able to find three instances, so we're just gonna be told
+
+90
+00:04:45,820 --> 00:04:47,800
+about the first two that were actually found.
+
+91
+00:04:51,910 --> 00:04:52,220
+All right.
+
+92
+00:04:52,240 --> 00:04:54,220
+Final variation is max length.
+
+93
+00:04:54,700 --> 00:04:58,390
+In some cases, we might have a list with many, many, many elements in it.
+
+94
+00:04:58,720 --> 00:05:01,300
+So hundreds of thousands or even potentially millions.
+
+95
+00:05:01,720 --> 00:05:07,960
+And in many of these cases, you might not want to run El Paso and try to look up some value that is
+
+96
+00:05:07,960 --> 00:05:13,540
+way deeply stored inside that list, because it would just take a lot of time and a lot of performance.
+
+97
+00:05:14,350 --> 00:05:17,520
+So we can limit how deeply we search the list with Max.
+
+98
+00:05:17,530 --> 00:05:20,060
+Len We did a max line of ten.
+
+99
+00:05:20,080 --> 00:05:26,350
+That means only take a look at the first ten elements or of course the first 5/1 thousand or whatever
+
+100
+00:05:26,350 --> 00:05:27,760
+you might want to limit this thing to.
+
+101
+00:05:28,570 --> 00:05:32,290
+We're not going to do an example of Max Len because very simple of a you can guess how would work.
+
+102
+00:05:33,630 --> 00:05:34,020
+All right.
+
+103
+00:05:34,020 --> 00:05:38,760
+So once again, as I mentioned a couple of times, these commands are not so bad.
+
+104
+00:05:39,690 --> 00:05:41,380
+They're definitely not the worst.
+
+105
+00:05:41,400 --> 00:05:45,660
+It's just understanding all the very small variations and the sheer number of them that gets a little
+
+106
+00:05:45,660 --> 00:05:46,230
+bit confusing.
+
+107
+00:05:47,270 --> 00:05:51,770
+Let's take a look at some more commands around adding, removing and updating data in the next video.

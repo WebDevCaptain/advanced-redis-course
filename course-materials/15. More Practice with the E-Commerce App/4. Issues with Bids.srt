@@ -1,0 +1,315 @@
+1
+00:00:00,460 --> 00:00:05,140
+It appears that the bidding process is working fine right now, but unfortunately, there is a very
+
+2
+00:00:05,140 --> 00:00:05,830
+small issue.
+
+3
+00:00:06,280 --> 00:00:10,120
+In this video, we're going to start to take a look at what that issue is and then go into a long series
+
+4
+00:00:10,120 --> 00:00:12,430
+of videos to understand it and how to fix it.
+
+5
+00:00:12,730 --> 00:00:13,000
+Okay.
+
+6
+00:00:13,000 --> 00:00:15,100
+So let me show you what the problem is around bidding.
+
+7
+00:00:15,100 --> 00:00:18,130
+Right now, at present, I'm signed into the application.
+
+8
+00:00:18,580 --> 00:00:22,150
+I'm going to go and create a brand new item look like on new.
+
+9
+00:00:22,270 --> 00:00:25,150
+I'll set a duration of 10 minutes and then submit.
+
+10
+00:00:26,140 --> 00:00:29,770
+Then on this page, I'm going to do a very special little bit of setup.
+
+11
+00:00:30,130 --> 00:00:31,780
+You do not have to go through this setup.
+
+12
+00:00:32,110 --> 00:00:35,770
+As a matter of fact, it might be best if you just watch what I do on my screen.
+
+13
+00:00:36,520 --> 00:00:43,240
+I want to try to place several different bids at just about the exact same time to do so, rather than
+
+14
+00:00:43,240 --> 00:00:46,960
+typing in a number right here and then clicking on that button as fast as I can.
+
+15
+00:00:47,230 --> 00:00:49,360
+I'm going to use a little bit more fancy setup.
+
+16
+00:00:50,110 --> 00:00:55,600
+I'm going to open up my developer tools inside the browser where I can right click anywhere and click
+
+17
+00:00:55,600 --> 00:00:56,410
+on Inspect.
+
+18
+00:00:56,530 --> 00:00:58,060
+That will give me my developer tools.
+
+19
+00:00:59,230 --> 00:01:05,230
+On the Elements tab, I'm going to select this little arrow element picker right here and then click
+
+20
+00:01:05,230 --> 00:01:07,000
+on the place bid button.
+
+21
+00:01:09,200 --> 00:01:13,710
+I will then make sure that I see the button element highlighted right here, and I'll zoom in on that
+
+22
+00:01:13,710 --> 00:01:15,630
+panel just so it's super clear.
+
+23
+00:01:15,870 --> 00:01:18,030
+I definitely have the button element selected.
+
+24
+00:01:19,550 --> 00:01:21,710
+Well, then make sure that I've entered a bid right here.
+
+25
+00:01:22,740 --> 00:01:23,460
+I've got ten.
+
+26
+00:01:24,360 --> 00:01:28,480
+And then finally, I'm going to write out a very small script inside the console right here.
+
+27
+00:01:28,500 --> 00:01:29,280
+You don't see the console.
+
+28
+00:01:29,280 --> 00:01:30,990
+You can press escape on your keyboard.
+
+29
+00:01:31,500 --> 00:01:36,900
+I'm going to write out a very small script to click on that button several times in very, very quick
+
+30
+00:01:36,900 --> 00:01:37,500
+succession.
+
+31
+00:01:38,390 --> 00:01:39,440
+The script is going to be.
+
+32
+00:01:39,950 --> 00:01:41,810
+Or let's i.
+
+33
+00:01:41,840 --> 00:01:43,640
+Equals zero i.
+
+34
+00:01:43,670 --> 00:01:46,340
+Less than about 15.
+
+35
+00:01:48,620 --> 00:01:48,980
+I.
+
+36
+00:01:48,980 --> 00:01:49,280
+Plus.
+
+37
+00:01:49,280 --> 00:01:49,670
+Plus.
+
+38
+00:01:50,610 --> 00:01:57,120
+Then put in my curly braces for the four loop and inside the curly braces I will enter dollar sign zero.
+
+39
+00:01:57,480 --> 00:01:58,620
+Not like.
+
+40
+00:02:00,740 --> 00:02:05,600
+The dollar signs zero is a reference to the element we have selected in the element picker up here,
+
+41
+00:02:05,600 --> 00:02:08,060
+so that's why we need to make sure a button is selected.
+
+42
+00:02:09,660 --> 00:02:09,930
+All right.
+
+43
+00:02:09,930 --> 00:02:12,390
+So now I'm going to go ahead and run the statements.
+
+44
+00:02:14,870 --> 00:02:18,740
+And at first glance it appears that everything pretty much worked as expected.
+
+45
+00:02:19,160 --> 00:02:21,200
+I see that I have a high bid of $10.
+
+46
+00:02:21,230 --> 00:02:22,640
+I see that there was one bid.
+
+47
+00:02:23,120 --> 00:02:24,720
+I see a success message right here.
+
+48
+00:02:24,740 --> 00:02:26,300
+Everything looks pretty reasonable.
+
+49
+00:02:27,190 --> 00:02:32,650
+I do see a couple of errors inside my console, which makes me think that, all right, perhaps we ran
+
+50
+00:02:32,650 --> 00:02:36,760
+into some issue as we tried to bid on the same item multiple times.
+
+51
+00:02:37,240 --> 00:02:42,160
+But let's do kind of a deeper look here and actually make sure that everything actually is working as
+
+52
+00:02:42,160 --> 00:02:42,670
+expected.
+
+53
+00:02:43,420 --> 00:02:46,150
+The first thing I'm going to do is scroll down on this page a little bit.
+
+54
+00:02:46,960 --> 00:02:51,430
+You'll notice in the bid history section, I now have many different entries in here.
+
+55
+00:02:52,090 --> 00:02:55,710
+The item started off at $10 or $0 and then went up to ten.
+
+56
+00:02:56,020 --> 00:02:59,860
+And that looks like we got another bid at ten and then ten, ten, ten and so on.
+
+57
+00:03:00,700 --> 00:03:05,380
+In addition, if I go to the network tab inside of my developer tools.
+
+58
+00:03:06,470 --> 00:03:10,970
+And then click on that patch x h r right here as a filter criteria.
+
+59
+00:03:11,890 --> 00:03:17,530
+I can then scroll up a little bit and I'll see that there are a variety of post requests that were successfully
+
+60
+00:03:17,530 --> 00:03:17,980
+issued.
+
+61
+00:03:18,640 --> 00:03:20,920
+So every request that has black text.
+
+62
+00:03:21,580 --> 00:03:24,250
+So this one, this one, this one, this one, this one, this one.
+
+63
+00:03:24,640 --> 00:03:28,180
+Those are all requests that were successfully processed by the server.
+
+64
+00:03:28,540 --> 00:03:31,000
+That means that a bid was successfully created.
+
+65
+00:03:31,900 --> 00:03:32,080
+Now.
+
+66
+00:03:32,080 --> 00:03:32,920
+Some bids failed.
+
+67
+00:03:33,190 --> 00:03:35,650
+These right here, they all fail due to validation issues.
+
+68
+00:03:35,860 --> 00:03:41,500
+Without a doubt, it looks like there were about five or six requests that successfully created a bit.
+
+69
+00:03:42,670 --> 00:03:46,300
+All these different bids have the exact same price of $10.
+
+70
+00:03:47,140 --> 00:03:50,350
+This is definitely some behavior we do not want in our application.
+
+71
+00:03:50,590 --> 00:03:56,440
+This means that if a bunch of people are trying to bid on the exact same item at the same time, some
+
+72
+00:03:56,440 --> 00:03:58,630
+number of people would see success messages.
+
+73
+00:03:58,660 --> 00:04:05,050
+Even if they all put in the exact same price, though, some people would get you some kind of success
+
+74
+00:04:05,050 --> 00:04:09,850
+message like this right here that says, Hey, congratulations, you have the winning bid, but due
+
+75
+00:04:09,850 --> 00:04:14,440
+to some bug inside of our application, they might not actually have the winning bid.
+
+76
+00:04:15,540 --> 00:04:15,900
+All right.
+
+77
+00:04:15,900 --> 00:04:17,310
+So now we've seen this error.
+
+78
+00:04:17,580 --> 00:04:18,400
+Let's take a pause here.
+
+79
+00:04:18,420 --> 00:04:22,290
+We're going to take a look at a couple diagrams and understand what's going on behind the scenes.

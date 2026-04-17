@@ -1,0 +1,127 @@
+1
+00:00:01,080 --> 00:00:03,300
+Last variation is diff or difference.
+
+2
+00:00:03,680 --> 00:00:08,700
+This is where we take a look at the very first set that is provided to the command and we return elements
+
+3
+00:00:08,700 --> 00:00:11,640
+that are present in there but not in any other sets.
+
+4
+00:00:12,390 --> 00:00:18,150
+So as another example, we would take a look at the first set right here, and we want to only put elements
+
+5
+00:00:18,150 --> 00:00:21,720
+that are present in here, but not any others into our difference.
+
+6
+00:00:22,790 --> 00:00:23,870
+We'll start off one by one.
+
+7
+00:00:24,290 --> 00:00:25,160
+First is red.
+
+8
+00:00:25,340 --> 00:00:26,630
+While red is president over here.
+
+9
+00:00:26,630 --> 00:00:27,500
+So we will not add it.
+
+10
+00:00:28,040 --> 00:00:29,570
+Blue is president here and here.
+
+11
+00:00:29,570 --> 00:00:30,500
+So we will not add it.
+
+12
+00:00:31,040 --> 00:00:33,110
+Orange is not present anywhere else.
+
+13
+00:00:33,320 --> 00:00:36,460
+So we would add in orange and that's certainly it.
+
+14
+00:00:36,470 --> 00:00:37,160
+That's the difference.
+
+15
+00:00:37,160 --> 00:00:37,970
+That's all we have to do.
+
+16
+00:00:38,060 --> 00:00:39,710
+So take a look at the first set.
+
+17
+00:00:40,010 --> 00:00:41,790
+If it exists in there, but nowhere else.
+
+18
+00:00:41,810 --> 00:00:42,830
+Add it to the difference.
+
+19
+00:00:44,710 --> 00:00:50,500
+Well, once again, let's test this out inside of our book so we can do a stiff.
+
+20
+00:00:51,500 --> 00:00:52,160
+On colors.
+
+21
+00:00:52,160 --> 00:00:55,220
+One wears two and colors three.
+
+22
+00:00:57,480 --> 00:00:58,170
+And there we go.
+
+23
+00:00:58,170 --> 00:00:58,770
+We get orange.
+
+24
+00:00:59,650 --> 00:01:04,530
+One thing that's kind of interesting about SDF is that the order of keys that you put in here makes
+
+25
+00:01:04,530 --> 00:01:08,100
+a difference on the output with Inter and S union.
+
+26
+00:01:08,400 --> 00:01:11,280
+The order of keys we provide doesn't make any difference whatsoever.
+
+27
+00:01:11,940 --> 00:01:17,550
+But because SDF is going to look at elements that are in the first set and no others really comes down
+
+28
+00:01:17,550 --> 00:01:22,590
+to what is the first set that we are referencing and the first key that we provide to the inter command.
+
+29
+00:01:24,750 --> 00:01:26,760
+Well, that's all three comparisons.
+
+30
+00:01:27,250 --> 00:01:29,970
+Now, there are variations on this command, like I mentioned.
+
+31
+00:01:30,000 --> 00:01:33,780
+We'll go through each them very, very quickly, because each of them are pretty basic and simple in
+
+32
+00:01:33,780 --> 00:01:34,140
+nature.

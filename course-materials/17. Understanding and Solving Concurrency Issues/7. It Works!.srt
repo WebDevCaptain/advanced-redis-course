@@ -1,0 +1,191 @@
+1
+00:00:00,720 --> 00:00:04,410
+At the end of last video, I made a very small mistake inside of bids.
+
+2
+00:00:04,650 --> 00:00:11,160
+Yes, I did not comment out the remaining execute isolated call down here, so we no longer need that
+
+3
+00:00:11,160 --> 00:00:12,750
+entire executed isolated block.
+
+4
+00:00:13,710 --> 00:00:16,680
+I'm going to just call it all out for right now.
+
+5
+00:00:16,920 --> 00:00:22,170
+I'm not going to delete it because I want to eventually compare our lock implementation versus the transaction
+
+6
+00:00:22,170 --> 00:00:22,860
+based approach.
+
+7
+00:00:24,160 --> 00:00:24,490
+Okay.
+
+8
+00:00:24,640 --> 00:00:27,850
+So I'm going to make sure I comments all that and save the results.
+
+9
+00:00:29,060 --> 00:00:29,860
+Temporarily.
+
+10
+00:00:29,870 --> 00:00:32,990
+You do not need to do this, but for just as I'm testing everything.
+
+11
+00:00:33,110 --> 00:00:37,070
+I'm also going to comment out recheck to see that the items price is enough.
+
+12
+00:00:37,580 --> 00:00:41,420
+This just makes doing my little benchmarking process a little bit easier for me.
+
+13
+00:00:41,450 --> 00:00:42,920
+So you do not have to comment that out.
+
+14
+00:00:43,130 --> 00:00:44,420
+I'm just doing it temporarily.
+
+15
+00:00:45,620 --> 00:00:49,430
+Now I'm going to go back over to my benchmarking script that showed you a little bit ago.
+
+16
+00:00:49,940 --> 00:00:55,280
+So this is where I attempt to create a bunch of different bids for a particular item at more or less
+
+17
+00:00:55,280 --> 00:00:59,510
+the same time across three different scripts going to three different servers.
+
+18
+00:01:00,920 --> 00:01:05,330
+And in this case, each separate script is trying to create 50 different bits.
+
+19
+00:01:05,990 --> 00:01:07,490
+So 150 bits in total.
+
+20
+00:01:07,970 --> 00:01:09,350
+Let's see what the result is.
+
+21
+00:01:11,400 --> 00:01:11,670
+All right.
+
+22
+00:01:11,670 --> 00:01:15,030
+So once again, I've got script number one, two and three.
+
+23
+00:01:16,090 --> 00:01:17,260
+So I'm going to run all through them.
+
+24
+00:01:19,440 --> 00:01:20,580
+And there you go.
+
+25
+00:01:20,910 --> 00:01:23,100
+So it looks like it was successful.
+
+26
+00:01:23,580 --> 00:01:27,180
+All three scripts were able to create all the different bids successfully.
+
+27
+00:01:27,810 --> 00:01:33,060
+Now, wanting to immediately be aware of is that running the scripts now took much, much longer.
+
+28
+00:01:33,390 --> 00:01:38,010
+You might recall that previously it only took like 200 milliseconds when we were using the transaction
+
+29
+00:01:38,010 --> 00:01:38,700
+based approach.
+
+30
+00:01:39,270 --> 00:01:44,760
+The reason it's taking so much longer now is that with the transaction approach, we would automatically
+
+31
+00:01:44,760 --> 00:01:47,010
+fail every single request right away.
+
+32
+00:01:47,040 --> 00:01:48,930
+There was no retry behavior whatsoever.
+
+33
+00:01:49,590 --> 00:01:55,320
+Now that we're using the lock implementation, if any given process fails to acquire the lock, it's
+
+34
+00:01:55,320 --> 00:02:00,690
+going to sit around and retry the set operation after those 200 milliseconds have passed.
+
+35
+00:02:01,110 --> 00:02:03,210
+So that's why we're seeing so much longer now.
+
+36
+00:02:04,050 --> 00:02:08,850
+If we were concerned about this duration, then we can always go back into.
+
+37
+00:02:09,780 --> 00:02:16,200
+Our Whitlock implementation and change the retry to light in this why could decrease this quite a bit
+
+38
+00:02:16,200 --> 00:02:20,940
+if I wanted to and I think I might just said to in milliseconds a little bit ago by the way it's actually
+
+39
+00:02:20,940 --> 00:02:21,900
+100 milliseconds.
+
+40
+00:02:22,960 --> 00:02:27,760
+So again, if I wanted to, we could really shave off some amount of time on this retry delay.
+
+41
+00:02:28,000 --> 00:02:32,440
+But right now, I'm happy with 100 because it definitely appears that it's working out pretty well for
+
+42
+00:02:32,440 --> 00:02:33,100
+my case.
+
+43
+00:02:35,030 --> 00:02:35,300
+All right.
+
+44
+00:02:35,300 --> 00:02:39,320
+So it looks like this initial implementation is working just fine.
+
+45
+00:02:39,650 --> 00:02:43,130
+But as I've mentioned several times, the implementation is not perfect.
+
+46
+00:02:43,820 --> 00:02:47,360
+So I want to go over a couple of corner cases that we need to be aware of.
+
+47
+00:02:47,810 --> 00:02:52,550
+Some problems with this, with implementation, and we'll take a look at how we can solve those in the
+
+48
+00:02:52,550 --> 00:02:53,120
+next video.

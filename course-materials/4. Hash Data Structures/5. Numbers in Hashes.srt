@@ -1,0 +1,323 @@
+1
+00:00:00,740 --> 00:00:02,810
+Once again, a couple of different commands very quickly.
+
+2
+00:00:03,170 --> 00:00:07,040
+First is H anchor by and H anchor by float.
+
+3
+00:00:07,610 --> 00:00:13,370
+These two commands allow us to add either an integer or a float to an existing number inside of a hash.
+
+4
+00:00:13,850 --> 00:00:21,050
+So if we do h anchor by company age ten, that means find the hash story company, find the field called
+
+5
+00:00:21,080 --> 00:00:23,450
+age and add ten to it.
+
+6
+00:00:23,960 --> 00:00:25,940
+So I would end up with 1925.
+
+7
+00:00:27,070 --> 00:00:29,890
+Its anchor by float allows us to add a float value.
+
+8
+00:00:30,520 --> 00:00:32,890
+So again, find your hash stored at company.
+
+9
+00:00:33,280 --> 00:00:37,630
+Find the key by pair of age and add 1.00 Ford to it.
+
+10
+00:00:37,870 --> 00:00:38,950
+So what I would end up with?
+
+11
+00:00:39,190 --> 00:00:41,440
+1916 004.
+
+12
+00:00:44,300 --> 00:00:50,930
+Now if you are attempting to call H or buy on a key that does not exist inside of a house, then that
+
+13
+00:00:50,930 --> 00:00:52,220
+key will be created for you.
+
+14
+00:00:52,520 --> 00:01:00,590
+So for example, if we did an h inker by revenue with ten, the revenue key does not exist inside this
+
+15
+00:01:00,590 --> 00:01:00,980
+house.
+
+16
+00:01:01,310 --> 00:01:04,910
+So a new key will be created for you automatically of revenue.
+
+17
+00:01:05,640 --> 00:01:07,700
+Its value will be set to ten.
+
+18
+00:01:09,580 --> 00:01:11,350
+Lastly, little bit of a trick.
+
+19
+00:01:11,770 --> 00:01:15,430
+You'll notice that this says H anchor, which means increase or increment.
+
+20
+00:01:15,820 --> 00:01:21,040
+But we can just as easily supply a negative value right here if we actually want to subtract from an
+
+21
+00:01:21,040 --> 00:01:21,700
+existing number.
+
+22
+00:01:22,150 --> 00:01:28,480
+So if I put in, say, -15 and ran that against age right here, I would end up with 19.
+
+23
+00:01:30,470 --> 00:01:36,710
+Okay, as usual, will test this out very quickly because very similar to the string command of anchor
+
+24
+00:01:36,710 --> 00:01:37,640
+and anchor by.
+
+25
+00:01:39,140 --> 00:01:40,070
+I'll do an H.
+
+26
+00:01:41,300 --> 00:01:44,420
+Anchor by on company age with ten.
+
+27
+00:01:46,180 --> 00:01:47,260
+I'll then do a.
+
+28
+00:01:48,420 --> 00:01:49,500
+Right after that.
+
+29
+00:01:52,110 --> 00:01:54,330
+Each gets all on company.
+
+30
+00:01:56,040 --> 00:01:59,100
+And oh yeah, I deleted age just a moment ago in the last video.
+
+31
+00:01:59,100 --> 00:02:00,180
+So I've got just ten right here.
+
+32
+00:02:00,360 --> 00:02:04,250
+I can go up to the very top of this notebook and reset my company hash.
+
+33
+00:02:04,260 --> 00:02:05,100
+Here it is right here.
+
+34
+00:02:05,880 --> 00:02:06,690
+Okay, that's better.
+
+35
+00:02:06,990 --> 00:02:13,830
+And now if I do an H anchor by ten again, I'll get that 1960 and I can see that very easily right there.
+
+36
+00:02:15,010 --> 00:02:17,740
+Now also do an h incur by float.
+
+37
+00:02:20,620 --> 00:02:20,810
+Like.
+
+38
+00:02:20,830 --> 00:02:26,480
+So now when I run the cell, I'm going to add another ten and then add on a 1.001.
+
+39
+00:02:26,500 --> 00:02:31,570
+So end up with something like 19 70.001 or 1970 1001.
+
+40
+00:02:32,290 --> 00:02:32,830
+There we go.
+
+41
+00:02:33,280 --> 00:02:34,000
+And there we go.
+
+42
+00:02:35,810 --> 00:02:36,590
+It's simple enough.
+
+43
+00:02:38,170 --> 00:02:39,940
+On to h string length.
+
+44
+00:02:40,510 --> 00:02:43,450
+This allows us to get the length of a string stored inside the house.
+
+45
+00:02:43,720 --> 00:02:47,260
+This is definitely another one of those commands where you kind of have to wonder, when am I going
+
+46
+00:02:47,260 --> 00:02:47,830
+to use this?
+
+47
+00:02:48,130 --> 00:02:51,700
+I remember when we looked at strings previously there were many commands like that and we kind of had
+
+48
+00:02:51,700 --> 00:02:53,710
+to figure out clever uses for them.
+
+49
+00:02:54,280 --> 00:02:57,040
+So when are you going to get the length of a string inside the house?
+
+50
+00:02:57,640 --> 00:03:01,990
+Probably not super often, but it's one of those commands you can use to kind of twist Reddit's just
+
+51
+00:03:01,990 --> 00:03:06,180
+a little bit to service something in a kind of a more clever fashion.
+
+52
+00:03:07,680 --> 00:03:09,050
+If we do h string length.
+
+53
+00:03:09,290 --> 00:03:10,020
+Look at company.
+
+54
+00:03:10,040 --> 00:03:11,240
+Find the name of a pair.
+
+55
+00:03:11,390 --> 00:03:13,220
+Just give me that length of that string right there.
+
+56
+00:03:14,060 --> 00:03:15,560
+We'll try that out very quickly.
+
+57
+00:03:17,440 --> 00:03:21,100
+H string length company name.
+
+58
+00:03:21,910 --> 00:03:24,850
+And so that string has 14 characters inside of it.
+
+59
+00:03:26,530 --> 00:03:26,850
+Okay.
+
+60
+00:03:26,890 --> 00:03:27,850
+One last set here.
+
+61
+00:03:28,470 --> 00:03:30,580
+Each key is and its values.
+
+62
+00:03:31,420 --> 00:03:35,590
+Get all the keys out of a hash and get all the values out of a hash.
+
+63
+00:03:39,390 --> 00:03:45,790
+We can do a h ease of company and we'll get back just the name and age.
+
+64
+00:03:46,920 --> 00:03:50,580
+We can also do an h values to me h vowels.
+
+65
+00:03:52,430 --> 00:03:57,170
+And get back to fancy concrete and the newly updated 1970 1.001.
+
+66
+00:03:58,370 --> 00:03:58,700
+Okay.
+
+67
+00:03:58,700 --> 00:04:01,650
+So these commands are we're looking at inside this video in particular.
+
+68
+00:04:01,670 --> 00:04:02,080
+Yes.
+
+69
+00:04:02,090 --> 00:04:06,290
+Once again, you're probably not going to use these terribly often unless you're doing something really
+
+70
+00:04:06,290 --> 00:04:07,280
+clever with Redis.
+
+71
+00:04:07,790 --> 00:04:11,120
+Nonetheless, you are going to see code every now and then that makes use of these commands.
+
+72
+00:04:11,130 --> 00:04:15,710
+So it is good to just know that they exist, especially since it only takes a moment or two in this
+
+73
+00:04:15,710 --> 00:04:16,970
+course for me to mention them.
+
+74
+00:04:16,970 --> 00:04:17,870
+Very quickly to you.
+
+75
+00:04:18,080 --> 00:04:21,740
+Now we've got them in a notebook, so you can always refer back to them in the future.
+
+76
+00:04:22,740 --> 00:04:23,040
+All right.
+
+77
+00:04:23,040 --> 00:04:28,500
+Well, believe it or not, that's pretty much all the commands that you need to understand around houses.
+
+78
+00:04:28,860 --> 00:04:33,630
+But there are many, many uses of houses, and that's where things start to get very interesting.
+
+79
+00:04:33,950 --> 00:04:37,980
+Now, now that we understand the basic commands and some limitations, we can start to look at when
+
+80
+00:04:37,980 --> 00:04:40,140
+we would use these houses to store information.
+
+81
+00:04:40,420 --> 00:04:44,220
+We can start to get some practical examples inside of our e-commerce example as well.

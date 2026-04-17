@@ -1,0 +1,219 @@
+1
+00:00:00,770 --> 00:00:05,900
+Let's take a look at the first piece of implementation we're going to put together around our ARB application.
+
+2
+00:00:06,890 --> 00:00:07,240
+Okay.
+
+3
+00:00:07,250 --> 00:00:11,240
+So let me describe a little flow or something that's happening inside this application right now.
+
+4
+00:00:11,880 --> 00:00:15,680
+This has nothing to do with the e-commerce side of the app, so nothing around products or anything
+
+5
+00:00:15,680 --> 00:00:16,080
+like that.
+
+6
+00:00:16,400 --> 00:00:18,410
+It's actually a much more basic interaction.
+
+7
+00:00:19,010 --> 00:00:22,520
+Right now we have users who are making requests to our application.
+
+8
+00:00:23,330 --> 00:00:26,900
+Our application is written using a library called Svelte Hit.
+
+9
+00:00:27,500 --> 00:00:32,300
+This is a JavaScript library that uses a technique called server side rendering.
+
+10
+00:00:32,990 --> 00:00:38,420
+That means that our server generates some HTML and then sends that HTML directly back to the user's
+
+11
+00:00:38,420 --> 00:00:38,870
+browser.
+
+12
+00:00:39,760 --> 00:00:45,460
+So internally, whenever a request is issued, svelte kit figures out what page the user is trying to
+
+13
+00:00:45,460 --> 00:00:45,760
+view.
+
+14
+00:00:46,030 --> 00:00:47,590
+Are they trying to view the homepage?
+
+15
+00:00:47,590 --> 00:00:48,520
+The sign in screen?
+
+16
+00:00:48,550 --> 00:00:50,420
+Sign up, create product.
+
+17
+00:00:50,440 --> 00:00:51,880
+What page are they looking for?
+
+18
+00:00:52,780 --> 00:00:58,840
+Once that's determined, Kit is then going to run a bunch of JavaScript code to generate some HTML.
+
+19
+00:00:59,290 --> 00:01:03,700
+And it turns out that that particular step is relatively slow.
+
+20
+00:01:04,150 --> 00:01:09,700
+It takes a pretty good amount of time to actually generate that HTML, but once it is generated, then
+
+21
+00:01:09,700 --> 00:01:14,770
+send a response back to the user and the user immediately sees some HTML appear on the screen of their
+
+22
+00:01:14,770 --> 00:01:15,160
+browser.
+
+23
+00:01:16,840 --> 00:01:21,580
+So as our first task, the first improvement that we're going to put into this application, we're going
+
+24
+00:01:21,580 --> 00:01:24,060
+to try to speed up this process using rabbits.
+
+25
+00:01:24,610 --> 00:01:31,780
+I want to make sure that we are not constantly generating a bunch of HTML from scratch if it's not actually
+
+26
+00:01:31,780 --> 00:01:32,410
+required.
+
+27
+00:01:32,920 --> 00:01:38,560
+So let's use some of our Reddit's knowledge that we've gained to date how we might improve the performance
+
+28
+00:01:38,560 --> 00:01:39,010
+of this step.
+
+29
+00:01:40,820 --> 00:01:41,090
+Okay.
+
+30
+00:01:41,120 --> 00:01:44,990
+So here's we're going to do we're going to implement a very simple caching layer.
+
+31
+00:01:45,770 --> 00:01:49,850
+Now, whenever a user makes a request or application, we're going to figure out what page the user
+
+32
+00:01:49,850 --> 00:01:50,630
+is trying to view.
+
+33
+00:01:51,230 --> 00:01:56,690
+But then rather than immediately attempting to render that page or generate some HTML for it, we're
+
+34
+00:01:56,690 --> 00:02:02,240
+going to instead see if we have already created some HTML for this page and stored it inside of Redis
+
+35
+00:02:02,450 --> 00:02:03,940
+as a simple key value pair.
+
+36
+00:02:05,370 --> 00:02:09,720
+If we have already generated this page, we're going to immediately send a response back to the user.
+
+37
+00:02:10,290 --> 00:02:16,650
+Otherwise, if we have not generated this page before, we will generate it and then we will store that
+
+38
+00:02:16,890 --> 00:02:22,290
+HTML that was created inside of Redis so we can use it again in the future without having to run that
+
+39
+00:02:22,290 --> 00:02:23,820
+expensive rendering operation.
+
+40
+00:02:24,480 --> 00:02:27,360
+And then after that, we will still send a response back to the user.
+
+41
+00:02:28,540 --> 00:02:32,430
+So after a user comes to you a page inside your application for the very first time.
+
+42
+00:02:32,560 --> 00:02:36,400
+In other words, really no user has ever visited this page before.
+
+43
+00:02:36,790 --> 00:02:41,560
+We're going to fall into the know path, so we're going to render the page and store it inside of redness.
+
+44
+00:02:42,490 --> 00:02:48,670
+So we might have a key value pair inside of your old something like, say, page or render page something
+
+45
+00:02:48,670 --> 00:02:55,330
+to indicate that this is a cached email document and the value will be the HTML though some kind of
+
+46
+00:02:55,570 --> 00:02:59,740
+HTML doc with all the appropriate tags and whatnot.
+
+47
+00:03:01,890 --> 00:03:05,730
+And again, this is going to improve our performance because we don't have to constantly regenerate
+
+48
+00:03:05,970 --> 00:03:09,300
+these very common small documents over and over and over again.
+
+49
+00:03:10,430 --> 00:03:10,850
+That's it.
+
+50
+00:03:10,880 --> 00:03:11,900
+That's the general goal.
+
+51
+00:03:12,170 --> 00:03:16,460
+We're going to speed up the performance of our application by using a very simple caching implemented
+
+52
+00:03:16,460 --> 00:03:16,970
+in Redis.
+
+53
+00:03:17,880 --> 00:03:24,060
+Now, even though we could implement this very easily using a simple set and get command, it turns
+
+54
+00:03:24,060 --> 00:03:26,910
+out that there are a few other considerations we might want to have.
+
+55
+00:03:27,330 --> 00:03:30,210
+So let's walk through a couple of considerations in just a moment.

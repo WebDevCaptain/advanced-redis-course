@@ -1,0 +1,71 @@
+1
+00:00:00,650 --> 00:00:04,190
+Let's create a serialize function back inside of our users file.
+
+2
+00:00:04,640 --> 00:00:08,000
+So at the very bottom I'm going to create a new function called Serialize.
+
+3
+00:00:10,640 --> 00:00:17,540
+This is going to receive a single argument, which I would call user and it's going to be of type read
+
+4
+00:00:17,580 --> 00:00:18,590
+user adders.
+
+5
+00:00:22,910 --> 00:00:28,550
+And then from this function we will return a plain object that has exactly the properties we want to
+
+6
+00:00:28,550 --> 00:00:31,580
+save into this in exactly the format that we want.
+
+7
+00:00:32,270 --> 00:00:36,740
+But once again, in this case, the serialize function is going to be very plain and very boring.
+
+8
+00:00:37,860 --> 00:00:42,360
+And it doesn't really do a whole lot in general, but that should be a user right there.
+
+9
+00:00:43,730 --> 00:00:49,190
+But on future serialize functions, it's going to be a lot more complicated and we're going to be removing
+
+10
+00:00:49,190 --> 00:00:53,420
+more properties and making sure that other properties are once again correctly formatted.
+
+11
+00:00:54,800 --> 00:00:58,820
+All right, now that we've got your lives put together, I'm going to go back up to the H set operation
+
+12
+00:00:58,820 --> 00:00:59,270
+right here.
+
+13
+00:00:59,720 --> 00:01:05,390
+I'm going to remove the plain object we are passing in and replace it with serialize adders.
+
+14
+00:01:06,480 --> 00:01:06,960
+Like so.
+
+15
+00:01:08,480 --> 00:01:09,110
+And that's it.
+
+16
+00:01:10,400 --> 00:01:10,760
+Okay.
+
+17
+00:01:10,910 --> 00:01:12,680
+So now we've got great user put together.
+
+18
+00:01:12,680 --> 00:01:16,540
+We're going to come back in just a moment and put together or get user buy ID.

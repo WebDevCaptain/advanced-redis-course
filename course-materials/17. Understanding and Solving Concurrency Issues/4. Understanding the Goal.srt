@@ -1,0 +1,311 @@
+1
+00:00:00,830 --> 00:00:04,070
+Before we get started on our implementation, I want to give you a couple of notes.
+
+2
+00:00:04,400 --> 00:00:10,010
+The first thing to understand, we are going to be building a lock implementation that is a dramatically,
+
+3
+00:00:10,010 --> 00:00:14,300
+dramatically simplified version of another algorithm called Red Lock.
+
+4
+00:00:14,810 --> 00:00:18,830
+Red lock is a production grade concurrency locking algorithm.
+
+5
+00:00:19,490 --> 00:00:25,100
+So if you ever have a series project, I really recommend you use a red lock algorithm instead of what
+
+6
+00:00:25,100 --> 00:00:26,030
+we are building here.
+
+7
+00:00:26,660 --> 00:00:29,360
+You do not have to build red lock from scratch.
+
+8
+00:00:29,660 --> 00:00:34,970
+Instead, there are popular libraries in just about every different language that automatically implement
+
+9
+00:00:34,970 --> 00:00:36,500
+the red lock algorithm for you.
+
+10
+00:00:36,590 --> 00:00:40,310
+And you can just make use of these different libraries in your project very easily.
+
+11
+00:00:41,030 --> 00:00:45,740
+We are only building a locking algorithm here in this course, so you can kind of understand the concept
+
+12
+00:00:45,740 --> 00:00:47,800
+of locking and what it does behind the scenes.
+
+13
+00:00:48,810 --> 00:00:52,020
+Very quickly, I'm going to open up the link I have down here.
+
+14
+00:00:53,440 --> 00:00:54,610
+So over my browser.
+
+15
+00:00:55,630 --> 00:01:01,000
+If I go to that page, it has some information on locks in general, and if you scroll down, you'll
+
+16
+00:01:01,000 --> 00:01:05,590
+find links to different implementations of red lock in many different languages.
+
+17
+00:01:06,160 --> 00:01:11,260
+So again, if you ever have, say, a JavaScript project where you need to have some kind of concurrency
+
+18
+00:01:11,470 --> 00:01:17,140
+algorithm or a lock algorithm, we would use possibly node red lock right here.
+
+19
+00:01:19,550 --> 00:01:19,880
+Okay.
+
+20
+00:01:20,300 --> 00:01:22,310
+One other set of notes very quickly.
+
+21
+00:01:22,910 --> 00:01:27,680
+We're going to put together our implementation in TypeScript, and this is going to involve a little
+
+22
+00:01:27,680 --> 00:01:29,030
+bit of complex TypeScript.
+
+23
+00:01:29,600 --> 00:01:34,310
+I'm not going to do a ton of slide discussion on the code we are writing per se, so I'm not really
+
+24
+00:01:34,310 --> 00:01:36,890
+going to explain the TypeScript aspects of it.
+
+25
+00:01:37,520 --> 00:01:41,570
+So with that in mind, if you don't know TypeScript or if you don't care about TypeScript, no problem
+
+26
+00:01:41,570 --> 00:01:42,140
+whatsoever.
+
+27
+00:01:42,320 --> 00:01:44,090
+Just skip over the next couple of videos.
+
+28
+00:01:44,600 --> 00:01:48,950
+You can skip over the next couple of videos where we implement all this concurrency stuff and it's not
+
+29
+00:01:48,950 --> 00:01:51,020
+going to break anything else inside the course.
+
+30
+00:01:51,410 --> 00:01:56,180
+This is the only place where we are going to create this locking algorithm and actually make use of
+
+31
+00:01:56,180 --> 00:01:57,460
+it everywhere else.
+
+32
+00:01:57,470 --> 00:02:01,580
+I'm going to mention stuff around concurrency and say, Hey, this would be a good place to use our
+
+33
+00:02:01,580 --> 00:02:05,720
+locking algorithm, but we're not going to actually put the implementation anywhere else or use the
+
+34
+00:02:05,720 --> 00:02:06,890
+implementation anywhere else.
+
+35
+00:02:08,050 --> 00:02:08,350
+Okay.
+
+36
+00:02:08,350 --> 00:02:09,100
+So enough of this.
+
+37
+00:02:09,100 --> 00:02:09,760
+Enough notes.
+
+38
+00:02:09,970 --> 00:02:10,780
+Let's get to it.
+
+39
+00:02:11,350 --> 00:02:12,730
+So back inside, my editor.
+
+40
+00:02:13,820 --> 00:02:15,590
+We're going to first begin by finding that bid.
+
+41
+00:02:15,590 --> 00:02:16,270
+Start to yes.
+
+42
+00:02:16,280 --> 00:02:18,650
+File the inside of services.
+
+43
+00:02:18,920 --> 00:02:19,640
+Where is it?
+
+44
+00:02:19,930 --> 00:02:23,270
+Yes, we were looking at creep ID just a moment ago.
+
+45
+00:02:24,190 --> 00:02:27,250
+Inside of here, we've got that execute isolated function.
+
+46
+00:02:28,140 --> 00:02:31,230
+That's what's going to create a new connection over charities.
+
+47
+00:02:31,710 --> 00:02:37,320
+But then does the watch then read some data, does validation, and then write some data inside of a
+
+48
+00:02:37,320 --> 00:02:37,950
+transaction?
+
+49
+00:02:39,480 --> 00:02:43,120
+Let me tell you what our end goal here is around our locking algorithm.
+
+50
+00:02:43,390 --> 00:02:45,280
+What exactly are we trying to build?
+
+51
+00:02:45,940 --> 00:02:47,350
+Well, here's what I want to have.
+
+52
+00:02:48,160 --> 00:02:49,520
+I want to have something like this.
+
+53
+00:02:49,540 --> 00:02:52,960
+I want to have a function called width lock.
+
+54
+00:02:54,150 --> 00:02:58,020
+So that's going to a function that you and I are going to write somewhere else inside of our project.
+
+55
+00:02:58,890 --> 00:03:05,610
+The first argument is going to be some key that we want to temporarily lock down access to the for us.
+
+56
+00:03:05,640 --> 00:03:07,740
+That's going to be the item ID hash.
+
+57
+00:03:08,370 --> 00:03:10,710
+The first argument here would be add or sort item ID.
+
+58
+00:03:11,700 --> 00:03:13,170
+That's what we want to lock down.
+
+59
+00:03:14,540 --> 00:03:19,580
+The Whitlock out function right here is then going to go through this entire process that we just walked
+
+60
+00:03:19,580 --> 00:03:20,540
+through in the last video.
+
+61
+00:03:20,840 --> 00:03:25,790
+So it's going to do all these set operations until eventually a set succeeds.
+
+62
+00:03:26,690 --> 00:03:33,200
+Once the set succeeds, Whitlock is then going to call a callback function that we're going to provide
+
+63
+00:03:33,200 --> 00:03:34,640
+as a second arguments.
+
+64
+00:03:36,070 --> 00:03:40,180
+And this callback function is where we are going to implement all the logic to run.
+
+65
+00:03:40,300 --> 00:03:42,220
+After the lock is acquired.
+
+66
+00:03:43,450 --> 00:03:47,470
+So for us, that's going to be the entire process of matching.
+
+67
+00:03:50,770 --> 00:03:52,180
+The item.
+
+68
+00:03:53,540 --> 00:03:54,530
+Doing validation.
+
+69
+00:03:55,490 --> 00:03:57,590
+And then writing some data.
+
+70
+00:03:58,010 --> 00:04:02,540
+So in other words, exactly what we're doing inside of execute isolated down here right now with the
+
+71
+00:04:02,540 --> 00:04:05,090
+exception of we no longer need a watch statement.
+
+72
+00:04:06,410 --> 00:04:06,900
+So that's it.
+
+73
+00:04:06,920 --> 00:04:07,460
+That's the goal.
+
+74
+00:04:07,490 --> 00:04:08,780
+We want to have a function.
+
+75
+00:04:09,200 --> 00:04:10,160
+All that with luck.
+
+76
+00:04:10,190 --> 00:04:15,490
+It's going to take these two arguments and Whitlock internally is going to implement this entire process
+
+77
+00:04:15,500 --> 00:04:16,580
+we just walked through.
+
+78
+00:04:17,610 --> 00:04:22,050
+Now that we understand the goal, let's read this Whitlock mentioned in the next video.

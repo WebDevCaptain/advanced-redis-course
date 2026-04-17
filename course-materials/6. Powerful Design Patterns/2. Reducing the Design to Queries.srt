@@ -1,0 +1,503 @@
+1
+00:00:00,710 --> 00:00:01,100
+Okay.
+
+2
+00:00:01,130 --> 00:00:04,250
+Time to think about the data design of our application.
+
+3
+00:00:04,730 --> 00:00:09,200
+Now, as a reminder, we came up with this design methodology couple of videos ago.
+
+4
+00:00:09,380 --> 00:00:13,700
+I told you that if we were working in the SQL database world, the general strategy that we use for
+
+5
+00:00:13,700 --> 00:00:18,590
+designing an application is to just throw all of our data into tables, and then after that we can figure
+
+6
+00:00:18,590 --> 00:00:20,000
+out how to query all that data.
+
+7
+00:00:20,000 --> 00:00:22,460
+And that totally works in a sequel world.
+
+8
+00:00:23,030 --> 00:00:27,440
+But when we are making use of Redis, we approach these problems in a reverse order.
+
+9
+00:00:27,830 --> 00:00:32,780
+We instead first figure out what queries we need to answer, what data do we actually have to fetch
+
+10
+00:00:32,780 --> 00:00:35,300
+out of our database, and what changes do we need to make?
+
+11
+00:00:35,810 --> 00:00:40,910
+And only after we make that list of what queries we need to answer are we going to figure out how to
+
+12
+00:00:40,910 --> 00:00:45,860
+structure our data specifically to answer those queries and nothing more.
+
+13
+00:00:46,100 --> 00:00:49,670
+In other words, we're not quite planning for the future with readies.
+
+14
+00:00:49,670 --> 00:00:50,690
+We're not quite planning.
+
+15
+00:00:50,690 --> 00:00:54,500
+Say what is a possible feature, we might add, in ten years down the line.
+
+16
+00:00:54,650 --> 00:00:57,320
+Instead, we are designing for our requirements right now.
+
+17
+00:00:57,950 --> 00:01:03,440
+By designing for our current set of requirements, we almost always can come up with a much better design
+
+18
+00:01:03,440 --> 00:01:05,240
+and by better, I really mean faster.
+
+19
+00:01:05,240 --> 00:01:10,100
+We can come up with a much faster way and more compact way of storing all the data for our app.
+
+20
+00:01:11,070 --> 00:01:16,590
+So if we were in a school based kind of world, I could tell you right away this is probably exactly
+
+21
+00:01:16,590 --> 00:01:17,610
+what we would end up doing.
+
+22
+00:01:18,000 --> 00:01:23,700
+We'd have a table users that stores all the different users we have and a table of items that we're
+
+23
+00:01:23,700 --> 00:01:26,250
+trying to sell or really those users are trying to sell.
+
+24
+00:01:27,230 --> 00:01:31,580
+And then we might have some number of relations between those two tables tied together with other tables
+
+25
+00:01:31,580 --> 00:01:33,230
+of use likes and bits.
+
+26
+00:01:33,830 --> 00:01:35,090
+And that's pretty much it.
+
+27
+00:01:35,120 --> 00:01:37,970
+That would be our entire sequel type database design.
+
+28
+00:01:38,210 --> 00:01:39,350
+Pretty easy, straightforward.
+
+29
+00:01:40,130 --> 00:01:43,730
+We can just throw all the data into our database in the structure and then figure out how we want to
+
+30
+00:01:43,730 --> 00:01:44,660
+query it later on.
+
+31
+00:01:44,810 --> 00:01:46,760
+But again, that's not what we're doing.
+
+32
+00:01:47,870 --> 00:01:48,200
+So.
+
+33
+00:01:49,970 --> 00:01:51,860
+To figure out what queries we need to answer.
+
+34
+00:01:52,040 --> 00:01:58,010
+A good strategy for this is to take a look at our mockups that we just went over and figure out all
+
+35
+00:01:58,010 --> 00:02:02,240
+the different elements on the page, what data is required to actually make them function.
+
+36
+00:02:02,750 --> 00:02:03,770
+So let's do that right away.
+
+37
+00:02:05,800 --> 00:02:06,130
+Okay.
+
+38
+00:02:06,190 --> 00:02:11,290
+So we're looking at the same mock ups here and we're trying to figure out what queries or changes to
+
+39
+00:02:11,290 --> 00:02:11,830
+data.
+
+40
+00:02:11,890 --> 00:02:17,170
+In other words, what are we really doing inside of our database to implement all the features on every
+
+41
+00:02:17,170 --> 00:02:17,620
+page?
+
+42
+00:02:18,370 --> 00:02:19,410
+Going through each page.
+
+43
+00:02:19,420 --> 00:02:24,640
+And I wrote out some distinct queries or operations that we need to make each of them work as expected.
+
+44
+00:02:25,570 --> 00:02:29,620
+I'm going to very quickly we're not going to go through all them in great detail.
+
+45
+00:02:29,650 --> 00:02:31,270
+I'm going to very quickly go over some of them.
+
+46
+00:02:31,830 --> 00:02:32,410
+Vast majority.
+
+47
+00:02:32,410 --> 00:02:34,120
+These are going to be pretty obvious from the get go.
+
+48
+00:02:34,840 --> 00:02:38,860
+The first the carousel right here, right there and right there.
+
+49
+00:02:39,070 --> 00:02:45,150
+We need to be able to find a list of items sorted by price, sorted by ending time and sorted by use.
+
+50
+00:02:46,080 --> 00:02:51,150
+We also need the little search widget at the very top, the ability to search for items by name.
+
+51
+00:02:51,260 --> 00:02:53,250
+So that's a little search bar up here in the header.
+
+52
+00:02:55,550 --> 00:02:56,660
+On the sign in page.
+
+53
+00:02:57,110 --> 00:03:02,960
+Whenever a user enters in a username, we need to find some user inside of our database with the same
+
+54
+00:03:02,960 --> 00:03:08,000
+exact username so we can compare passwords and make sure that the user is trying to sign in with some
+
+55
+00:03:08,000 --> 00:03:09,170
+authentic credential.
+
+56
+00:03:10,060 --> 00:03:12,400
+We need to be able to find a user with a given username.
+
+57
+00:03:13,350 --> 00:03:17,820
+Also to support our entire authentication system, we need to be able to create something called a session,
+
+58
+00:03:18,300 --> 00:03:20,790
+find a session, and also get a user with a given ID.
+
+59
+00:03:21,570 --> 00:03:24,690
+These three right here are tied to the authentication system.
+
+60
+00:03:24,720 --> 00:03:26,310
+We'll go over them in greater depth.
+
+61
+00:03:28,120 --> 00:03:29,140
+On the sign up page.
+
+62
+00:03:29,170 --> 00:03:30,790
+We need to be able to create a user.
+
+63
+00:03:32,240 --> 00:03:33,890
+On the item page.
+
+64
+00:03:33,890 --> 00:03:35,630
+We need to be able to, of course, create an item.
+
+65
+00:03:37,650 --> 00:03:39,930
+An item show lot of things going on here.
+
+66
+00:03:40,620 --> 00:03:42,930
+So we need to go to you in the item by ID.
+
+67
+00:03:43,380 --> 00:03:43,610
+Fine.
+
+68
+00:03:43,620 --> 00:03:44,380
+Number of likes.
+
+69
+00:03:44,400 --> 00:03:45,030
+Like an item.
+
+70
+00:03:45,030 --> 00:03:49,590
+Unlike an item, you need to go to see if the current user is the person who assigned in to our app
+
+71
+00:03:49,590 --> 00:03:52,700
+and viewing this page likes the item they are looking at.
+
+72
+00:03:53,490 --> 00:03:55,170
+We need to be able to create a bid.
+
+73
+00:03:55,890 --> 00:04:01,080
+We need to be able to get the bid history for an item so we can display this nice looking chart right
+
+74
+00:04:01,080 --> 00:04:01,320
+here.
+
+75
+00:04:03,560 --> 00:04:08,750
+We need to be able to find similar items and in addition, we need to take care of that view behavior
+
+76
+00:04:08,750 --> 00:04:09,980
+that I mentioned in the last video.
+
+77
+00:04:09,990 --> 00:04:15,950
+So remember, views are unique per user, so any user can only ever contribute one view per item.
+
+78
+00:04:17,550 --> 00:04:17,810
+Okay.
+
+79
+00:04:18,150 --> 00:04:19,560
+Last two pages right here.
+
+80
+00:04:20,690 --> 00:04:25,550
+So on the seller profile page, you need to find all the items that a user likes so we can display that
+
+81
+00:04:25,550 --> 00:04:30,830
+section and then find all the items that two different users, both like that section right there.
+
+82
+00:04:31,890 --> 00:04:37,620
+And then finally, for this big table, we need to find a list of all items created by one particular
+
+83
+00:04:37,620 --> 00:04:40,920
+user, and we need to be able to sort them by various criteria.
+
+84
+00:04:41,580 --> 00:04:47,680
+So you can't really tell in this diagram right here in this mockup, but if I click on say view's a
+
+85
+00:04:47,760 --> 00:04:53,010
+little header right there, my intent is to see this entire table sorted by the number of views that
+
+86
+00:04:53,010 --> 00:04:53,820
+a product has.
+
+87
+00:04:54,150 --> 00:04:56,880
+And same thing for price time left, number of bids and so on.
+
+88
+00:04:57,510 --> 00:05:02,010
+So we need to be able to support some very robust sorting criteria.
+
+89
+00:05:03,900 --> 00:05:04,200
+All right.
+
+90
+00:05:04,380 --> 00:05:05,920
+So that's a lot of stuff going on.
+
+91
+00:05:05,940 --> 00:05:11,220
+So I took all those different theories, all the different operations, and here they all are on one
+
+92
+00:05:11,220 --> 00:05:11,520
+screen.
+
+93
+00:05:11,670 --> 00:05:13,680
+So, again, a lot of stuff going on here.
+
+94
+00:05:14,190 --> 00:05:18,780
+But the important thing to note, these are the only operations that we need to implement.
+
+95
+00:05:19,170 --> 00:05:22,140
+We have been given a design for an application at this point.
+
+96
+00:05:22,500 --> 00:05:26,730
+We see those mockups, but we only need to meet that specification.
+
+97
+00:05:26,910 --> 00:05:32,220
+We don't really need to plan for ten years down the road because remember with Redis, what we're really
+
+98
+00:05:32,220 --> 00:05:33,290
+targeting is speed.
+
+99
+00:05:33,300 --> 00:05:34,650
+That's what it's all about.
+
+100
+00:05:35,040 --> 00:05:40,500
+We are trying to build an application, be as fast as possible, and in some cases we are willing to
+
+101
+00:05:40,500 --> 00:05:42,960
+let go of some flexibility in our data model.
+
+102
+00:05:43,500 --> 00:05:48,180
+So it might be a little bit harder to implement later additional features later on compared to a small
+
+103
+00:05:48,180 --> 00:05:48,690
+database.
+
+104
+00:05:48,930 --> 00:05:54,240
+But in the meantime, as we build this application, it is probably going to be far faster than if we
+
+105
+00:05:54,240 --> 00:05:55,530
+were using a cycle database.
+
+106
+00:05:58,770 --> 00:06:03,540
+Out of all these different features, I've grouped them into read operations and rights operations.
+
+107
+00:06:04,170 --> 00:06:06,470
+Everything on the left hand side is a read.
+
+108
+00:06:06,480 --> 00:06:11,400
+We are trying to query or retrieve some data from the database and everything on the right hand side
+
+109
+00:06:11,430 --> 00:06:12,060
+are rights.
+
+110
+00:06:12,690 --> 00:06:14,370
+This is data that we are trying to change.
+
+111
+00:06:16,990 --> 00:06:17,350
+Okay.
+
+112
+00:06:17,380 --> 00:06:22,330
+So now that we have a little bit of backstory, we understand or at least we can say that we've got
+
+113
+00:06:22,330 --> 00:06:25,720
+a list of the different things we need to build into our application.
+
+114
+00:06:26,320 --> 00:06:29,620
+Now it's time for us to figure out what is the actual design here?
+
+115
+00:06:29,830 --> 00:06:33,010
+How are we going to actually represent all the data inside of our app?
+
+116
+00:06:33,850 --> 00:06:39,400
+Well, the first thing that we should do is figure out how we are going to represent the different things
+
+117
+00:06:39,670 --> 00:06:42,130
+we're kind of records inside of our application.
+
+118
+00:06:42,850 --> 00:06:49,390
+So as I look over the map or any of our mockups, I really see six distinct things that we need to store
+
+119
+00:06:50,050 --> 00:06:51,520
+six different types of records.
+
+120
+00:06:52,090 --> 00:06:54,220
+I see that we need to store users.
+
+121
+00:06:54,940 --> 00:06:58,810
+We need to store sessions, which you recall are tied to the authentication system.
+
+122
+00:06:58,840 --> 00:07:00,550
+We will go over those in greater detail.
+
+123
+00:07:01,420 --> 00:07:04,750
+We need to store items, IDs, views and likes.
+
+124
+00:07:05,630 --> 00:07:08,890
+So these are distinct records we need to store inside of our database.
+
+125
+00:07:09,580 --> 00:07:15,100
+And the question that I want to answer for right now is simply which of these should be stored as hashes?
+
+126
+00:07:15,820 --> 00:07:19,990
+Let's try to answer that question in one last video around all this design stuff.

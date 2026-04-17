@@ -1,0 +1,879 @@
+1
+00:00:00,720 --> 00:00:02,430
+All right, let's work on create bit.
+
+2
+00:00:03,060 --> 00:00:06,000
+So create that is going to be called with an object called adders.
+
+3
+00:00:06,180 --> 00:00:11,310
+We can do a command click on created adders right here to see what properties that object will contain.
+
+4
+00:00:11,880 --> 00:00:17,910
+So we're going to be told the items, ID, the amount as a number and create it out as a daytime object.
+
+5
+00:00:18,450 --> 00:00:22,320
+So we're going to have to take those two values right there, pass them off to our serialize function.
+
+6
+00:00:22,620 --> 00:00:27,300
+That's going to give us back our serialized bid history, and then we're going to store that inside
+
+7
+00:00:27,300 --> 00:00:28,620
+of our list of bits.
+
+8
+00:00:30,850 --> 00:00:31,570
+So inside of your.
+
+9
+00:00:32,510 --> 00:00:35,450
+I'm going to do what we call it, serialized.
+
+10
+00:00:37,420 --> 00:00:40,340
+That's going to be serialized history.
+
+11
+00:00:40,970 --> 00:00:43,340
+The first arguments will be the amounts.
+
+12
+00:00:43,820 --> 00:00:49,550
+And then the second is going to be the date at which this bid was created as a plain number as opposed
+
+13
+00:00:49,550 --> 00:00:50,810
+to a date time object.
+
+14
+00:00:51,500 --> 00:00:56,510
+So that's going to be matters not created at that is a date object right there.
+
+15
+00:00:56,540 --> 00:01:01,670
+So we need to turn it into a play number and we do that with a dot to Millie's.
+
+16
+00:01:04,160 --> 00:01:06,680
+So there's our string in our very special format.
+
+17
+00:01:07,010 --> 00:01:08,660
+Now we need to store it inside of our list.
+
+18
+00:01:09,530 --> 00:01:13,070
+Our list is going to store all of the different bids over time.
+
+19
+00:01:13,610 --> 00:01:18,110
+So the oldest bids are going to be on the left hand side of the list, and all the newest bids are going
+
+20
+00:01:18,110 --> 00:01:19,190
+to be on the right hand side.
+
+21
+00:01:19,670 --> 00:01:23,300
+So we need to add in additional elements over here to the right hand side.
+
+22
+00:01:23,690 --> 00:01:27,410
+You might recall that you add in a new element just on the far right hand.
+
+23
+00:01:27,560 --> 00:01:29,720
+We can use the our push command.
+
+24
+00:01:30,320 --> 00:01:31,730
+So that's exactly what we're going to do here.
+
+25
+00:01:33,030 --> 00:01:36,900
+So I'm going to do return client, not our push.
+
+26
+00:01:37,680 --> 00:01:42,900
+I'm going to add it to the list stored at bid history key.
+
+27
+00:01:43,740 --> 00:01:49,020
+I'm going to put in the item ID that was just bid on and then the serialized bit.
+
+28
+00:01:51,420 --> 00:01:52,080
+And that's it.
+
+29
+00:01:54,890 --> 00:01:56,770
+Not let me do that format.
+
+30
+00:01:56,780 --> 00:01:57,740
+Just you can see the whole line.
+
+31
+00:02:00,990 --> 00:02:02,040
+Well, that's create bit.
+
+32
+00:02:02,130 --> 00:02:05,130
+So now we need to work on get bit history down here.
+
+33
+00:02:06,560 --> 00:02:07,150
+Now get it.
+
+34
+00:02:07,160 --> 00:02:09,230
+History is just a little bit more complicated.
+
+35
+00:02:09,440 --> 00:02:11,210
+For one very simple reason.
+
+36
+00:02:12,020 --> 00:02:16,820
+Whenever gifted history is called, we need to return an array of bid objects.
+
+37
+00:02:16,820 --> 00:02:21,530
+And once again, I know I've reviewed this so many times, but we need to return an array of objects
+
+38
+00:02:21,530 --> 00:02:22,880
+that each look like this.
+
+39
+00:02:23,720 --> 00:02:28,400
+The other thing to keep in mind is that this function is going to be called with a couple of different
+
+40
+00:02:28,400 --> 00:02:28,940
+arguments.
+
+41
+00:02:29,480 --> 00:02:32,930
+First, we're going to be told which item we're looking up the history for.
+
+42
+00:02:33,290 --> 00:02:37,760
+And then, very importantly, we are also being given an offset and a count.
+
+43
+00:02:38,480 --> 00:02:44,600
+So the thinking here is that an item might eventually have many, many, many bids, maybe a hundred
+
+44
+00:02:44,600 --> 00:02:46,190
+or even 1000 different bits.
+
+45
+00:02:47,100 --> 00:02:52,410
+And if we ever try to show the history of an item all the different bids it has received, we might
+
+46
+00:02:52,410 --> 00:02:55,560
+not want to show all thousand different bids at the same time.
+
+47
+00:02:55,830 --> 00:02:59,280
+Instead, we might only want to show the ten most recent bids.
+
+48
+00:02:59,460 --> 00:03:05,160
+Remember, that's a super common use case of a list to only show the most recent and number of something.
+
+49
+00:03:06,030 --> 00:03:11,850
+So the offset and the count right here are being used for pagination to allow us to show only the ten
+
+50
+00:03:11,850 --> 00:03:12,930
+most recent bits.
+
+51
+00:03:14,800 --> 00:03:15,620
+Now offset.
+
+52
+00:03:16,330 --> 00:03:17,470
+Just make sure it's super clear.
+
+53
+00:03:17,830 --> 00:03:20,380
+Means go to the very end of the list.
+
+54
+00:03:21,520 --> 00:03:23,080
+So the very end over here.
+
+55
+00:03:24,310 --> 00:03:28,750
+And then looking back to the left, skip over zero items.
+
+56
+00:03:29,530 --> 00:03:35,440
+So offset of zero means start at bid five right here and then a count of three really means.
+
+57
+00:03:35,560 --> 00:03:37,690
+Take the three most recent bits.
+
+58
+00:03:39,460 --> 00:03:40,480
+If we had an offset.
+
+59
+00:03:41,350 --> 00:03:42,220
+Of one.
+
+60
+00:03:43,250 --> 00:03:44,420
+And a count of three.
+
+61
+00:03:44,960 --> 00:03:46,820
+And that means go to the far right hand side.
+
+62
+00:03:47,330 --> 00:03:48,860
+Skip back one item.
+
+63
+00:03:50,570 --> 00:03:53,660
+And then take the three previous items before that.
+
+64
+00:03:54,410 --> 00:03:57,330
+So that would be offset of one with a count of three.
+
+65
+00:03:57,350 --> 00:04:00,770
+So skip the first one on the right hand side and then take the next three.
+
+66
+00:04:00,800 --> 00:04:02,830
+And as you can guess, if you had an offset of two.
+
+67
+00:04:05,100 --> 00:04:08,610
+That means skip the first two on the right hand side and take the next three.
+
+68
+00:04:11,510 --> 00:04:14,540
+So a little challenge that we're going to run into here very quickly.
+
+69
+00:04:14,750 --> 00:04:20,450
+We need to somehow take these offset values to offset and count and translate them into something that
+
+70
+00:04:20,450 --> 00:04:23,390
+we can actually use to retrieve information out of Redis.
+
+71
+00:04:24,110 --> 00:04:26,810
+Quick reminder, back over in our book.
+
+72
+00:04:27,790 --> 00:04:33,670
+As we were going over some different commands a little bit ago, we learned about a command called L'Orange.
+
+73
+00:04:33,790 --> 00:04:35,290
+And here it is right here.
+
+74
+00:04:36,470 --> 00:04:41,270
+So we can use EL Range whenever we want to retrieve a couple of different elements out of a list.
+
+75
+00:04:41,600 --> 00:04:46,280
+So it seems like El Range would be very appropriate for what we are currently trying to do.
+
+76
+00:04:47,000 --> 00:04:51,890
+The only issue is El Range works by receiving some indexes.
+
+77
+00:04:52,790 --> 00:04:59,660
+So if I do zero and one, that means take the first element and the second element, or I should say
+
+78
+00:04:59,660 --> 00:05:02,090
+the first element all the way up to the second element.
+
+79
+00:05:02,180 --> 00:05:05,090
+And give us just those two and let me do that again.
+
+80
+00:05:07,290 --> 00:05:08,620
+I got a little bit of a bug here.
+
+81
+00:05:08,640 --> 00:05:10,200
+It's not actually airing.
+
+82
+00:05:11,040 --> 00:05:11,520
+There we go.
+
+83
+00:05:11,550 --> 00:05:12,060
+That's better.
+
+84
+00:05:13,310 --> 00:05:15,760
+So take the first all the way up to the second element.
+
+85
+00:05:15,770 --> 00:05:17,780
+So I get the 25 and 27.
+
+86
+00:05:18,380 --> 00:05:24,110
+And then if I do something like say three, that means go all the way from zero up to the third index.
+
+87
+00:05:24,110 --> 00:05:27,230
+So zero, one, two, three, that's 30.
+
+88
+00:05:27,740 --> 00:05:28,510
+You get the idea.
+
+89
+00:05:28,520 --> 00:05:29,900
+We went over this in great detail.
+
+90
+00:05:30,710 --> 00:05:36,830
+The other functionality around L'Orange that we have, we can do everything from say zero up to negative
+
+91
+00:05:36,830 --> 00:05:37,130
+one.
+
+92
+00:05:37,250 --> 00:05:41,060
+And negative one means go to the very end element of the entire list.
+
+93
+00:05:42,230 --> 00:05:46,760
+But the point here, what I'm trying to say is that to get some number of elements out of a list, this
+
+94
+00:05:46,760 --> 00:05:48,140
+is really the one command we have.
+
+95
+00:05:48,350 --> 00:05:50,360
+And it works based on indexes.
+
+96
+00:05:51,050 --> 00:05:55,970
+But the arguments that were being given to our get bid history function are not indexes.
+
+97
+00:05:56,000 --> 00:06:00,200
+That's not what we're being given or being given an offset and a count.
+
+98
+00:06:00,830 --> 00:06:07,460
+So we need to somehow take this offset and count value and translate it into something that the Range
+
+99
+00:06:07,460 --> 00:06:08,750
+Command understands.
+
+100
+00:06:09,350 --> 00:06:10,670
+And that's where the challenge is.
+
+101
+00:06:11,390 --> 00:06:17,540
+So we need to somehow take these two values and use them to calculate exactly what index of values we
+
+102
+00:06:17,540 --> 00:06:19,040
+want to actually retrieve.
+
+103
+00:06:20,490 --> 00:06:20,840
+Okay.
+
+104
+00:06:20,850 --> 00:06:23,040
+So let's imagine how that would come together.
+
+105
+00:06:25,060 --> 00:06:30,520
+So this is the same diagram I'm going to write out some kind of equation right here on what we're really
+
+106
+00:06:30,520 --> 00:06:31,390
+trying to calculate.
+
+107
+00:06:32,450 --> 00:06:34,940
+Well, I think what we need is to do an L range.
+
+108
+00:06:35,870 --> 00:06:40,460
+It needs to be on the key of history account and then the item is sourced.
+
+109
+00:06:40,460 --> 00:06:41,540
+Imagine it's a one.
+
+110
+00:06:42,800 --> 00:06:48,080
+And then we are going to put in the start index of where we want to retreat from and then the end index.
+
+111
+00:06:49,010 --> 00:06:53,450
+Remember that as we start to go into negative indexes, that's going to give us elements going from
+
+112
+00:06:53,450 --> 00:06:57,080
+the right hand side back towards the left side of the words.
+
+113
+00:06:57,080 --> 00:06:59,450
+The far right hand side is always going to be negative one.
+
+114
+00:06:59,870 --> 00:07:03,590
+And then the second from the right hand side is negative two, negative three, negative four, negative
+
+115
+00:07:03,590 --> 00:07:04,400
+five and so on.
+
+116
+00:07:05,270 --> 00:07:11,730
+So if I wanted to get everything from it three, four and five, as indicated by offset of zero and
+
+117
+00:07:11,730 --> 00:07:18,590
+a count of three, what I would really need to put in here is go from index -3 to -1.
+
+118
+00:07:19,990 --> 00:07:25,850
+That's how I would get the last three elements and I can very easily verify that this would work.
+
+119
+00:07:25,870 --> 00:07:33,880
+If I go back over to our book very quickly, back in our book, if I did -3 to -1, that should give
+
+120
+00:07:33,880 --> 00:07:36,460
+me 25, 30 and 24.
+
+121
+00:07:37,520 --> 00:07:38,420
+And sure enough, it does.
+
+122
+00:07:39,430 --> 00:07:40,520
+Yes, that definitely works.
+
+123
+00:07:40,540 --> 00:07:46,330
+But like I said, we need to take the offset number and account and use them to generate or calculate
+
+124
+00:07:46,510 --> 00:07:49,390
+what negative indexes we actually want to access.
+
+125
+00:07:50,340 --> 00:07:51,810
+So here's how we can figure this out.
+
+126
+00:07:52,950 --> 00:07:54,930
+To calculate the ending index.
+
+127
+00:07:55,650 --> 00:08:00,150
+So this negative one right here to calculate what that should be based upon the offset in the count,
+
+128
+00:08:00,510 --> 00:08:06,180
+we're going to do a calculation of negative one minus offsets.
+
+129
+00:08:08,420 --> 00:08:09,410
+So if offset is zero.
+
+130
+00:08:11,310 --> 00:08:15,180
+Then that would go to zero and we'd end up with negative one, which is what we want.
+
+131
+00:08:15,990 --> 00:08:16,890
+If we had a.
+
+132
+00:08:18,480 --> 00:08:20,340
+Offset of, say, two.
+
+133
+00:08:21,480 --> 00:08:25,410
+And that would imply that we want to get those elements right there.
+
+134
+00:08:26,310 --> 00:08:30,120
+So our stopping point needs to be negative three.
+
+135
+00:08:30,450 --> 00:08:31,710
+Let's make sure that works as well.
+
+136
+00:08:32,100 --> 00:08:34,110
+So if I put in an offset of two.
+
+137
+00:08:35,260 --> 00:08:37,200
+We'd calculate negative three.
+
+138
+00:08:37,210 --> 00:08:38,620
+So it looks like that works as well.
+
+139
+00:08:39,880 --> 00:08:42,940
+That's how we're going to calculate the closing side of the index.
+
+140
+00:08:43,140 --> 00:08:45,400
+So now we need to calculate the opening side of the index.
+
+141
+00:08:47,460 --> 00:08:52,410
+To get the opening index or really the start, I should say that needs to be negative three.
+
+142
+00:08:52,410 --> 00:09:00,150
+In this case, we're going to do a calculation of negative one times the offset minus count.
+
+143
+00:09:02,750 --> 00:09:04,490
+So once again, we can test this out really quickly.
+
+144
+00:09:05,390 --> 00:09:07,280
+If the offset is zero.
+
+145
+00:09:08,180 --> 00:09:09,380
+And the count is three.
+
+146
+00:09:10,190 --> 00:09:13,640
+And we're going to end up with zero for that term right there.
+
+147
+00:09:13,880 --> 00:09:14,630
+Minus three.
+
+148
+00:09:15,440 --> 00:09:16,250
+We get negative three.
+
+149
+00:09:17,180 --> 00:09:17,320
+Yeah.
+
+150
+00:09:17,420 --> 00:09:18,290
+That definitely lines up.
+
+151
+00:09:19,120 --> 00:09:20,500
+And again, if we do.
+
+152
+00:09:21,890 --> 00:09:23,210
+Test of something like this.
+
+153
+00:09:23,720 --> 00:09:26,360
+So in this case, the offset would be two and the count is still three.
+
+154
+00:09:29,640 --> 00:09:32,340
+And this is negative one offset minus count.
+
+155
+00:09:32,640 --> 00:09:36,900
+So now we can substitute in these numbers and we're looking to we're trying to calculate negative five.
+
+156
+00:09:37,650 --> 00:09:43,350
+So if I put in the offset of two and a count of three, I'm going to end up with negative two minus
+
+157
+00:09:43,350 --> 00:09:46,020
+three, which is in fact, negative five.
+
+158
+00:09:47,210 --> 00:09:47,730
+That's it.
+
+159
+00:09:47,750 --> 00:09:53,690
+That's how we're going from a offset and account into some values that can actually truly be used by
+
+160
+00:09:53,690 --> 00:09:54,530
+L range.
+
+161
+00:09:55,220 --> 00:09:57,260
+This all might seem really complicated.
+
+162
+00:09:57,320 --> 00:09:58,190
+Totally understand.
+
+163
+00:09:58,520 --> 00:10:03,530
+But if you really kind of think through it, the only other way that we can avoid this complexity is
+
+164
+00:10:03,530 --> 00:10:06,050
+if we knew the entire length of the list.
+
+165
+00:10:06,500 --> 00:10:09,410
+But to get the length of the list, you have to run a separate command.
+
+166
+00:10:09,920 --> 00:10:13,190
+And ideally, we don't really want to have to run two separate commands.
+
+167
+00:10:13,190 --> 00:10:17,390
+We want to just run one command to get the last couple of elements out of our list.
+
+168
+00:10:19,620 --> 00:10:19,950
+Okay.
+
+169
+00:10:19,960 --> 00:10:26,820
+So we need to do a l range inside of get bit history and we need to put in indexes of these two equations
+
+170
+00:10:26,820 --> 00:10:27,220
+right here.
+
+171
+00:10:27,480 --> 00:10:28,370
+So let's get to it.
+
+172
+00:10:29,530 --> 00:10:30,580
+Back inside my editor.
+
+173
+00:10:33,220 --> 00:10:35,080
+At get get bit history.
+
+174
+00:10:35,740 --> 00:10:42,100
+I'm going to delete that return and then replace it with first our start index.
+
+175
+00:10:43,640 --> 00:10:46,520
+Which is going to be the equation we have right there.
+
+176
+00:10:47,780 --> 00:10:52,040
+So it's negative one times the offsets, minus the counts.
+
+177
+00:10:53,450 --> 00:10:54,800
+And then the end index.
+
+178
+00:10:56,520 --> 00:10:59,760
+Is going to be negative one minus the offset.
+
+179
+00:11:02,830 --> 00:11:07,870
+Now that we've calculated those two index values, we can use them to run our L range commands.
+
+180
+00:11:08,650 --> 00:11:10,990
+I'm going to get back a range with a weight.
+
+181
+00:11:11,850 --> 00:11:13,840
+Wyandotte L range.
+
+182
+00:11:15,320 --> 00:11:17,840
+I want to do my range on it.
+
+183
+00:11:18,110 --> 00:11:21,330
+History key at the item ID.
+
+184
+00:11:26,620 --> 00:11:30,700
+And then I want to get the range going from start index to end index.
+
+185
+00:11:36,250 --> 00:11:37,930
+Then when we get back our range.
+
+186
+00:11:37,930 --> 00:11:42,330
+So whatever values are coming out of that list member they are encoded strings.
+
+187
+00:11:42,340 --> 00:11:46,630
+They have been serialized, so we need to serialized them into plain objects.
+
+188
+00:11:47,630 --> 00:11:49,550
+So I'm going to return down here.
+
+189
+00:11:50,090 --> 00:11:51,770
+Range dot map.
+
+190
+00:11:52,810 --> 00:11:55,330
+I'm going to take a look at each bid that we are getting back.
+
+191
+00:11:55,540 --> 00:11:59,530
+And I know we're all going to end up with an error here from TypeScript until we find we'll deal with
+
+192
+00:11:59,530 --> 00:12:00,160
+it in a moment.
+
+193
+00:12:01,920 --> 00:12:05,400
+And then for every single bid that we got back, we're going to serialize it.
+
+194
+00:12:05,550 --> 00:12:11,040
+So serialize history and put in the bid and okay, the error went away.
+
+195
+00:12:11,310 --> 00:12:12,090
+Thank goodness for that.
+
+196
+00:12:13,730 --> 00:12:14,120
+All right.
+
+197
+00:12:14,130 --> 00:12:14,600
+That's it.
+
+198
+00:12:14,840 --> 00:12:16,010
+That's our get it history.
+
+199
+00:12:16,580 --> 00:12:20,750
+I know this took a lot of time, but the big challenge here, like I said, was taking the offset in
+
+200
+00:12:20,750 --> 00:12:25,550
+account and converting those values into something that the L Range Command would actually understand.
+
+201
+00:12:28,520 --> 00:12:29,300
+Let's save this.
+
+202
+00:12:29,690 --> 00:12:31,940
+And I think we're ready to do a quick test.
+
+203
+00:12:32,690 --> 00:12:33,560
+So to test this.
+
+204
+00:12:34,440 --> 00:12:37,860
+I'm going to go back over to an item that has been created.
+
+205
+00:12:38,580 --> 00:12:39,330
+Here's one right here.
+
+206
+00:12:41,330 --> 00:12:43,910
+And then going to place a bid about ten.
+
+207
+00:12:45,910 --> 00:12:46,840
+And it worked.
+
+208
+00:12:47,170 --> 00:12:49,990
+So I immediately see bid history be updated.
+
+209
+00:12:50,200 --> 00:12:52,570
+So initially there was $0.
+
+210
+00:12:52,870 --> 00:12:54,520
+Now we're up to $10.
+
+211
+00:12:55,000 --> 00:12:57,580
+And if I now put in another bid, say, of 12.
+
+212
+00:12:58,930 --> 00:12:59,620
+Very good.
+
+213
+00:13:00,130 --> 00:13:00,880
+14.
+
+214
+00:13:01,970 --> 00:13:02,750
+19.
+
+215
+00:13:04,200 --> 00:13:04,930
+60.
+
+216
+00:13:04,950 --> 00:13:05,790
+You get the idea.
+
+217
+00:13:07,940 --> 00:13:08,480
+Excellent.
+
+218
+00:13:09,410 --> 00:13:14,030
+Well, that was a lot of work, but we've got this chart put together and we know how the bid amount
+
+219
+00:13:14,030 --> 00:13:15,170
+is changing over time.
+
+220
+00:13:16,010 --> 00:13:16,880
+So this looks pretty good.

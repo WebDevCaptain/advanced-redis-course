@@ -1,0 +1,155 @@
+1
+00:00:00,900 --> 00:00:06,450
+Last technique we're going to look at around text searches are prefix searches so we can use Star at
+
+2
+00:00:06,450 --> 00:00:08,790
+the end of a string to do a prefix search.
+
+3
+00:00:09,060 --> 00:00:15,060
+In other words, if we enter a star as our query, that will be automatically expanded to cover fast,
+
+4
+00:00:15,060 --> 00:00:17,490
+far fact, often fantastic and so on.
+
+5
+00:00:17,610 --> 00:00:19,620
+All words that begin with F and A.
+
+6
+00:00:20,430 --> 00:00:22,740
+There is one or two requirements around this you need to know.
+
+7
+00:00:23,070 --> 00:00:30,090
+First, at a minimum, we have to have two characters to do a prefix search so we cannot do F star or
+
+8
+00:00:30,090 --> 00:00:31,980
+just a star or B and so on.
+
+9
+00:00:32,340 --> 00:00:34,260
+It has to be a minimum of two characters.
+
+10
+00:00:34,770 --> 00:00:36,750
+We can add on additional characters if we want.
+
+11
+00:00:36,780 --> 00:00:39,000
+So we could go up to a fast star if we want.
+
+12
+00:00:40,450 --> 00:00:42,340
+Let's take a look at a couple of examples of this.
+
+13
+00:00:42,520 --> 00:00:43,390
+So back over here.
+
+14
+00:00:43,810 --> 00:00:48,520
+If I do a star, I would expect to match up against fast car.
+
+15
+00:00:50,060 --> 00:00:51,380
+And I did not get that.
+
+16
+00:00:51,410 --> 00:00:52,070
+Let me try.
+
+17
+00:00:53,470 --> 00:00:55,570
+Now and then the thing gets a bit wonky.
+
+18
+00:00:55,570 --> 00:00:56,110
+There we go.
+
+19
+00:00:56,310 --> 00:00:57,310
+Now I got fast car.
+
+20
+00:00:58,160 --> 00:01:02,930
+I can do something similar for a star that will get all the different cars.
+
+21
+00:01:03,410 --> 00:01:03,830
+There we go.
+
+22
+00:01:04,800 --> 00:01:08,940
+Could you hotel DA to matchup against old and so on.
+
+23
+00:01:08,960 --> 00:01:09,680
+You get the idea.
+
+24
+00:01:11,440 --> 00:01:11,740
+Okay.
+
+25
+00:01:11,740 --> 00:01:15,160
+So at this point, we have spoken a little bit around text.
+
+26
+00:01:15,610 --> 00:01:20,620
+So we've covered stemming we've covered a little bit around tokenisation and stop words.
+
+27
+00:01:20,950 --> 00:01:23,880
+We've also discussed the Levenstein Distance.
+
+28
+00:01:23,890 --> 00:01:27,790
+This is the kind of fuzzy search we discussed just a moment ago and prefixes.
+
+29
+00:01:28,090 --> 00:01:32,440
+So at this point in time, you might be thinking, Steven, you really over blow this stuff.
+
+30
+00:01:32,710 --> 00:01:34,990
+This is not as complicated as you said it would be.
+
+31
+00:01:35,170 --> 00:01:36,100
+This was not that bad.
+
+32
+00:01:36,820 --> 00:01:40,120
+But the real question here, the real complexity starts to come in.
+
+33
+00:01:40,300 --> 00:01:45,820
+Once we start to match in or kind of combine all these different techniques together, that's when things
+
+34
+00:01:45,820 --> 00:01:47,770
+start to get much more complicated.
+
+35
+00:01:48,230 --> 00:01:51,430
+It really comes down to how are we going to implement some of the stuff in code?
+
+36
+00:01:51,580 --> 00:01:57,100
+How are we going to actually take in some string from a user kind of search query and turn it into an
+
+37
+00:01:57,100 --> 00:01:59,590
+actual query that we can run with ready search.
+
+38
+00:02:00,130 --> 00:02:02,170
+That's where things really get challenging.
+
+39
+00:02:02,590 --> 00:02:06,100
+Let's start to focus on some general design patterns in just a moment.

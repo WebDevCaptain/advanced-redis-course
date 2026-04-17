@@ -1,0 +1,371 @@
+1
+00:00:01,160 --> 00:00:05,780
+We have started our like system and although we got two functions put together, it still appears like
+
+2
+00:00:05,900 --> 00:00:08,240
+our like system isn't quite behaving as expected.
+
+3
+00:00:08,640 --> 00:00:10,880
+So two separate issues in this video.
+
+4
+00:00:10,880 --> 00:00:14,150
+We're going to solve one and then discuss how to solve the second issue.
+
+5
+00:00:14,720 --> 00:00:18,300
+The first issue is that if I click on this button, it might change color.
+
+6
+00:00:18,590 --> 00:00:24,290
+But as soon as I refresh, it goes back to just saying, like when I click on like, I want this item
+
+7
+00:00:24,290 --> 00:00:25,460
+to stay light.
+
+8
+00:00:26,060 --> 00:00:28,670
+And when I refresh, it should still say light.
+
+9
+00:00:29,480 --> 00:00:31,220
+So that's the first problem we need to fix.
+
+10
+00:00:31,520 --> 00:00:34,490
+Let's tackle that problem right away because that is a pretty easy one.
+
+11
+00:00:35,350 --> 00:00:36,480
+Back inside my editor.
+
+12
+00:00:36,490 --> 00:00:38,710
+I'm still inside the livestock file.
+
+13
+00:00:39,400 --> 00:00:42,160
+There's a function inside if you're called user likes item.
+
+14
+00:00:42,700 --> 00:00:47,800
+This is the function that determines whether or not that button is going to appear as green or not.
+
+15
+00:00:47,920 --> 00:00:49,450
+Whenever we refresh the page.
+
+16
+00:00:50,600 --> 00:00:51,830
+This function needs to return.
+
+17
+00:00:51,830 --> 00:00:55,340
+True if this user likes that item id.
+
+18
+00:00:56,400 --> 00:00:57,630
+And false if they don't.
+
+19
+00:00:58,260 --> 00:00:59,940
+So we can implement this pretty easily.
+
+20
+00:00:59,970 --> 00:01:06,210
+All we have to do is look at this user user's set of likes and see if this item ID is in its.
+
+21
+00:01:07,150 --> 00:01:10,870
+For that we can use the s is member command.
+
+22
+00:01:11,690 --> 00:01:14,470
+So inside this function I will return client.
+
+23
+00:01:15,130 --> 00:01:17,500
+S is member.
+
+24
+00:01:19,630 --> 00:01:24,600
+But the user likes he putting in user ID and then item I.D..
+
+25
+00:01:27,320 --> 00:01:28,280
+All right, let's save that.
+
+26
+00:01:29,590 --> 00:01:35,380
+Now, if I look back over and I refresh the page, if I click on this button and set this item to be
+
+27
+00:01:35,380 --> 00:01:37,100
+liked, now it truly is light.
+
+28
+00:01:37,120 --> 00:01:40,810
+I can refresh and whenever I refresh it stays green.
+
+29
+00:01:41,440 --> 00:01:46,990
+If I unlike it by clicking the button again and refresh, the item stays unliked.
+
+30
+00:01:47,740 --> 00:01:49,180
+So this is expected behavior.
+
+31
+00:01:49,180 --> 00:01:49,960
+This is what we want.
+
+32
+00:01:50,230 --> 00:01:50,710
+That's good.
+
+33
+00:01:50,710 --> 00:01:51,910
+That is one problem solved.
+
+34
+00:01:52,510 --> 00:01:54,190
+Now we're going to move on to the second problem.
+
+35
+00:01:54,220 --> 00:01:58,930
+The second problem is, as you guessed, if I like this, I want to see that zero right there turn into
+
+36
+00:01:58,930 --> 00:01:59,380
+a one.
+
+37
+00:01:59,620 --> 00:02:02,470
+You indicate that at least one person likes this item.
+
+38
+00:02:03,410 --> 00:02:07,790
+Now fixing up that number and making sure in increments every time someone likes this thing is going
+
+39
+00:02:07,790 --> 00:02:09,350
+to be a little bit more challenging.
+
+40
+00:02:09,630 --> 00:02:10,610
+Let me tell you why.
+
+41
+00:02:12,430 --> 00:02:16,810
+One pinnacle of our like system that we discussed several times is that every separate user is going
+
+42
+00:02:16,810 --> 00:02:18,850
+to have their own set of liked items.
+
+43
+00:02:19,570 --> 00:02:21,490
+Here's the set for user 45.
+
+44
+00:02:21,910 --> 00:02:25,830
+Here's a set for user 32 or 17 for 82 and so on.
+
+45
+00:02:27,260 --> 00:02:31,160
+If we have a million different users, that means we have a million different sets.
+
+46
+00:02:32,000 --> 00:02:33,640
+And here's the unfortunate thing.
+
+47
+00:02:34,100 --> 00:02:41,000
+In Redis, we don't really have a very good built in way to take a look at all these different sets
+
+48
+00:02:41,000 --> 00:02:46,280
+of which there might be millions or many more and run a query over all them together.
+
+49
+00:02:46,760 --> 00:02:48,890
+We don't really have a good way of doing that.
+
+50
+00:02:49,940 --> 00:02:50,720
+Let's imagine that.
+
+51
+00:02:50,730 --> 00:02:57,650
+I'm trying to see if the item or the number of people who like the item with ID 1195 BE That's the idea
+
+52
+00:02:57,650 --> 00:02:59,480
+of my chair right here that I'm trying to sell.
+
+53
+00:03:00,200 --> 00:03:04,760
+It might be that this person down here likes it, so they have that ID inside their set.
+
+54
+00:03:05,390 --> 00:03:10,790
+But I don't have a way to easily go from this set to this set, this set, the set and so on, and figure
+
+55
+00:03:10,790 --> 00:03:16,850
+out which out of all these or how many out of all these actually contain that ID That's the issue that
+
+56
+00:03:16,850 --> 00:03:22,970
+we need to think of a more clever way of figuring out how many users like a very particular item.
+
+57
+00:03:23,910 --> 00:03:27,450
+And for that, we're going to do a little bit of a head computation.
+
+58
+00:03:27,920 --> 00:03:30,120
+So let me show you another diagram, help you understand what I mean.
+
+59
+00:03:31,140 --> 00:03:36,570
+Our solution is going to be very simple, rather than trying to figure out how many people like an item
+
+60
+00:03:36,810 --> 00:03:40,020
+as someone comes to our landing page or the page for that particular item.
+
+61
+00:03:40,590 --> 00:03:43,740
+We're going to figure out how many people like an item ahead of time.
+
+62
+00:03:44,250 --> 00:03:46,350
+Whenever someone likes an item.
+
+63
+00:03:46,680 --> 00:03:53,700
+So a request comes in saying that user ID 32 wants to like ID 45 as usual.
+
+64
+00:03:53,760 --> 00:03:59,820
+So exactly what we're doing right now, we're going to add that items ID, that user's set to be 32
+
+65
+00:03:59,820 --> 00:04:00,150
+right there.
+
+66
+00:04:00,150 --> 00:04:01,830
+So we add in 45.
+
+67
+00:04:02,720 --> 00:04:03,240
+That's exactly.
+
+68
+00:04:03,260 --> 00:04:04,010
+We're currently doing.
+
+69
+00:04:04,610 --> 00:04:10,820
+But in addition to that, we're going to say if we truly just added this item to the set, if that item
+
+70
+00:04:10,820 --> 00:04:16,490
+was not liked by this person before, because who knows, we could have accidental duplicate like we
+
+71
+00:04:16,490 --> 00:04:19,040
+actually added in that ID to the set.
+
+72
+00:04:19,430 --> 00:04:25,250
+Then let's go and find the items cache and we're going to store the total number of likes as a plain
+
+73
+00:04:25,250 --> 00:04:27,050
+number on that item's hash.
+
+74
+00:04:27,740 --> 00:04:30,710
+So I would increment likes from 0 to 1.
+
+75
+00:04:32,160 --> 00:04:32,670
+And that's it.
+
+76
+00:04:35,060 --> 00:04:39,470
+This means that whenever someone likes a item, we do have to update the item itself.
+
+77
+00:04:39,500 --> 00:04:44,480
+In addition to adding this record to the like set, it means a little bit of extra work.
+
+78
+00:04:44,780 --> 00:04:49,640
+But on the flip side, every time someone wants to take a look at an item, they want to see that item's
+
+79
+00:04:49,640 --> 00:04:50,450
+profile page.
+
+80
+00:04:50,840 --> 00:04:53,060
+All we have to do is get this item hash.
+
+81
+00:04:53,330 --> 00:04:58,010
+We know the number of likes right there so we don't have to do any follow up query and we don't have
+
+82
+00:04:58,010 --> 00:05:03,110
+to walk over a list of all of our different sets or anything like that, even though it's a little bit
+
+83
+00:05:03,110 --> 00:05:05,210
+more work up front to update this value.
+
+84
+00:05:05,720 --> 00:05:11,180
+Reading the data will be significantly, significantly faster, which of course is our primary goal
+
+85
+00:05:11,180 --> 00:05:11,690
+with Redis.
+
+86
+00:05:11,690 --> 00:05:12,900
+We're all about performance.
+
+87
+00:05:12,920 --> 00:05:13,970
+We are all about speed.
+
+88
+00:05:15,180 --> 00:05:15,480
+Okay.
+
+89
+00:05:15,540 --> 00:05:16,590
+Now we understand the solution.
+
+90
+00:05:16,890 --> 00:05:19,170
+Rick, pause right here and come back in just a moment.
+
+91
+00:05:19,440 --> 00:05:24,180
+We're going to make sure that whenever we like an item or unlike it, we're going to go in.
+
+92
+00:05:24,180 --> 00:05:26,970
+Also find this item's hash as well.
+
+93
+00:05:27,360 --> 00:05:30,330
+And we're going to increment or decrement its number of likes.

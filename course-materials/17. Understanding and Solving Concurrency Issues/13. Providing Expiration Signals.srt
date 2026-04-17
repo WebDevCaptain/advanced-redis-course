@@ -1,0 +1,427 @@
+1
+00:00:01,190 --> 00:00:07,460
+Let's take a look at one possible way of solving this problem of our callback function continuing execution,
+
+2
+00:00:07,460 --> 00:00:09,290
+even if the lock might have expired.
+
+3
+00:00:10,010 --> 00:00:15,290
+So in this first possible solution, we're going to provide an extra argument or just, I should say,
+
+4
+00:00:15,290 --> 00:00:17,330
+an argument to the callback function.
+
+5
+00:00:17,840 --> 00:00:20,390
+So whenever we call with lock, we put in the callback right here.
+
+6
+00:00:21,140 --> 00:00:26,270
+Our callback is going to receive an argument that we're going to call signal and I'm going to market
+
+7
+00:00:26,270 --> 00:00:27,770
+as type any for right now.
+
+8
+00:00:29,260 --> 00:00:34,390
+The idea here is we're going to pass in an object which is going to have a property on it that tells
+
+9
+00:00:34,390 --> 00:00:38,380
+us whether or not the transaction or I should say the lock has expired.
+
+10
+00:00:39,070 --> 00:00:44,530
+So then at any step along the way inside of our callback function, we could take a look at this object.
+
+11
+00:00:44,680 --> 00:00:46,150
+We can look at the property on it.
+
+12
+00:00:46,150 --> 00:00:51,220
+That's going to tell us if the lock has expired and use that to decide if we need to return early from
+
+13
+00:00:51,220 --> 00:00:51,790
+the callback.
+
+14
+00:00:52,450 --> 00:00:56,260
+So essentially Signal is saying, Hey, sorry, your lock has expired.
+
+15
+00:00:56,440 --> 00:01:02,200
+Please don't try to write any more data because you're not guaranteed that you actually hold the lock
+
+16
+00:01:02,200 --> 00:01:02,620
+anymore.
+
+17
+00:01:04,010 --> 00:01:04,370
+Okay.
+
+18
+00:01:04,790 --> 00:01:07,970
+Let's implement that back inside of our locked up to yes file.
+
+19
+00:01:09,070 --> 00:01:13,270
+I'm going to first find where we have the Whitlock function declaration.
+
+20
+00:01:13,930 --> 00:01:15,820
+Here's our callback argument right here.
+
+21
+00:01:16,240 --> 00:01:20,560
+We're going to say that the callback must be a function that now is going to take in something called
+
+22
+00:01:20,560 --> 00:01:21,100
+a signal.
+
+23
+00:01:21,640 --> 00:01:25,900
+And again, we're just going to ignore types here just to make everything as simple as possible.
+
+24
+00:01:26,470 --> 00:01:27,250
+Read market as.
+
+25
+00:01:27,250 --> 00:01:27,790
+Type any.
+
+26
+00:01:31,010 --> 00:01:34,250
+Then down where we call our callback function.
+
+27
+00:01:37,690 --> 00:01:37,930
+Right.
+
+28
+00:01:37,930 --> 00:01:44,950
+Before we invoke the callback, I'm going to make this signal object, which is going to have an expired
+
+29
+00:01:44,950 --> 00:01:45,460
+property.
+
+30
+00:01:46,730 --> 00:01:48,760
+By default, it's going to be false.
+
+31
+00:01:50,490 --> 00:01:51,980
+But after a timeout.
+
+32
+00:01:51,990 --> 00:01:53,670
+So I can do a set timeout right here.
+
+33
+00:01:54,820 --> 00:01:58,000
+After a timeout of 2000 milliseconds.
+
+34
+00:01:58,810 --> 00:02:04,300
+2000, because that's when our lock automatically expires after a delay of 2000 milliseconds.
+
+35
+00:02:04,420 --> 00:02:07,690
+I'm going to update the signal that expired property to be true.
+
+36
+00:02:08,750 --> 00:02:11,900
+And then I'm going to pass that signal object into the callback.
+
+37
+00:02:15,350 --> 00:02:15,680
+All right.
+
+38
+00:02:16,160 --> 00:02:17,120
+Now back over to bids.
+
+39
+00:02:17,390 --> 00:02:17,750
+Yes.
+
+40
+00:02:18,920 --> 00:02:24,220
+Now, whenever we are about to access credits in any way, we're going to take a look at that signal
+
+41
+00:02:24,220 --> 00:02:25,390
+that expired property.
+
+42
+00:02:25,840 --> 00:02:30,970
+If it is true, that means we lost the lock and we should either through an error or return early or
+
+43
+00:02:30,970 --> 00:02:32,110
+just do something like that.
+
+44
+00:02:32,110 --> 00:02:35,770
+But we definitely don't want to continue on assuming that we still hold the lock.
+
+45
+00:02:36,970 --> 00:02:37,780
+So we might go down.
+
+46
+00:02:38,760 --> 00:02:40,830
+Right before we tried to write some data in.
+
+47
+00:02:42,360 --> 00:02:47,160
+And right before that, before we tried to send off any commands and tell us to update or save some
+
+48
+00:02:47,160 --> 00:02:50,730
+more information, we might say, if signal expired.
+
+49
+00:02:51,820 --> 00:02:55,300
+And throw a new air and say lock expired.
+
+50
+00:02:57,380 --> 00:02:59,390
+Can't write anymore data.
+
+51
+00:03:03,630 --> 00:03:05,610
+Now to test us out and make sure it works.
+
+52
+00:03:05,940 --> 00:03:10,830
+I'm going to introduce in a little fake pause, kind of an arbitrary pause inside this callback function.
+
+53
+00:03:11,810 --> 00:03:12,920
+Inside of locked out.
+
+54
+00:03:13,010 --> 00:03:13,250
+Yes.
+
+55
+00:03:13,250 --> 00:03:17,420
+Once again, at the very bottom, you'll notice I put in a function here called pause.
+
+56
+00:03:18,050 --> 00:03:21,220
+We can use this thing to just put in some pause anywhere inside of our code.
+
+57
+00:03:21,230 --> 00:03:22,520
+So I'm going to copy that function.
+
+58
+00:03:23,210 --> 00:03:25,160
+I'm going to take it back to it.
+
+59
+00:03:25,520 --> 00:03:25,910
+Yes.
+
+60
+00:03:26,690 --> 00:03:28,220
+I'm going to paste at the top like so.
+
+61
+00:03:30,300 --> 00:03:36,840
+And then right after I attempt to fetch the item inside of Whitlock, I'm going to add in a wait pause.
+
+62
+00:03:37,930 --> 00:03:38,560
+5000.
+
+63
+00:03:40,010 --> 00:03:43,400
+So this is going to simulate some really heavy duty processing in our code.
+
+64
+00:03:44,590 --> 00:03:47,950
+By the time these 5 seconds have passed, our lock will have expired.
+
+65
+00:03:48,340 --> 00:03:52,000
+And it's definitely possible that some other process might have acquired the lock.
+
+66
+00:03:52,360 --> 00:03:57,580
+So we definitely will not want to update or try to write any data, assuming that we still hold the
+
+67
+00:03:57,580 --> 00:03:57,880
+lock.
+
+68
+00:03:59,340 --> 00:03:59,480
+Yeah.
+
+69
+00:03:59,520 --> 00:04:00,210
+Let's save this.
+
+70
+00:04:00,640 --> 00:04:02,550
+And then back over in my browser.
+
+71
+00:04:03,150 --> 00:04:04,560
+I've got a brand new item right here.
+
+72
+00:04:05,430 --> 00:04:06,840
+I'm going to try to place a bid.
+
+73
+00:04:08,040 --> 00:04:10,590
+So after one, two, the lock expired.
+
+74
+00:04:11,280 --> 00:04:13,140
+Three, four, five.
+
+75
+00:04:13,770 --> 00:04:14,430
+And there we go.
+
+76
+00:04:14,520 --> 00:04:15,510
+So lock expired.
+
+77
+00:04:15,510 --> 00:04:20,790
+We can't write any data because potentially after the first 2 seconds, another process might have gotten
+
+78
+00:04:20,800 --> 00:04:21,150
+lock.
+
+79
+00:04:23,130 --> 00:04:23,490
+Okay.
+
+80
+00:04:23,490 --> 00:04:24,450
+So definitely work.
+
+81
+00:04:24,460 --> 00:04:25,320
+Stefan looks good.
+
+82
+00:04:26,190 --> 00:04:28,380
+I'm going to take out the pause right here.
+
+83
+00:04:29,100 --> 00:04:31,590
+I want to have 5 seconds every time someone tries to make a bid.
+
+84
+00:04:32,570 --> 00:04:36,010
+And I want to point out that although this works, there's just one small issue.
+
+85
+00:04:37,000 --> 00:04:39,730
+Remember our Whitlock function we put together?
+
+86
+00:04:40,960 --> 00:04:43,600
+You can imagine that we're working on a real project.
+
+87
+00:04:43,810 --> 00:04:44,950
+You and I, as writers.
+
+88
+00:04:44,950 --> 00:04:50,410
+Developers might be the one to put this function together, and there might be other people at the company
+
+89
+00:04:50,410 --> 00:04:53,050
+that we work for who are going to make use of this function.
+
+90
+00:04:54,080 --> 00:04:59,480
+So we are kind of assuming here that all these other engineers are going to now use this signal object
+
+91
+00:04:59,480 --> 00:05:00,140
+correctly.
+
+92
+00:05:00,290 --> 00:05:05,810
+We're assuming that before trying to write any data entreaties, they're going to check that expired
+
+93
+00:05:05,810 --> 00:05:06,290
+property.
+
+94
+00:05:06,890 --> 00:05:12,650
+But obviously, there's no guarantee that another engineer might just have no idea that this is a potential
+
+95
+00:05:12,650 --> 00:05:13,070
+issue.
+
+96
+00:05:13,400 --> 00:05:16,100
+So they might not ever put in that expired check.
+
+97
+00:05:16,730 --> 00:05:21,080
+So they might accidentally have some code that's going to do that really long processing step.
+
+98
+00:05:22,000 --> 00:05:25,720
+The lock might expire automatically and they're going to try to write some data.
+
+99
+00:05:26,560 --> 00:05:29,470
+So even though this works, it's definitely no guarantee.
+
+100
+00:05:29,500 --> 00:05:33,940
+It's entirely possible that even you and I in the future will forget to put in a check like this.
+
+101
+00:05:34,330 --> 00:05:37,960
+And so we might accidentally run into an issue here as well.
+
+102
+00:05:38,710 --> 00:05:40,180
+So even though this definitely works.
+
+103
+00:05:40,280 --> 00:05:42,690
+Yeah, it's just not super ideal.
+
+104
+00:05:43,620 --> 00:05:46,840
+Three to take a look at one other possible solution in the next video.
+
+105
+00:05:46,860 --> 00:05:51,990
+This other solution is really advanced, super advanced typescript JavaScript stuff.
+
+106
+00:05:52,230 --> 00:05:56,550
+But I just want to show it to you to just give you an idea of kind of what's possible around all this
+
+107
+00:05:56,550 --> 00:05:57,930
+lock and concurrency stuff.

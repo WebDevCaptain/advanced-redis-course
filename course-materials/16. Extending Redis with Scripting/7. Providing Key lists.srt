@@ -1,0 +1,403 @@
+1
+00:00:00,850 --> 00:00:04,870
+A couple of videos ago I told you that we use Lewis scripts to run, read us commands.
+
+2
+00:00:05,320 --> 00:00:12,190
+So inside of a Lewis script, we can do a git or a set or an H, get all we could do an L range and
+
+3
+00:00:12,190 --> 00:00:12,580
+so on.
+
+4
+00:00:12,970 --> 00:00:16,960
+All the range commands we've learned about so far can be executed from within a script.
+
+5
+00:00:17,440 --> 00:00:22,510
+And the nice thing about this is that there is no delay in the script execution and the words we don't
+
+6
+00:00:22,510 --> 00:00:26,050
+run the command and then like pause execution of the script or anything like that.
+
+7
+00:00:26,410 --> 00:00:32,020
+We run the command at the result back immediately and we can work with that data before anything else
+
+8
+00:00:32,020 --> 00:00:33,070
+occurs in Redis.
+
+9
+00:00:33,670 --> 00:00:37,450
+And that's a key aspect of how we're going to fix a couple of concurrency issues later on.
+
+10
+00:00:38,450 --> 00:00:38,750
+Okay.
+
+11
+00:00:38,810 --> 00:00:40,730
+So let's take a look at how we actually run a command.
+
+12
+00:00:42,060 --> 00:00:45,840
+But to run a red light command, we're going to use a built in object called Redis.
+
+13
+00:00:46,260 --> 00:00:50,850
+We're going to run the call method on it as the first arguments we're going to put in the name of the
+
+14
+00:00:50,850 --> 00:00:51,780
+command we want to run.
+
+15
+00:00:52,170 --> 00:00:56,270
+Now we can provide any arguments we want to give to the command right after that.
+
+16
+00:00:57,290 --> 00:01:00,310
+In this case, I'd be trying to get the key of color.
+
+17
+00:01:00,730 --> 00:01:04,870
+And before I say another word, I got to tell you something extremely important.
+
+18
+00:01:05,140 --> 00:01:06,940
+This is going to be the entire focus of this video.
+
+19
+00:01:07,570 --> 00:01:11,200
+As short as this script is right here, it has a very big issue.
+
+20
+00:01:11,530 --> 00:01:15,070
+So you're not going to want to run a script like this in production.
+
+21
+00:01:15,500 --> 00:01:17,470
+Tell you what the issue is in just 1/2.
+
+22
+00:01:17,710 --> 00:01:20,320
+But first, let's try running this thing as is.
+
+23
+00:01:22,560 --> 00:01:22,830
+Okay.
+
+24
+00:01:22,860 --> 00:01:23,550
+So back over here.
+
+25
+00:01:24,030 --> 00:01:28,780
+Right before I do my script load, I'm going to set color to be red.
+
+26
+00:01:29,190 --> 00:01:30,540
+So we definitely have a value there.
+
+27
+00:01:31,900 --> 00:01:34,570
+Then on my load statement, I'm going to change this to return.
+
+28
+00:01:35,190 --> 00:01:36,070
+Write a stock call.
+
+29
+00:01:37,090 --> 00:01:38,560
+I want to provide a string here.
+
+30
+00:01:38,560 --> 00:01:43,420
+So going to use double quotes so I don't conflict with the single quotes outside the entire script.
+
+31
+00:01:44,560 --> 00:01:47,500
+I'm going to do a get on color.
+
+32
+00:01:49,050 --> 00:01:49,890
+I'm going to load that.
+
+33
+00:01:50,610 --> 00:01:51,270
+There's my ID.
+
+34
+00:01:52,320 --> 00:01:53,910
+I'm going to pass the I.D. down here.
+
+35
+00:01:54,300 --> 00:01:56,610
+And then, as usual, once again, put in that zero.
+
+36
+00:01:57,900 --> 00:01:59,820
+I run this and I get back a string of red.
+
+37
+00:02:00,650 --> 00:02:01,980
+Okay, well, that definitely works.
+
+38
+00:02:02,260 --> 00:02:04,470
+We can use Lola to run his commands.
+
+39
+00:02:05,220 --> 00:02:07,710
+Now, let me tell you what the issue is right here.
+
+40
+00:02:07,830 --> 00:02:10,500
+And again, this is the entire point of this particular video.
+
+41
+00:02:11,450 --> 00:02:15,950
+Any time that we are trying to access any value inside of Redis.
+
+42
+00:02:15,960 --> 00:02:22,460
+In other words, any time we try to run a command and access or set the value of any key whatsoever,
+
+43
+00:02:23,030 --> 00:02:26,030
+those keys need to be provided ahead of time.
+
+44
+00:02:26,360 --> 00:02:28,010
+The short commands.
+
+45
+00:02:29,570 --> 00:02:35,180
+So the issue with this script right here is that I ran you belshaw without telling Redis exactly what
+
+46
+00:02:35,180 --> 00:02:37,550
+keys I plan to access inside the script.
+
+47
+00:02:38,090 --> 00:02:43,190
+I just went ahead and accessed the key of color without telling you all about it.
+
+48
+00:02:43,460 --> 00:02:44,360
+And that's the issue.
+
+49
+00:02:44,390 --> 00:02:45,620
+That's what we don't want to do.
+
+50
+00:02:46,770 --> 00:02:51,990
+So anytime we want to access any key whatsoever inside of radius from inside of a script, we're going
+
+51
+00:02:51,990 --> 00:02:55,830
+to use a technique very similar to what we just saw a moment ago around arguments.
+
+52
+00:02:57,280 --> 00:03:02,680
+So in this case, if we want to do a reticent call on gifts, you have to provide a key right there
+
+53
+00:03:03,250 --> 00:03:05,770
+rather than writing in the key as a simple string.
+
+54
+00:03:06,040 --> 00:03:09,910
+I'm going to access another built in global array called Keys.
+
+55
+00:03:10,950 --> 00:03:12,730
+I'm going to access keys at one.
+
+56
+00:03:13,330 --> 00:03:17,110
+And then when I run my e-mail shore command, I'm going to still put in the ID.
+
+57
+00:03:18,010 --> 00:03:23,350
+I'm going to put in the number one right here to tell you belshaw that I'm about to give it one key
+
+58
+00:03:23,350 --> 00:03:25,300
+that I am going to want to access.
+
+59
+00:03:25,900 --> 00:03:27,520
+In this case, the key is color.
+
+60
+00:03:28,530 --> 00:03:33,870
+You can imagine that when the script runs red, this is going to define a global array for us.
+
+61
+00:03:34,980 --> 00:03:36,570
+That has a single element inside of its.
+
+62
+00:03:37,910 --> 00:03:39,170
+With a string of color.
+
+63
+00:03:41,570 --> 00:03:44,270
+You might be kind of curious about the one right here.
+
+64
+00:03:44,300 --> 00:03:47,180
+Again, that's going to be the number of keys we're about to list in this command.
+
+65
+00:03:47,660 --> 00:03:54,320
+So if I wanted to access both the keys of color and maybe items, I would put in a two right there.
+
+66
+00:03:55,920 --> 00:04:00,360
+The entire purpose of that number is to just make it clear which the strings right here are supposed
+
+67
+00:04:00,360 --> 00:04:06,330
+to be keys we want to access and therefore should be listed inside this keys array versus arguments
+
+68
+00:04:06,330 --> 00:04:07,530
+that we might want to access.
+
+69
+00:04:07,980 --> 00:04:12,240
+If I put in, say, a four and a six later on as arguments.
+
+70
+00:04:13,050 --> 00:04:18,480
+So in this case, these two elements would be added into the keys array or in six would be added into
+
+71
+00:04:19,260 --> 00:04:21,540
+the array, which we learned about in the last video.
+
+72
+00:04:23,310 --> 00:04:27,390
+Now, I got to just tell you this one more time, because it's so important, so critical.
+
+73
+00:04:28,050 --> 00:04:34,980
+Any time you want to access any key, so get data or set data, you must provide the key as an arguments.
+
+74
+00:04:35,880 --> 00:04:38,090
+And the effect of that is it means that you can't.
+
+75
+00:04:38,100 --> 00:04:40,470
+And this is a really important restriction around scripts.
+
+76
+00:04:40,710 --> 00:04:42,240
+We cannot, unfortunately.
+
+77
+00:04:43,310 --> 00:04:46,880
+Have a script, generate some keys dynamically that we want to work with.
+
+78
+00:04:47,510 --> 00:04:54,230
+So there will never be a point in time where you might say store some keys inside of a red list and
+
+79
+00:04:54,230 --> 00:05:00,020
+then inside of a script, try to access that list, get out all those keys, and then look those keys
+
+80
+00:05:00,020 --> 00:05:01,370
+up inside the script.
+
+81
+00:05:01,970 --> 00:05:06,410
+We're not going to do that because that would require us to dynamically generate some keys.
+
+82
+00:05:06,620 --> 00:05:09,530
+In other words, the Keys store inside the list while we are running the scripts.
+
+83
+00:05:10,100 --> 00:05:14,480
+Every key we want to access must be provided as an argument to show.
+
+84
+00:05:15,810 --> 00:05:21,480
+The reason I'm making such a big deal about this is that, as we just saw, you can run a script where
+
+85
+00:05:21,480 --> 00:05:26,700
+you access a key that you don't mention inside of email, so you're not going to see an error.
+
+86
+00:05:27,120 --> 00:05:27,990
+It's behind the scenes.
+
+87
+00:05:27,990 --> 00:05:32,100
+That stuff is going to start to get a little bit buggy and eventually cause issues down the line.
+
+88
+00:05:33,880 --> 00:05:34,200
+Okay.
+
+89
+00:05:34,210 --> 00:05:39,370
+So let's see some examples of defining a key ahead of time and providing it to evaluate your.
+
+90
+00:05:40,440 --> 00:05:43,230
+So let's in a replicator fix up this example right here.
+
+91
+00:05:44,350 --> 00:05:50,470
+I want to provide a key of color to al-Qaeda because I'm now providing a key.
+
+92
+00:05:50,650 --> 00:05:56,230
+I need to change that zero to a one to say on about to provide one key right here and then inside my
+
+93
+00:05:56,230 --> 00:06:02,080
+script, rather than directly accessing color, I would do keys at one.
+
+94
+00:06:03,670 --> 00:06:05,980
+Now I will once again load the scripts.
+
+95
+00:06:07,490 --> 00:06:10,700
+But in the new ID business and I still get red.
+
+96
+00:06:13,890 --> 00:06:14,370
+All right.
+
+97
+00:06:14,550 --> 00:06:18,810
+So we've now learned about the array and the keys array.
+
+98
+00:06:19,260 --> 00:06:21,780
+Those are the two tricky topics around scripts.
+
+99
+00:06:22,230 --> 00:06:27,060
+So from here on out, it's pretty much, hey, we just need to figure out what we might want to do with
+
+100
+00:06:27,060 --> 00:06:29,910
+scripts and how we actually write Lua code effectively.
+
+101
+00:06:30,450 --> 00:06:34,380
+So now we get to kind of get to the interesting things around scripts in just a moment.

@@ -1,0 +1,283 @@
+1
+00:00:01,000 --> 00:00:02,500
+Let's move on to another command.
+
+2
+00:00:02,530 --> 00:00:04,030
+This one is X range.
+
+3
+00:00:04,360 --> 00:00:09,250
+X range is nearly identical to X read, which we are just discussing in great detail.
+
+4
+00:00:09,790 --> 00:00:13,090
+So you're pretty much going to already understand everything around X range.
+
+5
+00:00:13,540 --> 00:00:17,920
+The only reason that I'm covering both commands is because some documentation is going to show using
+
+6
+00:00:18,070 --> 00:00:21,940
+streams with X read other documentation will use x range.
+
+7
+00:00:22,000 --> 00:00:23,050
+So you kind of have to know both.
+
+8
+00:00:23,260 --> 00:00:27,460
+And there technically are a couple of very small gotchas and differences between them.
+
+9
+00:00:28,210 --> 00:00:31,300
+Okay, so x range, the key where our stream is stored.
+
+10
+00:00:31,840 --> 00:00:37,240
+And then here's the first difference between X read in x range, we're going to put in a starting timestamp
+
+11
+00:00:37,540 --> 00:00:39,280
+and then an ending timestamp.
+
+12
+00:00:40,260 --> 00:00:43,890
+So it's going to give us a range of messages between these two timestamps.
+
+13
+00:00:44,670 --> 00:00:48,900
+And then very important to understand, these timestamps are inclusive.
+
+14
+00:00:49,470 --> 00:00:54,840
+So if we had a message with a timestamp of one, two, three, four, five, it would include that with
+
+15
+00:00:54,840 --> 00:00:57,900
+x range it's opposite with x read.
+
+16
+00:00:58,350 --> 00:01:05,340
+When we use x read, if we put in an actual timestamp value like this right here, this is exclusive.
+
+17
+00:01:05,610 --> 00:01:09,350
+We will not get a message with a timestamp of 1999.
+
+18
+00:01:10,020 --> 00:01:13,080
+So it's exactly the opposite between x read and x range.
+
+19
+00:01:15,750 --> 00:01:20,880
+When we make use of X range, we can also add on a count option as well and that will give us no more
+
+20
+00:01:20,880 --> 00:01:22,230
+than whatever we are asking for.
+
+21
+00:01:22,560 --> 00:01:26,850
+But of course, if there are less than five elements, say we will get however many are available.
+
+22
+00:01:27,910 --> 00:01:28,060
+Yeah.
+
+23
+00:01:28,150 --> 00:01:29,920
+Let's try this out really quickly in our book.
+
+24
+00:01:30,790 --> 00:01:31,770
+So back over here.
+
+25
+00:01:31,780 --> 00:01:33,220
+I'm going to add in a new code cell.
+
+26
+00:01:34,380 --> 00:01:36,810
+I still have the idea for pineapple right here.
+
+27
+00:01:36,810 --> 00:01:38,430
+So I'm going to use that idea in just a moment.
+
+28
+00:01:38,880 --> 00:01:39,780
+I'm going to copy it.
+
+29
+00:01:41,270 --> 00:01:46,580
+If you do not have that idea still handy, you can either find the ID by doing a normal x read or just
+
+30
+00:01:46,580 --> 00:01:47,600
+add in another fruit.
+
+31
+00:01:48,690 --> 00:01:50,010
+Well, then do a range.
+
+32
+00:01:52,230 --> 00:01:53,430
+On fruits.
+
+33
+00:01:54,730 --> 00:02:00,970
+I'm going to start at the pineapple and I'll go to the same ID for the pineapple, but I'm going to
+
+34
+00:02:00,970 --> 00:02:02,980
+add on one millisecond to it.
+
+35
+00:02:03,880 --> 00:02:04,840
+So there's pineapple.
+
+36
+00:02:04,990 --> 00:02:06,970
+There's pineapple plus one millisecond.
+
+37
+00:02:08,540 --> 00:02:14,330
+If I run that, I will see that it does in fact include pineapple, which is the opposite of what X
+
+38
+00:02:14,340 --> 00:02:15,090
+Reid would have done.
+
+39
+00:02:15,090 --> 00:02:18,150
+X Reid would have given us everything after that timestamp.
+
+40
+00:02:20,640 --> 00:02:23,260
+A couple of very quick variations on X reed.
+
+41
+00:02:23,740 --> 00:02:29,800
+First off, we can change that inclusive behavior by putting in an open parentheses before either or
+
+42
+00:02:29,800 --> 00:02:30,880
+both timestamps.
+
+43
+00:02:31,420 --> 00:02:34,480
+So if we do the open parentheses, no closing, just the open side.
+
+44
+00:02:34,870 --> 00:02:39,610
+And that is going to give us messages starting at but not including that timestamp.
+
+45
+00:02:41,610 --> 00:02:46,590
+So if I add on a parentheses right before that time stamp right there, that was the pineapple one.
+
+46
+00:02:46,920 --> 00:02:49,740
+I'm no longer going to get any results whatsoever.
+
+47
+00:02:52,310 --> 00:02:55,700
+So we can put that parentheses on either or both of the timestamps.
+
+48
+00:02:56,730 --> 00:02:59,010
+And then finally, a little shortcut that's available to us.
+
+49
+00:02:59,190 --> 00:03:05,400
+We can use a minus or a plus in place of these timestamps, though minus means go get the minimum.
+
+50
+00:03:05,400 --> 00:03:11,760
+80 plus means get the maximum so we can use these to say Give me all messages after a point in time
+
+51
+00:03:12,060 --> 00:03:14,310
+where all messages before a point in time.
+
+52
+00:03:15,280 --> 00:03:19,000
+For example, if I did something like say.
+
+53
+00:03:21,980 --> 00:03:24,460
+It's going to delete the last couple of milliseconds here.
+
+54
+00:03:24,470 --> 00:03:26,670
+So that's kind of some arbitrary time.
+
+55
+00:03:26,750 --> 00:03:28,310
+Very far in the past at this point.
+
+56
+00:03:28,820 --> 00:03:35,690
+And then I'll put in a plus somebody from this time long, long ago, all the way to the far, far future.
+
+57
+00:03:35,900 --> 00:03:39,950
+Give me all elements that should be pretty much everything we've ever added into the stream.
+
+58
+00:03:41,420 --> 00:03:44,690
+We could also do something like give me everything in the past.
+
+59
+00:03:45,320 --> 00:03:46,910
+Up to what?
+
+60
+00:03:46,910 --> 00:03:49,490
+Not including the pineapple time stamp.
+
+61
+00:03:50,790 --> 00:03:53,730
+That will give us everything in the past, not including pineapple.
+
+62
+00:03:54,600 --> 00:03:57,100
+That is a previous pineapple I added in right there.
+
+63
+00:03:57,120 --> 00:03:58,690
+I added in two pineapples.
+
+64
+00:03:58,690 --> 00:03:59,540
+So that's a previous one.
+
+65
+00:03:59,550 --> 00:04:00,810
+It's not the one I had added in.
+
+66
+00:04:00,960 --> 00:04:03,780
+You'll notice the time stamp of it is different than the one I have right there.
+
+67
+00:04:05,030 --> 00:04:05,310
+Okay.
+
+68
+00:04:05,390 --> 00:04:10,640
+Like I said, just a couple of variations on X range at the end of day, very similar to X read.
+
+69
+00:04:10,910 --> 00:04:12,470
+The only big differences are the time.
+
+70
+00:04:12,470 --> 00:04:16,190
+Stamps by default are inclusive as opposed to exclusive.
+
+71
+00:04:16,610 --> 00:04:20,060
+An x range also does not have the blocking variant as well.

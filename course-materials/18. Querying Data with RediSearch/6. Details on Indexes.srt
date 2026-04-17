@@ -1,0 +1,431 @@
+1
+00:00:01,710 --> 00:00:05,040
+In this video, we're going to start to dive into the creates and search commands.
+
+2
+00:00:05,310 --> 00:00:08,640
+Before we get started, however, I want to have a very quick side discussion.
+
+3
+00:00:09,270 --> 00:00:13,680
+If you look at the official documentation around ready search, you're not going to see anything that
+
+4
+00:00:13,680 --> 00:00:17,460
+really distinguishes the idea of querying from searching.
+
+5
+00:00:17,640 --> 00:00:18,900
+It's not in there whatsoever.
+
+6
+00:00:19,370 --> 00:00:24,090
+I think that it would be very helpful to just get you thinking about the difference between a query
+
+7
+00:00:24,090 --> 00:00:29,310
+and a search, because it is going to make a couple of topics along the way a lot easier to understand.
+
+8
+00:00:30,120 --> 00:00:30,440
+Okay.
+
+9
+00:00:30,450 --> 00:00:34,290
+So first off query, what are we doing when we write a query?
+
+10
+00:00:34,830 --> 00:00:41,250
+Whenever we write a query, we're usually trying to find a set of records that match some existing exact
+
+11
+00:00:41,250 --> 00:00:41,910
+criteria.
+
+12
+00:00:42,420 --> 00:00:48,660
+So if we said Get all cars made in 1955 with the color of red, I would expect that all the results
+
+13
+00:00:48,660 --> 00:00:51,990
+and the result set match exactly these requirements.
+
+14
+00:00:52,200 --> 00:00:57,510
+Every car must be made in 1955 and every car must have a color red.
+
+15
+00:00:58,230 --> 00:00:59,820
+Same with the other two queries here as well.
+
+16
+00:01:00,450 --> 00:01:04,860
+So I might look for all cars made before 1960 with a name exactly.
+
+17
+00:01:04,860 --> 00:01:08,730
+Of Fast car and same thing for all cars with the color of blue.
+
+18
+00:01:10,640 --> 00:01:12,170
+Now compared to Queering.
+
+19
+00:01:12,290 --> 00:01:14,210
+There's also the idea of searching.
+
+20
+00:01:14,570 --> 00:01:18,440
+Usually with searching, we're not going to get really an exact result set.
+
+21
+00:01:18,740 --> 00:01:24,020
+All the results we get might not exactly fit our criteria, but they are kind of like a close enough
+
+22
+00:01:24,020 --> 00:01:25,640
+guess of what we're looking for.
+
+23
+00:01:26,520 --> 00:01:33,270
+So an example of search might be if we try to get all cars with a name like car, that goes fast.
+
+24
+00:01:33,840 --> 00:01:38,970
+If we're trying to search for a car that goes fast, we might actually be trying to find a record.
+
+25
+00:01:39,960 --> 00:01:41,050
+This one right here.
+
+26
+00:01:41,070 --> 00:01:43,410
+Cars at a one with the name of fast car.
+
+27
+00:01:43,440 --> 00:01:48,300
+So a car that goes fast that does not match the value right here of name.
+
+28
+00:01:48,660 --> 00:01:54,000
+The value is fast car, but it's kind of close enough to what we're looking for where if I was doing
+
+29
+00:01:54,000 --> 00:01:56,040
+searching, I would expect to find that results.
+
+30
+00:01:57,030 --> 00:02:05,330
+If we had a search for all cars related to 90 Blue Fast, I might be looking for cars made in 1990 with
+
+31
+00:02:05,330 --> 00:02:06,390
+the color of blue.
+
+32
+00:02:06,960 --> 00:02:09,210
+It has a name, including the string fast.
+
+33
+00:02:10,520 --> 00:02:15,290
+And if I did a search for Gast var in this case, I just have some typos here.
+
+34
+00:02:15,740 --> 00:02:22,100
+So Gast, that key is very close on the keyboard to F, so my user might have meant to say fast.
+
+35
+00:02:22,760 --> 00:02:25,910
+And in the case of v, v is right next to C on the keyboard.
+
+36
+00:02:25,940 --> 00:02:28,190
+So user might have been meaning to say car.
+
+37
+00:02:28,580 --> 00:02:35,420
+So user possibly was trying to say find all the fast cars, but instead they might have entered gast
+
+38
+00:02:35,540 --> 00:02:41,210
+var and we would still want to find some record that well how a name of fast car.
+
+39
+00:02:42,150 --> 00:02:46,140
+Again, querying is when we are trying to find a exact result set.
+
+40
+00:02:46,530 --> 00:02:51,930
+Searching is really where we are trying to interpret some possibly flawed query coming from a user or
+
+41
+00:02:51,930 --> 00:02:56,130
+some possible flawed string, and we're trying to show the best possible results.
+
+42
+00:02:57,130 --> 00:03:02,320
+You can really see this in action if you go to any e-commerce website such as, say, Amazon.com.
+
+43
+00:03:03,220 --> 00:03:05,110
+I pulled up Amazon.com really quickly.
+
+44
+00:03:05,140 --> 00:03:05,770
+Here it is right here.
+
+45
+00:03:08,030 --> 00:03:09,800
+I'm looking at men's boots right now.
+
+46
+00:03:10,190 --> 00:03:16,460
+If I scroll down on the left hand side, I can see examples of queries that I can enter so I can try
+
+47
+00:03:16,460 --> 00:03:19,970
+to find all the shoe sizes exactly equal to 12.
+
+48
+00:03:20,860 --> 00:03:27,160
+I can search for exact shoe widths and brands and occasions, closure, colours, heights and so on.
+
+49
+00:03:27,790 --> 00:03:34,360
+These are all examples of query able criteria so I can find all the boot colours that are exactly black.
+
+50
+00:03:36,460 --> 00:03:41,290
+On the other hand, I could go to the very top up here at the search fields and I can enter a search
+
+51
+00:03:41,290 --> 00:03:41,800
+instead.
+
+52
+00:03:42,220 --> 00:03:47,800
+So I might put in something like Boots for Men That Is Black.
+
+53
+00:03:48,520 --> 00:03:53,350
+So it's up to Amazon to somehow take this string, which might have typos in it, and try to figure
+
+54
+00:03:53,350 --> 00:03:54,910
+out what I am trying to say.
+
+55
+00:03:55,180 --> 00:03:56,770
+That is an example of search.
+
+56
+00:03:57,940 --> 00:03:58,240
+Okay.
+
+57
+00:03:58,990 --> 00:04:03,640
+So this might seem like totally irrelevant right now, but trust me, it's really important to keep
+
+58
+00:04:03,640 --> 00:04:08,860
+this idea in your head because as you start to look at the already search documentation, there's going
+
+59
+00:04:08,860 --> 00:04:13,840
+to be some aspects of these commands we're about to learn about that are really talking about doing
+
+60
+00:04:13,840 --> 00:04:19,600
+a query type operation and then other aspects that are really talking about doing a search type operation.
+
+61
+00:04:19,900 --> 00:04:23,020
+And life is going to be a lot easier if we just make a distinction between them.
+
+62
+00:04:24,210 --> 00:04:24,420
+All right.
+
+63
+00:04:24,420 --> 00:04:29,760
+So enough of this aside, I apologize the for 4 minutes deep here in this video and I've spent all this
+
+64
+00:04:29,760 --> 00:04:30,600
+time talking about this.
+
+65
+00:04:30,600 --> 00:04:32,040
+So let's just move on very quickly.
+
+66
+00:04:32,280 --> 00:04:35,760
+And I want to give you a brief overview on that create right here.
+
+67
+00:04:36,480 --> 00:04:36,810
+Okay.
+
+68
+00:04:37,560 --> 00:04:40,680
+So after that creates I took the command, I broke it up piece by piece.
+
+69
+00:04:40,680 --> 00:04:42,810
+We're going to go over each term one by one.
+
+70
+00:04:43,470 --> 00:04:47,820
+The first idea, cars, this is the name of the index we're about to create.
+
+71
+00:04:47,820 --> 00:04:52,080
+And you can really think of this as being just like a key in any other command that we've ever written.
+
+72
+00:04:53,000 --> 00:04:56,450
+Every index we create is always going to follow a very similar naming convention.
+
+73
+00:04:56,810 --> 00:05:02,600
+We're going to do something like index short for index colon, and then a name for this index are really
+
+74
+00:05:02,600 --> 00:05:04,400
+the kind of thing that we are searching for.
+
+75
+00:05:04,820 --> 00:05:06,620
+In this case, we are searching for cars.
+
+76
+00:05:06,980 --> 00:05:08,870
+So I might end up with ADX cars.
+
+77
+00:05:10,370 --> 00:05:16,100
+If we ever create an index and then want to later on delete it, we can use F.T. Dot Drop Index.
+
+78
+00:05:16,670 --> 00:05:21,470
+We're going to do that several times inside this section so that we can recreate our index with different
+
+79
+00:05:21,470 --> 00:05:22,520
+attributes tied to it.
+
+80
+00:05:24,330 --> 00:05:26,070
+Next up is on hash.
+
+81
+00:05:26,580 --> 00:05:30,510
+This describes the kind of values that we're going to search over.
+
+82
+00:05:30,960 --> 00:05:35,490
+The only valid values here is either hash or JSON.
+
+83
+00:05:36,440 --> 00:05:41,110
+We're only going to use Jason if we are using that other Redis module called Reddit JSON.
+
+84
+00:05:41,980 --> 00:05:45,980
+Right now we are not using writes Jason, so we are making use of on hash instead.
+
+85
+00:05:48,080 --> 00:05:50,930
+After that we got prefix one cars.
+
+86
+00:05:51,710 --> 00:05:55,220
+This is how we tell our index which records we're going to want to search over.
+
+87
+00:05:55,610 --> 00:06:00,800
+So internally, FTA Dot creates is going to try to find all the different keys that begin with a string
+
+88
+00:06:00,800 --> 00:06:05,570
+of cars out and it's going to inspect all those different records.
+
+89
+00:06:06,570 --> 00:06:08,070
+You'll notice there is a one right here.
+
+90
+00:06:08,700 --> 00:06:12,060
+Whenever we create an index, we can have multiple different prefixes.
+
+91
+00:06:12,420 --> 00:06:16,530
+Let's imagine that maybe you want to build a prefix and look at all the different keys that begin with
+
+92
+00:06:16,530 --> 00:06:17,040
+cars.
+
+93
+00:06:17,310 --> 00:06:21,540
+And we also want to look at all the different keys that begin with, say, trucks as well.
+
+94
+00:06:22,050 --> 00:06:24,270
+So we might do something like expound.
+
+95
+00:06:25,140 --> 00:06:28,830
+And then because we are now providing two prefixes, we would change the one to it to.
+
+96
+00:06:33,070 --> 00:06:38,770
+And then onto schema schemas, how we're going to describe the different properties that we want ready
+
+97
+00:06:38,770 --> 00:06:43,540
+search to look at inside of each of these different hashes that it's going to inspect the we're going
+
+98
+00:06:43,540 --> 00:06:49,690
+to list out right after schema the name of a field inside of our hash and then the type of value inside
+
+99
+00:06:49,690 --> 00:06:52,570
+there and the name type, name type.
+
+100
+00:06:53,200 --> 00:06:58,840
+We only put down schema once and we can list out just about as many name type pairs as we want.
+
+101
+00:06:59,620 --> 00:07:02,830
+You don't have to list out every single field inside of your hashes.
+
+102
+00:07:03,160 --> 00:07:08,530
+So for example, if we did not ever want to do any kind of searching or crying or filtering over color,
+
+103
+00:07:08,770 --> 00:07:13,570
+we would just leave color out entirely and think for a year if we didn't care about doing any kind of
+
+104
+00:07:13,570 --> 00:07:15,550
+search around here, we'd delete that as well.
+
+105
+00:07:17,880 --> 00:07:22,410
+Now I want to have a quick side discussion here around these different types that are available to us.
+
+106
+00:07:22,680 --> 00:07:27,930
+And this is where the idea of querying versus searching is going to start to become very, very important.
+
+107
+00:07:28,500 --> 00:07:29,340
+Let's start to discuss.
+
+108
+00:07:29,340 --> 00:07:31,290
+The different types are available in just a moment.

@@ -1,0 +1,271 @@
+1
+00:00:00,850 --> 00:00:05,140
+Let's take care of incrementing this view's property whenever a user views an item.
+
+2
+00:00:05,350 --> 00:00:08,140
+Remember, we eventually want to make sure that all views are unique.
+
+3
+00:00:08,260 --> 00:00:10,180
+So one per user, per item.
+
+4
+00:00:10,460 --> 00:00:14,650
+That's going to prevent a user from just hitting refresh, refresh, refresh over and over again to
+
+5
+00:00:14,650 --> 00:00:16,570
+give themselves a ton of use on a single item.
+
+6
+00:00:16,810 --> 00:00:21,490
+But we're going to implement that later on using yet another data structure in Redis.
+
+7
+00:00:21,940 --> 00:00:24,490
+If right now, we'll just always add in a view no matter what.
+
+8
+00:00:25,420 --> 00:00:26,170
+So to get started.
+
+9
+00:00:27,370 --> 00:00:29,080
+Inside of my services directory.
+
+10
+00:00:29,100 --> 00:00:32,940
+Again, find queries and then inside of your views.
+
+11
+00:00:33,250 --> 00:00:33,610
+Yes.
+
+12
+00:00:35,340 --> 00:00:40,050
+So I have to find a function for us that's going to be called at some point in time whenever a user
+
+13
+00:00:40,050 --> 00:00:40,950
+views an item.
+
+14
+00:00:41,980 --> 00:00:47,470
+This function is going to be called the items ID and the user's ID as well will eventually use that
+
+15
+00:00:47,470 --> 00:00:51,740
+user ID to make sure that all these increments to views are always unique.
+
+16
+00:00:51,760 --> 00:00:54,580
+So one per user per item will take care of that later.
+
+17
+00:00:54,610 --> 00:00:57,010
+Right now we're only going to be making use of the item ID.
+
+18
+00:00:58,640 --> 00:01:05,850
+But inside that function I've to do is these two steps we're going to do an H incur by increment a number
+
+19
+00:01:05,850 --> 00:01:09,840
+stored inside of a hash and a z anchor by the increment.
+
+20
+00:01:09,840 --> 00:01:12,660
+A value stored inside of a sorted set.
+
+21
+00:01:14,810 --> 00:01:17,270
+To do all this, we have to import a couple of things at the top.
+
+22
+00:01:18,340 --> 00:01:22,150
+First I'm going to get my read his clients from services read us.
+
+23
+00:01:23,190 --> 00:01:27,600
+And then going to get my items key and items.
+
+24
+00:01:29,000 --> 00:01:29,630
+I.
+
+25
+00:01:30,860 --> 00:01:31,460
+Views.
+
+26
+00:01:31,550 --> 00:01:31,970
+He.
+
+27
+00:01:34,090 --> 00:01:35,020
+From Services.
+
+28
+00:01:35,830 --> 00:01:36,280
+He's.
+
+29
+00:01:40,860 --> 00:01:44,510
+And inside the function we need to do two separate commands.
+
+30
+00:01:44,520 --> 00:01:46,760
+So an anchor by and a z anchor by.
+
+31
+00:01:46,950 --> 00:01:50,820
+We can once again make use of pipeline and here to run both commands at the same time.
+
+32
+00:01:51,840 --> 00:01:55,680
+The we can do return promised at all with an array.
+
+33
+00:01:56,640 --> 00:02:00,160
+The first elements will be an H anchor by.
+
+34
+00:02:00,670 --> 00:02:04,110
+But this is where we are going to take a look at the item hash itself.
+
+35
+00:02:04,920 --> 00:02:07,440
+The item hash like this one right here.
+
+36
+00:02:08,190 --> 00:02:11,220
+We're going to take a look at its views property and incremented by one.
+
+37
+00:02:11,220 --> 00:02:13,800
+So whatever value it currently has, just add one to it.
+
+38
+00:02:17,250 --> 00:02:23,870
+To look up the particular item hash will make use of the items key function along with the item ID the
+
+39
+00:02:23,910 --> 00:02:24,690
+items key.
+
+40
+00:02:25,800 --> 00:02:26,600
+Item I.D..
+
+41
+00:02:28,440 --> 00:02:33,780
+We then want to increment specifically the VUSE property and we want to increment it by one.
+
+42
+00:02:36,820 --> 00:02:37,450
+So that's that.
+
+43
+00:02:38,080 --> 00:02:41,440
+Then we can move on to updating our sorted set as well.
+
+44
+00:02:42,530 --> 00:02:50,300
+Before that we could do a z inker by o client z inker, buy items, buy views key.
+
+45
+00:02:50,360 --> 00:02:52,580
+That's the key function we just put together a little bit ago.
+
+46
+00:02:53,540 --> 00:03:00,260
+And then remember very unexpectedly when we are doing it zinc-air by the order of the score and the
+
+47
+00:03:00,260 --> 00:03:06,410
+member is switched compared to h anchor by the word zinc-air by we're going to first put in one.
+
+48
+00:03:06,890 --> 00:03:08,990
+That's how much we're going to change the score by.
+
+49
+00:03:09,440 --> 00:03:12,560
+And then the member that we want to update is the items ID.
+
+50
+00:03:15,830 --> 00:03:16,430
+And that's it.
+
+51
+00:03:19,460 --> 00:03:19,780
+Okay.
+
+52
+00:03:19,790 --> 00:03:20,600
+So let's save this.
+
+53
+00:03:21,660 --> 00:03:24,180
+And now if we go back over to our browser.
+
+54
+00:03:26,270 --> 00:03:27,920
+I'm going to sign up.
+
+55
+00:03:28,890 --> 00:03:32,430
+Actually, I'll sign in because I now have a working user account.
+
+56
+00:03:33,710 --> 00:03:35,060
+I'm going to make a brand new item.
+
+57
+00:03:36,050 --> 00:03:37,220
+Use the default settings here.
+
+58
+00:03:40,030 --> 00:03:46,840
+And now whenever I refresh in theory, I'm incrementing that view counter by one, not only on the item
+
+59
+00:03:46,840 --> 00:03:49,210
+hash, but inside the sorted set as well.
+
+60
+00:03:49,960 --> 00:03:52,450
+At this point time, we are only updating the value.
+
+61
+00:03:52,690 --> 00:03:54,910
+We're not actually making use of that value anywhere.
+
+62
+00:03:55,300 --> 00:03:57,190
+I'm not showing any views on this page.
+
+63
+00:03:57,820 --> 00:04:01,780
+And what we've done so far is not going to make any views show up over here either.
+
+64
+00:04:02,380 --> 00:04:07,780
+We have to write out a separate query to actually make use of these view values now and actually get
+
+65
+00:04:07,780 --> 00:04:09,380
+them to be displayed on the screen.
+
+66
+00:04:09,400 --> 00:04:12,040
+And that's a separate little project, which we'll start in just a moment.
+
+67
+00:04:13,000 --> 00:04:17,830
+But what we have right now should be working in terms of at least maintaining this number of views.
+
+68
+00:04:18,220 --> 00:04:18,910
+Let's definitely go.

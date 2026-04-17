@@ -1,0 +1,283 @@
+1
+00:00:00,830 --> 00:00:05,180
+Just a moment ago, I mentioned that we were going to replace the contents of increment view with a
+
+2
+00:00:05,180 --> 00:00:06,170
+custom Lewis script.
+
+3
+00:00:06,530 --> 00:00:07,600
+We are going to do that.
+
+4
+00:00:07,610 --> 00:00:10,130
+But first we're going to do a very quick aside.
+
+5
+00:00:10,430 --> 00:00:14,720
+I want to show you how we typically make use of Lewis scripts inside of a real project.
+
+6
+00:00:15,320 --> 00:00:16,610
+We're going to write a script.
+
+7
+00:00:16,850 --> 00:00:18,920
+We're going to integrate it into the node.
+
+8
+00:00:18,920 --> 00:00:20,420
+Read a client that we are using.
+
+9
+00:00:20,990 --> 00:00:23,480
+This is going to be a script unrelated to increment view.
+
+10
+00:00:23,870 --> 00:00:28,580
+Once we understand, the entire process will then come back to increment view and replace this logic
+
+11
+00:00:28,580 --> 00:00:29,210
+with a script.
+
+12
+00:00:30,170 --> 00:00:36,170
+A couple of diagrams to understand how we implement custom scripts with a node Redis library that we
+
+13
+00:00:36,170 --> 00:00:37,690
+are using to connect to Redis.
+
+14
+00:00:38,940 --> 00:00:43,770
+The first thing I want to point out is that making use of script load and email shore is just a little
+
+15
+00:00:43,770 --> 00:00:50,730
+bit tedious, only because we have to first call a script, load it back that ID and then hold onto
+
+16
+00:00:50,730 --> 00:00:53,280
+it until we eventually want to use it with email shore.
+
+17
+00:00:54,480 --> 00:00:56,650
+So implementing that inside of our code base.
+
+18
+00:00:56,680 --> 00:01:00,810
+Well, of course, it's not the worst thing in the world, but it's just an extra little step for us
+
+19
+00:01:00,810 --> 00:01:06,180
+to go through it, rather than forcing us to make use of script, load and email evolution directly.
+
+20
+00:01:06,360 --> 00:01:12,600
+A lot of different reticent client libraries such as Node Redis is the one we are using as some advanced
+
+21
+00:01:12,600 --> 00:01:16,580
+features for automating the process of doing script, load and evaluation.
+
+22
+00:01:17,190 --> 00:01:20,790
+So what we're going to focus on in this video is what that process looks like.
+
+23
+00:01:21,660 --> 00:01:23,100
+They help you understand this process?
+
+24
+00:01:23,880 --> 00:01:27,300
+We are going to do this little side topic, as I mentioned just a moment ago.
+
+25
+00:01:27,720 --> 00:01:29,160
+But here's our goal for right now.
+
+26
+00:01:30,280 --> 00:01:31,900
+I want to use our Rita's clients.
+
+27
+00:01:32,380 --> 00:01:38,200
+I want to somehow add on a custom function to it called Add one and store.
+
+28
+00:01:39,040 --> 00:01:40,810
+This function does not yet exist.
+
+29
+00:01:40,960 --> 00:01:42,160
+It doesn't exist at all.
+
+30
+00:01:42,730 --> 00:01:47,890
+We are going to implement this custom function and tie it to our client by using a Lewis script.
+
+31
+00:01:48,790 --> 00:01:52,000
+This add one and store function is going to behave very simply.
+
+32
+00:01:52,750 --> 00:01:55,450
+We're going to pass in a key and a number.
+
+33
+00:01:56,200 --> 00:01:58,720
+Whatever number we pass in, right here is the second argument.
+
+34
+00:01:58,840 --> 00:02:02,650
+We're going to add one to it's inside of a Lua script.
+
+35
+00:02:03,280 --> 00:02:06,250
+So inside of Redis, we're going to add one to that number.
+
+36
+00:02:07,370 --> 00:02:10,300
+We're then going to store the results at a key of books.
+
+37
+00:02:10,370 --> 00:02:15,320
+Colon counts in this case or any other key that we choose to pass in right there.
+
+38
+00:02:15,910 --> 00:02:18,110
+There could be items count or whatever else.
+
+39
+00:02:19,210 --> 00:02:21,130
+And of course, the five is not hard coded.
+
+40
+00:02:21,280 --> 00:02:27,580
+If we put in something like this, then I would want to add one to the value of six and store it at
+
+41
+00:02:27,580 --> 00:02:28,210
+books count.
+
+42
+00:02:30,750 --> 00:02:33,120
+Let's take a look at how we go through this process.
+
+43
+00:02:33,630 --> 00:02:36,300
+We're going to break it down into five separate steps.
+
+44
+00:02:37,300 --> 00:02:40,510
+So step one, we have to decide on a name for the function.
+
+45
+00:02:40,870 --> 00:02:45,030
+This is not a name that is going to be used inside of us at all scripts in red.
+
+46
+00:02:45,460 --> 00:02:47,920
+There is no concept of names or anything like that.
+
+47
+00:02:48,280 --> 00:02:50,510
+We invoke them only by using those identifiers.
+
+48
+00:02:50,540 --> 00:02:53,020
+We get back whenever we run the emotion command.
+
+49
+00:02:53,980 --> 00:02:59,200
+The name of the function is just specifically how are we going to run this thing in our JavaScript code?
+
+50
+00:03:00,090 --> 00:03:05,520
+In this first example we are going through the name of our function is going to be add one and store.
+
+51
+00:03:08,230 --> 00:03:10,720
+Then the next thing we need to do is write out the script itself.
+
+52
+00:03:11,710 --> 00:03:16,420
+We then need to figure out how many keys we are going to be providing whenever we run the script.
+
+53
+00:03:17,020 --> 00:03:20,320
+This is going to be a value that gets passed on to the email shore commands.
+
+54
+00:03:21,160 --> 00:03:25,120
+In our case, we are only going to be providing one single key.
+
+55
+00:03:25,600 --> 00:03:26,410
+This one right here.
+
+56
+00:03:27,040 --> 00:03:29,800
+That's the key where we want to store our computed value.
+
+57
+00:03:31,910 --> 00:03:37,340
+Then we're going to have one function that's going to take in some different arguments and instruct
+
+58
+00:03:37,640 --> 00:03:42,770
+no treatise on exactly how to take those arguments that we're providing to our function, one called
+
+59
+00:03:43,280 --> 00:03:44,150
+Add one and store.
+
+60
+00:03:44,180 --> 00:03:49,280
+So in other words, how do we take these two arguments right here and pass them on to the email shore
+
+61
+00:03:49,280 --> 00:03:49,700
+commands?
+
+62
+00:03:50,360 --> 00:03:55,550
+And then another function that's going to tell Node Redis how to get the result of our script and pass
+
+63
+00:03:55,550 --> 00:04:00,020
+it or really serialize it into a value that can be used in the rest of our application.
+
+64
+00:04:01,140 --> 00:04:06,660
+Now I know probably everything I'm showing you so far in particular, these steps right here, and in
+
+65
+00:04:06,660 --> 00:04:08,940
+particular these last three items.
+
+66
+00:04:09,150 --> 00:04:14,040
+I know this sounds like confusing stuff only could be using the first time you go through it.
+
+67
+00:04:14,250 --> 00:04:18,300
+As soon as you have written out a custom script with note readings, everything is going to get a lot
+
+68
+00:04:18,300 --> 00:04:19,770
+more clear very quickly.
+
+69
+00:04:20,370 --> 00:04:22,740
+So let's going to end the lecturing at this point.
+
+70
+00:04:23,130 --> 00:04:26,580
+We're going to take a quick pause, come back, go over to our code editor.
+
+71
+00:04:26,880 --> 00:04:29,850
+We're going to implement this, add one and store method.

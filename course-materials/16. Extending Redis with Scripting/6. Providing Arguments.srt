@@ -1,0 +1,411 @@
+1
+00:00:01,010 --> 00:00:04,130
+We've now got an example of defining and executing a script.
+
+2
+00:00:04,520 --> 00:00:06,230
+Now we're going to go into a little bit more detail.
+
+3
+00:00:06,230 --> 00:00:09,440
+And I first want to begin by giving you a very quick example.
+
+4
+00:00:09,830 --> 00:00:15,080
+I want you to imagine a scenario that would be a little bit challenging to deal with, using only the
+
+5
+00:00:15,080 --> 00:00:17,450
+techniques we have learned so far around scripts.
+
+6
+00:00:18,260 --> 00:00:18,590
+Okay.
+
+7
+00:00:18,620 --> 00:00:22,370
+So here's the example, and this is not something we would do in a normal application.
+
+8
+00:00:22,610 --> 00:00:26,720
+I want to show you why this is a problem and then we'll figure out how we can use some more features
+
+9
+00:00:26,720 --> 00:00:27,920
+around scripts to solve it.
+
+10
+00:00:28,670 --> 00:00:30,800
+We're going to imagine that in our application.
+
+11
+00:00:31,010 --> 00:00:35,660
+It's really important that we have the ability to add one to a number in Redis.
+
+12
+00:00:36,200 --> 00:00:39,920
+And it's really important to us for some reason you define this inside of a script.
+
+13
+00:00:40,640 --> 00:00:47,450
+So in our app, we might decide to have one script defined where we do one plus one and then another
+
+14
+00:00:47,450 --> 00:00:52,400
+script to find for one, plus do another for one plus three, one plus for one plus five, one plus
+
+15
+00:00:52,400 --> 00:00:53,210
+six, and so on.
+
+16
+00:00:53,790 --> 00:00:57,920
+These are each defined as separate scripts that we have to load up and then execute.
+
+17
+00:00:58,990 --> 00:01:01,570
+Now, of course, this would be really, really tedious.
+
+18
+00:01:01,780 --> 00:01:06,250
+One separate script for just each different variation of this little number right here.
+
+19
+00:01:06,640 --> 00:01:08,350
+Surely there's a better way to do that.
+
+20
+00:01:08,800 --> 00:01:09,760
+And of course there is.
+
+21
+00:01:11,120 --> 00:01:15,020
+So we could use a technique around scripts referred to as providing arguments.
+
+22
+00:01:15,320 --> 00:01:19,100
+And this is very similar nature to providing arguments to a function.
+
+23
+00:01:19,460 --> 00:01:22,670
+The only difference is that the arguments are loose scripts.
+
+24
+00:01:23,360 --> 00:01:24,680
+So let's look at an example.
+
+25
+00:01:27,030 --> 00:01:28,050
+So here's what we would do.
+
+26
+00:01:29,140 --> 00:01:35,530
+We would change up our script a little bit to be return one plus and then something called a RGV.
+
+27
+00:01:36,100 --> 00:01:40,510
+A RGV is a global variable defined inside of our lowest script.
+
+28
+00:01:40,750 --> 00:01:41,950
+It's short for arguments.
+
+29
+00:01:42,520 --> 00:01:47,920
+It is an array, it's a reference, or it contains all the different arguments that we provide to our
+
+30
+00:01:47,920 --> 00:01:49,450
+script when we execute it.
+
+31
+00:01:50,110 --> 00:01:55,360
+So every single time we execute our script, we can provide a different number, the different quantity
+
+32
+00:01:55,360 --> 00:01:56,950
+or different arguments altogether.
+
+33
+00:01:57,880 --> 00:01:59,140
+To provide arguments.
+
+34
+00:01:59,140 --> 00:02:03,300
+We're going to run our email short commands with the idea of our scripts.
+
+35
+00:02:03,940 --> 00:02:07,900
+We're still going to put in zero, and I'll tell you why that is and a little bit, and then we'll provide
+
+36
+00:02:07,900 --> 00:02:09,790
+all the arguments after that zero.
+
+37
+00:02:10,660 --> 00:02:15,220
+If we have to provide multiple different arguments, we'll just list them all out one by one.
+
+38
+00:02:15,670 --> 00:02:19,120
+We might do one, two, three, four, and so on.
+
+39
+00:02:20,490 --> 00:02:25,620
+Each argument will be provided as a string, even if it is supposed to represent a number.
+
+40
+00:02:26,190 --> 00:02:30,660
+So in our case, these are definitely supposed to be numbers, but we must provide them as strings.
+
+41
+00:02:30,720 --> 00:02:33,540
+Otherwise, we'll get an error when we try to run our script.
+
+42
+00:02:35,420 --> 00:02:40,490
+Then to access these arguments inside of our scripts, we'll take a look at the RGV array.
+
+43
+00:02:41,310 --> 00:02:47,600
+So if we do RGV at one, that means get the very first argument that is provided to our script when
+
+44
+00:02:47,600 --> 00:02:48,470
+it gets executed.
+
+45
+00:02:49,040 --> 00:02:52,790
+So in this case, we can imagine that our first argument is the string one.
+
+46
+00:02:53,330 --> 00:02:55,370
+So we would replace this with the string one.
+
+47
+00:02:56,430 --> 00:02:58,650
+If we did a rugby to.
+
+48
+00:02:59,940 --> 00:03:01,740
+We'd be looking for the second element.
+
+49
+00:03:01,980 --> 00:03:02,910
+That'd be a string of two.
+
+50
+00:03:03,510 --> 00:03:05,400
+We can imagine a behind the scenes.
+
+51
+00:03:05,700 --> 00:03:06,660
+That's kind of what's happening.
+
+52
+00:03:09,390 --> 00:03:13,460
+Now the V variable right here, as I mentioned, it is a global variable.
+
+53
+00:03:13,470 --> 00:03:14,970
+So we don't have to define it.
+
+54
+00:03:14,970 --> 00:03:16,290
+We don't have to initialize it.
+
+55
+00:03:16,770 --> 00:03:21,810
+You can kind of imagine that what's going on by the scenes is Redis is taking this list of arguments
+
+56
+00:03:21,810 --> 00:03:24,510
+right here and defining an array for us.
+
+57
+00:03:25,840 --> 00:03:30,850
+Like so putting in one, two, three, four and so on.
+
+58
+00:03:33,740 --> 00:03:36,690
+All right, so arguments around scripts are extremely useful.
+
+59
+00:03:36,710 --> 00:03:42,320
+We can use them all the time, any time we want to customize our script in some way, not actually play
+
+60
+00:03:42,320 --> 00:03:42,800
+with these things.
+
+61
+00:03:42,830 --> 00:03:45,650
+Let's go back over to our book and write out a very fast example.
+
+62
+00:03:45,920 --> 00:03:48,230
+We're going to do exactly this thing right here.
+
+63
+00:03:48,500 --> 00:03:52,550
+I want to add one to some argument that we're going to provide to our scripts.
+
+64
+00:03:53,900 --> 00:03:54,620
+The back over here.
+
+65
+00:03:54,980 --> 00:04:01,280
+I'm going to go to our return statement and I'm going to change the second one with a RGV one.
+
+66
+00:04:03,090 --> 00:04:08,310
+Now remember, when we provide our arguments to the execute command or even offshore, they must be
+
+67
+00:04:08,520 --> 00:04:13,200
+provided as strings and they show up in our script as strings as well.
+
+68
+00:04:13,740 --> 00:04:19,770
+So if we ran our command, as it stands right now or ran the script, this would pretty much be one
+
+69
+00:04:19,770 --> 00:04:22,170
+plus one as a string.
+
+70
+00:04:22,800 --> 00:04:24,240
+And that's probably not what we want.
+
+71
+00:04:24,270 --> 00:04:26,490
+We want to actually add one to the number one.
+
+72
+00:04:27,030 --> 00:04:28,710
+So we need to take that argument.
+
+73
+00:04:30,220 --> 00:04:31,930
+And pass it into a number.
+
+74
+00:04:32,810 --> 00:04:34,770
+You pass a string into a number in Lua?
+
+75
+00:04:34,830 --> 00:04:37,430
+I use the two number function.
+
+76
+00:04:38,920 --> 00:04:41,320
+Notice that number here is lowercase.
+
+77
+00:04:41,320 --> 00:04:43,540
+So two number, all lowercase.
+
+78
+00:04:45,060 --> 00:04:48,240
+All right, I'm going to execute the load script.
+
+79
+00:04:49,420 --> 00:04:51,040
+Well, then take the ID, we get back.
+
+80
+00:04:52,030 --> 00:04:53,920
+I'm going to paste it down here at the evil shore.
+
+81
+00:04:54,930 --> 00:04:57,300
+And then still going to leave in the zero right here.
+
+82
+00:04:57,300 --> 00:05:00,000
+And again, we'll discuss what that zero is all about in a little bit.
+
+83
+00:05:00,750 --> 00:05:03,900
+And then right after that, I'm going to provide my argument to the script.
+
+84
+00:05:04,050 --> 00:05:08,550
+So this will be the value put in for RGV at one right there.
+
+85
+00:05:08,820 --> 00:05:11,250
+And once again, I'm going to provide it as a string.
+
+86
+00:05:11,970 --> 00:05:13,890
+So I going to put in a string of 100.
+
+87
+00:05:14,670 --> 00:05:17,790
+If I run that, I get back return value of 1 to 1.
+
+88
+00:05:18,870 --> 00:05:23,130
+As a guess and ends up looking something like that right there.
+
+89
+00:05:26,920 --> 00:05:31,570
+As one more very quick example, I want to try expanding our script here just a little bit.
+
+90
+00:05:31,960 --> 00:05:36,310
+In addition to adding in the first argument, I want to try adding the second argument as well.
+
+91
+00:05:36,970 --> 00:05:43,480
+So I'm going to put in another plus two number and then RGV and this time the second element.
+
+92
+00:05:46,810 --> 00:05:47,920
+I'm going to load that script.
+
+93
+00:05:48,960 --> 00:05:50,190
+But the ID down here.
+
+94
+00:05:51,960 --> 00:05:56,160
+And then add in a second argument, this time of 201.
+
+95
+00:05:56,160 --> 00:05:57,180
+That's when I get back.
+
+96
+00:05:57,180 --> 00:05:58,950
+301 Perfect.
+
+97
+00:05:59,990 --> 00:06:00,290
+Okay.
+
+98
+00:06:00,290 --> 00:06:04,640
+So that's how we provide arguments and we're going to provide arguments any time we want to customize
+
+99
+00:06:04,640 --> 00:06:06,560
+a script's execution in some way.
+
+100
+00:06:07,310 --> 00:06:11,890
+Now onto a little bit related topic related to the zero right here.
+
+101
+00:06:11,900 --> 00:06:13,490
+We're going to figure out what that is all about.
+
+102
+00:06:13,490 --> 00:06:18,770
+And we're going to see one major limitation that's extremely important to understand around scripts,
+
+103
+00:06:18,980 --> 00:06:20,150
+all that in the next video.

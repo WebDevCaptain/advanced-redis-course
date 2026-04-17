@@ -1,0 +1,459 @@
+1
+00:00:01,530 --> 00:00:05,130
+We are all done with our get user buy ID and create user functions.
+
+2
+00:00:05,460 --> 00:00:08,220
+We have not yet put together git user by username.
+
+3
+00:00:08,250 --> 00:00:10,380
+I'm going to tell you why that is in just a little bit.
+
+4
+00:00:10,380 --> 00:00:16,920
+In this video right now, I'm going to find my queries directory and then inside there find the sessions
+
+5
+00:00:16,920 --> 00:00:18,050
+dot yes file.
+
+6
+00:00:18,910 --> 00:00:22,780
+So the next piece of information they were going to store in Redis is around sessions.
+
+7
+00:00:23,260 --> 00:00:26,080
+Sessions are tied to the authentication system or this app.
+
+8
+00:00:26,500 --> 00:00:29,620
+In this video, I'm going to give you a description of what these sessions are all about.
+
+9
+00:00:30,190 --> 00:00:34,780
+If you're already familiar with sessions in general, with web applications, you can skip over this
+
+10
+00:00:34,780 --> 00:00:36,130
+video and just move to the next one.
+
+11
+00:00:37,000 --> 00:00:37,330
+Okay.
+
+12
+00:00:37,340 --> 00:00:40,330
+So quick couple diagrams to understand what sessions are all about.
+
+13
+00:00:41,050 --> 00:00:46,450
+So in this diagram, we're going to go over the flow of signing up and specifically sign up, not signing
+
+14
+00:00:46,450 --> 00:00:48,640
+in, but signing up to our application.
+
+15
+00:00:49,510 --> 00:00:53,640
+So a user in their browser is going to fill out a form and enter in a username and password.
+
+16
+00:00:54,360 --> 00:00:56,490
+They'll then send off a request to our API.
+
+17
+00:00:57,960 --> 00:00:58,680
+Now internally.
+
+18
+00:00:59,430 --> 00:01:00,300
+Firstly, it's going to happen.
+
+19
+00:01:00,550 --> 00:01:05,580
+We're going to take the username and password that the user just provided and store that in a new hash
+
+20
+00:01:05,580 --> 00:01:06,360
+inside of Redis.
+
+21
+00:01:06,930 --> 00:01:11,850
+That is what we just did two videos ago when we implemented the create user function.
+
+22
+00:01:12,680 --> 00:01:15,470
+So inside of create user, we generate a random ID.
+
+23
+00:01:16,280 --> 00:01:23,540
+We then store a hash containing the username and password at a key of something like users account and
+
+24
+00:01:23,540 --> 00:01:25,190
+then the randomly generated ID.
+
+25
+00:01:26,860 --> 00:01:28,360
+That stuff is all taken care of.
+
+26
+00:01:29,020 --> 00:01:33,880
+Now, after that step, after we read the user, a couple of things go on behind the scenes and you're
+
+27
+00:01:33,880 --> 00:01:37,870
+not really going to see the code around a lot of the stuff because it's code that I already wrote for
+
+28
+00:01:37,870 --> 00:01:41,140
+us as a part of the starter point or the boilerplate this application.
+
+29
+00:01:42,220 --> 00:01:43,510
+But what goes on behind the scenes?
+
+30
+00:01:43,990 --> 00:01:44,470
+First step.
+
+31
+00:01:44,740 --> 00:01:49,750
+After signing someone up, we are now considering this person to be logged in or authenticated with
+
+32
+00:01:49,750 --> 00:01:50,440
+our application.
+
+33
+00:01:51,450 --> 00:01:53,070
+You consider someone to be logged in?
+
+34
+00:01:53,160 --> 00:01:57,990
+We're going to create something called a session tied to this person to create a session.
+
+35
+00:01:58,110 --> 00:02:00,300
+We're going to make something called a session token.
+
+36
+00:02:01,350 --> 00:02:06,240
+And then inside of Redis, we're going to store some information about this person who we now consider
+
+37
+00:02:06,240 --> 00:02:07,080
+to be logged in.
+
+38
+00:02:08,130 --> 00:02:12,960
+So in this case, I might generate a random session token of 551.
+
+39
+00:02:14,040 --> 00:02:16,260
+And then here's what you and I need to do.
+
+40
+00:02:16,620 --> 00:02:21,990
+We need to store another little piece of information in addition to this original user account up here
+
+41
+00:02:22,530 --> 00:02:26,370
+that says that there is a session with an ID of five five, one.
+
+42
+00:02:28,320 --> 00:02:29,310
+And tied to that session.
+
+43
+00:02:29,310 --> 00:02:32,640
+It is going to be a user ID and a username.
+
+44
+00:02:33,920 --> 00:02:36,200
+Now kind of mysterious what's going on there?
+
+45
+00:02:36,410 --> 00:02:37,850
+Well, here's the last important part.
+
+46
+00:02:37,880 --> 00:02:39,770
+Here's what's really tying everything together.
+
+47
+00:02:40,280 --> 00:02:44,960
+After we stored this little bit of information, we're then going to send that session token back to
+
+48
+00:02:44,960 --> 00:02:45,470
+the browser.
+
+49
+00:02:45,500 --> 00:02:50,150
+That number of five, five, one, we're going to tell the browser that if it ever makes an additional
+
+50
+00:02:50,150 --> 00:02:56,810
+request for application, it needs to include that session token, that very special, very unique identifier
+
+51
+00:02:56,810 --> 00:02:57,260
+right there.
+
+52
+00:02:57,530 --> 00:03:01,790
+And that's going to allow our API to understand who is making requests to our app.
+
+53
+00:03:02,510 --> 00:03:05,210
+So let's kind of examine that part of the flow in more detail.
+
+54
+00:03:06,470 --> 00:03:06,710
+All right.
+
+55
+00:03:06,710 --> 00:03:10,460
+Let's imagine that later on, someone is attempting to create a new item to sell it.
+
+56
+00:03:11,090 --> 00:03:12,440
+So someone might make a request.
+
+57
+00:03:13,410 --> 00:03:13,980
+Once again.
+
+58
+00:03:15,090 --> 00:03:19,080
+And the request might have some details about the item they're trying to sell, and they might also
+
+59
+00:03:19,080 --> 00:03:21,600
+provide that session token of five, five, one.
+
+60
+00:03:22,780 --> 00:03:26,890
+So our APIs can receive that request and understand someone is trying to make an item.
+
+61
+00:03:27,340 --> 00:03:32,260
+And as you can imagine, we are only going to allow people to sell items if they are authenticated or
+
+62
+00:03:32,260 --> 00:03:33,940
+signed in to our application.
+
+63
+00:03:34,660 --> 00:03:39,040
+The first thing we have to do here is make sure that the person making this request is signed in.
+
+64
+00:03:40,100 --> 00:03:41,990
+To verify that this person is signed in.
+
+65
+00:03:42,260 --> 00:03:46,640
+We're going to take a look at the session token that is included inside that request.
+
+66
+00:03:46,880 --> 00:03:49,250
+And remember, it was an identifier, five, five, one.
+
+67
+00:03:50,630 --> 00:03:52,850
+But make sure this person actually is signed in.
+
+68
+00:03:53,180 --> 00:03:58,310
+Then we're going to take a look inside of house and see if there is a stored session with that particular
+
+69
+00:03:58,310 --> 00:03:59,000
+identifier.
+
+70
+00:03:59,720 --> 00:04:00,950
+We're going to go back and look at us.
+
+71
+00:04:01,100 --> 00:04:06,920
+We're going to look up a key of sessions found by five one, and we're going to find this hash stored
+
+72
+00:04:06,920 --> 00:04:07,190
+there.
+
+73
+00:04:07,910 --> 00:04:12,680
+That means that, yeah, this person is signed in, and right away we have some information about this
+
+74
+00:04:12,680 --> 00:04:13,070
+person.
+
+75
+00:04:13,580 --> 00:04:17,150
+We know their user ID, and we also know their username right away.
+
+76
+00:04:19,390 --> 00:04:23,710
+So we can make use of that information to create the item or do whatever else it is that we need to
+
+77
+00:04:23,710 --> 00:04:24,910
+do it inside our application.
+
+78
+00:04:25,840 --> 00:04:26,220
+That's it.
+
+79
+00:04:26,230 --> 00:04:27,710
+That's the purpose of the session.
+
+80
+00:04:27,760 --> 00:04:32,680
+It allows us to implement our entire authentication system and understand who is making requests to
+
+81
+00:04:32,680 --> 00:04:33,850
+our application over time.
+
+82
+00:04:35,380 --> 00:04:37,030
+Now, lastly, I want to mention very quickly.
+
+83
+00:04:38,200 --> 00:04:43,270
+Is the fact that all this stuff that I just mentioned was really around the sign up low.
+
+84
+00:04:43,780 --> 00:04:46,870
+And you might recall that just a moment ago I said, Oh, yeah, don't worry about that.
+
+85
+00:04:47,110 --> 00:04:49,090
+User by username function just yet.
+
+86
+00:04:49,840 --> 00:04:54,220
+But here's one of the first really awkward things we're going to see inside of Redis.
+
+87
+00:04:54,820 --> 00:04:58,390
+I want to think about what occurs whenever we go through the sign inflow.
+
+88
+00:04:59,620 --> 00:05:04,420
+So whenever someone tries to sign in, they're going to make a request to her application, including
+
+89
+00:05:04,420 --> 00:05:10,270
+a username and a password that they are trying to sign in ads and inside of our API.
+
+90
+00:05:10,300 --> 00:05:17,080
+The first thing we probably need to do is find a user who is saved inside of Redis with that given username.
+
+91
+00:05:17,830 --> 00:05:20,650
+But there's a big problem right now that we have inside our application.
+
+92
+00:05:21,130 --> 00:05:27,850
+Right now we are storing all these user records as hashes, and Redis doesn't have any good built in
+
+93
+00:05:27,850 --> 00:05:35,290
+way where we can very easily run a query over all of our different hashes and find a hash with a particular
+
+94
+00:05:35,290 --> 00:05:36,430
+key value pair.
+
+95
+00:05:37,410 --> 00:05:42,690
+The only way that we can access hashes right now are through these top level keys, like this one right
+
+96
+00:05:42,690 --> 00:05:43,730
+here that says users.
+
+97
+00:05:43,740 --> 00:05:44,490
+One, two, three.
+
+98
+00:05:45,550 --> 00:05:46,300
+So in other words.
+
+99
+00:05:47,700 --> 00:05:54,690
+If someone tries to sign in with a username of user seven, that's the only thing we know about this
+
+100
+00:05:54,690 --> 00:05:55,410
+incoming request.
+
+101
+00:05:55,410 --> 00:05:57,480
+At this point in time, we only know the username.
+
+102
+00:05:57,900 --> 00:06:03,240
+We have no idea what the ID is of the person with the username of user seven.
+
+103
+00:06:03,790 --> 00:06:09,870
+We have no way whatsoever to somehow reach into Redis and find this record so we can figure out if the
+
+104
+00:06:09,870 --> 00:06:11,550
+user entered the correct password or not.
+
+105
+00:06:12,310 --> 00:06:16,730
+This is a huge deficiency and it's something we're going to have to solve eventually.
+
+106
+00:06:16,730 --> 00:06:21,360
+We're going to solve it by adding in another data structure to relate all of our different usernames
+
+107
+00:06:21,360 --> 00:06:27,420
+to user IDs, which will allow us to take that username of User seven and eventually figure out what
+
+108
+00:06:27,420 --> 00:06:33,300
+the ID is of that person and eventually use that ID to pull this hash out of Reddit's.
+
+109
+00:06:34,500 --> 00:06:36,570
+All that stuff is not super relevant right now.
+
+110
+00:06:36,870 --> 00:06:41,010
+The only reason I'm mentioning it is that we're not going to worry about a little bit of sign and stuff
+
+111
+00:06:41,010 --> 00:06:46,830
+just yet until we start to introduce some data structures later on that are going to allow us to do
+
+112
+00:06:46,830 --> 00:06:48,180
+this additional kind of look up step.
+
+113
+00:06:49,430 --> 00:06:49,790
+Okay.
+
+114
+00:06:49,910 --> 00:06:54,560
+So now that we understand a little bit more about Sessions, let's start to implement get session and
+
+115
+00:06:54,560 --> 00:06:55,970
+save session in just a moment.

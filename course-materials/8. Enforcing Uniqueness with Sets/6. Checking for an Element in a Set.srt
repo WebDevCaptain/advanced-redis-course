@@ -1,0 +1,171 @@
+1
+00:00:00,900 --> 00:00:03,210
+Our next command is s is member.
+
+2
+00:00:03,720 --> 00:00:09,210
+Very simple command just returns a one or zero if some elements that we provide is present within a
+
+3
+00:00:09,210 --> 00:00:09,540
+set.
+
+4
+00:00:10,020 --> 00:00:14,190
+The nice thing about SE is member is it allows you to check to see if something is present in a set
+
+5
+00:00:14,370 --> 00:00:15,600
+without first matching.
+
+6
+00:00:15,600 --> 00:00:19,890
+The entire set is sometimes a set, might have hundreds or thousands of elements in it.
+
+7
+00:00:20,190 --> 00:00:21,600
+It's a lot faster to have read it.
+
+8
+00:00:21,600 --> 00:00:26,310
+Just do a comparison for us rather than fetch the entire set and check to see if something is present
+
+9
+00:00:26,310 --> 00:00:26,880
+inside of it.
+
+10
+00:00:27,840 --> 00:00:31,470
+So we might do an SS member on colors one with red.
+
+11
+00:00:31,880 --> 00:00:35,460
+That's really just asking the question is a red present inside this set?
+
+12
+00:00:36,430 --> 00:00:39,700
+Now if we use the color sets we have already loaded up inside of our book.
+
+13
+00:00:39,940 --> 00:00:41,020
+Red is present.
+
+14
+00:00:41,440 --> 00:00:47,230
+The red would give us back a one saying, yep, red is inside this set, but purple is not present.
+
+15
+00:00:47,230 --> 00:00:48,820
+So we would get back a zero instead.
+
+16
+00:00:49,540 --> 00:00:50,380
+All right, quick test.
+
+17
+00:00:51,870 --> 00:00:58,200
+We will do a as is member colors one with red and we'll get back a one.
+
+18
+00:00:59,220 --> 00:01:01,410
+But if we do a purple, we get back a zero.
+
+19
+00:01:03,620 --> 00:01:08,620
+Very small variation on se is member is s m is member.
+
+20
+00:01:08,630 --> 00:01:12,740
+And you'll notice in this diagram I made the M here really large just to make sure it's super clear
+
+21
+00:01:12,950 --> 00:01:18,170
+that's the difference in the name we have s is member and s m is member.
+
+22
+00:01:18,650 --> 00:01:20,600
+The M pretty much stands for multiple.
+
+23
+00:01:21,080 --> 00:01:25,910
+We are checking to see if multiple different values are present inside of a set in one single command.
+
+24
+00:01:27,480 --> 00:01:32,400
+The interesting thing here is that we are not going to get a result saying if any individual, one or
+
+25
+00:01:32,400 --> 00:01:39,180
+all of them together inside of a set, we get back an array of results and the array says one if red
+
+26
+00:01:39,180 --> 00:01:40,530
+is present, zero if it's not.
+
+27
+00:01:41,490 --> 00:01:42,970
+One if green is present.
+
+28
+00:01:42,990 --> 00:01:43,770
+Zero if it's not.
+
+29
+00:01:44,160 --> 00:01:46,520
+And one if blue is presence present.
+
+30
+00:01:46,530 --> 00:01:47,580
+Zero if it's not.
+
+31
+00:01:48,730 --> 00:01:50,050
+A quick example here.
+
+32
+00:01:51,890 --> 00:01:55,000
+So Esim is member alerts.
+
+33
+00:01:55,010 --> 00:01:57,800
+One will do red green lit.
+
+34
+00:01:58,750 --> 00:01:59,680
+We get back in, Ray?
+
+35
+00:01:59,950 --> 00:02:01,630
+Looks like red is present.
+
+36
+00:02:01,990 --> 00:02:02,920
+Green is not.
+
+37
+00:02:03,070 --> 00:02:04,060
+Blue is presence.
+
+38
+00:02:06,170 --> 00:02:07,640
+Once again, simple command.
+
+39
+00:02:07,910 --> 00:02:11,960
+All these commands, very simple in nature, just need to understand where to use them.
+
+40
+00:02:12,910 --> 00:02:13,840
+We've gotten through.
+
+41
+00:02:14,950 --> 00:02:17,620
+Just about everything on the bottom here except for scan.
+
+42
+00:02:17,620 --> 00:02:22,090
+Of course, we're going to go through some of the single set commands very quickly and then we'll start
+
+43
+00:02:22,090 --> 00:02:25,930
+to dive into the use cases, which is where, again, the stuff starts to get really interesting.

@@ -1,0 +1,331 @@
+1
+00:00:01,250 --> 00:00:02,810
+Let's move on to the search command.
+
+2
+00:00:03,050 --> 00:00:06,830
+We make use of search to run a query over an index that has already been created.
+
+3
+00:00:07,250 --> 00:00:09,080
+The general command is after that search.
+
+4
+00:00:09,230 --> 00:00:12,770
+The name of the index we want to use and then a query right after that.
+
+5
+00:00:13,460 --> 00:00:17,630
+Before I show you anything else, I want to point out the official documentation around this command.
+
+6
+00:00:18,200 --> 00:00:23,720
+So at Redstone EO commands for search, you're going to find a page that looks like this.
+
+7
+00:00:24,320 --> 00:00:28,520
+By showing you this previously with all the different arguments you can possibly add on here.
+
+8
+00:00:28,550 --> 00:00:29,630
+So a lot of stuff going on.
+
+9
+00:00:30,260 --> 00:00:32,540
+But on this page, if you scroll down a little bit.
+
+10
+00:00:33,620 --> 00:00:36,080
+Under the section of parameters right here.
+
+11
+00:00:36,890 --> 00:00:39,290
+There's a section on the query that we are writing out.
+
+12
+00:00:39,470 --> 00:00:43,070
+The query is that little bit right after we list the index.
+
+13
+00:00:43,640 --> 00:00:45,620
+For us, it was that string.
+
+14
+00:00:45,620 --> 00:00:47,360
+And that string and that string.
+
+15
+00:00:48,420 --> 00:00:52,470
+Even though it looks like there's already a lot of documentation on this page, there is an entirely
+
+16
+00:00:52,530 --> 00:00:55,380
+separate page for understanding the query syntax.
+
+17
+00:00:55,410 --> 00:00:56,970
+You can find a link to it right here.
+
+18
+00:00:57,570 --> 00:01:00,450
+So if you open up that page, you'll see something like this.
+
+19
+00:01:01,170 --> 00:01:05,050
+You might see a slightly different looking page just for the purposes of this video.
+
+20
+00:01:05,070 --> 00:01:09,000
+I've manually edited the page just a little bit so you can see everything on the screen very easily.
+
+21
+00:01:09,840 --> 00:01:15,420
+On this page, you're going to see a huge document around the syntax of the query that we put in.
+
+22
+00:01:16,110 --> 00:01:18,150
+There's a lot of information on this page.
+
+23
+00:01:18,450 --> 00:01:21,510
+I'm going to try to give you as much of it as I can in the coming videos.
+
+24
+00:01:21,780 --> 00:01:25,740
+But if you ever get stuck or you're trying to figure out how to write some kind of query, I really
+
+25
+00:01:25,740 --> 00:01:30,450
+recommend you come back to this page and use it to figure out the syntax around all these different
+
+26
+00:01:30,450 --> 00:01:31,160
+variations.
+
+27
+00:01:34,220 --> 00:01:37,820
+So let's get to summarizing everything that's on that page.
+
+28
+00:01:38,420 --> 00:01:42,020
+The first thing to understand is something that you might have already picked up on your own.
+
+29
+00:01:42,620 --> 00:01:47,330
+Whenever you write out a query, we're going to put the at then the name of the field that we want to
+
+30
+00:01:47,330 --> 00:01:49,820
+look up inside of each hash that we are searching over.
+
+31
+00:01:50,840 --> 00:01:55,160
+We're then going to put a call in and then depending upon the type of data in the field that we are
+
+32
+00:01:55,160 --> 00:02:00,200
+looking at, we're going to put in either parentheses, really braces or square brackets.
+
+33
+00:02:01,010 --> 00:02:03,320
+So parentheses are used with text, really.
+
+34
+00:02:03,350 --> 00:02:06,590
+Braces are with tags and square brackets are with numbers.
+
+35
+00:02:07,680 --> 00:02:12,270
+If we want to, we can combine together multiple different queries into one query string.
+
+36
+00:02:13,060 --> 00:02:14,340
+So quick example of that.
+
+37
+00:02:14,340 --> 00:02:14,970
+Back over here.
+
+38
+00:02:15,480 --> 00:02:21,870
+Let's say we want to find all the cars that were made between 1955 and 1980 that are also of color blue.
+
+39
+00:02:22,560 --> 00:02:27,600
+So inside the string, we would add in at color colon really braces blue.
+
+40
+00:02:29,620 --> 00:02:31,240
+And we get the one result right here.
+
+41
+00:02:33,990 --> 00:02:38,120
+One other thing I want you to understand around the documentation, around all these queries we're going
+
+42
+00:02:38,120 --> 00:02:40,860
+to write out, we are always going to wrap them in quotes.
+
+43
+00:02:41,250 --> 00:02:47,070
+Even if the documentation doesn't specifically show it though, in the docs, you might see a example
+
+44
+00:02:47,070 --> 00:02:48,840
+at Tag Query that looks like this right here.
+
+45
+00:02:49,530 --> 00:02:54,240
+When you actually go to make use this inside of a search command, you are going to wrap it with quotes.
+
+46
+00:02:54,840 --> 00:02:56,800
+You can not use either single or double.
+
+47
+00:02:56,820 --> 00:02:57,780
+It doesn't make a difference.
+
+48
+00:02:58,110 --> 00:03:03,810
+Just keep in mind that if your query itself needs to use quotes, let's say for some reason we wanted
+
+49
+00:03:03,810 --> 00:03:05,400
+to quote New York right here.
+
+50
+00:03:06,770 --> 00:03:10,340
+We would use whatever quote style we did not use on the outer string.
+
+51
+00:03:10,610 --> 00:03:11,900
+So we have single on the outer.
+
+52
+00:03:12,020 --> 00:03:13,610
+I would use double on the inner.
+
+53
+00:03:17,350 --> 00:03:21,040
+Now I want to give you some specific details around numeric queries.
+
+54
+00:03:21,340 --> 00:03:24,880
+A lot of these things are going to be pretty straightforward, easy to pick up, but we're going to
+
+55
+00:03:24,880 --> 00:03:26,200
+go over them regardless very quickly.
+
+56
+00:03:26,350 --> 00:03:30,490
+So you understand that you can write queries that look at numbers in very specific ways.
+
+57
+00:03:31,710 --> 00:03:35,750
+So we want to just look at all the records that have some range of numbers.
+
+58
+00:03:35,790 --> 00:03:41,610
+We use the square brackets like we saw in our example, carry a moment to go back where he is inclusive.
+
+59
+00:03:41,940 --> 00:03:49,440
+So at year 1955, 1980 is going to find all the elements are all the hashes with a field that has a
+
+60
+00:03:49,440 --> 00:03:53,250
+value of between and including 1955.
+
+61
+00:03:53,250 --> 00:03:54,060
+In 1980.
+
+62
+00:03:54,960 --> 00:03:56,730
+If you want to do an exclusive query.
+
+63
+00:03:56,880 --> 00:04:05,190
+So if you want to go from 1956 up to but not including 1980, we're going to put an open perennial just
+
+64
+00:04:05,190 --> 00:04:06,120
+right before the number.
+
+65
+00:04:06,900 --> 00:04:13,110
+So this would be really give us all the different cars between 1956 and 1979.
+
+66
+00:04:13,950 --> 00:04:16,440
+You do not have to use both brands at the same time.
+
+67
+00:04:16,590 --> 00:04:17,820
+So we could do something like that.
+
+68
+00:04:18,270 --> 00:04:24,030
+That would be everything from and including 1955 up to but not including 1980.
+
+69
+00:04:26,810 --> 00:04:32,690
+Much like the sort command we had taken a look at previously and range we can also make use of plus
+
+70
+00:04:32,690 --> 00:04:33,860
+or negative infinity.
+
+71
+00:04:34,580 --> 00:04:42,230
+So in 1955, dual plus infinity means give us all the records with the year greater than 1955, greater
+
+72
+00:04:42,230 --> 00:04:43,250
+than and equal to.
+
+73
+00:04:43,280 --> 00:04:46,640
+To be precise, we can use negative infinity as well.
+
+74
+00:04:47,920 --> 00:04:55,660
+So this would be all the way from 1955, including 1955 and less than that.
+
+75
+00:04:56,980 --> 00:05:02,200
+And then finally, if we have a range or really a negative range, there are a year, a range of years
+
+76
+00:05:02,200 --> 00:05:07,180
+or range of numbers that we do not want to include in results that we can put in a dash right before
+
+77
+00:05:07,180 --> 00:05:07,630
+the query.
+
+78
+00:05:08,080 --> 00:05:14,140
+So this would be give us all the cars that were not made between 1955 and 1980.
+
+79
+00:05:16,090 --> 00:05:19,280
+The Macquarie's pretty simple, pretty straightforward.
+
+80
+00:05:19,300 --> 00:05:23,830
+It's really just an issue of remembering to go look at the documentation and understanding these four
+
+81
+00:05:23,830 --> 00:05:24,730
+different variations.
+
+82
+00:05:25,120 --> 00:05:29,890
+It's really when we start looking at tags and text that things get a little bit more complicated.
+
+83
+00:05:30,160 --> 00:05:32,830
+So let's look at those two query types in just a moment.

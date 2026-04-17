@@ -1,0 +1,543 @@
+1
+00:00:00,730 --> 00:00:05,440
+At the end of the last video, I mentioned that we could put in a buy no sort right here, and that
+
+2
+00:00:05,440 --> 00:00:08,950
+will cause sorting to be disabled, which saves us a little bit of processing power.
+
+3
+00:00:09,340 --> 00:00:10,990
+I just want to clarify that a little bit.
+
+4
+00:00:11,470 --> 00:00:14,380
+Putting in a buy no store is a little bit of a convention.
+
+5
+00:00:14,770 --> 00:00:20,140
+If you put in any key right here that does not exist inside of your hashes or inside your app in general,
+
+6
+00:00:20,320 --> 00:00:23,740
+then sorting will be disabled so you can put in by those sorts.
+
+7
+00:00:23,890 --> 00:00:28,750
+You can also put in something like that, and it's going to also skip the sorting operation because
+
+8
+00:00:28,750 --> 00:00:31,030
+this key presumably does not exist.
+
+9
+00:00:32,150 --> 00:00:35,090
+That is also why back inside of our project.
+
+10
+00:00:35,720 --> 00:00:39,080
+So right here I put in sort by score.
+
+11
+00:00:39,350 --> 00:00:41,000
+We don't have a key called score.
+
+12
+00:00:41,270 --> 00:00:46,850
+And because that key does not exist, we are essentially disabling all sorting on the sort call that
+
+13
+00:00:46,850 --> 00:00:47,510
+we're doing right here.
+
+14
+00:00:48,690 --> 00:00:48,960
+Okay.
+
+15
+00:00:48,960 --> 00:00:54,470
+So now that we cleared that up, just one or two other quick things on go over back on items by views.
+
+16
+00:00:54,480 --> 00:00:59,340
+I just want make sure that it is now crystal clear what is going on with our overall command.
+
+17
+00:00:59,820 --> 00:01:01,470
+So just once again, very quick diagram.
+
+18
+00:01:01,480 --> 00:01:04,140
+We're going to walk through this entire process, very abbreviated.
+
+19
+00:01:05,900 --> 00:01:09,050
+So we are taking a look at our items, views, sorted, sets.
+
+20
+00:01:09,560 --> 00:01:13,300
+All the IDs inside of here are already sorted by the number of views.
+
+21
+00:01:13,610 --> 00:01:18,650
+So we don't need to do any additional sorting whatsoever, no additional sorting required, which is
+
+22
+00:01:18,650 --> 00:01:20,150
+why I put in score right here.
+
+23
+00:01:20,600 --> 00:01:25,100
+We could have also put in no sorts just to say don't do any sorting as everything is already sorted
+
+24
+00:01:25,100 --> 00:01:25,610
+for us.
+
+25
+00:01:27,240 --> 00:01:28,740
+So we're going to extract those IDs.
+
+26
+00:01:31,990 --> 00:01:36,490
+We are then going to apply those jet templates that we listed in this array.
+
+27
+00:01:37,490 --> 00:01:42,350
+So the first part of the jet template, the first entry you have inside of here is LB, which means
+
+28
+00:01:42,530 --> 00:01:45,560
+give us the underlying ID, give us the idea of this element.
+
+29
+00:01:46,550 --> 00:01:49,730
+And then after that, we got this kind of crazy syntax.
+
+30
+00:01:50,060 --> 00:01:52,370
+All this does right here, as crazy as it looks.
+
+31
+00:01:52,580 --> 00:01:56,870
+I'm just using the items key function and putting in star right there.
+
+32
+00:01:57,290 --> 00:02:02,840
+The result of which is we're going to end up with something that looks like items around Star.
+
+33
+00:02:03,850 --> 00:02:06,400
+So that is going to resolve to some items.
+
+34
+00:02:06,400 --> 00:02:06,850
+Harsh.
+
+35
+00:02:07,360 --> 00:02:09,580
+We're then going to look up the name property on it.
+
+36
+00:02:10,270 --> 00:02:16,870
+So again, I'm just using our items for our key function for entering this key right here just to stick
+
+37
+00:02:16,870 --> 00:02:20,320
+with that same convention of using our key functions in general to avoid typos.
+
+38
+00:02:22,110 --> 00:02:26,640
+So we're going to try to retrieve the name and views of the items.
+
+39
+00:02:27,450 --> 00:02:33,230
+So you can imagine that for the member at year six, we go and find this thing right here in our application.
+
+40
+00:02:33,240 --> 00:02:34,380
+It technically has a pound.
+
+41
+00:02:34,560 --> 00:02:35,340
+No big difference.
+
+42
+00:02:36,300 --> 00:02:39,780
+We're going to get the name of that thing and the number of views.
+
+43
+00:02:41,550 --> 00:02:43,260
+Well, then repeat that for the next element.
+
+44
+00:02:44,190 --> 00:02:45,090
+So, chair.
+
+45
+00:02:46,110 --> 00:02:46,830
+And views.
+
+46
+00:02:47,950 --> 00:02:48,880
+And then table.
+
+47
+00:02:50,620 --> 00:02:51,670
+And views.
+
+48
+00:02:54,640 --> 00:02:58,390
+So that is the entire set of values that we are trying to return.
+
+49
+00:02:58,870 --> 00:03:01,840
+So all these things will be turned into strings and then sent back to us.
+
+50
+00:03:02,170 --> 00:03:06,220
+And that is really the console.log we saw a little bit ago when we tested out our code.
+
+51
+00:03:07,300 --> 00:03:10,390
+Now there are a couple of other very small considerations.
+
+52
+00:03:10,930 --> 00:03:14,740
+Some ways in which we need to update this function that we definitely need to be aware of.
+
+53
+00:03:15,460 --> 00:03:22,030
+First off, because we were relying upon the default sort order of our sorted set, right now we are
+
+54
+00:03:22,030 --> 00:03:28,360
+getting back all these results sorted in terms of the items that have the least views to the greatest,
+
+55
+00:03:28,660 --> 00:03:31,600
+because that is once again how our sorted set is sorted.
+
+56
+00:03:31,600 --> 00:03:34,480
+It's going from the least number of views up to the greatest.
+
+57
+00:03:35,440 --> 00:03:40,450
+The entire goal of the function we are working on right now is to see the items with the most views.
+
+58
+00:03:40,990 --> 00:03:45,760
+So when we get this kind of net result right here, we don't really want it in this order.
+
+59
+00:03:46,000 --> 00:03:49,690
+We want it to be sorted in this way, but we want to flip the ordering.
+
+60
+00:03:50,170 --> 00:03:55,270
+So at the very top I really want to see the item that has the most views and then I want to see the
+
+61
+00:03:55,270 --> 00:03:59,410
+item with the second most views, and then the least views should be at the bottom.
+
+62
+00:04:01,030 --> 00:04:03,250
+So I want to keep the same sorting criteria.
+
+63
+00:04:03,280 --> 00:04:08,380
+I still want to use the score over here as the sorting criteria, but I want to flip the order entirely.
+
+64
+00:04:09,860 --> 00:04:15,620
+To flip the order or essentially is what the entire result set, we can put on one additional keyword
+
+65
+00:04:15,620 --> 00:04:16,580
+to our sort commands.
+
+66
+00:04:16,910 --> 00:04:17,840
+So just a quick example.
+
+67
+00:04:17,840 --> 00:04:27,400
+Back over here right after this buy right here, we can put in a sending AC for short or DC descending.
+
+68
+00:04:27,410 --> 00:04:29,510
+So go from greatest down to least.
+
+69
+00:04:30,900 --> 00:04:35,850
+So in this case, if I do a descending, I'm not going to get the greatest values first going down to
+
+70
+00:04:35,850 --> 00:04:37,140
+the lowest values.
+
+71
+00:04:37,620 --> 00:04:39,690
+So 1950, 1940.
+
+72
+00:04:39,720 --> 00:04:40,530
+1930.
+
+73
+00:04:43,630 --> 00:04:43,990
+Okay.
+
+74
+00:04:43,990 --> 00:04:45,820
+So that's what we need to do here as well.
+
+75
+00:04:46,000 --> 00:04:50,350
+We want to get our items sorted, sorted from the ones that have the most views down to the least.
+
+76
+00:04:51,410 --> 00:04:51,530
+Now.
+
+77
+00:04:51,560 --> 00:04:56,360
+Fortunately, our function already accepts a argument called order that's going to tell us whether we
+
+78
+00:04:56,360 --> 00:04:59,900
+should run this query or this command with descending or ascending.
+
+79
+00:04:59,930 --> 00:05:02,300
+All we can do is really make use of this order arguments.
+
+80
+00:05:03,140 --> 00:05:06,200
+So to customize our sort commands without order argument.
+
+81
+00:05:07,630 --> 00:05:11,410
+Right after by I'm going to add in direction with order.
+
+82
+00:05:15,300 --> 00:05:19,680
+So now whenever items by views is called, the other part of the application that calls this thing is
+
+83
+00:05:19,680 --> 00:05:22,410
+almost always going to put in a descending string.
+
+84
+00:05:22,980 --> 00:05:27,480
+We're going to run this entire sort of operation and get everything sorted in descending order.
+
+85
+00:05:29,170 --> 00:05:31,420
+And then the last very small change we're going to make.
+
+86
+00:05:31,570 --> 00:05:36,850
+One of the other arguments to this are offsets and count just to make sure we don't get back a ton of
+
+87
+00:05:36,850 --> 00:05:37,360
+items here.
+
+88
+00:05:37,810 --> 00:05:41,590
+So by default, we're going to get the first couple of items and only ten of them.
+
+89
+00:05:42,670 --> 00:05:44,590
+Let's just make sure we make use of those arguments.
+
+90
+00:05:45,750 --> 00:05:52,320
+So we can limit how many elements we get back by putting the limit option with offset and count.
+
+91
+00:05:54,060 --> 00:05:54,840
+And that should be it.
+
+92
+00:05:57,750 --> 00:05:58,050
+Okay.
+
+93
+00:05:58,050 --> 00:05:59,310
+So we went over a couple of things here.
+
+94
+00:05:59,550 --> 00:06:01,620
+First, just clarify the Byfield.
+
+95
+00:06:02,160 --> 00:06:06,270
+We understand what it is doing here with these kind of weird little bits of syntax.
+
+96
+00:06:06,960 --> 00:06:10,170
+We understand that direction is controlling the order of results.
+
+97
+00:06:10,200 --> 00:06:13,920
+It doesn't change the criteria, just the ordering and then limits.
+
+98
+00:06:13,950 --> 00:06:17,250
+Once again, we're just making sure we don't get back a ton of different items.
+
+99
+00:06:18,230 --> 00:06:22,480
+Last thing on do very quickly is just test this out with the updates we just made.
+
+100
+00:06:23,020 --> 00:06:26,890
+In particular, I want to go and create a brand new item inside of our application.
+
+101
+00:06:27,400 --> 00:06:30,010
+I then want to give that item a couple of different views.
+
+102
+00:06:30,040 --> 00:06:35,320
+So we're just going to go to its product page and refresh the product page a couple of times, and then
+
+103
+00:06:35,320 --> 00:06:40,270
+we will try to rerun this function and just make sure that our results look like they make sense.
+
+104
+00:06:40,690 --> 00:06:43,420
+So make sure that the items with the most views appear on top.
+
+105
+00:06:44,140 --> 00:06:45,550
+So let's do that test very quickly.
+
+106
+00:06:46,550 --> 00:06:48,020
+Get started back inside my browser.
+
+107
+00:06:49,080 --> 00:06:50,490
+I'm going to go and make a new item.
+
+108
+00:06:51,870 --> 00:06:53,630
+I'm going to call this new item.
+
+109
+00:06:53,640 --> 00:06:55,170
+How about something like new?
+
+110
+00:06:55,860 --> 00:06:56,910
+This chair?
+
+111
+00:06:58,100 --> 00:06:59,830
+I'll have it be alive for 10 minutes.
+
+112
+00:07:02,180 --> 00:07:07,880
+And then once on this page, I'm going to refresh this a couple of different times just so it gets a
+
+113
+00:07:07,880 --> 00:07:08,810
+bunch of views.
+
+114
+00:07:09,680 --> 00:07:12,800
+So I'm refreshing, refresh and refreshing tons of refreshes right now.
+
+115
+00:07:13,040 --> 00:07:14,720
+I'm just hitting refresh, refresh.
+
+116
+00:07:17,130 --> 00:07:21,210
+Then once I've added a couple of views, I can go back to the main landing page.
+
+117
+00:07:24,640 --> 00:07:28,120
+Then once we go there, this console.log should have fired.
+
+118
+00:07:28,630 --> 00:07:30,940
+So we go to our terminal and check out the console.log.
+
+119
+00:07:31,830 --> 00:07:38,100
+We should see now at the very top newest chair with 27 views, and then everything after that should
+
+120
+00:07:38,100 --> 00:07:41,970
+have less views, as I see 27 and then eight.
+
+121
+00:07:42,420 --> 00:07:45,090
+And then one, one, one and one.
+
+122
+00:07:46,390 --> 00:07:46,690
+Okay.
+
+123
+00:07:46,750 --> 00:07:48,640
+So I'd say that this looks pretty good.
+
+124
+00:07:49,590 --> 00:07:51,770
+So we've now got a pretty good solution here.
+
+125
+00:07:51,780 --> 00:07:57,480
+Using sorts, we are issuing one single command and getting back this kind of merged data.
+
+126
+00:07:57,510 --> 00:08:02,610
+We're taking multiple different structures in Redis and throwing it all together into some useful results.
+
+127
+00:08:02,620 --> 00:08:08,070
+And we're not even really doing any sorting whatsoever for flipping the order of something.
+
+128
+00:08:08,070 --> 00:08:10,110
+But is that a sort of I don't know.
+
+129
+00:08:10,110 --> 00:08:11,130
+I wouldn't really call it a sort.
+
+130
+00:08:14,160 --> 00:08:15,150
+All right, so this looks good.
+
+131
+00:08:15,180 --> 00:08:17,190
+But there's still one last thing we need to do.
+
+132
+00:08:17,610 --> 00:08:20,070
+We are currently getting back an array of strings.
+
+133
+00:08:20,400 --> 00:08:25,260
+We are supposed to be returning a bunch of serialized item objects.
+
+134
+00:08:25,920 --> 00:08:29,340
+So what we have right now, this array of strings not useful to us.
+
+135
+00:08:29,730 --> 00:08:32,910
+We need to take all these strings and turn them into an array of objects.
+
+136
+00:08:33,690 --> 00:08:37,140
+That's one last challenging thing we'll take care of in just a moment.

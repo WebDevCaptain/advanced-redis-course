@@ -1,0 +1,327 @@
+1
+00:00:01,060 --> 00:00:04,240
+We now understand some behind the scenes stuff around full text search.
+
+2
+00:00:04,570 --> 00:00:07,930
+So we know that stop words, spaces and punctuation are removed.
+
+3
+00:00:08,680 --> 00:00:14,500
+We understand that we can use the percent sign to do a fuzzy search and we can add in a star to do a
+
+4
+00:00:14,500 --> 00:00:15,730
+prefix search.
+
+5
+00:00:16,390 --> 00:00:21,580
+Now we need to use these different techniques and figure out how to use them on an actual search interface.
+
+6
+00:00:22,180 --> 00:00:27,400
+So remember users when they enter in some search criteria to a field like, say, when they're trying
+
+7
+00:00:27,400 --> 00:00:32,380
+to search for products or something similar, they're not going to enter in some stars or percent signs
+
+8
+00:00:32,590 --> 00:00:33,550
+or anything like that.
+
+9
+00:00:33,940 --> 00:00:35,650
+They're going to enter in some plain text.
+
+10
+00:00:35,920 --> 00:00:40,450
+And so the question is, how do we take this plain text and actually put it into some kind of query?
+
+11
+00:00:40,930 --> 00:00:42,970
+I'm going to give you some recommendations in this video.
+
+12
+00:00:43,750 --> 00:00:48,640
+The first thing to understand is that a search operation is really broken up into two steps.
+
+13
+00:00:49,210 --> 00:00:54,010
+The first step, which is kind of optional, is to show an auto complete list of options to a user.
+
+14
+00:00:54,430 --> 00:01:00,940
+So if a user adds in F a, we might want to show some autocomplete options, stuff like Fantastic Bar,
+
+15
+00:01:00,940 --> 00:01:01,930
+Fast and so on.
+
+16
+00:01:02,990 --> 00:01:06,290
+And then at some point in time, user goes on to step number two.
+
+17
+00:01:06,320 --> 00:01:07,910
+That's when they submit the query.
+
+18
+00:01:07,940 --> 00:01:10,310
+So they hit enter on their keyboard or whatever else.
+
+19
+00:01:10,730 --> 00:01:13,610
+We need to show them some actual search results on the screen.
+
+20
+00:01:15,120 --> 00:01:19,330
+So for showing an autocomplete that's we want to use a prefix search.
+
+21
+00:01:19,690 --> 00:01:24,340
+That's where we want to take the users search string right here and add on a star to the end.
+
+22
+00:01:25,540 --> 00:01:30,880
+When a user actually submits their search, that's when we probably want to do a fuzzy search.
+
+23
+00:01:31,390 --> 00:01:36,280
+For example, if a user enters F HSR and they actually met you fast.
+
+24
+00:01:36,520 --> 00:01:41,380
+Well, in that scenario, we probably want to use that fuzzy search technique of adding on those percent
+
+25
+00:01:41,380 --> 00:01:42,640
+signs on either side.
+
+26
+00:01:44,200 --> 00:01:47,500
+Go for auto completes use prefix for just about everything else.
+
+27
+00:01:47,830 --> 00:01:49,450
+Probably want to do a fuzzy search.
+
+28
+00:01:51,040 --> 00:01:55,680
+Now it gets a little bit more complicated than this and the user enters in some search term here.
+
+29
+00:01:55,690 --> 00:02:01,190
+They might enter in something like Fast, fast, fast car.
+
+30
+00:02:01,420 --> 00:02:03,460
+And maybe some of these are misspelt as well.
+
+31
+00:02:04,680 --> 00:02:10,130
+Can't really just take this entire string, put percents around it and throw it into ready search.
+
+32
+00:02:10,160 --> 00:02:12,800
+We have to actually do some pre-processing on this thing.
+
+33
+00:02:13,340 --> 00:02:18,410
+So I want to focus on some steps we might do for pre-processing when we are trying to implement either
+
+34
+00:02:18,410 --> 00:02:20,480
+a fuzzy search or a prefix search.
+
+35
+00:02:21,200 --> 00:02:21,560
+Okay.
+
+36
+00:02:21,620 --> 00:02:23,570
+So prefix search first.
+
+37
+00:02:24,080 --> 00:02:26,310
+Here is an example of some steps we might go through.
+
+38
+00:02:26,380 --> 00:02:29,450
+We're trying to build up our query to send off to ready search.
+
+39
+00:02:30,170 --> 00:02:33,050
+Let's imagine that a user entered fast CAA.
+
+40
+00:02:33,440 --> 00:02:36,110
+And remember, we're trying to do a four prefix here.
+
+41
+00:02:36,140 --> 00:02:39,710
+We're trying to do, in theory, some kind of autocomplete option.
+
+42
+00:02:40,310 --> 00:02:44,720
+So ultimately, I want to end up with something like Fast K and Star on the End.
+
+43
+00:02:44,750 --> 00:02:47,570
+Or in other words, I want to put a star somewhere inside of here.
+
+44
+00:02:48,720 --> 00:02:53,760
+The first thing we might do is decide to split on all the space characters and all the punctuation characters.
+
+45
+00:02:54,000 --> 00:02:55,680
+You get an array of strings that looks like this.
+
+46
+00:02:56,760 --> 00:03:02,690
+And we might put on a star on the very last term over here, because that would give us results.
+
+47
+00:03:02,760 --> 00:03:06,570
+Results like fast car, fast, California, fast.
+
+48
+00:03:06,690 --> 00:03:08,120
+Whatever else starts with K.
+
+49
+00:03:09,330 --> 00:03:12,930
+But then there's a couple of questions that you need to answer for your particular application.
+
+50
+00:03:13,530 --> 00:03:17,850
+You might want to append on a star to all the other terms in this array as well.
+
+51
+00:03:18,540 --> 00:03:25,230
+So if a user is entering into a search field based CAA, do you really want to do autocomplete options
+
+52
+00:03:25,230 --> 00:03:31,590
+only on Vasya or do you want to see possible autocomplete for Fast and K separately?
+
+53
+00:03:31,980 --> 00:03:35,310
+That's a question that you need to answer, need to figure out what is best for you.
+
+54
+00:03:36,500 --> 00:03:41,630
+And then finally, when you actually take these two separate strings and put them into the query, you
+
+55
+00:03:41,630 --> 00:03:48,260
+have to decide whether to join them together with a space which remember implies an and operation or
+
+56
+00:03:48,260 --> 00:03:57,200
+an or with a pipe that you want to do fast and K or a vast or C a lot of decisions here.
+
+57
+00:03:57,410 --> 00:04:01,490
+And it's really going to come down to what data you are trying to search and what works best for your
+
+58
+00:04:01,490 --> 00:04:02,120
+application.
+
+59
+00:04:02,540 --> 00:04:07,070
+All I really want to do is kind of put these questions in your head so you can think about them as you're
+
+60
+00:04:07,070 --> 00:04:08,150
+working on your own app.
+
+61
+00:04:09,880 --> 00:04:10,240
+Okay.
+
+62
+00:04:10,240 --> 00:04:13,270
+So a similar series of operations for Fuzzy Search as well.
+
+63
+00:04:13,630 --> 00:04:15,720
+Let's imagine the user enters in fast.
+
+64
+00:04:15,730 --> 00:04:17,830
+DA We need to process this somehow.
+
+65
+00:04:18,310 --> 00:04:22,090
+First thing we would do is probably split on spaces or all punctuation.
+
+66
+00:04:22,980 --> 00:04:25,110
+And then once again, we've got a big question here.
+
+67
+00:04:25,440 --> 00:04:27,990
+Do we want to wrap each of these terms with 8%?
+
+68
+00:04:28,350 --> 00:04:31,110
+Do we want to wrap them with two percents?
+
+69
+00:04:32,950 --> 00:04:34,990
+You allow for more typos?
+
+70
+00:04:36,280 --> 00:04:37,180
+Or even three.
+
+71
+00:04:38,470 --> 00:04:43,870
+And again, it's going to come down to your application, how rigorous your users are or knowledgeable
+
+72
+00:04:43,870 --> 00:04:44,950
+they are in searches.
+
+73
+00:04:45,580 --> 00:04:50,230
+And then finally, we also need to decide when we take these two strings and need to join them back
+
+74
+00:04:50,230 --> 00:04:51,910
+together to put into our actual query.
+
+75
+00:04:52,030 --> 00:04:56,860
+Are we going to join them with a space implying an and or a pipe implying an or.
+
+76
+00:04:58,260 --> 00:04:58,590
+All right.
+
+77
+00:04:58,590 --> 00:05:03,780
+So again, just repeat for the third time now, my only goal here is to help you think about these things.
+
+78
+00:05:03,780 --> 00:05:08,820
+It really comes down to your data set as you are implementing your application to decide how you're
+
+79
+00:05:08,820 --> 00:05:10,500
+going to do this preprocessing stuff.
+
+80
+00:05:11,100 --> 00:05:14,820
+We are going to implement all this pre-processing inside of our e-commerce application.
+
+81
+00:05:15,060 --> 00:05:19,260
+So you will see all this in action and we're going to maybe play around a little bit on some different
+
+82
+00:05:19,260 --> 00:05:21,600
+alternatives and see how it affects our search results.

@@ -1,0 +1,435 @@
+1
+00:00:00,980 --> 00:00:05,120
+The last variation on set that we're going to take a look at are these specs and so on.
+
+2
+00:00:05,150 --> 00:00:06,050
+Optional arguments.
+
+3
+00:00:06,470 --> 00:00:12,140
+All these optional arguments are all about when Redis should automatically expire or delete the data
+
+4
+00:00:12,140 --> 00:00:15,020
+that we are storing inside of our database, for example.
+
+5
+00:00:15,980 --> 00:00:23,090
+If we run sets color red with an X of two, that means that we want to automatically delete this color
+
+6
+00:00:23,090 --> 00:00:25,670
+key value pair after 2 seconds have passed.
+
+7
+00:00:26,670 --> 00:00:28,560
+I'm going to tell you why we might do this in just a moment.
+
+8
+00:00:28,560 --> 00:00:32,400
+But first, let's go back over to our book and just test this out very quickly.
+
+9
+00:00:33,710 --> 00:00:34,580
+All right, so back over here.
+
+10
+00:00:34,580 --> 00:00:36,620
+I've created two editor cells.
+
+11
+00:00:36,980 --> 00:00:42,410
+I'm going to first put in a set color red with an X of two.
+
+12
+00:00:43,350 --> 00:00:50,490
+And then immediately do a jet color right after or then do another jet color down here as a separate
+
+13
+00:00:50,490 --> 00:00:50,850
+query.
+
+14
+00:00:51,720 --> 00:00:54,570
+That when we run the top one, we're going to immediately set color.
+
+15
+00:00:55,140 --> 00:00:59,310
+We then attempt to get color and we should get back a response immediately that says Red.
+
+16
+00:01:00,030 --> 00:01:05,280
+But if we then wait for 2 seconds and then run the second query down here, red should have automatically
+
+17
+00:01:05,280 --> 00:01:06,390
+deleted color.
+
+18
+00:01:06,750 --> 00:01:09,420
+And so we should get back a response of no or something similar.
+
+19
+00:01:10,140 --> 00:01:10,890
+Okay, so here we go.
+
+20
+00:01:11,250 --> 00:01:15,210
+The first one, I get red and then if I wait 2 seconds, I get.
+
+21
+00:01:15,210 --> 00:01:15,510
+No.
+
+22
+00:01:16,780 --> 00:01:21,400
+Alternatively, if I run the first one and then the second one immediately after, very quickly, I
+
+23
+00:01:21,400 --> 00:01:23,340
+should see Red come up on the second one.
+
+24
+00:01:23,350 --> 00:01:26,080
+So I'll do that that I see red down here.
+
+25
+00:01:26,440 --> 00:01:28,260
+I could do red or the second one again.
+
+26
+00:01:28,300 --> 00:01:28,990
+Now I get back.
+
+27
+00:01:28,990 --> 00:01:29,320
+No.
+
+28
+00:01:31,210 --> 00:01:37,060
+So again, that second optional argument group is when read is going to automatically delete your data
+
+29
+00:01:37,060 --> 00:01:38,830
+at this particular key value pair.
+
+30
+00:01:39,580 --> 00:01:46,630
+We just made use of the option Yext allows you to designate how long to wait in milliseconds sat and
+
+31
+00:01:46,960 --> 00:01:49,620
+sat allowed to specify a date time.
+
+32
+00:01:49,630 --> 00:01:54,690
+So like an actual particular time at some point in time in the future and keep total.
+
+33
+00:01:55,030 --> 00:01:59,350
+Essentially means keep any expiration that has already been applied to this key.
+
+34
+00:02:00,370 --> 00:02:03,440
+Most common uses, however, are going to be NPCs.
+
+35
+00:02:04,390 --> 00:02:10,570
+Now the real question here and what all this stuff around set really gets down to is why would we ever
+
+36
+00:02:10,570 --> 00:02:12,850
+want to use this expiration option?
+
+37
+00:02:13,300 --> 00:02:18,190
+Where would we ever want to have a data store where our data gets automatically deleted after some period
+
+38
+00:02:18,190 --> 00:02:18,610
+of time?
+
+39
+00:02:19,390 --> 00:02:24,460
+Well, there's one very simple answer to this, and it kind of goes back to one of the original purposes
+
+40
+00:02:24,460 --> 00:02:25,060
+of Redis.
+
+41
+00:02:25,600 --> 00:02:28,840
+Rattus was originally designed as a caching server.
+
+42
+00:02:29,110 --> 00:02:33,370
+That means that it's going to keep around some amount of data for some period of time and then eventually
+
+43
+00:02:33,370 --> 00:02:35,950
+just plain get rid of it when it's not needed anymore.
+
+44
+00:02:36,960 --> 00:02:40,110
+We walk you through a common use case of this exploration field.
+
+45
+00:02:41,580 --> 00:02:44,310
+Let's imagine that we are building some kind of news API.
+
+46
+00:02:44,790 --> 00:02:50,280
+So our API server right here is going to be receiving requests for some headlines of news from around
+
+47
+00:02:50,280 --> 00:02:53,490
+the world to make sure that our API is very fast.
+
+48
+00:02:53,610 --> 00:02:57,360
+We might have two different databases for servicing our application.
+
+49
+00:02:57,840 --> 00:03:03,450
+One might be a traditional database like PostgreSQL, MySchool or something similar, and we might also
+
+50
+00:03:03,450 --> 00:03:05,820
+have a reticent database running as well.
+
+51
+00:03:06,480 --> 00:03:12,090
+Now remember Redis in general is a very, very fast let's make our API very quick.
+
+52
+00:03:12,300 --> 00:03:14,700
+We could use Redis as a caching server.
+
+53
+00:03:15,150 --> 00:03:18,270
+Let's walk through what the typical flow of our app might be.
+
+54
+00:03:19,170 --> 00:03:23,370
+Well, assume that we get some request in for news headlines and we want to respond to this request
+
+55
+00:03:23,370 --> 00:03:25,200
+as fast as we possibly can.
+
+56
+00:03:26,040 --> 00:03:32,280
+So our API might decide to first see if the latest headlines are stored inside of Redis at this point.
+
+57
+00:03:32,280 --> 00:03:32,640
+Nope.
+
+58
+00:03:32,730 --> 00:03:34,530
+No data inside of your whatsoever.
+
+59
+00:03:35,410 --> 00:03:40,750
+As soon as the API sees that no data is available inside of Rita's, it might fall back as a second
+
+60
+00:03:40,750 --> 00:03:46,210
+choice to trying to get some data out of our traditional database, which in general is probably going
+
+61
+00:03:46,210 --> 00:03:48,220
+to be much slower than using Redis.
+
+62
+00:03:50,370 --> 00:03:54,450
+Inside of our traditional database, we might have our latest headlines stored right here.
+
+63
+00:03:55,140 --> 00:04:00,810
+The API is going to get a copy of those latest headlines and send them back in response to whoever made
+
+64
+00:04:00,810 --> 00:04:01,860
+that original request.
+
+65
+00:04:02,950 --> 00:04:03,820
+Simultaneously.
+
+66
+00:04:04,030 --> 00:04:08,380
+It might also store a copy of the latest headlines inside of Reddy's.
+
+67
+00:04:09,450 --> 00:04:13,500
+Now let's think about what happens if another request comes in shortly after.
+
+68
+00:04:14,310 --> 00:04:20,040
+When another request comes in for news headlines, the AP might again check to see if the data is available
+
+69
+00:04:20,040 --> 00:04:20,610
+in readies.
+
+70
+00:04:21,030 --> 00:04:22,140
+And sure enough, now it is.
+
+71
+00:04:22,650 --> 00:04:28,380
+The API can take the data right here very, very quickly as it did not have to access the traditional
+
+72
+00:04:28,380 --> 00:04:31,020
+database and immediately sent back a response right away.
+
+73
+00:04:32,050 --> 00:04:36,850
+Now, without a doubt, this would make for a very fast application because we don't have to go reach
+
+74
+00:04:36,850 --> 00:04:38,180
+out to the traditional database.
+
+75
+00:04:38,830 --> 00:04:44,260
+But the downside here is that we might not have anything available for any other part of our application
+
+76
+00:04:44,440 --> 00:04:47,200
+to automatically update the headlines inside of Redis.
+
+77
+00:04:47,740 --> 00:04:49,420
+There's a very simple reason for this.
+
+78
+00:04:49,450 --> 00:04:52,810
+Remember, Redis, all of its data has to be stored in memory.
+
+79
+00:04:53,140 --> 00:04:58,480
+So we can't always just put all of our headlines in Redis because we might eventually run out of memory.
+
+80
+00:04:59,390 --> 00:05:05,420
+But to get around that problem, we might decide to automatically delete this particular headline after
+
+81
+00:05:05,420 --> 00:05:11,840
+it has not been accessed in any way in some number of seconds or milliseconds, maybe after 10 seconds
+
+82
+00:05:11,840 --> 00:05:12,290
+passed.
+
+83
+00:05:12,680 --> 00:05:17,990
+Since we put in this cash value inside of here, we might delete it automatically just to save space
+
+84
+00:05:17,990 --> 00:05:19,160
+inside of our Redis database.
+
+85
+00:05:20,220 --> 00:05:24,530
+Naturally, the next time another request comes in, the API would reach out to us again.
+
+86
+00:05:24,780 --> 00:05:25,740
+No data is available.
+
+87
+00:05:26,100 --> 00:05:32,580
+And so again, back to that original first step, the flow might get some data out of the traditional
+
+88
+00:05:32,580 --> 00:05:37,320
+database, send it back in response, and then also cache it temporarily inside of Redis.
+
+89
+00:05:38,850 --> 00:05:46,220
+Again, this kind of automatic expiration time really goes back to registers original purpose as a caching
+
+90
+00:05:46,220 --> 00:05:52,340
+server and we want to inspire data to make sure that our cash is not serving old out of date data and
+
+91
+00:05:52,340 --> 00:05:55,100
+also make sure that we are not going to run out of memory.
+
+92
+00:05:56,590 --> 00:05:57,550
+We're going to see eventually.
+
+93
+00:05:57,550 --> 00:06:00,850
+There are some other use cases around these exploration flags.
+
+94
+00:06:00,880 --> 00:06:05,400
+There's some really clever use cases that we can use to solve a couple of common problems around retest.
+
+95
+00:06:05,800 --> 00:06:10,240
+But the most common use case of exploration really is around caching.
+
+96
+00:06:11,340 --> 00:06:11,640
+Okay.
+
+97
+00:06:11,940 --> 00:06:13,180
+Now, one thing I want to note here.
+
+98
+00:06:13,200 --> 00:06:18,090
+We're not going to go too deep into the other explanation options such as you expect that and so on.
+
+99
+00:06:18,690 --> 00:06:22,500
+As I showed you just a moment ago, you can always take a look at the documentation to understand what
+
+100
+00:06:22,500 --> 00:06:24,300
+those do for us in this course.
+
+101
+00:06:24,480 --> 00:06:29,640
+I don't want to be just me reading through the documentation for all the different commands we go over.
+
+102
+00:06:29,790 --> 00:06:34,800
+I'm not going to cover every last little option because I really, truly believe you can probably read
+
+103
+00:06:34,800 --> 00:06:40,260
+the documentation and figure out what's going on much faster than I can explain it in long winded diagrams
+
+104
+00:06:40,260 --> 00:06:40,860
+and so on.
+
+105
+00:06:41,520 --> 00:06:45,420
+Of course, if you do have any questions about these additional options, feel free to post them on
+
+106
+00:06:45,420 --> 00:06:47,310
+the course and I'll do my best to answer them for you.
+
+107
+00:06:48,060 --> 00:06:48,360
+All right.
+
+108
+00:06:48,360 --> 00:06:51,840
+So at this point, I think we've got a reasonable idea of what's going on with set.
+
+109
+00:06:52,140 --> 00:06:54,420
+So let's move on to our next command in the next video.

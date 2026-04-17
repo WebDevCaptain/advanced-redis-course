@@ -1,0 +1,283 @@
+1
+00:00:00,760 --> 00:00:02,440
+But when do we want to use a Lewis script?
+
+2
+00:00:02,590 --> 00:00:06,220
+I think there are a couple of different scenarios where you might want to use a Louis script to enhance
+
+3
+00:00:06,220 --> 00:00:06,910
+your application.
+
+4
+00:00:07,400 --> 00:00:11,950
+The first is any time you want to limit the amount of data exchanged between your server and Redis,
+
+5
+00:00:12,280 --> 00:00:16,360
+and we saw a little small example of that back over here with this example.
+
+6
+00:00:16,930 --> 00:00:18,370
+So we had a sorted set.
+
+7
+00:00:18,370 --> 00:00:22,690
+We wanted to run a query on the set that was not supported out of the box by Redis.
+
+8
+00:00:23,320 --> 00:00:27,130
+We could easily do something like this by using a Lewis script instead.
+
+9
+00:00:27,490 --> 00:00:31,540
+We could make sure that we are only returning the elements inside the sorted set that we actually care
+
+10
+00:00:31,540 --> 00:00:31,810
+about.
+
+11
+00:00:32,930 --> 00:00:37,580
+Another example of where we might want to use a script is solving some different concurrency issues.
+
+12
+00:00:37,940 --> 00:00:40,850
+I'm going to give you a good example on this in just a little bit.
+
+13
+00:00:42,020 --> 00:00:47,840
+Third, any time we want to minimize the number of roundtrips between our server and readies, you might
+
+14
+00:00:47,840 --> 00:00:52,850
+imagine that in some scenario we might want to get a couple of keys and then depending upon their value,
+
+15
+00:00:52,970 --> 00:00:54,680
+we might want to fetch a couple more.
+
+16
+00:00:54,950 --> 00:01:01,430
+And depending upon those values, we might want to fetch more keys every single time we reach out and
+
+17
+00:01:01,430 --> 00:01:02,500
+get some data from Reddit.
+
+18
+00:01:02,780 --> 00:01:07,520
+It takes some amount of time to process that request and get the data back over to our server.
+
+19
+00:01:08,580 --> 00:01:13,650
+So if we ever have a scenario where we are making many round trips over treaties as a part of one single
+
+20
+00:01:13,650 --> 00:01:19,590
+operation, we could put all that code inside of a Lewis script instead and run all that code on Redis
+
+21
+00:01:19,590 --> 00:01:22,230
+as opposed to shipping data back over to our server.
+
+22
+00:01:23,170 --> 00:01:23,950
+And then be on that.
+
+23
+00:01:23,980 --> 00:01:28,270
+Well, scripts are really flexible, and you could definitely think of your own uses as well.
+
+24
+00:01:29,510 --> 00:01:29,750
+All right.
+
+25
+00:01:29,750 --> 00:01:34,640
+Now, a couple scenarios where you might not want to use scripts or just some downsides to be aware
+
+26
+00:01:34,640 --> 00:01:34,790
+of.
+
+27
+00:01:35,390 --> 00:01:40,430
+The first and biggest downside, absolutely, is the fact that we need to know all of our keys ahead
+
+28
+00:01:40,430 --> 00:01:43,520
+of time for when we run that evolution command.
+
+29
+00:01:44,180 --> 00:01:47,900
+So we cannot dynamically generate a key inside of our scripts.
+
+30
+00:01:48,230 --> 00:01:51,770
+We must provide every key that we ever planned to access to evolution.
+
+31
+00:01:52,340 --> 00:01:53,300
+That's a big downside.
+
+32
+00:01:53,540 --> 00:01:58,490
+And it really cuts down on the number of useful or really use cases around scripts.
+
+33
+00:01:59,600 --> 00:02:01,850
+Second, it's really tough to test scripts.
+
+34
+00:02:02,480 --> 00:02:07,550
+You might have an automated testing framework that you use for your server, but chances are it's only
+
+35
+00:02:07,550 --> 00:02:10,730
+meant to run code related to your server's language.
+
+36
+00:02:11,480 --> 00:02:16,640
+In the case of a Lewis script, well, we would have to add in some additional tooling to test our scripts.
+
+37
+00:02:18,330 --> 00:02:23,790
+Related to number two is the fact that with Lua we're working with a dynamic, weakly typed language
+
+38
+00:02:24,540 --> 00:02:25,320
+on our server.
+
+39
+00:02:25,320 --> 00:02:27,630
+For our e-commerce application, we're using TypeScript.
+
+40
+00:02:27,840 --> 00:02:32,760
+And a big benefit to that is that we get typed checking, which definitely enhances productivity and
+
+41
+00:02:32,760 --> 00:02:33,930
+helps us catch errors.
+
+42
+00:02:34,380 --> 00:02:39,810
+As soon as we start adding in Lewis scripts, we're losing out on that typing for some logic that might
+
+43
+00:02:39,810 --> 00:02:41,370
+be really critical to our application.
+
+44
+00:02:41,640 --> 00:02:42,480
+Definitely a downside.
+
+45
+00:02:43,340 --> 00:02:45,680
+And then related to number two and number three.
+
+46
+00:02:46,040 --> 00:02:51,650
+Well, we just have to learn and understand another language which has its own burden as well.
+
+47
+00:02:52,070 --> 00:02:58,250
+I gave you a very quick overview on Lua and it is easy to learn, but once again, it's just another
+
+48
+00:02:58,250 --> 00:02:59,090
+thing to learn.
+
+49
+00:02:59,120 --> 00:03:00,410
+Another thing to worry about.
+
+50
+00:03:00,830 --> 00:03:02,090
+Definitely have to keep that in mind.
+
+51
+00:03:03,370 --> 00:03:06,610
+All right, so where are we going to use scripts on our E commerce application?
+
+52
+00:03:07,150 --> 00:03:12,880
+Well, I think that there is a very small example of case number three right here.
+
+53
+00:03:14,380 --> 00:03:20,140
+Where we are doing a round trip to our server that we might be able to minimize just one single script.
+
+54
+00:03:20,410 --> 00:03:25,690
+And that means that we only have to do one single request to Redis us as opposed to two inside of our
+
+55
+00:03:25,690 --> 00:03:26,260
+application.
+
+56
+00:03:27,160 --> 00:03:28,480
+The back inside my code editor.
+
+57
+00:03:30,910 --> 00:03:33,460
+I'm going to find our SC services.
+
+58
+00:03:33,910 --> 00:03:35,340
+Mary's used to.
+
+59
+00:03:35,350 --> 00:03:35,740
+Yes.
+
+60
+00:03:35,740 --> 00:03:36,190
+File.
+
+61
+00:03:37,200 --> 00:03:39,510
+Right here is our increment view function.
+
+62
+00:03:39,930 --> 00:03:44,700
+You might recall that inside of here we ran one command dpf at.
+
+63
+00:03:45,590 --> 00:03:47,390
+That's going to make a request off to us.
+
+64
+00:03:47,870 --> 00:03:53,240
+We then have to wait for the response from that before we then possibly do a follow up right here.
+
+65
+00:03:54,290 --> 00:03:59,150
+That means that to increment of you, which is going to be happening potentially thousands and thousands
+
+66
+00:03:59,150 --> 00:04:04,220
+of times per second inside of application, depending upon how many people are accessing our app.
+
+67
+00:04:04,220 --> 00:04:08,810
+At any given time, we have to do one round trip over to Redis no matter what.
+
+68
+00:04:09,230 --> 00:04:14,090
+And then if the user has not visited that page before, we're doing an additional round trip.
+
+69
+00:04:14,960 --> 00:04:21,140
+So we might be able to use a loose script to condense all this down to one single request off to Redis
+
+70
+00:04:21,140 --> 00:04:24,200
+as opposed to potentially the two that is right now.
+
+71
+00:04:25,270 --> 00:04:28,660
+Let's take a look at replacing all this logic with the script in just a moment.

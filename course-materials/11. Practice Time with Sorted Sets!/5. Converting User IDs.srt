@@ -1,0 +1,399 @@
+1
+00:00:01,010 --> 00:00:03,230
+On to the get user by username function.
+
+2
+00:00:03,620 --> 00:00:05,090
+We've spoken about this function quite a bit.
+
+3
+00:00:05,210 --> 00:00:08,840
+It's going to be called automatically during these sign in process.
+
+4
+00:00:09,320 --> 00:00:13,520
+We're really just using this function to take a username and give back a user.
+
+5
+00:00:14,800 --> 00:00:15,220
+Okay.
+
+6
+00:00:15,400 --> 00:00:19,480
+So inside of here, I'm going to write out a couple of comments just to guide us in what we need to
+
+7
+00:00:19,480 --> 00:00:19,750
+do.
+
+8
+00:00:20,320 --> 00:00:24,160
+The first thing we need to do is use the username arguments.
+
+9
+00:00:24,370 --> 00:00:33,340
+So this argument right here, do you look up the person's user ID with the user names?
+
+10
+00:00:34,300 --> 00:00:35,260
+Sorted, set.
+
+11
+00:00:38,690 --> 00:00:45,500
+Once we look up that idea, we will make sure we actually got an idea from the look.
+
+12
+00:00:46,220 --> 00:00:50,480
+So in other words, whenever we look into our sorted sets and we get back a value, we need to make
+
+13
+00:00:50,480 --> 00:00:52,190
+sure we actually got something from Redis.
+
+14
+00:00:52,370 --> 00:00:53,810
+So something that's not not.
+
+15
+00:00:55,270 --> 00:01:01,360
+After that, we will take the idea and convert it back to Hex.
+
+16
+00:01:01,540 --> 00:01:02,710
+So go back to basics.
+
+17
+00:01:03,820 --> 00:01:12,580
+Well then use the ID to look up the user's hash and then finally be serialized and return the hash.
+
+18
+00:01:14,750 --> 00:01:18,290
+Now just from the comments in here, because I know this stuff is pretty involved, so hopefully the
+
+19
+00:01:18,290 --> 00:01:19,970
+comments are going to guide us fairly well.
+
+20
+00:01:20,780 --> 00:01:21,350
+Let's get to it.
+
+21
+00:01:22,010 --> 00:01:26,560
+The step number one, you look up a score is that's what we really need to do here.
+
+22
+00:01:26,630 --> 00:01:30,560
+We have a member and we need to look at the associated score.
+
+23
+00:01:30,560 --> 00:01:34,250
+Inside of our sorted set, we can use the Z score function.
+
+24
+00:01:35,320 --> 00:01:39,030
+I'm going to do a await client dot z score.
+
+25
+00:01:39,720 --> 00:01:42,480
+I want to look up a member score here.
+
+26
+00:01:42,870 --> 00:01:44,160
+Inside of our usernames.
+
+27
+00:01:44,730 --> 00:01:45,510
+E sorted.
+
+28
+00:01:45,510 --> 00:01:45,840
+Set.
+
+29
+00:01:47,120 --> 00:01:51,110
+And I want to find the score associated with this username.
+
+30
+00:01:53,430 --> 00:01:57,050
+And then going to assign the result to that of that two decimal I.D.?
+
+31
+00:01:57,540 --> 00:01:59,250
+I was specifically calling it decimal ID.
+
+32
+00:01:59,460 --> 00:02:04,890
+Just make sure it's super clear this is a base ten ID and we need to convert it back into hexadecimal.
+
+33
+00:02:07,530 --> 00:02:10,350
+So then make sure that we actually got something back here.
+
+34
+00:02:10,380 --> 00:02:12,090
+Did we get nor did we actually ID.
+
+35
+00:02:12,540 --> 00:02:15,000
+We actually got an ID and we'll move on to the next step.
+
+36
+00:02:15,000 --> 00:02:21,150
+Otherwise we'll return an error saying, hey, we were not able to find an ID associated with the username
+
+37
+00:02:21,150 --> 00:02:21,900
+that was provided.
+
+38
+00:02:22,530 --> 00:02:23,130
+We'll say it.
+
+39
+00:02:24,080 --> 00:02:25,620
+There is no decimal idea.
+
+40
+00:02:26,270 --> 00:02:28,250
+And throw a new ear that says.
+
+41
+00:02:29,590 --> 00:02:31,180
+User does not exist.
+
+42
+00:02:36,180 --> 00:02:40,440
+Next, we're going to take the idea that we got converted back into base 16.
+
+43
+00:02:42,340 --> 00:02:49,090
+And to do that in JavaScript, we'll take a look at the number that we have and do a two string 16 like
+
+44
+00:02:49,100 --> 00:02:52,450
+so that's how we go from a number into hexadecimal.
+
+45
+00:02:54,340 --> 00:03:01,960
+Now that we have an actual ID here, a proper hexadecimal I.D., we can do a simple h, get all to find
+
+46
+00:03:01,960 --> 00:03:02,980
+this user's hash.
+
+47
+00:03:03,520 --> 00:03:08,680
+So an h get all just the same as we've done many times to find this person right here, find their hash
+
+48
+00:03:09,100 --> 00:03:10,690
+DC, realize that and return it.
+
+49
+00:03:12,910 --> 00:03:13,570
+They will say.
+
+50
+00:03:14,800 --> 00:03:16,090
+User is a weight.
+
+51
+00:03:17,590 --> 00:03:18,610
+Each get all.
+
+52
+00:03:19,860 --> 00:03:20,670
+User's key.
+
+53
+00:03:21,150 --> 00:03:21,690
+With that ID.
+
+54
+00:03:24,490 --> 00:03:27,670
+And then finally we can return these your allies.
+
+55
+00:03:27,880 --> 00:03:32,230
+And remember, the first argument you serialize is the idea of this person.
+
+56
+00:03:32,680 --> 00:03:35,830
+And then the second argument is their user hash that we just retrieved.
+
+57
+00:03:36,880 --> 00:03:39,460
+I'll put in the ID and then the user.
+
+58
+00:03:40,990 --> 00:03:41,560
+And that's it.
+
+59
+00:03:43,760 --> 00:03:44,060
+Okay.
+
+60
+00:03:44,420 --> 00:03:45,560
+Time for a quick test.
+
+61
+00:03:46,680 --> 00:03:49,590
+You test this out, I'm going to first make sure that I'm still running my server.
+
+62
+00:03:49,650 --> 00:03:49,950
+Yep.
+
+63
+00:03:50,010 --> 00:03:50,670
+Looks like I am.
+
+64
+00:03:52,260 --> 00:03:53,430
+We'll go back and watch the browser.
+
+65
+00:03:54,630 --> 00:03:56,610
+I'm going to sign up for a brand new account.
+
+66
+00:04:03,350 --> 00:04:04,340
+So again, air right here.
+
+67
+00:04:04,340 --> 00:04:05,000
+Totally fine.
+
+68
+00:04:05,240 --> 00:04:10,640
+The header did update, which means I was able to successfully sign up all then log out.
+
+69
+00:04:11,690 --> 00:04:18,320
+I'll go to sign in and I'll try to sign in with the username password combination that I just used.
+
+70
+00:04:19,490 --> 00:04:20,120
+And it worked.
+
+71
+00:04:21,630 --> 00:04:21,890
+All right.
+
+72
+00:04:21,900 --> 00:04:22,560
+That's perfect.
+
+73
+00:04:22,680 --> 00:04:23,510
+One more quick test.
+
+74
+00:04:23,520 --> 00:04:27,990
+You're going to try to sign in with a combination that definitely does not exist.
+
+75
+00:04:28,540 --> 00:04:31,620
+And if I do that, I still get the error of user does not exist.
+
+76
+00:04:32,430 --> 00:04:32,790
+All right.
+
+77
+00:04:32,850 --> 00:04:34,140
+Let's say that this looks pretty good.
+
+78
+00:04:34,950 --> 00:04:40,590
+I just want to repeat one more time that we used a sorted set where we could have used a hash instead.
+
+79
+00:04:40,950 --> 00:04:46,200
+We could have created a hash and had all the keys inside the hash, be the usernames and have all the
+
+80
+00:04:46,200 --> 00:04:48,570
+values, be the hexadecimal IDs.
+
+81
+00:04:48,660 --> 00:04:50,340
+So we would have not had to do any conversion there.
+
+82
+00:04:50,880 --> 00:04:55,070
+But again, I just wanted you to see a somewhat uncommon use of sorted sets.
+
+83
+00:04:55,080 --> 00:04:56,430
+Just you start to get into your head.
+
+84
+00:04:56,730 --> 00:04:58,520
+Yes, these things are super flexible.
+
+85
+00:04:58,530 --> 00:04:59,910
+We can use them in many locations.
+
+86
+00:05:00,540 --> 00:05:07,590
+And to help you see this conversion from a base 16 number into a decimal number, which allows us to
+
+87
+00:05:07,590 --> 00:05:12,300
+sometimes get around some restrictions of only being able to store numbers as scores.
+
+88
+00:05:13,300 --> 00:05:17,080
+Now we've got this kind of weird use of sorted sets out of the way.
+
+89
+00:05:17,590 --> 00:05:21,850
+All the future uses of sorted sets are going to be much more reasonable in nature.
+
+90
+00:05:22,150 --> 00:05:25,960
+We're going to only use them for some of the purposes I described in the last couple of videos.
+
+91
+00:05:26,170 --> 00:05:30,100
+So using them to use sort values and using them to set up relationships.
+
+92
+00:05:31,890 --> 00:05:36,840
+Lastly, I want to mention very quickly, we now have a username sorted set and the usernames unique
+
+93
+00:05:36,900 --> 00:05:37,440
+sets.
+
+94
+00:05:38,220 --> 00:05:43,800
+We no longer need usernames unique because we are recording all the different usernames inside this
+
+95
+00:05:43,800 --> 00:05:49,050
+sorted set so we can use the sorted set to track uniqueness of usernames instead of the plain set.
+
+96
+00:05:49,710 --> 00:05:51,930
+I'm going to leave our application as is.
+
+97
+00:05:51,960 --> 00:05:54,390
+I'm going to leave this kind of redundancy inside of here.
+
+98
+00:05:54,630 --> 00:05:58,860
+Just so I have an example in the future of a set and a sorted set.
+
+99
+00:06:00,500 --> 00:06:00,800
+All right.
+
+100
+00:06:01,220 --> 00:06:04,460
+On to our next implementation around sorted sets in just a moment.

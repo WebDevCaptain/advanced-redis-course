@@ -1,0 +1,419 @@
+1
+00:00:01,050 --> 00:00:02,520
+All right, so now h get all.
+
+2
+00:00:02,550 --> 00:00:03,840
+How could this command be weird?
+
+3
+00:00:04,200 --> 00:00:08,420
+All it does is look into Reddit, try to find a hash and return that hash.
+
+4
+00:00:08,430 --> 00:00:09,270
+That's pretty much it.
+
+5
+00:00:09,660 --> 00:00:14,730
+And it appears that everything is pretty much working as expected as we run the h get all inside of
+
+6
+00:00:14,730 --> 00:00:15,330
+our code.
+
+7
+00:00:16,020 --> 00:00:21,690
+Well where it starts to get weird is related to the default behavior of h get all.
+
+8
+00:00:21,990 --> 00:00:25,170
+Let's again take a look at a couple of diagrams and understand what I'm talking about.
+
+9
+00:00:26,160 --> 00:00:26,490
+Okay.
+
+10
+00:00:26,760 --> 00:00:32,340
+So let's imagine that we are again implementing some kind of API or web application and we expect at
+
+11
+00:00:32,340 --> 00:00:38,790
+some point time to receive a request that tries to retrieve details or get some hash stored in Redis
+
+12
+00:00:39,030 --> 00:00:40,410
+by a very particular ID.
+
+13
+00:00:41,370 --> 00:00:47,100
+Let's imagine that someone makes a request trying to fetch a car with ID by five three.
+
+14
+00:00:47,850 --> 00:00:52,560
+But very importantly, we're going to imagine that we do not have a car with an idea of five, five,
+
+15
+00:00:52,560 --> 00:00:52,860
+three.
+
+16
+00:00:53,190 --> 00:00:58,020
+We might have on it the idea of three one, two over here, but we definitely do not have one with an
+
+17
+00:00:58,020 --> 00:00:59,580
+ID of five, five, three.
+
+18
+00:01:01,370 --> 00:01:01,560
+VoLTE.
+
+19
+00:01:01,610 --> 00:01:06,830
+Regardless, we don't really know that until we look into Regis and try to access a key of five, five,
+
+20
+00:01:06,830 --> 00:01:07,160
+three.
+
+21
+00:01:07,700 --> 00:01:13,520
+So when we receive this request, we might make a command, send it off to Regis and try to do an H,
+
+22
+00:01:13,520 --> 00:01:16,850
+get all on a key of cars powered by five three.
+
+23
+00:01:17,570 --> 00:01:21,230
+So we sent off the H get all and then we get back response from retrofits.
+
+24
+00:01:21,440 --> 00:01:23,300
+And here's where things start to get interesting.
+
+25
+00:01:23,960 --> 00:01:31,610
+If we try to access a key that does not exist in reticence and try to read it as a hash, your expectation
+
+26
+00:01:31,820 --> 00:01:36,710
+might be to get back a value of null or undefined or something like that.
+
+27
+00:01:37,100 --> 00:01:41,060
+Something to indicate that we tried to fetch a hash, but it did not exist.
+
+28
+00:01:41,060 --> 00:01:44,980
+And Reddit's that is not the default behavior.
+
+29
+00:01:44,990 --> 00:01:46,700
+That is not what actually happens.
+
+30
+00:01:47,270 --> 00:01:51,830
+So you might expect to get back a value of null if you try to look up a key that does not exist.
+
+31
+00:01:52,130 --> 00:01:53,690
+But it's not what occurs.
+
+32
+00:01:55,010 --> 00:01:56,720
+Well, what would happen if we got back null?
+
+33
+00:01:56,780 --> 00:02:01,490
+If it behaved as we would probably expect back in our application, we'd probably take a look at whatever
+
+34
+00:02:01,490 --> 00:02:04,850
+was returned and say, Did we get back an object or did we get.
+
+35
+00:02:04,850 --> 00:02:06,320
+No, we get Noel.
+
+36
+00:02:06,320 --> 00:02:12,200
+We might respond with that for a for and if we get back an object or otherwise a truth value, something
+
+37
+00:02:12,200 --> 00:02:16,760
+besides null, we would probably take whatever that object was and respond with it.
+
+38
+00:02:17,570 --> 00:02:19,580
+But again, this is not what happens.
+
+39
+00:02:20,330 --> 00:02:21,470
+Here's what actually happens.
+
+40
+00:02:23,090 --> 00:02:24,470
+This is the actual behavior.
+
+41
+00:02:25,130 --> 00:02:29,690
+If you try to fetch a key with each guitar and that key does not exist.
+
+42
+00:02:29,990 --> 00:02:33,980
+The default behavior is to send you back an empty object.
+
+43
+00:02:35,390 --> 00:02:41,180
+That is very unexpected because now in our code, if we have that same kind of check, if we say, did
+
+44
+00:02:41,180 --> 00:02:43,430
+we get back an object or did we get null?
+
+45
+00:02:43,850 --> 00:02:49,220
+In this case, we are always going to get back an object because whenever we use it all, as long as
+
+46
+00:02:49,220 --> 00:02:54,620
+we are trying to look up either a key that refers to a hash or a key that does not exist, we will get
+
+47
+00:02:54,620 --> 00:02:56,570
+back an object of some kind.
+
+48
+00:02:57,350 --> 00:02:59,150
+So we're going to get back this object.
+
+49
+00:02:59,960 --> 00:03:03,920
+We're going to put in our same check right here and say, did we get back an object or null?
+
+50
+00:03:04,460 --> 00:03:06,170
+And we are always going to get back an object.
+
+51
+00:03:06,410 --> 00:03:11,930
+And so we're always going to respond with that object, even though we didn't actually find the car
+
+52
+00:03:11,960 --> 00:03:13,520
+that the request was looking for.
+
+53
+00:03:13,820 --> 00:03:19,370
+So we're never going to fall into this right hand path over here where we send back correctly a response
+
+54
+00:03:19,370 --> 00:03:20,390
+of four or four.
+
+55
+00:03:22,340 --> 00:03:22,700
+Okay.
+
+56
+00:03:22,730 --> 00:03:25,670
+So let's just verify this really quickly back inside of our editor.
+
+57
+00:03:26,720 --> 00:03:27,440
+So back over here.
+
+58
+00:03:28,570 --> 00:03:33,140
+We know that there is a hash or a key that refers to a hash of khat.
+
+59
+00:03:33,160 --> 00:03:34,030
+We know that exists.
+
+60
+00:03:34,390 --> 00:03:36,670
+So let's try looking up a key that definitely does not exist.
+
+61
+00:03:36,670 --> 00:03:39,430
+I can put in car and then some identifier like so.
+
+62
+00:03:40,180 --> 00:03:42,520
+So without a doubt that key does not exist.
+
+63
+00:03:42,550 --> 00:03:44,890
+No data is defined in red as with that key.
+
+64
+00:03:45,830 --> 00:03:50,840
+I'm now going to save this again, flip back over and sure enough, take a look at this.
+
+65
+00:03:50,840 --> 00:03:53,420
+I get a console.log of empty objects.
+
+66
+00:03:55,010 --> 00:03:57,530
+So if I had code inside my application.
+
+67
+00:03:58,610 --> 00:03:59,580
+That looks something like this.
+
+68
+00:03:59,600 --> 00:04:03,670
+If I had something like if car does not exist, if it's a false value.
+
+69
+00:04:03,710 --> 00:04:10,520
+So if it's false, null, undefined, empty string and so on, I might want to do a console.log of our
+
+70
+00:04:10,520 --> 00:04:11,540
+not found.
+
+71
+00:04:12,890 --> 00:04:13,970
+Respond with four of four.
+
+72
+00:04:15,040 --> 00:04:18,670
+And then maybe I would return right there and then otherwise console.log the car.
+
+73
+00:04:20,030 --> 00:04:25,010
+So with the default behavior of each get all, we are never going to enter the if statement no matter
+
+74
+00:04:25,010 --> 00:04:27,980
+what, even if we try to look up a car that does not exist.
+
+75
+00:04:28,760 --> 00:04:33,800
+So a very simple existence, Chuck, like this, which you might use and with just about any other kind
+
+76
+00:04:33,800 --> 00:04:38,960
+of database, is not going to work the way you would expect as we're never going to enter that if statements.
+
+77
+00:04:40,240 --> 00:04:40,960
+How do we solve this?
+
+78
+00:04:41,380 --> 00:04:42,970
+Well, the very simple workaround.
+
+79
+00:04:43,180 --> 00:04:44,740
+All we're going to do here is say.
+
+80
+00:04:46,280 --> 00:04:50,840
+If we get back an empty object, then we probably do not find the record we were looking for.
+
+81
+00:04:51,560 --> 00:04:56,660
+So I'm going to do a object that keys bar and look at the length.
+
+82
+00:04:57,750 --> 00:05:03,870
+If the length is equal to zero, then that means that we got back an empty object and we probably did
+
+83
+00:05:03,870 --> 00:05:04,890
+not find the car.
+
+84
+00:05:05,070 --> 00:05:06,900
+So we should respond to the four of four.
+
+85
+00:05:07,820 --> 00:05:08,720
+Now if I save this.
+
+86
+00:05:10,270 --> 00:05:14,710
+Go backward my terminal I see correctly card not found responded to borrow four.
+
+87
+00:05:17,110 --> 00:05:19,150
+But if I tried to fetch a car that does exist.
+
+88
+00:05:20,100 --> 00:05:21,000
+It's all change the age.
+
+89
+00:05:21,010 --> 00:05:24,300
+Get all back to just a string of car, which definitely does exist.
+
+90
+00:05:24,300 --> 00:05:25,140
+We're setting it right there.
+
+91
+00:05:27,050 --> 00:05:27,770
+Save this again.
+
+92
+00:05:29,120 --> 00:05:32,270
+Now I still get the original car that I was trying to fetch originally.
+
+93
+00:05:33,710 --> 00:05:34,070
+Okay.
+
+94
+00:05:34,070 --> 00:05:37,850
+So that is the really strange behavior behind each set and each get all.
+
+95
+00:05:37,850 --> 00:05:43,310
+And again, you need to know about these corner cases because these are really are the two main commands
+
+96
+00:05:43,310 --> 00:05:46,340
+we use all the time whenever we are making use of hashes.
+
+97
+00:05:46,970 --> 00:05:51,380
+So in summary, each sets, we always need to be very much aware of what data we are trying to save.
+
+98
+00:05:52,190 --> 00:05:55,790
+And number two, with each get all we need to be aware that we're always going to get back an empty
+
+99
+00:05:55,790 --> 00:05:58,460
+object, even if the record does not exist.
+
+100
+00:05:59,580 --> 00:06:03,660
+And so to see if we actually got the data we were looking for, we need to do a little bit more of a
+
+101
+00:06:03,660 --> 00:06:05,940
+complex check, like the one you see right here.
+
+102
+00:06:06,880 --> 00:06:07,210
+All right.
+
+103
+00:06:07,210 --> 00:06:09,130
+So now we understand these corner cases.
+
+104
+00:06:09,370 --> 00:06:12,130
+Let's go back over to our actual e-commerce application.
+
+105
+00:06:12,310 --> 00:06:15,430
+We're going to implement a couple of different queries using hashes.

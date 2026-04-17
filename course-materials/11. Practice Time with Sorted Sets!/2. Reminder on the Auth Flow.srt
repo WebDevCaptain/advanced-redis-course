@@ -1,0 +1,335 @@
+1
+00:00:00,950 --> 00:00:02,790
+Back over to our e-commerce application.
+
+2
+00:00:03,230 --> 00:00:08,900
+Firstly, we are going to use sorted sets for is to fix up the sign in flow inside of our application.
+
+3
+00:00:09,230 --> 00:00:14,150
+Right now, if I go to sign in and then I try to sign in with any credentials, I get an error that
+
+4
+00:00:14,150 --> 00:00:15,800
+says username does not exist.
+
+5
+00:00:16,400 --> 00:00:21,320
+So we need to of course fix this up and figure out some way to, well, make the sign in flow work.
+
+6
+00:00:22,160 --> 00:00:23,420
+So traffic sign in flow.
+
+7
+00:00:24,760 --> 00:00:32,320
+We're going to go to our SC services where iOS users dot yes file go inside of here we've already got
+
+8
+00:00:32,320 --> 00:00:35,950
+a lot of code related to sign up and handling users and whatnot.
+
+9
+00:00:36,580 --> 00:00:41,800
+The reason that sign in is currently not working as intended is that we have not implemented the get
+
+10
+00:00:41,800 --> 00:00:43,540
+user by username function.
+
+11
+00:00:44,110 --> 00:00:48,040
+That's going to be the first thing we're going to fix and as you can guess, we're going to fix it using
+
+12
+00:00:48,040 --> 00:00:49,100
+a sorted set.
+
+13
+00:00:49,870 --> 00:00:54,360
+Now I'm going to tell you immediately you implement git user by username.
+
+14
+00:00:54,370 --> 00:00:56,050
+We could use a hash.
+
+15
+00:00:56,200 --> 00:00:56,970
+We could use a hash.
+
+16
+00:00:56,980 --> 00:00:57,760
+Absolutely.
+
+17
+00:00:57,760 --> 00:00:59,860
+It would work just as well as what we're about to do.
+
+18
+00:01:00,280 --> 00:01:04,780
+But instead we're going to use a sorted set for one single purpose.
+
+19
+00:01:04,930 --> 00:01:10,270
+And that is just help you understand that sorted sets are very flexible and they can be used in place
+
+20
+00:01:10,270 --> 00:01:14,800
+of many other structures, such as hashes or plain sets.
+
+21
+00:01:16,340 --> 00:01:17,480
+Look at that.
+
+22
+00:01:17,480 --> 00:01:22,070
+Further ado, I first want to help you understand why our application is working right now around the
+
+23
+00:01:22,070 --> 00:01:25,520
+sign in flow and how we're going to use a sorted set to fix it.
+
+24
+00:01:26,330 --> 00:01:29,150
+First, quick review on what goes on during sign up.
+
+25
+00:01:29,300 --> 00:01:30,500
+So sign up, not sign in.
+
+26
+00:01:30,980 --> 00:01:36,230
+Whenever someone tries to sign up, we check to see if a username is in use and we are doing that currently
+
+27
+00:01:36,470 --> 00:01:40,340
+by making use of a set assigned to the key of usernames unique.
+
+28
+00:01:41,490 --> 00:01:46,230
+If the user's username that they're trying to sign up with is not in use, then we're going to generate
+
+29
+00:01:46,230 --> 00:01:50,610
+an ID and then save the user's details inside of a new hash.
+
+30
+00:01:51,450 --> 00:01:53,040
+So we end up with something like this right here.
+
+31
+00:01:55,290 --> 00:01:58,050
+So we might generate an idea of, say, 56.
+
+32
+00:01:59,150 --> 00:02:02,270
+Store a hash with the user's username and their password.
+
+33
+00:02:02,990 --> 00:02:09,050
+And we also are adding the user's username to the unique set over here as well, so that users can't
+
+34
+00:02:09,230 --> 00:02:11,570
+reuse a username that is already in use.
+
+35
+00:02:12,910 --> 00:02:13,180
+Again.
+
+36
+00:02:13,180 --> 00:02:15,910
+This is everything related to sign up, just a review.
+
+37
+00:02:16,660 --> 00:02:21,940
+Now let's take a look at sign in and understand what's going wrong with it and why we haven't been able
+
+38
+00:02:21,940 --> 00:02:23,170
+to implement it just yet.
+
+39
+00:02:24,870 --> 00:02:25,140
+Okay.
+
+40
+00:02:25,150 --> 00:02:26,040
+So here is sign it.
+
+41
+00:02:26,640 --> 00:02:30,840
+Whenever someone tries to sign in, they're going to send us a username and password.
+
+42
+00:02:31,470 --> 00:02:36,720
+The first thing we need to do is check to see if the correct password was supplied in the check to see
+
+43
+00:02:36,720 --> 00:02:38,070
+if the correct password was supplied.
+
+44
+00:02:38,190 --> 00:02:43,080
+We have to look into Redis and find the hash corresponding to this user.
+
+45
+00:02:44,740 --> 00:02:48,850
+In order to fetch their hash, however, we need to know this person's I.D..
+
+46
+00:02:49,840 --> 00:02:50,740
+And that's the issue.
+
+47
+00:02:51,160 --> 00:02:54,250
+When we received the signing request, we only know the username and password.
+
+48
+00:02:54,280 --> 00:02:54,820
+That's it.
+
+49
+00:02:54,940 --> 00:02:57,340
+We don't know anything about this person's ID just yet.
+
+50
+00:02:59,110 --> 00:03:04,390
+And we don't have any ability using default redness or kind of the feature set we've learned about so
+
+51
+00:03:04,390 --> 00:03:12,190
+far to somehow look over all of our user hashes and find a hash with a particular username, and then
+
+52
+00:03:12,190 --> 00:03:14,740
+to kind of back out to the key assigned to that house.
+
+53
+00:03:15,220 --> 00:03:20,980
+Right now, we just plain have no idea what this person's IDs and that's why we have not implemented
+
+54
+00:03:21,100 --> 00:03:21,800
+that function.
+
+55
+00:03:21,820 --> 00:03:25,780
+Get user by username just yet because we don't have this ability.
+
+56
+00:03:26,810 --> 00:03:30,590
+And so that specifically is what we're going to fix using a sorted set.
+
+57
+00:03:31,930 --> 00:03:33,100
+That's got to be pretty straightforward.
+
+58
+00:03:33,430 --> 00:03:37,690
+We're going to add in a new sorted set assigned to a key of usernames.
+
+59
+00:03:38,560 --> 00:03:45,610
+This is going to store as the members the different usernames and then the score for each username is
+
+60
+00:03:45,610 --> 00:03:47,220
+going to be that person's I.D..
+
+61
+00:03:49,120 --> 00:03:54,910
+A username of seller might have a score, which is actually their idea of 56.
+
+62
+00:03:55,780 --> 00:03:58,150
+So whenever a user makes a request to sign in.
+
+63
+00:03:59,310 --> 00:04:00,450
+We're going to take their username.
+
+64
+00:04:01,230 --> 00:04:06,210
+We're going to look up that username inside of our sorted sets that will give us back that person's
+
+65
+00:04:06,210 --> 00:04:06,510
+ID.
+
+66
+00:04:07,470 --> 00:04:10,560
+Well, then use that ID to get that person's user hash.
+
+67
+00:04:11,630 --> 00:04:14,060
+And then we can do the actual password comparison.
+
+68
+00:04:14,670 --> 00:04:18,200
+I'm actually doing the password comparison is implemented in some code that I already wrote.
+
+69
+00:04:18,440 --> 00:04:23,120
+So all you and I have to do is really maintain this sorted, set and use it to look up the idea of a
+
+70
+00:04:23,120 --> 00:04:25,220
+particular user based upon their username.
+
+71
+00:04:26,670 --> 00:04:29,150
+Now I want to repeat one thing just one more time.
+
+72
+00:04:29,160 --> 00:04:31,440
+We could absolutely implement all this stuff using hash.
+
+73
+00:04:31,740 --> 00:04:37,260
+I just want to show you that we can use sorted sets in place of hashes in many scenarios and things
+
+74
+00:04:37,260 --> 00:04:38,340
+are going to work out just fine.
+
+75
+00:04:38,640 --> 00:04:40,950
+Sorted sets are a very flexible structure.
+
+76
+00:04:41,610 --> 00:04:46,440
+There is one other little issue we're going to run into along the way, and solving that issue is going
+
+77
+00:04:46,440 --> 00:04:47,920
+to be pretty interesting as well.
+
+78
+00:04:47,940 --> 00:04:53,040
+I think also worth using a sorted set just you can see this issue and understand how to fix it.
+
+79
+00:04:54,230 --> 00:04:54,560
+All right.
+
+80
+00:04:54,570 --> 00:04:55,730
+So in closing.
+
+81
+00:04:56,770 --> 00:04:57,700
+Make sign and work.
+
+82
+00:04:57,940 --> 00:05:03,310
+We need to implement that function of git user by username and we're going to implement it through the
+
+83
+00:05:03,310 --> 00:05:04,870
+use of a sorted set.
+
+84
+00:05:04,960 --> 00:05:07,180
+So let's get started on that in just a moment.

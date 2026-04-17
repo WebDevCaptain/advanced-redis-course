@@ -1,0 +1,487 @@
+1
+00:00:01,030 --> 00:00:02,380
+We've got our import statements.
+
+2
+00:00:02,470 --> 00:00:03,970
+We've got our cleaned up search term.
+
+3
+00:00:04,390 --> 00:00:06,790
+And we're going to add in the actual searching operation.
+
+4
+00:00:07,270 --> 00:00:09,580
+We're going to break this up into a couple of separate steps.
+
+5
+00:00:10,300 --> 00:00:13,030
+Number one, I'm going to look at cleaned.
+
+6
+00:00:14,620 --> 00:00:17,410
+And make sure it is valid.
+
+7
+00:00:18,250 --> 00:00:19,660
+I'll show you what that means in just a moment.
+
+8
+00:00:20,470 --> 00:00:22,660
+Well, then use the client to do.
+
+9
+00:00:23,870 --> 00:00:24,980
+An actual search.
+
+10
+00:00:26,180 --> 00:00:31,970
+And then I'm going to serialize and return these search results.
+
+11
+00:00:33,290 --> 00:00:34,580
+That's our three big steps.
+
+12
+00:00:35,540 --> 00:00:36,620
+First off, step number one.
+
+13
+00:00:37,280 --> 00:00:39,710
+We just went through some parsing operation right here.
+
+14
+00:00:39,890 --> 00:00:42,290
+We potentially removed a lot of different characters.
+
+15
+00:00:42,680 --> 00:00:46,910
+Now we need to make sure that the user actually gave us a valid string to search with.
+
+16
+00:00:47,390 --> 00:00:50,990
+So imagine if a user gave us a string like a bunch of symbols right there.
+
+17
+00:00:51,500 --> 00:00:56,720
+Our first operation inside of that clean up syntax, that clean up step we have, is going to remove
+
+18
+00:00:56,720 --> 00:00:57,710
+all these different symbols.
+
+19
+00:00:58,280 --> 00:01:01,910
+And so if a user gave us this string, we would end up with empty string.
+
+20
+00:01:02,150 --> 00:01:07,100
+And I don't really want to do a search with an empty string because that would probably just return
+
+21
+00:01:07,100 --> 00:01:09,290
+all the different items we have inside of our database.
+
+22
+00:01:09,800 --> 00:01:12,680
+I want our user to actually give us some valid search.
+
+23
+00:01:13,580 --> 00:01:15,350
+So I'm going to look at cleaned right here.
+
+24
+00:01:17,560 --> 00:01:18,670
+And if cleaned.
+
+25
+00:01:20,910 --> 00:01:27,060
+Is an empty string and I'm going to return an empty array, which kind of indicates we were not able
+
+26
+00:01:27,060 --> 00:01:28,560
+to find any search results.
+
+27
+00:01:32,280 --> 00:01:36,630
+Then on step number two, we're going to use our red as client to do the actual search.
+
+28
+00:01:37,290 --> 00:01:42,330
+This is where we are going to call the search command and pass in a couple of arguments to the search
+
+29
+00:01:42,360 --> 00:01:43,020
+operation.
+
+30
+00:01:44,330 --> 00:01:50,450
+So I'm going to get results from a wait client for that search.
+
+31
+00:01:51,480 --> 00:01:55,260
+The arguments to this are going to be the key where are indexes stored?
+
+32
+00:01:55,710 --> 00:01:58,260
+So that is items index key.
+
+33
+00:01:59,730 --> 00:02:02,880
+And then the second argument is going to be our actual query.
+
+34
+00:02:04,420 --> 00:02:10,780
+Now remember, a lot of our queries look like, say at name oil and blah, blah, blah.
+
+35
+00:02:11,380 --> 00:02:16,690
+But in our case, right now we are doing a full text search so we can utilize a little bit of a shortcut.
+
+36
+00:02:17,230 --> 00:02:22,360
+If we put in a query that is just a plain, simple string without any special syntax in it whatsoever,
+
+37
+00:02:23,020 --> 00:02:28,180
+and Redis is going to take that entire string and use it to automatically search all the different fields
+
+38
+00:02:28,180 --> 00:02:31,360
+that are marked as type text inside of our index.
+
+39
+00:02:32,140 --> 00:02:39,940
+So you and I don't have to put in that fancy at name stuff here because we are trying to do a full tech
+
+40
+00:02:39,950 --> 00:02:43,060
+search over all the available text fields inside of our index.
+
+41
+00:02:43,720 --> 00:02:47,930
+So we're going to put in our cleaned up search term and that's it.
+
+42
+00:02:54,010 --> 00:02:56,230
+And one other thing we're going to take care of very quickly.
+
+43
+00:02:56,410 --> 00:03:01,450
+Remember that one of the arguments to our function is the number of results that we expect to get back.
+
+44
+00:03:02,320 --> 00:03:07,320
+So we want to limit how many results we get, just in case our search has, say, 500 results.
+
+45
+00:03:07,330 --> 00:03:09,190
+I don't want to send those all back over to my server.
+
+46
+00:03:09,400 --> 00:03:11,590
+I just want to get the first five and that's it.
+
+47
+00:03:12,640 --> 00:03:14,260
+To limit the number of results that we gets.
+
+48
+00:03:14,440 --> 00:03:20,050
+I'm going to add on a third argument here of an object that has a limit key.
+
+49
+00:03:21,170 --> 00:03:23,180
+And then limit is going to be from zero.
+
+50
+00:03:24,180 --> 00:03:25,650
+And size of size.
+
+51
+00:03:27,200 --> 00:03:28,790
+From is like an offset.
+
+52
+00:03:29,120 --> 00:03:36,590
+If we had a frame of ten, that means set the first ten search results and then take however many sizes
+
+53
+00:03:36,590 --> 00:03:37,130
+after that.
+
+54
+00:03:37,610 --> 00:03:38,600
+So size is five.
+
+55
+00:03:38,600 --> 00:03:41,120
+That means skip the first ten, take the next five.
+
+56
+00:03:42,310 --> 00:03:45,010
+In our case, we're just always trying to get the first five.
+
+57
+00:03:45,280 --> 00:03:51,100
+So we're going to have a hardcoded from a zero and then our size is going to be whatever the size argument
+
+58
+00:03:51,100 --> 00:03:51,460
+is.
+
+59
+00:03:52,690 --> 00:03:54,580
+Because the key and the value here are identical.
+
+60
+00:03:54,590 --> 00:03:56,110
+We can condense it down like so.
+
+61
+00:03:59,110 --> 00:04:01,930
+Now at this point, who knows what results actually is?
+
+62
+00:04:02,200 --> 00:04:06,730
+So I think we should just do a console log of results and see what we actually get back from the search
+
+63
+00:04:06,730 --> 00:04:07,360
+operation.
+
+64
+00:04:08,450 --> 00:04:12,410
+After we understand what kind of data we are working with, we can actually implement the DC realized
+
+65
+00:04:12,410 --> 00:04:12,650
+step.
+
+66
+00:04:13,540 --> 00:04:15,920
+I'm going to do a console.log of results right there.
+
+67
+00:04:17,820 --> 00:04:18,120
+Okay.
+
+68
+00:04:18,150 --> 00:04:20,640
+Let's go back over to the browser and test this out.
+
+69
+00:04:21,060 --> 00:04:22,110
+So going to refresh the page.
+
+70
+00:04:22,530 --> 00:04:24,480
+I'll then do a search for chair.
+
+71
+00:04:26,860 --> 00:04:31,630
+Once I enter that, I'll go back over to my terminal and take a look at what console.log we got.
+
+72
+00:04:32,940 --> 00:04:33,330
+Okay.
+
+73
+00:04:33,330 --> 00:04:34,800
+So we've got a big object here.
+
+74
+00:04:35,760 --> 00:04:39,150
+It has a documents property, which is an array.
+
+75
+00:04:40,200 --> 00:04:42,360
+So we want to take a look at that documents property.
+
+76
+00:04:42,540 --> 00:04:47,670
+That's going to give us back this array of search results and this value right here even though it looks
+
+77
+00:04:47,760 --> 00:04:54,870
+like hey scary console.log that is actually our serialized item hash so we really want to map over the
+
+78
+00:04:54,870 --> 00:05:01,590
+documents array look at all the individual value properties and serialize whatever we got provide right
+
+79
+00:05:01,590 --> 00:05:02,460
+there as a value.
+
+80
+00:05:05,020 --> 00:05:05,110
+Okay.
+
+81
+00:05:05,260 --> 00:05:06,400
+So back inside of our editor.
+
+82
+00:05:09,700 --> 00:05:14,710
+For step number three, i'm going to return results that daqing documents.
+
+83
+00:05:15,950 --> 00:05:16,940
+I'm going to map over that.
+
+84
+00:05:20,180 --> 00:05:21,470
+I'm going to take.
+
+85
+00:05:22,680 --> 00:05:26,940
+The ID and the value by using a little bit of structuring.
+
+86
+00:05:26,970 --> 00:05:28,980
+So notice the curly braces right there.
+
+87
+00:05:31,490 --> 00:05:36,470
+And then call serialize and then remember really quickly serialize.
+
+88
+00:05:36,620 --> 00:05:40,190
+The first argument is the ID and the second is going to be the serialized item.
+
+89
+00:05:40,940 --> 00:05:48,350
+So that's why ID structured out both the ID property and the value, so I can pass in first the ID and
+
+90
+00:05:48,350 --> 00:05:48,920
+then the value.
+
+91
+00:05:50,350 --> 00:05:54,460
+We are going to get a little bit of a tip air right here on the D.C. release function trying to pass
+
+92
+00:05:54,460 --> 00:05:54,970
+in value.
+
+93
+00:05:55,660 --> 00:06:00,700
+That is a little bit of an issue with how the types are set up around the Node Regis library itself.
+
+94
+00:06:01,000 --> 00:06:05,500
+So we're just going to kind of cheat around this little bit and put in as any just to make this code
+
+95
+00:06:05,500 --> 00:06:05,740
+work.
+
+96
+00:06:08,100 --> 00:06:08,380
+Okay.
+
+97
+00:06:08,400 --> 00:06:09,240
+So let's save this now.
+
+98
+00:06:10,560 --> 00:06:11,490
+And then one more test.
+
+99
+00:06:12,120 --> 00:06:15,150
+So back inside the browser all to refresh and then search for chair.
+
+100
+00:06:15,840 --> 00:06:17,760
+And sure enough it actually works.
+
+101
+00:06:18,270 --> 00:06:20,340
+Now I see some different chair results.
+
+102
+00:06:20,850 --> 00:06:21,510
+Chair Great.
+
+103
+00:06:21,510 --> 00:06:22,830
+Chair I do.
+
+104
+00:06:22,830 --> 00:06:24,930
+Table I have a table here.
+
+105
+00:06:24,960 --> 00:06:26,010
+So it's that table right there.
+
+106
+00:06:26,920 --> 00:06:27,490
+I do.
+
+107
+00:06:27,520 --> 00:06:28,060
+Table.
+
+108
+00:06:28,240 --> 00:06:28,510
+Yep.
+
+109
+00:06:28,510 --> 00:06:29,140
+There's table.
+
+110
+00:06:30,040 --> 00:06:32,520
+I should be able to your chair as well.
+
+111
+00:06:32,530 --> 00:06:33,310
+Let's see what else I have.
+
+112
+00:06:33,310 --> 00:06:34,540
+I've got a desk as well.
+
+113
+00:06:36,180 --> 00:06:37,020
+I put in desk?
+
+114
+00:06:37,560 --> 00:06:37,820
+Yep.
+
+115
+00:06:37,830 --> 00:06:38,250
+There we go.
+
+116
+00:06:38,280 --> 00:06:38,670
+Desk.
+
+117
+00:06:39,620 --> 00:06:39,860
+All right.
+
+118
+00:06:39,860 --> 00:06:42,620
+So it looks like the search operation is definitely working.
+
+119
+00:06:43,220 --> 00:06:46,550
+Now, I would like to add in a lot more data to our application.
+
+120
+00:06:46,880 --> 00:06:52,790
+So I want to throw in a ton of different items with a bunch of kind of randomized item names and descriptions.
+
+121
+00:06:53,090 --> 00:06:58,070
+And then we're going to play around with how we form up our search query and really understand the impact
+
+122
+00:06:58,400 --> 00:07:03,650
+of how we can mess around with that query that we're passing in to get some kind of different results.

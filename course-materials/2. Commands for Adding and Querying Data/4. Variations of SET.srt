@@ -1,0 +1,379 @@
+1
+00:00:00,910 --> 00:00:02,950
+Let's do a deep dive on the set command.
+
+2
+00:00:03,340 --> 00:00:07,020
+And the set command is very basic in terms of the data that it stores.
+
+3
+00:00:07,030 --> 00:00:08,620
+It's really only four simple strings.
+
+4
+00:00:08,830 --> 00:00:13,060
+But by taking a look at the different arguments that this command accepts, you start to get a better
+
+5
+00:00:13,060 --> 00:00:18,550
+sense of what's going on with Redis and some of its common use cases, as we just saw in the documentation
+
+6
+00:00:18,820 --> 00:00:21,820
+to run the set command we first put in Capital City.
+
+7
+00:00:22,570 --> 00:00:27,700
+We are then always going to list out the name of the key that we want to set and the actual value that
+
+8
+00:00:27,700 --> 00:00:28,510
+we want to store.
+
+9
+00:00:28,900 --> 00:00:35,560
+We saw an example of that back over on our book just a moment ago where we set the key of message with
+
+10
+00:00:35,560 --> 00:00:36,910
+the value of Hi there.
+
+11
+00:00:39,250 --> 00:00:42,400
+After that, there are three distinct groups of options that we can provide.
+
+12
+00:00:42,820 --> 00:00:46,700
+The first group of options tell us when this value should expire.
+
+13
+00:00:46,720 --> 00:00:50,380
+In other words, when this value will be automatically removed from the database.
+
+14
+00:00:50,920 --> 00:00:52,750
+Now, that might sound really bizarre.
+
+15
+00:00:52,780 --> 00:00:56,170
+Why would we ever want to automatically remove data from the database?
+
+16
+00:00:56,650 --> 00:01:00,250
+Turns out there are some use cases for this, which we'll discuss in just a moment.
+
+17
+00:01:01,350 --> 00:01:03,420
+The second set of optional arguments.
+
+18
+00:01:04,470 --> 00:01:10,080
+Provide some conditions on when to set this key, though only set the key if it has not been set before.
+
+19
+00:01:10,530 --> 00:01:14,340
+Or alternatively, only set the key if it does already exist.
+
+20
+00:01:14,970 --> 00:01:17,610
+Again, we'll look at some possible use cases for this.
+
+21
+00:01:19,190 --> 00:01:22,310
+And then finally the last optional group of options here get.
+
+22
+00:01:22,550 --> 00:01:27,140
+If we put in get, then whenever we set a key, we're going to get back in response.
+
+23
+00:01:27,260 --> 00:01:28,790
+The previous value that was stored there.
+
+24
+00:01:29,960 --> 00:01:34,490
+Now, of course, you can see all these different options and the documentation around them in the official
+
+25
+00:01:34,490 --> 00:01:39,170
+Docs page that we were looking at just a moment ago, rather than have me just lecture a whole bunch.
+
+26
+00:01:39,320 --> 00:01:44,030
+Let's go back over to our book and test out some different variations of a set command to better understand
+
+27
+00:01:44,030 --> 00:01:46,700
+what it's all about over in our book.
+
+28
+00:01:46,730 --> 00:01:48,290
+I've created a new code cell.
+
+29
+00:01:48,710 --> 00:01:52,130
+The first thing I want to do is try out that get option and just see how it works.
+
+30
+00:01:53,070 --> 00:01:53,910
+I'm going to set.
+
+31
+00:01:55,120 --> 00:01:56,800
+A key of color to red.
+
+32
+00:01:57,310 --> 00:01:59,610
+And then run it after they get back.
+
+33
+00:01:59,620 --> 00:02:00,100
+Okay.
+
+34
+00:02:01,390 --> 00:02:05,860
+And then going to put in a second command in here of set color green.
+
+35
+00:02:06,670 --> 00:02:08,320
+I think he sort of get at the very end.
+
+36
+00:02:09,090 --> 00:02:16,780
+This means first set color to red, then set color to green and give us back whatever the previous value
+
+37
+00:02:16,780 --> 00:02:17,800
+of color was.
+
+38
+00:02:18,740 --> 00:02:20,810
+If I now run this, we get back red.
+
+39
+00:02:21,890 --> 00:02:23,790
+Red is stored in color.
+
+40
+00:02:23,810 --> 00:02:25,550
+After this command is executed.
+
+41
+00:02:25,820 --> 00:02:29,450
+And then when we set color equal to green, we get back red.
+
+42
+00:02:30,830 --> 00:02:35,720
+Just you know, our book is only ever going to show you the outputs of the last command that gets executed
+
+43
+00:02:35,720 --> 00:02:36,590
+in a single cell.
+
+44
+00:02:36,950 --> 00:02:41,390
+If you want to see the output of all the different commands, you can click on the little dot, dot,
+
+45
+00:02:41,390 --> 00:02:44,780
+dot right here and we'll show you the output of both commands.
+
+46
+00:02:45,700 --> 00:02:49,670
+I can see that first I did the set color of red and then set color green.
+
+47
+00:02:51,590 --> 00:02:54,980
+Next up, we're going to take a look at the annex and x x options.
+
+48
+00:02:55,550 --> 00:02:58,780
+Describing what these things do in plain English is a little bit confusing.
+
+49
+00:02:58,790 --> 00:03:01,250
+So instead, let's look at a very simple diagram.
+
+50
+00:03:02,030 --> 00:03:02,360
+Okay.
+
+51
+00:03:02,420 --> 00:03:04,790
+So first, we'll take a look at the x x option.
+
+52
+00:03:05,390 --> 00:03:11,570
+If we add in x x to the very end of our command, then the set is only going to run if the key already
+
+53
+00:03:11,570 --> 00:03:12,860
+exists inside of Redis.
+
+54
+00:03:13,430 --> 00:03:17,720
+Let's imagine for a second that we run set SDF with x x on the very end.
+
+55
+00:03:18,320 --> 00:03:20,360
+We're trying to set a key of a SDF.
+
+56
+00:03:21,340 --> 00:03:26,200
+Well further, imagine that our register database is completely empty right now, so no data in there
+
+57
+00:03:26,200 --> 00:03:30,940
+whatsoever because the SDF key does not exist inside retest.
+
+58
+00:03:31,660 --> 00:03:34,990
+No data would be actually set and we would get back a response of no.
+
+59
+00:03:35,530 --> 00:03:37,720
+Let's try that out inside of our bucket very quickly.
+
+60
+00:03:38,760 --> 00:03:39,270
+Back over.
+
+61
+00:03:39,270 --> 00:03:41,010
+I'm going to add in a new code section.
+
+62
+00:03:41,820 --> 00:03:47,610
+I'm going to do a set SDF AI there with x x.
+
+63
+00:03:48,900 --> 00:03:54,240
+Now once again, I do not yet have anything set with that key right there and will put in some real
+
+64
+00:03:54,240 --> 00:03:56,080
+gibberish just to make sure it's very plain.
+
+65
+00:03:56,130 --> 00:03:58,230
+I probably don't have a key with that name.
+
+66
+00:03:58,890 --> 00:04:00,630
+Now, if I run this, I get back.
+
+67
+00:04:00,630 --> 00:04:00,930
+No.
+
+68
+00:04:01,380 --> 00:04:01,890
+Is that key?
+
+69
+00:04:01,890 --> 00:04:03,030
+Does not yet exist.
+
+70
+00:04:03,960 --> 00:04:05,760
+I'm going to change the set.
+
+71
+00:04:06,640 --> 00:04:07,820
+Use color instead.
+
+72
+00:04:07,840 --> 00:04:13,210
+And I definitely have a color he already defined as I had made use of it back up here just a moment
+
+73
+00:04:13,210 --> 00:04:13,510
+ago.
+
+74
+00:04:14,170 --> 00:04:18,400
+Now, if I run this, I get okay, because the color key already exists.
+
+75
+00:04:20,340 --> 00:04:21,340
+Very similar option.
+
+76
+00:04:21,360 --> 00:04:23,970
+It kind of works in reverse is the next option.
+
+77
+00:04:24,480 --> 00:04:28,260
+So an X is only going to run the set if the key does not exist.
+
+78
+00:04:28,830 --> 00:04:33,390
+Of colour already exists inside of our database for making use of the anex flag.
+
+79
+00:04:33,750 --> 00:04:35,790
+Then the set operation will not run.
+
+80
+00:04:37,310 --> 00:04:38,630
+Let's try out that variation as well.
+
+81
+00:04:41,020 --> 00:04:41,380
+Down here.
+
+82
+00:04:41,380 --> 00:04:43,040
+I'll put in a set color.
+
+83
+00:04:43,900 --> 00:04:45,790
+You have a blue with an X.
+
+84
+00:04:47,280 --> 00:04:47,640
+I run.
+
+85
+00:04:47,640 --> 00:04:51,500
+That color already exists, but the operation does not run.
+
+86
+00:04:51,510 --> 00:04:56,660
+I get back a null, but if I tried to set a key that definitely has not been set before.
+
+87
+00:04:56,670 --> 00:05:02,100
+So something like color SDF, then it's going to work successfully and I will get back the OC.
+
+88
+00:05:03,240 --> 00:05:03,560
+All right.
+
+89
+00:05:03,570 --> 00:05:06,810
+So a couple of simple variations around the set commands.
+
+90
+00:05:07,830 --> 00:05:08,730
+We kind of skipped over it.
+
+91
+00:05:08,730 --> 00:05:09,660
+The middle one right here.
+
+92
+00:05:09,780 --> 00:05:11,730
+The option for when this value should expire.
+
+93
+00:05:11,740 --> 00:05:16,860
+And like I said, this might seem a little bit strange, but let's start to dive into the world of expiring
+
+94
+00:05:16,860 --> 00:05:21,840
+values in the next video and understand why we would ever want to have some of our data and readies
+
+95
+00:05:21,840 --> 00:05:23,160
+expire automatically.

@@ -1,0 +1,611 @@
+1
+00:00:00,490 --> 00:00:04,420
+The last command that we're going to look out for right now around sorted sets is the range.
+
+2
+00:00:05,230 --> 00:00:12,310
+The range allows us to get a range of different members based upon their rank or index or position within
+
+3
+00:00:12,310 --> 00:00:15,520
+a sorted set or alternatively by their score.
+
+4
+00:00:16,060 --> 00:00:21,070
+So it's a little bit similar to Z Count, which we looked at a little bit ago, but this is really dealing
+
+5
+00:00:21,070 --> 00:00:27,040
+with giving us back the members as opposed to the number of elements inside of a sorted sets as usual.
+
+6
+00:00:27,280 --> 00:00:30,700
+Quick example on how was Z range products?
+
+7
+00:00:31,210 --> 00:00:34,840
+And then we're going to put in two numbers right here by default.
+
+8
+00:00:34,930 --> 00:00:39,670
+These numbers are going to be referring to indexes inside this sorted set.
+
+9
+00:00:40,180 --> 00:00:43,150
+And this index value starts at zero.
+
+10
+00:00:44,060 --> 00:00:51,980
+So if I did a Z range products one two, that's going to skip over index zero right here and give me
+
+11
+00:00:51,980 --> 00:00:52,790
+index one.
+
+12
+00:00:53,360 --> 00:00:55,580
+Up to and including index two.
+
+13
+00:00:55,820 --> 00:00:57,740
+That would give me back keyboard and power.
+
+14
+00:00:58,980 --> 00:01:04,530
+By default, I'm only going to get back the members of keyboard in power if I want to also get these
+
+15
+00:01:04,530 --> 00:01:05,730
+scores as well.
+
+16
+00:01:05,940 --> 00:01:07,890
+We have to add in the whip scores.
+
+17
+00:01:07,920 --> 00:01:08,370
+Keyword.
+
+18
+00:01:09,400 --> 00:01:15,160
+So in total the range products one two with scores means skipped the first element.
+
+19
+00:01:15,910 --> 00:01:19,500
+Give me from 1 to 2 and include the scores as well.
+
+20
+00:01:19,510 --> 00:01:20,750
+And that's what we would get back.
+
+21
+00:01:21,580 --> 00:01:24,820
+Naturally, an example, this would probably go a long way.
+
+22
+00:01:26,670 --> 00:01:27,660
+All right, back over here.
+
+23
+00:01:27,720 --> 00:01:30,080
+One more code cell again.
+
+24
+00:01:30,090 --> 00:01:33,480
+I'm going to copy down the Dell and the Z adds.
+
+25
+00:01:36,330 --> 00:01:38,280
+Well then do A-Z range.
+
+26
+00:01:39,980 --> 00:01:40,520
+Products.
+
+27
+00:01:40,880 --> 00:01:43,880
+One, two with scores.
+
+28
+00:01:46,540 --> 00:01:46,990
+There we go.
+
+29
+00:01:47,330 --> 00:01:50,320
+In this case, keyboard is at index zero.
+
+30
+00:01:50,420 --> 00:01:51,430
+So I'm going to skip over that.
+
+31
+00:01:51,880 --> 00:01:55,120
+I'm going to get from index one to index two, inclusive.
+
+32
+00:01:55,600 --> 00:01:57,610
+And I also want to get back to the scores as well.
+
+33
+00:01:58,120 --> 00:02:00,610
+We'll get CPU and it score power and it score.
+
+34
+00:02:01,240 --> 00:02:05,530
+If we leave off the width scores, we'll get just CPU and power.
+
+35
+00:02:07,190 --> 00:02:10,490
+There are a couple of variations on Z range you need to be aware of.
+
+36
+00:02:10,850 --> 00:02:12,110
+The first big variation.
+
+37
+00:02:13,510 --> 00:02:15,220
+Is the ABI score accurate.
+
+38
+00:02:15,700 --> 00:02:21,520
+We put in by score then these two numbers right here, their behavior is going to change quite significantly
+
+39
+00:02:21,990 --> 00:02:26,640
+if we add in bias score and we are no longer referring to indexes with the first two numbers.
+
+40
+00:02:26,650 --> 00:02:31,210
+Instead, we are trying to find members based upon their score, the minimum and maximum score.
+
+41
+00:02:32,340 --> 00:02:37,500
+If we did say Z Range Products zero two, how about 45 or how about 48?
+
+42
+00:02:37,520 --> 00:02:38,510
+Just be super clear.
+
+43
+00:02:39,380 --> 00:02:45,560
+So from 0 to 48, by score, that means starting at zero index or simply starting at score zero.
+
+44
+00:02:45,740 --> 00:02:50,090
+Find all the different numbers all the way up to and including 48.
+
+45
+00:02:50,870 --> 00:02:52,700
+That would give me a monitor and keyboard.
+
+46
+00:02:53,000 --> 00:02:56,960
+And then because I have with scores, once again, I'm going to get these scores of those as well.
+
+47
+00:02:57,500 --> 00:02:58,940
+That would be my return sets.
+
+48
+00:03:00,520 --> 00:03:00,850
+All right.
+
+49
+00:03:00,880 --> 00:03:02,380
+Quick example of that.
+
+50
+00:03:04,230 --> 00:03:06,510
+So once again, another copy paste down.
+
+51
+00:03:08,160 --> 00:03:09,810
+This time, I'm going to do a.
+
+52
+00:03:10,880 --> 00:03:11,420
+Zero.
+
+53
+00:03:12,680 --> 00:03:13,910
+Up to 50.
+
+54
+00:03:15,160 --> 00:03:18,640
+Let's do buy score with scores.
+
+55
+00:03:19,880 --> 00:03:27,020
+So in total, give me all the elements or all the members inside the sorted set with scores equal to
+
+56
+00:03:27,020 --> 00:03:30,200
+or greater than zero less than or equal to 50.
+
+57
+00:03:31,240 --> 00:03:32,830
+And also include the scores.
+
+58
+00:03:34,320 --> 00:03:34,680
+There we go.
+
+59
+00:03:34,680 --> 00:03:35,070
+We get back.
+
+60
+00:03:35,100 --> 00:03:36,050
+Keyboard zero.
+
+61
+00:03:36,060 --> 00:03:37,650
+CPU 45.
+
+62
+00:03:40,040 --> 00:03:45,740
+Now, when we put in these score ranges right here of zero and 50, they can use that same parentheses
+
+63
+00:03:46,040 --> 00:03:47,690
+syntax we saw a little bit ago.
+
+64
+00:03:48,190 --> 00:03:51,500
+If I did say 55 right there instead of 50.
+
+65
+00:03:52,590 --> 00:03:58,320
+I'm now going to get power as well because the 55 is interpreted as up to and including 55.
+
+66
+00:03:58,950 --> 00:04:05,760
+But if I add in that open parentheses now, it means less than 55 just up to you, but not including
+
+67
+00:04:05,760 --> 00:04:06,360
+55.
+
+68
+00:04:07,700 --> 00:04:11,300
+So now I'm going to see everything up to you, but not including 55.
+
+69
+00:04:12,290 --> 00:04:17,030
+In addition, we can also use that plus infinity or negative infinity syntax as well.
+
+70
+00:04:17,670 --> 00:04:22,730
+So I could say negative infinity up to you, but not including 55.
+
+71
+00:04:23,740 --> 00:04:25,660
+Or we could do this plane.
+
+72
+00:04:25,660 --> 00:04:29,590
+Everything so negative to positive infinity and that'll give us everything.
+
+73
+00:04:32,110 --> 00:04:33,610
+Last variations to Z range two.
+
+74
+00:04:33,610 --> 00:04:35,910
+We're going to look at our rev and limit.
+
+75
+00:04:36,400 --> 00:04:40,600
+Our revenue limit can be added on to all these other variations we've already looked at.
+
+76
+00:04:40,960 --> 00:04:46,420
+We could do a Z range with Y score and with scores and rev and limit was covering them separately just
+
+77
+00:04:46,420 --> 00:04:48,310
+so they're well, a little bit more clear.
+
+78
+00:04:48,940 --> 00:04:49,210
+All right.
+
+79
+00:04:49,220 --> 00:04:55,540
+So first, rev Rev is going to what the order of elements inside of our sorted set if for doing any
+
+80
+00:04:55,540 --> 00:05:02,530
+comparisons if we did a Z range products one to that still means go and find the elements at index one
+
+81
+00:05:02,530 --> 00:05:03,130
+and two.
+
+82
+00:05:03,160 --> 00:05:04,420
+So that would be keyword power.
+
+83
+00:05:04,600 --> 00:05:08,230
+But before doing that, it's going to reverse the order of members.
+
+84
+00:05:09,010 --> 00:05:13,840
+So we can imagine that we might have elements that look like monitor two, keyboard 45 and our 50.
+
+85
+00:05:14,260 --> 00:05:15,820
+We're going to first flip the order.
+
+86
+00:05:17,090 --> 00:05:17,840
+Like so.
+
+87
+00:05:18,440 --> 00:05:20,060
+And then witness flipped order.
+
+88
+00:05:20,870 --> 00:05:23,390
+Go and find the element at index one.
+
+89
+00:05:23,900 --> 00:05:26,600
+Up to and including the element at index two.
+
+90
+00:05:27,350 --> 00:05:30,440
+Now in this case, it would be keyboard and monitor.
+
+91
+00:05:31,040 --> 00:05:35,180
+And because we did not specify the width scores argument, we would get just the members.
+
+92
+00:05:36,060 --> 00:05:38,630
+Let's try out just the rev argument very quickly.
+
+93
+00:05:38,670 --> 00:05:40,500
+We'll come back and discuss the limit in just a moment.
+
+94
+00:05:42,230 --> 00:05:42,500
+Okay.
+
+95
+00:05:42,500 --> 00:05:43,310
+So back over here.
+
+96
+00:05:44,530 --> 00:05:45,580
+One more time.
+
+97
+00:05:46,060 --> 00:05:47,200
+Let's copy that down.
+
+98
+00:05:48,370 --> 00:05:50,920
+I just want to make sure we are always working with clean data here.
+
+99
+00:05:53,090 --> 00:05:55,790
+Of India's range products.
+
+100
+00:05:57,670 --> 00:05:58,970
+1 to 2.
+
+101
+00:05:59,620 --> 00:06:02,260
+Just to make sure we're on the same page, we'll run that as is.
+
+102
+00:06:02,860 --> 00:06:06,490
+So first inside of our sorted set is keyboard, then CPU, then power.
+
+103
+00:06:06,790 --> 00:06:10,750
+So once you means skip over keyboard and give us CPU and power.
+
+104
+00:06:11,200 --> 00:06:15,610
+But if I now reverse, that doesn't mean reverse the result set instead.
+
+105
+00:06:15,730 --> 00:06:20,410
+It means reverse the sorted set and then look up index one and two.
+
+106
+00:06:21,500 --> 00:06:24,500
+Now if we run that, we get CPU and keyboard.
+
+107
+00:06:27,950 --> 00:06:31,370
+Very last variation on z range that is limits.
+
+108
+00:06:31,880 --> 00:06:35,410
+Make use of limit to set up pagination on our results.
+
+109
+00:06:35,420 --> 00:06:39,890
+That limit can only be used when we are comparing elements based upon their score.
+
+110
+00:06:40,370 --> 00:06:43,940
+The We're only ever going to see a limit when we are using a by score as well.
+
+111
+00:06:44,990 --> 00:06:50,190
+In this example, I'm trying to find all the elements that they score from zero up to and including
+
+112
+00:06:50,190 --> 00:06:50,820
+55.
+
+113
+00:06:51,390 --> 00:06:55,920
+So for us right now in this diagram, that'll be all three elements getting back, all three elements.
+
+114
+00:06:56,670 --> 00:07:01,290
+I'm going to use limits to cut down the number of results I get back.
+
+115
+00:07:02,070 --> 00:07:06,320
+When we add the limit argument, we then provide two numbers afterwards.
+
+116
+00:07:06,480 --> 00:07:08,010
+So in this case, my first number is one.
+
+117
+00:07:08,280 --> 00:07:15,090
+The second is to the one means skip the first element and the result set of my results set is three.
+
+118
+00:07:15,210 --> 00:07:16,380
+All three elements right here.
+
+119
+00:07:16,650 --> 00:07:22,410
+I'm going to skip over the very first one and then the two means give me the next two of the result
+
+120
+00:07:22,420 --> 00:07:22,710
+sets.
+
+121
+00:07:23,220 --> 00:07:24,990
+That would be both keyboard and power.
+
+122
+00:07:26,090 --> 00:07:28,580
+If I had a limit of one one.
+
+123
+00:07:30,220 --> 00:07:36,100
+That means once again, skip over the first element and then give me only the next one, which would
+
+124
+00:07:36,100 --> 00:07:37,630
+be just keyboard by itself.
+
+125
+00:07:38,840 --> 00:07:39,170
+All right.
+
+126
+00:07:39,200 --> 00:07:40,160
+Quick example.
+
+127
+00:07:41,520 --> 00:07:43,170
+I'm going to do another copy here.
+
+128
+00:07:45,810 --> 00:07:47,310
+Very last copy, I promise.
+
+129
+00:07:48,750 --> 00:07:49,320
+For this one.
+
+130
+00:07:49,320 --> 00:07:53,580
+I'll do a Z range on products 0 to 60.
+
+131
+00:07:54,820 --> 00:07:55,690
+By score.
+
+132
+00:07:57,100 --> 00:07:59,410
+And then I'm going to limit one to.
+
+133
+00:08:01,450 --> 00:08:05,800
+That means skip over keyboard and give me back just CPU and power.
+
+134
+00:08:08,250 --> 00:08:09,960
+We can also do a limit of one one.
+
+135
+00:08:10,320 --> 00:08:14,910
+That means skip over keyboard and give me only the next burst elements that CPU.
+
+136
+00:08:15,900 --> 00:08:18,240
+And of course we can also do say a01.
+
+137
+00:08:18,630 --> 00:08:19,500
+So skip over nothing.
+
+138
+00:08:19,500 --> 00:08:20,310
+Give me the first element.
+
+139
+00:08:20,310 --> 00:08:22,830
+That's keyboard do zero two.
+
+140
+00:08:22,870 --> 00:08:23,820
+That's the first two.
+
+141
+00:08:24,180 --> 00:08:25,680
+Verse three, you get the idea.
+
+142
+00:08:27,900 --> 00:08:28,330
+All right.
+
+143
+00:08:28,350 --> 00:08:29,160
+So that is it.
+
+144
+00:08:29,160 --> 00:08:31,590
+That is a couple of different variations on Z range.
+
+145
+00:08:31,830 --> 00:08:34,540
+There are a few other variations that exist as well.
+
+146
+00:08:34,560 --> 00:08:37,290
+Most notably the by Lex keyword as well.
+
+147
+00:08:37,740 --> 00:08:41,070
+We're not going to cover blacks because I don't think you're going to be using it terribly often, at
+
+148
+00:08:41,070 --> 00:08:43,380
+least in the application you and I are working on.
+
+149
+00:08:43,740 --> 00:08:46,540
+We're going to keep things just a little bit lighter around sorted sets.
+
+150
+00:08:46,560 --> 00:08:47,090
+All right.
+
+151
+00:08:47,100 --> 00:08:51,420
+Now, because they can be a little bit confusing when you first look at them.
+
+152
+00:08:51,720 --> 00:08:53,760
+And we've already spent enough time looking at commands.
+
+153
+00:08:53,970 --> 00:08:57,600
+So I think it's time for us to start to focus on use cases of sorted sets.

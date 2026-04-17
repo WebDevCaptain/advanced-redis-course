@@ -1,0 +1,431 @@
+1
+00:00:00,990 --> 00:00:01,590
+In this video.
+
+2
+00:00:01,590 --> 00:00:06,120
+We're going to get some more experience with sets by implanting a unique user name system inside of
+
+3
+00:00:06,120 --> 00:00:07,350
+our e-commerce application.
+
+4
+00:00:07,770 --> 00:00:10,980
+We're going to do exactly what you see inside this diagram right here.
+
+5
+00:00:11,460 --> 00:00:15,060
+Whenever a user makes a request to sign up to our application, we're going to check to see if that
+
+6
+00:00:15,060 --> 00:00:20,250
+username is already in use by taking a look at a set of usernames that we are going to store.
+
+7
+00:00:21,030 --> 00:00:23,280
+If the username is already present inside the set.
+
+8
+00:00:23,460 --> 00:00:28,050
+That means that the username is taken and we're going to tell the user sorry but you can't use this
+
+9
+00:00:28,050 --> 00:00:30,780
+username, but if you want to you can sign up with a different one.
+
+10
+00:00:31,740 --> 00:00:32,030
+All right.
+
+11
+00:00:32,040 --> 00:00:34,020
+So let's get started on the implementation.
+
+12
+00:00:35,010 --> 00:00:38,340
+Back over inside my code editor, I'm going to first find SIRC.
+
+13
+00:00:39,350 --> 00:00:39,950
+Services.
+
+14
+00:00:40,730 --> 00:00:48,110
+Various users reports that you will recall that inside of here we did some work on the create user function.
+
+15
+00:00:48,950 --> 00:00:54,380
+Right before we create a user record here, I think that this would be a reasonable spot for us to do
+
+16
+00:00:54,380 --> 00:00:55,040
+a little check.
+
+17
+00:00:55,730 --> 00:00:56,510
+We're going to see.
+
+18
+00:00:57,620 --> 00:01:03,110
+If the username is already in the set of usernames.
+
+19
+00:01:03,530 --> 00:01:05,690
+If so, row and error.
+
+20
+00:01:06,410 --> 00:01:08,030
+Otherwise continue.
+
+21
+00:01:08,750 --> 00:01:09,350
+So simple.
+
+22
+00:01:09,350 --> 00:01:11,480
+If statements all we really have to do here.
+
+23
+00:01:12,140 --> 00:01:17,210
+And when I say see if it's already in the set of usernames I'm talking about, of course, this set
+
+24
+00:01:17,210 --> 00:01:19,100
+right here which you and I need to create.
+
+25
+00:01:20,130 --> 00:01:25,230
+In addition, don't forget, after we actually create a user account on that step right there, we then
+
+26
+00:01:25,230 --> 00:01:30,370
+need to take the username that we just created the account for and add it into the set as well.
+
+27
+00:01:30,390 --> 00:01:34,740
+So we need to keep on updating that set over time as more and more people sign up to our application.
+
+28
+00:01:36,410 --> 00:01:36,680
+All right.
+
+29
+00:01:36,680 --> 00:01:38,150
+So now we understand what we're going to do.
+
+30
+00:01:38,450 --> 00:01:41,810
+Step one, we need to create a new key function.
+
+31
+00:01:42,380 --> 00:01:45,380
+But one of those functions that's going to generate this key right here.
+
+32
+00:01:46,580 --> 00:01:49,730
+We are creating all those different key functions inside of our services.
+
+33
+00:01:50,000 --> 00:01:50,610
+You start to.
+
+34
+00:01:50,610 --> 00:01:53,210
+Yes, file the year, you start to yes.
+
+35
+00:01:55,070 --> 00:02:02,000
+Inside of your I'm going to add in and export a new function called usernames unique key.
+
+36
+00:02:07,060 --> 00:02:10,240
+Now you'll notice that the key name here is rather long.
+
+37
+00:02:10,660 --> 00:02:13,850
+I'm doing that because we're actually going to add in another set later on.
+
+38
+00:02:13,930 --> 00:02:16,360
+Also called Users Your Usernames.
+
+39
+00:02:16,720 --> 00:02:18,940
+So we got a little bit of a conflict in naming here.
+
+40
+00:02:18,970 --> 00:02:21,520
+I'll go into more detail why that is later on.
+
+41
+00:02:21,730 --> 00:02:25,840
+Just right now, just understand that there is a reason that I'm using this kind of really long key
+
+42
+00:02:25,840 --> 00:02:26,470
+for right now.
+
+43
+00:02:27,910 --> 00:02:28,180
+All right.
+
+44
+00:02:28,210 --> 00:02:32,920
+Now that we've got that key function put together, I'm going to go back over to users dots.
+
+45
+00:02:34,060 --> 00:02:35,110
+I'm going to go to the top.
+
+46
+00:02:35,880 --> 00:02:37,620
+And import the key function.
+
+47
+00:02:40,730 --> 00:02:42,320
+Next up inside of creat user.
+
+48
+00:02:43,650 --> 00:02:46,020
+Will implement every step of this little flaw right here.
+
+49
+00:02:46,680 --> 00:02:54,180
+But a see if a username is already inside that set of usernames, we can use that as is member command.
+
+50
+00:02:55,670 --> 00:02:56,480
+I'll do a.
+
+51
+00:02:57,880 --> 00:03:01,450
+Await client dot s is member.
+
+52
+00:03:04,690 --> 00:03:10,900
+We're going to look at usernames, unique key and then the value that we want to check where for existence
+
+53
+00:03:10,900 --> 00:03:14,440
+inside there is adders dot username.
+
+54
+00:03:15,400 --> 00:03:22,180
+Remember that Atta's object has a username that the user is trying to sign up with no adders but username.
+
+55
+00:03:24,580 --> 00:03:28,510
+Whenever we call ESAs member, we get back a number either zero or one.
+
+56
+00:03:28,990 --> 00:03:31,630
+One means that this element already exists inside the set.
+
+57
+00:03:31,840 --> 00:03:33,040
+Zero means it does not.
+
+58
+00:03:33,820 --> 00:03:38,110
+I'm going to assign the result of this operation to a variable called exists.
+
+59
+00:03:39,940 --> 00:03:44,890
+Well then check to see if exists is equal to one in a JavaScript or typescript.
+
+60
+00:03:44,890 --> 00:03:47,320
+We can do that very simply by just saying if exists.
+
+61
+00:03:48,530 --> 00:03:53,120
+So if the element already exists inside the set, that means the username is taken.
+
+62
+00:03:53,330 --> 00:03:58,460
+So we want to throw an error and say something like username is taken.
+
+63
+00:04:00,620 --> 00:04:03,890
+And otherwise we can just go ahead and continue and create the user account.
+
+64
+00:04:06,000 --> 00:04:07,200
+After creating the account.
+
+65
+00:04:07,200 --> 00:04:12,300
+Once again, let's not forget we need to take the username that the user just signed up with an add
+
+66
+00:04:12,300 --> 00:04:15,390
+it into the set so that nobody else can use it in the future.
+
+67
+00:04:16,260 --> 00:04:19,830
+So to add an element into the set, we can use the s add command.
+
+68
+00:04:21,620 --> 00:04:24,410
+So await Poulenc's ad.
+
+69
+00:04:25,790 --> 00:04:26,450
+User.
+
+70
+00:04:28,410 --> 00:04:29,520
+Usernames unique.
+
+71
+00:04:30,630 --> 00:04:31,050
+He.
+
+72
+00:04:32,160 --> 00:04:35,420
+And I want to add in Adam Scott is her name.
+
+73
+00:04:37,830 --> 00:04:39,270
+I'm going to clean up the comments.
+
+74
+00:04:43,430 --> 00:04:44,090
+And that's it.
+
+75
+00:04:45,740 --> 00:04:48,850
+So now we are enforcing unique usernames inside our application.
+
+76
+00:04:50,130 --> 00:04:55,230
+Now, the last thing I want to add in here is that there is a very small bug inside of some of the code
+
+77
+00:04:55,230 --> 00:04:56,160
+we have in this function now.
+
+78
+00:04:56,670 --> 00:05:01,020
+This is not a bug that you and I are going to run into any time soon, but it is a bug that would start
+
+79
+00:05:01,020 --> 00:05:03,690
+to arise if our application got to be really popular.
+
+80
+00:05:03,870 --> 00:05:08,700
+We had a lot of people signing up for usernames or creating new accounts at the same time.
+
+81
+00:05:09,360 --> 00:05:15,420
+We're going to go into exactly what this bug is in great, great detail in a later section as we start
+
+82
+00:05:15,420 --> 00:05:17,040
+to talk more about concurrency.
+
+83
+00:05:17,640 --> 00:05:21,210
+Right now, again, there's a small issue, but we will solve it later on.
+
+84
+00:05:22,430 --> 00:05:22,730
+Okay.
+
+85
+00:05:22,790 --> 00:05:23,540
+Let's save this.
+
+86
+00:05:23,810 --> 00:05:28,130
+We're going to go back over to the browser and test it out to test it in the browser.
+
+87
+00:05:28,490 --> 00:05:29,780
+Let's first go to our terminal.
+
+88
+00:05:29,930 --> 00:05:31,850
+We're going to make sure that our server is still running.
+
+89
+00:05:33,120 --> 00:05:38,400
+If it is not running, remember you can execute npm run dev inside of your project directory at the
+
+90
+00:05:38,400 --> 00:05:38,820
+terminal.
+
+91
+00:05:40,660 --> 00:05:41,950
+Well, then go to your local house.
+
+92
+00:05:41,950 --> 00:05:42,580
+3000.
+
+93
+00:05:44,140 --> 00:05:45,640
+I'm going to sign up for new accounts.
+
+94
+00:05:51,330 --> 00:05:56,010
+And the first time I sign up, it should work as long as I'm using a new username that I've never used
+
+95
+00:05:56,010 --> 00:05:56,460
+before.
+
+96
+00:05:56,850 --> 00:05:57,510
+I do of course.
+
+97
+00:05:57,510 --> 00:05:59,040
+Still get a 500 right year.
+
+98
+00:05:59,040 --> 00:05:59,800
+That's totally fine.
+
+99
+00:05:59,820 --> 00:06:01,200
+It's a bug we're going to fix up later.
+
+100
+00:06:02,010 --> 00:06:07,530
+If I now log out and then attempt to sign up again, not sign in, but sign up.
+
+101
+00:06:08,490 --> 00:06:13,530
+If I try to sign up with the same username, I should now get an error message that says username is
+
+102
+00:06:13,530 --> 00:06:13,890
+taken.
+
+103
+00:06:14,800 --> 00:06:15,220
+Perfect.
+
+104
+00:06:15,940 --> 00:06:19,750
+That means that our set is definitely tracking that unique usernames.
+
+105
+00:06:19,990 --> 00:06:21,070
+So this definitely looks good.
+
+106
+00:06:21,910 --> 00:06:22,180
+All right.
+
+107
+00:06:22,190 --> 00:06:24,400
+Now we've got our first feature out of the way.
+
+108
+00:06:24,430 --> 00:06:27,340
+Let's move on to our next feature using sets in just a moment.

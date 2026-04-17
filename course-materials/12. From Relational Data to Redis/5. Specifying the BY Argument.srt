@@ -1,0 +1,487 @@
+1
+00:00:01,500 --> 00:00:03,510
+Or this next variation of the sort command.
+
+2
+00:00:03,510 --> 00:00:07,050
+We're going to try to answer this question I put up here just a little bit ago.
+
+3
+00:00:07,650 --> 00:00:09,090
+So here's our three books.
+
+4
+00:00:09,120 --> 00:00:12,120
+This is the exact same data that we just loaded into this.
+
+5
+00:00:12,570 --> 00:00:18,390
+I want to list out the ID of each book and I want to sort those IDs by the year published.
+
+6
+00:00:19,260 --> 00:00:21,720
+So in theory, I should get back something like that.
+
+7
+00:00:21,750 --> 00:00:22,560
+Okay, good.
+
+8
+00:00:22,650 --> 00:00:24,120
+That should be our ultimate answer.
+
+9
+00:00:25,120 --> 00:00:25,420
+Okay.
+
+10
+00:00:25,480 --> 00:00:30,580
+So to actually write this stuff out, I just want to have you recall very quickly here what I made a
+
+11
+00:00:30,580 --> 00:00:32,170
+huge point up just a little bit ago.
+
+12
+00:00:32,410 --> 00:00:37,510
+There is a very big difference between the data we are looking for and the sort of criteria.
+
+13
+00:00:37,960 --> 00:00:40,390
+Let's keep that in mind for a moment now.
+
+14
+00:00:40,390 --> 00:00:43,210
+I'm going to go back over I'm going to add in a new cell right here.
+
+15
+00:00:44,330 --> 00:00:49,910
+I'm going to write out the full command to get all the different IDs sorted by year, and we'll take
+
+16
+00:00:49,910 --> 00:00:53,000
+a look at a couple of diagrams to understand how this command works.
+
+17
+00:00:53,720 --> 00:00:53,930
+All right.
+
+18
+00:00:53,930 --> 00:00:54,440
+Here goes.
+
+19
+00:00:54,950 --> 00:00:57,030
+So it looks like.
+
+20
+00:00:58,070 --> 00:00:59,600
+And then here's our new argument.
+
+21
+00:01:00,470 --> 00:01:00,860
+I.
+
+22
+00:01:02,150 --> 00:01:03,440
+Well then put in books.
+
+23
+00:01:04,380 --> 00:01:05,690
+Poland Star.
+
+24
+00:01:07,030 --> 00:01:08,920
+Dash greater than year.
+
+25
+00:01:10,790 --> 00:01:11,360
+And that's it.
+
+26
+00:01:12,330 --> 00:01:14,100
+And if I run that, I get bad.
+
+27
+00:01:14,340 --> 00:01:15,420
+Okay, good.
+
+28
+00:01:16,230 --> 00:01:18,090
+Now, I just want to make sure that is correct.
+
+29
+00:01:18,420 --> 00:01:21,690
+That should be the IDs listed in order of year.
+
+30
+00:01:22,590 --> 00:01:25,110
+So the correct answer was on this diagram right here.
+
+31
+00:01:25,230 --> 00:01:25,650
+Bad.
+
+32
+00:01:25,680 --> 00:01:26,640
+Okay, good.
+
+33
+00:01:27,150 --> 00:01:28,740
+First year of 1930.
+
+34
+00:01:28,740 --> 00:01:29,760
+40, 50?
+
+35
+00:01:30,030 --> 00:01:30,300
+Yep.
+
+36
+00:01:30,300 --> 00:01:31,770
+Looks like we got the right answer.
+
+37
+00:01:32,400 --> 00:01:38,130
+The now obvious question here is what's going on with this syntax and what's going on with the by keyword?
+
+38
+00:01:38,640 --> 00:01:41,970
+Well, like I said, this is one that trickier aspects of this sort command.
+
+39
+00:01:42,510 --> 00:01:45,870
+So let's break down what's going on behind the scenes, step by step.
+
+40
+00:01:47,300 --> 00:01:47,750
+Okay.
+
+41
+00:01:49,180 --> 00:01:51,370
+So we're going to walk through what is going on step by step.
+
+42
+00:01:51,370 --> 00:01:54,520
+And I've got what's going on in each step on the bottom right hand side.
+
+43
+00:01:55,120 --> 00:02:00,310
+So step number one, we're going to extract all the members from the sorted set that we are attempting
+
+44
+00:02:00,310 --> 00:02:01,720
+to apply this sort command to.
+
+45
+00:02:02,230 --> 00:02:07,160
+So in our case, we are extracting all the members from books colon likes.
+
+46
+00:02:08,050 --> 00:02:14,200
+So I'm going to delete everything yond just those members because this is the data that we are immediately
+
+47
+00:02:14,200 --> 00:02:14,590
+working on.
+
+48
+00:02:15,250 --> 00:02:15,730
+Step one.
+
+49
+00:02:16,720 --> 00:02:17,860
+Then step number two.
+
+50
+00:02:19,310 --> 00:02:24,280
+We're going to take each of these different numbers and we're going to insert them into this template
+
+51
+00:02:24,290 --> 00:02:25,880
+in place of the star.
+
+52
+00:02:26,740 --> 00:02:29,080
+We're then going to look at the entire results.
+
+53
+00:02:29,650 --> 00:02:34,960
+And if that results in a field on a hash, we're going to retrieve that field.
+
+54
+00:02:35,200 --> 00:02:37,210
+So it's going to walk through this step by step.
+
+55
+00:02:37,210 --> 00:02:37,570
+Here we go.
+
+56
+00:02:37,820 --> 00:02:39,020
+So we're going to look through each member.
+
+57
+00:02:39,040 --> 00:02:40,090
+So we start off with bat.
+
+58
+00:02:40,840 --> 00:02:41,680
+We're going to take that.
+
+59
+00:02:41,980 --> 00:02:45,280
+We're going to put it into this template right here in place of the star.
+
+60
+00:02:46,380 --> 00:02:49,590
+So I end up with books coal and Bad Arrow Year.
+
+61
+00:02:50,800 --> 00:02:54,880
+Everything before the little arrow right there is treated as a key.
+
+62
+00:02:55,150 --> 00:02:59,590
+So Redis is going to automatically look up inside of all the different structures that it has.
+
+63
+00:02:59,770 --> 00:03:02,410
+It's going to try to find a key of books, coal and bat.
+
+64
+00:03:03,070 --> 00:03:05,170
+And sure enough, it finds that key right here.
+
+65
+00:03:05,950 --> 00:03:08,410
+And stored at that key is a hash.
+
+66
+00:03:09,430 --> 00:03:14,320
+The little arrow right here means on the hash that is found at books calling bad.
+
+67
+00:03:14,710 --> 00:03:17,230
+See if that hash has a field of year.
+
+68
+00:03:17,650 --> 00:03:18,660
+And sure enough, it does.
+
+69
+00:03:18,730 --> 00:03:20,470
+It's got year of 1930.
+
+70
+00:03:21,250 --> 00:03:28,360
+The Reds is going to extract that value right there and use that as the sorting criteria for bad.
+
+71
+00:03:30,750 --> 00:03:33,360
+We're then going to repeat that same process for okay and good.
+
+72
+00:03:36,020 --> 00:03:36,180
+Four.
+
+73
+00:03:36,230 --> 00:03:38,900
+Okay, once again, we're going to replace the star with OC.
+
+74
+00:03:39,830 --> 00:03:42,050
+We're going to find a key of books.
+
+75
+00:03:42,050 --> 00:03:42,740
+Colin okay.
+
+76
+00:03:42,800 --> 00:03:43,550
+There it is right there.
+
+77
+00:03:43,730 --> 00:03:44,480
+Look at the house.
+
+78
+00:03:44,690 --> 00:03:46,220
+Does it have a field of year?
+
+79
+00:03:46,250 --> 00:03:46,970
+Yes, it does.
+
+80
+00:03:47,150 --> 00:03:50,010
+We'll extract that value and associate that with.
+
+81
+00:03:50,030 --> 00:03:50,480
+Okay.
+
+82
+00:03:51,140 --> 00:03:55,430
+And then, as you can guess, same process is repeated for books.
+
+83
+00:03:55,460 --> 00:03:56,030
+Colin Good.
+
+84
+00:03:58,690 --> 00:03:59,020
+All right.
+
+85
+00:03:59,020 --> 00:04:01,050
+So now we've got this structure right here.
+
+86
+00:04:01,060 --> 00:04:03,070
+This is the net result of step number two.
+
+87
+00:04:03,820 --> 00:04:05,410
+Now we're going move on to step number three.
+
+88
+00:04:06,380 --> 00:04:09,890
+And step number three, we're going to take a look at each member.
+
+89
+00:04:10,130 --> 00:04:15,200
+So the members are on the left and we're going to sort those based upon the by field.
+
+90
+00:04:15,440 --> 00:04:17,840
+And the by field is the numbers on the right.
+
+91
+00:04:19,620 --> 00:04:23,820
+Well, turns out that in this particular case, with the way I structured everything, it turns out
+
+92
+00:04:23,820 --> 00:04:24,830
+it's already in order.
+
+93
+00:04:24,840 --> 00:04:26,010
+So we've already got these numbers.
+
+94
+00:04:26,010 --> 00:04:27,270
+They're already in the correct order.
+
+95
+00:04:27,510 --> 00:04:30,070
+Pretty much everything is good to go as it stands right here.
+
+96
+00:04:30,600 --> 00:04:33,720
+But if they were for some reason in a different order, if we had say.
+
+97
+00:04:34,900 --> 00:04:36,490
+27 up here at the top.
+
+98
+00:04:36,640 --> 00:04:40,500
+Well, then that would be moved to the bottom like so.
+
+99
+00:04:40,510 --> 00:04:41,440
+But that's not the case.
+
+100
+00:04:43,680 --> 00:04:46,260
+Now on to Stettner for an Stettner four.
+
+101
+00:04:46,290 --> 00:04:50,700
+We're going to discard the sorting criteria and return only the members.
+
+102
+00:04:51,270 --> 00:04:57,180
+So we discard all those years and we return just these IDs right here of bad.
+
+103
+00:04:57,210 --> 00:04:57,730
+Okay.
+
+104
+00:04:57,750 --> 00:04:58,170
+And good.
+
+105
+00:04:58,860 --> 00:05:03,300
+And so this is exactly what I spoke to you just a little bit ago about this idea of.
+
+106
+00:05:04,260 --> 00:05:06,770
+Data we are looking for versus these sorting criteria.
+
+107
+00:05:06,780 --> 00:05:12,210
+In this case, our sorting criteria was the year, but we were not using that as the reporting reported
+
+108
+00:05:12,210 --> 00:05:12,690
+results.
+
+109
+00:05:12,720 --> 00:05:14,250
+It was all in the sorting criteria.
+
+110
+00:05:14,400 --> 00:05:17,010
+Once we use that data, we threw it away entirely.
+
+111
+00:05:18,000 --> 00:05:22,680
+Now, once again, I repeat, this might seem like I'm making a huge deal out of this, but trust me,
+
+112
+00:05:22,710 --> 00:05:27,120
+just pointing this out very early, it makes understanding it a lot easier.
+
+113
+00:05:27,330 --> 00:05:30,390
+Otherwise, you end up saying, wait, where did the year go?
+
+114
+00:05:30,390 --> 00:05:31,720
+We specified the year.
+
+115
+00:05:31,740 --> 00:05:34,380
+Why am I not seeing an output of the year though?
+
+116
+00:05:34,380 --> 00:05:36,150
+It just makes it a little bit easier to understand.
+
+117
+00:05:37,540 --> 00:05:37,820
+Okay.
+
+118
+00:05:37,840 --> 00:05:40,150
+And that is, of course, the result we saw over here.
+
+119
+00:05:40,300 --> 00:05:44,440
+So these are IDs and those ideas are sorted based upon your.
+
+120
+00:05:46,160 --> 00:05:46,520
+All right.
+
+121
+00:05:46,520 --> 00:05:48,380
+So now we understand this variation.
+
+122
+00:05:48,380 --> 00:05:53,390
+We're going to look at one more variation in the next video that builds upon this idea of by.

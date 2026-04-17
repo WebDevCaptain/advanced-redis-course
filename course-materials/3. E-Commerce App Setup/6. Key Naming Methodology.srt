@@ -1,0 +1,419 @@
+1
+00:00:00,670 --> 00:00:03,550
+Last thing we're going to go through very quickly is keys.
+
+2
+00:00:03,550 --> 00:00:05,740
+And the best way to name them inside Red is.
+
+3
+00:00:06,070 --> 00:00:09,790
+I know I've done a lot of lecturing in the past couple of videos, so we didn't get through this key
+
+4
+00:00:09,790 --> 00:00:11,590
+naming stuff as quickly as I can.
+
+5
+00:00:12,400 --> 00:00:12,690
+Okay.
+
+6
+00:00:12,700 --> 00:00:13,350
+So key naming.
+
+7
+00:00:13,660 --> 00:00:14,860
+Couple of quick tips here.
+
+8
+00:00:15,370 --> 00:00:19,090
+First thing, and this is probably going be obvious, keys need to be unique.
+
+9
+00:00:19,690 --> 00:00:24,160
+So inside of our application, back in this diagram that we looked at just a little bit ago, I said
+
+10
+00:00:24,160 --> 00:00:27,640
+that we could cache a page at a key of simply page.
+
+11
+00:00:28,000 --> 00:00:32,770
+This would not work very well because remember, we just discussed how we're going to cache or different
+
+12
+00:00:32,770 --> 00:00:33,760
+distinct pages.
+
+13
+00:00:34,280 --> 00:00:39,550
+If we were caching them all underneath a key of page, well, we would just be constantly overwriting
+
+14
+00:00:39,730 --> 00:00:43,030
+this key with these different page HTML structures.
+
+15
+00:00:43,240 --> 00:00:49,330
+Not what we want, but we really need four different keys, one for each distinct page that we expect
+
+16
+00:00:49,330 --> 00:00:50,140
+to see inside of our app.
+
+17
+00:00:50,500 --> 00:00:52,960
+So one for the contact page.
+
+18
+00:00:55,440 --> 00:00:57,480
+Sign in, sign up and so on.
+
+19
+00:00:58,770 --> 00:01:03,090
+Rather than just using these very simple terms, though, we're going to come up with a better naming
+
+20
+00:01:03,090 --> 00:01:08,580
+structure, because if we just saw a key named sign in or sign up, well, we might not really understand
+
+21
+00:01:08,640 --> 00:01:11,820
+the goal of that key or what its purpose really serves inside of our app.
+
+22
+00:01:12,540 --> 00:01:14,160
+So that leads us to point number two.
+
+23
+00:01:14,430 --> 00:01:19,590
+Other engineers need to understand what a key is for if they ever see it inside of your app, or if
+
+24
+00:01:19,590 --> 00:01:21,810
+they're looking directly at the data inside of your database.
+
+25
+00:01:22,120 --> 00:01:27,750
+So again, having a key name of something like simply contact, sign in or sign up, just not super
+
+26
+00:01:27,750 --> 00:01:32,790
+appropriate because another engineer is not really going to be able to look at this and really immediately
+
+27
+00:01:32,790 --> 00:01:35,010
+understand what the goal of this key is.
+
+28
+00:01:36,050 --> 00:01:38,120
+We're going to come back to that tip right there in just a second.
+
+29
+00:01:38,340 --> 00:01:42,630
+I mean, tell you what a good key naming strategy is extremely common practice.
+
+30
+00:01:42,650 --> 00:01:45,920
+You're going to see just about every single greatest application out there use.
+
+31
+00:01:45,920 --> 00:01:50,810
+This strategy is to use a colon to separate different parts of a key.
+
+32
+00:01:51,770 --> 00:01:58,280
+So a very common practice is to use some kind of term that describes what the type of data is that we're
+
+33
+00:01:58,280 --> 00:02:02,750
+storing at this key and then a colon and then some kind of unique identifier.
+
+34
+00:02:03,320 --> 00:02:10,970
+So a key like user's colon 45 implies that this is a key that holds a reference to information about
+
+35
+00:02:10,970 --> 00:02:14,300
+some user with an idea 45 items.
+
+36
+00:02:14,330 --> 00:02:16,730
+Colon 19 implies that this is a key.
+
+37
+00:02:16,730 --> 00:02:20,420
+That's a reference to some kind of item and the items ideas 19.
+
+38
+00:02:22,090 --> 00:02:26,920
+We can have multiple colons, so we might have users colon posts and that kind of implies that these
+
+39
+00:02:26,920 --> 00:02:33,220
+are posts that belong to some user or something like that, use posts that are created by a user and
+
+40
+00:02:33,220 --> 00:02:37,720
+the posts might be all in the category of Idle 9 to 1 or something like that.
+
+41
+00:02:38,500 --> 00:02:40,940
+Of course, these ideas don't have to be plain numbers.
+
+42
+00:02:41,120 --> 00:02:44,840
+They can be a string of numbers and characters, just some kind of unique identifier.
+
+43
+00:02:45,820 --> 00:02:49,300
+Now, having said that, having said that, this is an extremely common practice.
+
+44
+00:02:49,570 --> 00:02:55,060
+We're going to use a very small twist on this common practice, something that's going to make implementing
+
+45
+00:02:55,060 --> 00:02:57,610
+a search feature much, much easier down the road.
+
+46
+00:02:58,210 --> 00:03:03,100
+The only reason that this is not yet super common practice is that we are going to be implementing search
+
+47
+00:03:03,100 --> 00:03:08,620
+using a rather newer feature in Redis that not a tremendous number of people use just yet because it
+
+48
+00:03:08,620 --> 00:03:09,400
+is rather new.
+
+49
+00:03:09,730 --> 00:03:13,870
+And as soon as more people start using the search feature, I think more people are going to start using
+
+50
+00:03:13,870 --> 00:03:15,820
+this little twist on the common practice.
+
+51
+00:03:16,570 --> 00:03:23,350
+The small twist is whenever we are putting in a unique identifier such as 45, 19 and so on, we're
+
+52
+00:03:23,350 --> 00:03:25,720
+going to use a pound symbol right before it.
+
+53
+00:03:25,720 --> 00:03:26,800
+Instead of a colon.
+
+54
+00:03:27,400 --> 00:03:32,800
+We can still use a colon such as in users colon posts, but if we have a unique identifier, we're going
+
+55
+00:03:32,800 --> 00:03:35,470
+to put a pound right before it again.
+
+56
+00:03:35,470 --> 00:03:38,590
+This is just to make implementing search easier down the road.
+
+57
+00:03:39,340 --> 00:03:44,890
+There is behind the scenes absolutely no difference between using a colon or a pound.
+
+58
+00:03:45,370 --> 00:03:47,050
+So you can use up here if you want.
+
+59
+00:03:47,330 --> 00:03:48,340
+Yeah, use pounds all day.
+
+60
+00:03:48,340 --> 00:03:49,270
+It doesn't make a difference.
+
+61
+00:03:49,540 --> 00:03:51,250
+It's just standard practice to use a colon.
+
+62
+00:03:51,250 --> 00:03:51,700
+That's it.
+
+63
+00:03:52,120 --> 00:03:56,320
+So as using pound symbols to make search easier, completely fine.
+
+64
+00:03:56,860 --> 00:03:58,690
+Not a big deal around it whatsoever.
+
+65
+00:04:00,440 --> 00:04:01,850
+All right, Lessing.
+
+66
+00:04:02,180 --> 00:04:03,320
+I kind of skip this one right here.
+
+67
+00:04:03,620 --> 00:04:07,900
+We are going to eventually create a couple of different functions and generate marquee names for us,
+
+68
+00:04:07,910 --> 00:04:10,370
+just so we avoid making silly typos all over the place.
+
+69
+00:04:10,700 --> 00:04:13,010
+And I'll show you exactly what I mean by that in just a little bit.
+
+70
+00:04:13,190 --> 00:04:15,590
+We're not going to do it immediately inside this video or the next one.
+
+71
+00:04:15,770 --> 00:04:19,550
+We're going to come back and do this step after we finish our feature, just so things don't get really
+
+72
+00:04:19,550 --> 00:04:21,170
+confusing if they're not already.
+
+73
+00:04:21,920 --> 00:04:22,130
+All right.
+
+74
+00:04:22,130 --> 00:04:25,100
+So with all this in mind, what keys are we going to use for our application?
+
+75
+00:04:25,820 --> 00:04:28,910
+Well, we have a couple of different pages that we need to cash for in total.
+
+76
+00:04:29,570 --> 00:04:31,910
+One is privacy page and a previous diagram.
+
+77
+00:04:31,910 --> 00:04:35,420
+I had said that there is a contact page we need to cash.
+
+78
+00:04:35,430 --> 00:04:36,320
+I was incorrect.
+
+79
+00:04:36,500 --> 00:04:37,710
+There is no contact page.
+
+80
+00:04:37,730 --> 00:04:39,320
+It's actually called the privacy page.
+
+81
+00:04:39,380 --> 00:04:41,470
+The small note we got about us.
+
+82
+00:04:41,480 --> 00:04:42,410
+Sign in and sign up.
+
+83
+00:04:43,250 --> 00:04:47,630
+Now each of these different pages is going to be displayed to the user depending upon what route they
+
+84
+00:04:47,630 --> 00:04:48,680
+go to and our application.
+
+85
+00:04:49,100 --> 00:04:53,990
+If a user goes to an address of local US 3000 slash privacy, we're going to show them the privacy page
+
+86
+00:04:54,500 --> 00:04:59,750
+about us will be displayed at slash about sign in at all to sign in and so on.
+
+87
+00:05:00,780 --> 00:05:02,160
+From these different addresses.
+
+88
+00:05:02,160 --> 00:05:07,440
+Whenever a user comes to our application, a unique identifier for each one is the route that belongs
+
+89
+00:05:07,440 --> 00:05:08,340
+to each page.
+
+90
+00:05:08,940 --> 00:05:14,010
+So we can use these root names right here as unique identifiers as our keys.
+
+91
+00:05:15,400 --> 00:05:17,140
+So here's what we're going to do.
+
+92
+00:05:19,220 --> 00:05:22,100
+The base name of our key is going to be page cash.
+
+93
+00:05:22,580 --> 00:05:24,390
+That is a very clear name.
+
+94
+00:05:24,410 --> 00:05:29,180
+Other engineers can look at that name and probably understand immediately what this key contains or
+
+95
+00:05:29,180 --> 00:05:30,590
+what it is a reference to.
+
+96
+00:05:31,750 --> 00:05:35,470
+We're then going to have a pound is we're going have a unique identifier right after it, and we're
+
+97
+00:05:35,470 --> 00:05:38,710
+going to have the full root of whatever page we are story.
+
+98
+00:05:39,550 --> 00:05:44,350
+So page cash pound slash about is going to store the HTML for the about page.
+
+99
+00:05:45,130 --> 00:05:49,870
+Each pound slash privacy will hold the privacy page, HTML and so on.
+
+100
+00:05:51,030 --> 00:05:51,510
+Again.
+
+101
+00:05:51,510 --> 00:05:56,460
+At a glance, any engineer can look at this key and have a pretty good idea of what is stored here.
+
+102
+00:05:56,640 --> 00:05:58,730
+So let's say that makes it a pretty effective key.
+
+103
+00:05:59,780 --> 00:06:00,700
+All right, so that's it.
+
+104
+00:06:00,710 --> 00:06:03,470
+We now have everything we need to actually go through the implementation.
+
+105
+00:06:03,470 --> 00:06:08,660
+So without further ado, quick pause and we'll put together this cash and feature in just a moment.

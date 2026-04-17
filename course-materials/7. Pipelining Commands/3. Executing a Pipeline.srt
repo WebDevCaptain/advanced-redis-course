@@ -1,0 +1,291 @@
+1
+00:00:01,330 --> 00:00:05,740
+Now that we understand pipelines we can implement our git items function back inside that items.
+
+2
+00:00:05,990 --> 00:00:06,640
+Yes file.
+
+3
+00:00:07,510 --> 00:00:11,890
+So inside of here, we're going to use that same technique that we used that showed you at the end of
+
+4
+00:00:11,890 --> 00:00:12,730
+the last video.
+
+5
+00:00:13,180 --> 00:00:18,640
+We've got an array of IDs, so we're going to map over that array and create one command for every single
+
+6
+00:00:18,640 --> 00:00:18,880
+ID.
+
+7
+00:00:19,660 --> 00:00:24,730
+After we do that, mapping step will then use that promise dot all function to execute all those different
+
+8
+00:00:24,730 --> 00:00:25,960
+commands at the same time.
+
+9
+00:00:27,060 --> 00:00:27,380
+Okay.
+
+10
+00:00:27,390 --> 00:00:28,830
+So I'll do a commands.
+
+11
+00:00:30,100 --> 00:00:31,570
+Is ID's dot map.
+
+12
+00:00:32,960 --> 00:00:38,600
+And for every single ID we will return client h gets all.
+
+13
+00:00:39,750 --> 00:00:43,500
+We need to pass in the key, do the hash that we're trying to fetch.
+
+14
+00:00:43,860 --> 00:00:47,970
+Now, remember, anytime that we're trying to find a key or generate a key, we're going to use our
+
+15
+00:00:47,970 --> 00:00:49,710
+key function called items key.
+
+16
+00:00:52,010 --> 00:00:55,310
+Or put in items e at the ID.
+
+17
+00:00:58,400 --> 00:00:59,660
+So that gives us our commands.
+
+18
+00:01:00,050 --> 00:01:05,150
+And then to actually execute them, we have to pass that array of commands into a promised call.
+
+19
+00:01:05,870 --> 00:01:09,530
+So we will say Colin's results is await promised, not all.
+
+20
+00:01:11,920 --> 00:01:12,730
+We had commands.
+
+21
+00:01:13,240 --> 00:01:14,680
+So that's going to actually execute them.
+
+22
+00:01:14,800 --> 00:01:16,840
+And we get back an array of results.
+
+23
+00:01:18,910 --> 00:01:24,210
+The array of results are the results of running an H, get all commands and we get back a hash.
+
+24
+00:01:24,360 --> 00:01:29,220
+We still have to go through all those same operations that we do when we were matching an individual
+
+25
+00:01:29,220 --> 00:01:29,580
+item.
+
+26
+00:01:30,240 --> 00:01:34,860
+So for any individual item that we fetched, we got that hash and we have to make sure that we did not
+
+27
+00:01:34,860 --> 00:01:36,300
+get an empty object.
+
+28
+00:01:36,390 --> 00:01:38,820
+So we still have to do that when we're fetching a list of items.
+
+29
+00:01:39,740 --> 00:01:43,730
+And after we are sure that we did not get back and hit the object, we still have to go through the
+
+30
+00:01:43,940 --> 00:01:45,440
+serialization step as well.
+
+31
+00:01:46,290 --> 00:01:50,490
+So we've got to do the same thing down here for get items for every single result.
+
+32
+00:01:51,480 --> 00:01:58,050
+But for that we can do another mapping statement map over the list of results and handle empty objects
+
+33
+00:01:58,050 --> 00:01:59,910
+and realization all in one step.
+
+34
+00:02:01,220 --> 00:02:02,810
+To look at results, not map.
+
+35
+00:02:04,510 --> 00:02:09,940
+And for every single results, I'm going to first check to make sure that we do not have an empty object.
+
+36
+00:02:12,340 --> 00:02:18,460
+If object keys results dot length is equal to zero, then return null.
+
+37
+00:02:22,090 --> 00:02:23,200
+And then if we get past that.
+
+38
+00:02:23,320 --> 00:02:23,710
+Okay.
+
+39
+00:02:23,740 --> 00:02:24,880
+I guess we found something.
+
+40
+00:02:25,060 --> 00:02:27,370
+We found some data, so we need to serialize it.
+
+41
+00:02:27,920 --> 00:02:29,920
+We will call the serialize.
+
+42
+00:02:31,480 --> 00:02:34,240
+And then our first argument here is the idea of this record.
+
+43
+00:02:34,450 --> 00:02:38,080
+And the second will be the actual data that we want to serialize.
+
+44
+00:02:39,960 --> 00:02:40,700
+Just one problem.
+
+45
+00:02:40,820 --> 00:02:45,260
+We don't actually have access to the ID because right now we are mapping over the results array.
+
+46
+00:02:45,830 --> 00:02:51,440
+So we need to somehow figure out which result is tied to which ID we had fetched the handle.
+
+47
+00:02:51,440 --> 00:02:57,440
+That's the second argument to a mapping function I put in the parentheses right there is the index.
+
+48
+00:02:58,160 --> 00:03:01,460
+So I that's the index of the current result we are iterating over.
+
+49
+00:03:02,310 --> 00:03:05,430
+But figure out what the ID is of this result right here.
+
+50
+00:03:05,880 --> 00:03:09,670
+We can look up the index inside the IDS array.
+
+51
+00:03:09,690 --> 00:03:11,850
+Now we'll give us the ID of this results.
+
+52
+00:03:12,330 --> 00:03:15,330
+Long story short, all we have to do right here is IDs at I.
+
+53
+00:03:15,480 --> 00:03:15,930
+That's it.
+
+54
+00:03:18,640 --> 00:03:19,000
+All right.
+
+55
+00:03:19,000 --> 00:03:24,010
+So that results dot map is going to take care of handling the empty objects and you serialization it's
+
+56
+00:03:24,010 --> 00:03:28,090
+going to give us back an array of results or really an array of items in this case.
+
+57
+00:03:28,450 --> 00:03:32,230
+And that's what we're trying to return from this function so we can return.
+
+58
+00:03:33,470 --> 00:03:35,360
+Results dot map and that's pretty much it.
+
+59
+00:03:35,780 --> 00:03:37,940
+That's our entire IT items function.
+
+60
+00:03:39,460 --> 00:03:40,630
+All right, let's save that.
+
+61
+00:03:40,900 --> 00:03:42,790
+And that's pretty much it for get items.
+
+62
+00:03:44,770 --> 00:03:49,070
+Now this function we can't really easily test inside of our application just yet.
+
+63
+00:03:49,090 --> 00:03:52,450
+We can later, but not just yet, because we have to put together some other stuff first.
+
+64
+00:03:53,440 --> 00:03:55,830
+Though, we're not going to unfortunately be able to test this right away.
+
+65
+00:03:55,840 --> 00:03:59,710
+But we did get that example of Pipeline put together inside the sandbox.
+
+66
+00:03:59,710 --> 00:04:02,380
+And as I mentioned, we're going to use Pipeline in several other times.
+
+67
+00:04:02,590 --> 00:04:04,540
+So we will get a lot of practice around it.
+
+68
+00:04:05,850 --> 00:04:11,190
+Last I want to mention is that we are going to come back to this item Stotts file and specifically mess
+
+69
+00:04:11,190 --> 00:04:15,750
+around with this create item function quite a bit as we start to set up some other features inside of
+
+70
+00:04:15,750 --> 00:04:15,990
+our app.
+
+71
+00:04:16,910 --> 00:04:21,230
+Well, that's pretty much it for items right now, and that's pretty much it for pipelines, at least
+
+72
+00:04:21,250 --> 00:04:23,000
+right now and definitely hashes.
+
+73
+00:04:23,620 --> 00:04:27,320
+Let's continue on to our next major data type in Redis in just a moment.

@@ -1,0 +1,191 @@
+1
+00:00:00,980 --> 00:00:03,160
+Inside of the by price yes file.
+
+2
+00:00:03,380 --> 00:00:08,150
+The implementation of this function is going to be just about identical to what we previously did inside
+
+3
+00:00:08,150 --> 00:00:10,250
+the by views thoughts file.
+
+4
+00:00:10,820 --> 00:00:12,550
+We need to do a sort operation.
+
+5
+00:00:13,450 --> 00:00:17,830
+Then once we get the top couple records, we're going to iterate through all the strings.
+
+6
+00:00:17,830 --> 00:00:23,620
+We get back, rip them up into individual objects and serialize them and all the stuff is going to be
+
+7
+00:00:23,680 --> 00:00:24,410
+so similar.
+
+8
+00:00:24,430 --> 00:00:28,870
+As a matter of fact, we're just going to do a little bit of copy paste of code between these different
+
+9
+00:00:28,870 --> 00:00:29,320
+files.
+
+10
+00:00:30,160 --> 00:00:35,810
+So inside of BI views from inside the BI views file, right now, I'm going to go up to the top.
+
+11
+00:00:35,830 --> 00:00:40,930
+I'm going to copy the three imports and paste them over inside of my price.
+
+12
+00:00:42,350 --> 00:00:45,400
+Or then import instead of items by use keys.
+
+13
+00:00:45,410 --> 00:00:47,430
+I want to get items by price.
+
+14
+00:00:47,660 --> 00:00:48,020
+Key.
+
+15
+00:00:50,590 --> 00:00:54,850
+Then back inside of my views, I'm going to take the entire function body.
+
+16
+00:00:56,150 --> 00:00:59,390
+So all the way down to the bottom where I return the list of items.
+
+17
+00:01:01,400 --> 00:01:02,330
+Well, copy all of it.
+
+18
+00:01:03,410 --> 00:01:06,410
+And then paste all that into the body of items by price.
+
+19
+00:01:09,460 --> 00:01:14,290
+And the only thing we need to change in here is the key that we are using to look up the sordid sex
+
+20
+00:01:14,920 --> 00:01:17,470
+or change it to items by price.
+
+21
+00:01:17,680 --> 00:01:17,950
+He.
+
+22
+00:01:19,410 --> 00:01:20,310
+And that should be it.
+
+23
+00:01:22,670 --> 00:01:26,540
+I'm going to save this and then go back over and test out my application.
+
+24
+00:01:27,550 --> 00:01:28,000
+Right away.
+
+25
+00:01:28,000 --> 00:01:29,920
+I see a couple of records right here.
+
+26
+00:01:30,250 --> 00:01:35,080
+We do need to create a brand new couple of items to actually get everything to show up correctly.
+
+27
+00:01:35,560 --> 00:01:41,550
+Remember, at present, we have not actually added in any item IDs to our sorted sets, listing out
+
+28
+00:01:41,560 --> 00:01:42,550
+all the different prices.
+
+29
+00:01:42,970 --> 00:01:47,950
+So even though we have created a couple of different items, we have not added the IDs of those items
+
+30
+00:01:47,950 --> 00:01:49,150
+into these sorted sets.
+
+31
+00:01:49,540 --> 00:01:52,000
+We only just started adding in the code that a moment ago.
+
+32
+00:01:52,630 --> 00:01:56,500
+So in theory, we should only start to see new items from this point on.
+
+33
+00:01:56,500 --> 00:01:57,670
+Show up in the list right here.
+
+34
+00:01:58,500 --> 00:01:59,880
+I'm going to go to New.
+
+35
+00:02:00,800 --> 00:02:02,930
+I'm going to create a new item.
+
+36
+00:02:03,470 --> 00:02:06,590
+But how about chair by price as the name?
+
+37
+00:02:09,020 --> 00:02:11,420
+Well, then place a bid of 20.
+
+38
+00:02:14,010 --> 00:02:18,060
+And now back on the landing page, I will see my chair by price.
+
+39
+00:02:18,930 --> 00:02:21,330
+I can create another item as well just to test this out.
+
+40
+00:02:21,690 --> 00:02:23,080
+Make this one a table.
+
+41
+00:02:23,880 --> 00:02:24,990
+The duration of 10 minutes.
+
+42
+00:02:25,770 --> 00:02:28,350
+I'm going to place a bid of 25 on this one.
+
+43
+00:02:30,100 --> 00:02:35,320
+And then back on the landing page, I see 25 and then 20, which means these things are in fact, being
+
+44
+00:02:35,320 --> 00:02:36,100
+sorted correctly.
+
+45
+00:02:36,820 --> 00:02:37,240
+Very good.
+
+46
+00:02:38,080 --> 00:02:40,420
+Well, that's it for the most expensive section.
+
+47
+00:02:40,930 --> 00:02:43,090
+Now we've got all this bidding stuff put together.
+
+48
+00:02:43,120 --> 00:02:44,530
+Let's move on to another topic.

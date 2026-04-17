@@ -1,0 +1,199 @@
+1
+00:00:00,720 --> 00:00:02,250
+Three more very quick commands.
+
+2
+00:00:02,580 --> 00:00:04,050
+First off, each exists.
+
+3
+00:00:04,530 --> 00:00:08,880
+This allows us to check and see if a key is defined inside of an existing house.
+
+4
+00:00:09,470 --> 00:00:13,170
+So for example, we might run h exists company age.
+
+5
+00:00:13,800 --> 00:00:20,100
+That means go and find the hash stored at company that would give us this entire house right here and
+
+6
+00:00:20,100 --> 00:00:23,130
+then see if the age key is defined inside there.
+
+7
+00:00:23,760 --> 00:00:26,070
+In this case, age is defined inside that hash.
+
+8
+00:00:26,430 --> 00:00:28,800
+So our command would return one.
+
+9
+00:00:29,760 --> 00:00:33,150
+If age did not exist for some reason, then we would get back zero.
+
+10
+00:00:34,280 --> 00:00:39,170
+One thing to be aware of is that US is not checking for the truthiness of the value stored here.
+
+11
+00:00:39,740 --> 00:00:45,050
+So age might refer to empty string or zero or false or otherwise.
+
+12
+00:00:45,050 --> 00:00:46,220
+Some all see value.
+
+13
+00:00:46,910 --> 00:00:48,530
+If a false value is stored there.
+
+14
+00:00:48,560 --> 00:00:53,420
+You are still going to get back one because it is only looking for the existence of that key.
+
+15
+00:00:54,410 --> 00:00:56,750
+Now let's try out the h exist command very quickly.
+
+16
+00:00:56,960 --> 00:00:57,770
+Very simple one.
+
+17
+00:00:58,040 --> 00:00:58,940
+So h.
+
+18
+00:01:00,090 --> 00:01:02,970
+Exists company with age.
+
+19
+00:01:03,570 --> 00:01:04,740
+And sure enough, we get one.
+
+20
+00:01:05,770 --> 00:01:08,680
+We try to look up a key that does not exist inside this ash.
+
+21
+00:01:09,280 --> 00:01:10,060
+We'll get back to zero.
+
+22
+00:01:12,470 --> 00:01:12,770
+Okay.
+
+23
+00:01:13,040 --> 00:01:15,290
+Next up is the Dell Command.
+
+24
+00:01:16,290 --> 00:01:21,930
+This works identical to when we used it around strings so we can use Del to delete an entire hash that
+
+25
+00:01:21,930 --> 00:01:23,330
+is stored at a particular key.
+
+26
+00:01:24,360 --> 00:01:26,910
+But once again, very simple usage here.
+
+27
+00:01:27,210 --> 00:01:28,320
+Dell Company.
+
+28
+00:01:29,250 --> 00:01:31,470
+We'll just delete the entire hash stored there.
+
+29
+00:01:31,680 --> 00:01:33,150
+Now, that hash no longer exists.
+
+30
+00:01:33,720 --> 00:01:37,650
+If I try to do something like a h get all company, I will end up with an error.
+
+31
+00:01:37,680 --> 00:01:42,660
+Or in this case, excuse me, an empty response right there, because we no longer have any data stored
+
+32
+00:01:42,660 --> 00:01:42,870
+there.
+
+33
+00:01:46,870 --> 00:01:52,510
+And then finally with this video each though this allows us to delete one single key value pair that
+
+34
+00:01:52,510 --> 00:01:57,700
+is stored inside of a hash for each cell we can look up, say company once again and delete just the
+
+35
+00:01:57,700 --> 00:01:58,900
+age key value pair.
+
+36
+00:01:59,440 --> 00:02:04,600
+So in this case, we would find our hash late age and that's pretty much it.
+
+37
+00:02:05,570 --> 00:02:07,010
+Once again, very quick demonstration.
+
+38
+00:02:07,190 --> 00:02:08,660
+I'm going to first redefine.
+
+39
+00:02:09,800 --> 00:02:12,950
+My company has hash by rerunning this command up here.
+
+40
+00:02:15,680 --> 00:02:18,110
+Then down at the bottom, I'll get another code cell.
+
+41
+00:02:19,280 --> 00:02:21,500
+You HDL company.
+
+42
+00:02:22,690 --> 00:02:23,410
+And age.
+
+43
+00:02:25,280 --> 00:02:29,080
+Now if I do an H get all of company going to get back.
+
+44
+00:02:29,090 --> 00:02:29,790
+Just name.
+
+45
+00:02:29,990 --> 00:02:31,520
+No longer do I have any age.
+
+46
+00:02:33,970 --> 00:02:34,270
+Okay.
+
+47
+00:02:34,330 --> 00:02:36,700
+So once again, pretty basic commands.
+
+48
+00:02:37,030 --> 00:02:39,750
+We're going to get through all the rest of these commands in the next video.
+
+49
+00:02:39,760 --> 00:02:41,620
+Just kind of knock them all out in one go.
+
+50
+00:02:41,860 --> 00:02:42,760
+Should be pretty quick.

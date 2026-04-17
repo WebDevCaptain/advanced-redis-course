@@ -1,0 +1,431 @@
+1
+00:00:00,790 --> 00:00:02,800
+Let's get started on our implementation.
+
+2
+00:00:03,460 --> 00:00:08,320
+So to get started back inside my code editor, I'm going to find these services keys, dots file.
+
+3
+00:00:08,860 --> 00:00:09,490
+Inside of here.
+
+4
+00:00:09,490 --> 00:00:14,710
+We need to make a new key function that is going to point us to the list for any particular item.
+
+5
+00:00:15,220 --> 00:00:17,740
+So every item is going to have its own separate list of bits.
+
+6
+00:00:17,950 --> 00:00:22,450
+We need to make a function that will generate this key right here, given an items ID.
+
+7
+00:00:23,690 --> 00:00:27,740
+So at the very bottom, under the item section, I'm going to add an export consort.
+
+8
+00:00:28,810 --> 00:00:30,010
+Did history.
+
+9
+00:00:30,520 --> 00:00:30,940
+He.
+
+10
+00:00:33,480 --> 00:00:35,160
+This will be called with some item ID.
+
+11
+00:00:36,570 --> 00:00:38,640
+And then we're going to return a template string.
+
+12
+00:00:38,640 --> 00:00:42,870
+So as usual, back ticks, not single quotes we'll add in history.
+
+13
+00:00:43,830 --> 00:00:45,960
+Pound and the dollar sign.
+
+14
+00:00:45,960 --> 00:00:46,800
+Curly braces.
+
+15
+00:00:46,980 --> 00:00:47,790
+Item ID.
+
+16
+00:00:52,620 --> 00:00:54,840
+Back over inside of Bizkit's.
+
+17
+00:00:55,910 --> 00:00:59,420
+So this is as a quick reminder inside the services where each directory.
+
+18
+00:01:00,440 --> 00:01:01,160
+At the very top.
+
+19
+00:01:01,160 --> 00:01:02,900
+We'll add in a couple of different import.
+
+20
+00:01:03,790 --> 00:01:06,430
+I'm going to get the key function we just put together.
+
+21
+00:01:06,820 --> 00:01:08,470
+So that is it.
+
+22
+00:01:08,890 --> 00:01:09,400
+History.
+
+23
+00:01:09,970 --> 00:01:10,330
+He.
+
+24
+00:01:12,110 --> 00:01:14,390
+From Services Keys.
+
+25
+00:01:15,330 --> 00:01:16,830
+I'm going to get my read his clients.
+
+26
+00:01:18,120 --> 00:01:19,200
+Ron's services.
+
+27
+00:01:21,570 --> 00:01:21,890
+Rita.
+
+28
+00:01:22,950 --> 00:01:29,190
+And then we're also going to get something called the Date Time constructor from a library called Luxon.
+
+29
+00:01:29,490 --> 00:01:31,010
+You'll see why that is in just a moment.
+
+30
+00:01:32,390 --> 00:01:35,240
+Before we work on create bid and get bid history.
+
+31
+00:01:35,390 --> 00:01:36,470
+One quick reminder.
+
+32
+00:01:37,330 --> 00:01:42,760
+When we take these incoming bids that people are trying to add to an item, we need to extract the amount
+
+33
+00:01:42,760 --> 00:01:47,650
+of money that they are bidding and the Unix time stamp as well.
+
+34
+00:01:47,770 --> 00:01:49,540
+So when is this bid actually being created?
+
+35
+00:01:50,210 --> 00:01:54,640
+Now we're going to stored this inside of our list with these two values being separated by a colon.
+
+36
+00:01:54,820 --> 00:01:59,200
+So this is one big string right here, the amount colon and then the time.
+
+37
+00:02:00,100 --> 00:02:04,090
+So we need to write out a serialize and a serialize function.
+
+38
+00:02:04,660 --> 00:02:08,860
+These functions are going to be used to take a incoming bid and then turn it into a string that looks
+
+39
+00:02:08,860 --> 00:02:09,400
+like this.
+
+40
+00:02:09,670 --> 00:02:10,780
+That's going to be the serialized.
+
+41
+00:02:11,290 --> 00:02:16,840
+And then we need to have a matching de serialize function to take a string like this and turn it back
+
+42
+00:02:16,840 --> 00:02:22,000
+into something that tells us the amount of money that was bid and the time at which it was bid.
+
+43
+00:02:22,450 --> 00:02:27,190
+So remember, an object that looks like this right here needs to take that string and generate an object
+
+44
+00:02:27,190 --> 00:02:31,420
+that looks like a mount and accreted out with the date time.
+
+45
+00:02:33,480 --> 00:02:37,680
+So let's first begin by creating that serialize and serialize function.
+
+46
+00:02:38,950 --> 00:02:40,570
+All right, so back over here at the very bottom.
+
+47
+00:02:41,700 --> 00:02:46,320
+I'm going to give these things very explicit names because we're not really working with bids here.
+
+48
+00:02:46,350 --> 00:02:48,710
+We're working with a history of bids.
+
+49
+00:02:48,720 --> 00:02:53,670
+So I'm going to call it serialized history as opposed to just plain serialized.
+
+50
+00:02:55,660 --> 00:03:02,200
+Then as arguments, we're going to receive the amount of money that is being bid and created at time,
+
+51
+00:03:02,440 --> 00:03:04,190
+which we will receive as a number.
+
+52
+00:03:04,210 --> 00:03:06,460
+So again, UNIX time milliseconds.
+
+53
+00:03:09,210 --> 00:03:15,270
+Then the serialization is can be very simple or put in another template string with dollar sign curly
+
+54
+00:03:15,270 --> 00:03:15,900
+braces.
+
+55
+00:03:16,350 --> 00:03:17,400
+First the amounts.
+
+56
+00:03:18,740 --> 00:03:19,640
+Then a colon.
+
+57
+00:03:21,040 --> 00:03:22,780
+And then the accreted value.
+
+58
+00:03:25,520 --> 00:03:28,720
+Once again, just as a reminder, we don't have to use a colon here.
+
+59
+00:03:28,730 --> 00:03:31,340
+We could just as well use a slash a dash.
+
+60
+00:03:31,760 --> 00:03:34,010
+8% doesn't make a difference.
+
+61
+00:03:34,160 --> 00:03:37,130
+I'm just choosing to use a colon as a separator.
+
+62
+00:03:40,200 --> 00:03:42,570
+Then we can make a matching d serialize function.
+
+63
+00:03:43,050 --> 00:03:46,770
+So I'll make another function called serialized history.
+
+64
+00:03:49,620 --> 00:03:52,200
+So this will take in these stored string value.
+
+65
+00:03:53,580 --> 00:03:54,620
+I'm calling the store.
+
+66
+00:03:55,690 --> 00:03:58,060
+It is whatever string we are getting out of our list.
+
+67
+00:03:58,690 --> 00:04:00,380
+So these individual strings are here.
+
+68
+00:04:00,430 --> 00:04:02,260
+That is going to be these stored value.
+
+69
+00:04:02,860 --> 00:04:04,360
+So we need to take that stored value.
+
+70
+00:04:04,690 --> 00:04:09,160
+We need to separate it into two separate elements based upon that column.
+
+71
+00:04:10,390 --> 00:04:14,590
+Once we do that separate separation, we then are going to have to separate strings.
+
+72
+00:04:14,800 --> 00:04:16,970
+One string is going to be the 25 right here.
+
+73
+00:04:16,990 --> 00:04:18,320
+So it's going to be a string.
+
+74
+00:04:18,340 --> 00:04:20,740
+Remember, we are always getting strings when they come out of Redis.
+
+75
+00:04:21,430 --> 00:04:25,990
+And then the second string we're going to get during that split operation is the number over here.
+
+76
+00:04:26,260 --> 00:04:28,090
+I say number, but it really is a string.
+
+77
+00:04:28,630 --> 00:04:34,660
+So we need to parse both these things into actual numbers and then once again put them into an object
+
+78
+00:04:34,660 --> 00:04:35,950
+that looks like that right there.
+
+79
+00:04:39,320 --> 00:04:42,890
+So I'm going to do a amount.
+
+80
+00:04:44,000 --> 00:04:44,840
+And created at.
+
+81
+00:04:46,090 --> 00:04:47,480
+That's going to come from stored.
+
+82
+00:04:47,860 --> 00:04:49,270
+Split on colon.
+
+83
+00:04:51,860 --> 00:04:55,070
+The square brackets over here are doing some deep structuring.
+
+84
+00:04:55,190 --> 00:04:56,840
+So just a little bit of a JavaScript thing.
+
+85
+00:04:57,110 --> 00:05:00,920
+When we do these stalks split, that will give us back an array of two strings.
+
+86
+00:05:01,400 --> 00:05:06,830
+So we're going to take the first value inside that array and assign it to Arial called Amount and then
+
+87
+00:05:06,830 --> 00:05:10,910
+take the second element in the array and assign it to another variable called read it out.
+
+88
+00:05:11,720 --> 00:05:16,310
+Once again, I want to remind you these are currently strings, so we do need to parse them into numbers.
+
+89
+00:05:19,180 --> 00:05:19,450
+All right.
+
+90
+00:05:19,450 --> 00:05:23,470
+So down here at the bottom, we're going to create that object that we need to return from this function.
+
+91
+00:05:23,590 --> 00:05:25,720
+So it's an object that looks like this right here.
+
+92
+00:05:27,280 --> 00:05:32,320
+The amount will be our float on amount.
+
+93
+00:05:32,680 --> 00:05:38,050
+I'm using parse float here because I'm assuming that I am allowing people to bid amounts of money that
+
+94
+00:05:38,050 --> 00:05:39,830
+are going to have a decimal component.
+
+95
+00:05:40,120 --> 00:05:44,170
+So maybe something like $1.05.
+
+96
+00:05:45,520 --> 00:05:49,630
+The passport will give us back a number with a decimal component on it.
+
+97
+00:05:51,080 --> 00:05:52,460
+And then the it at.
+
+98
+00:05:54,520 --> 00:05:57,130
+Is going to be date time.
+
+99
+00:05:58,190 --> 00:05:59,480
+From Millie's.
+
+100
+00:06:01,560 --> 00:06:02,070
+And we'll put in.
+
+101
+00:06:02,070 --> 00:06:03,000
+Pass it.
+
+102
+00:06:05,470 --> 00:06:06,820
+Of created apps.
+
+103
+00:06:07,540 --> 00:06:10,270
+So once again take created out, which is currently a string.
+
+104
+00:06:10,540 --> 00:06:14,350
+Turn it into an integer and then make a deep time object out of it.
+
+105
+00:06:15,690 --> 00:06:16,170
+And that's it.
+
+106
+00:06:17,070 --> 00:06:20,610
+We've now got the serialization and this realization put together.
+
+107
+00:06:21,980 --> 00:06:23,060
+Now, one more quick pause.
+
+108
+00:06:23,090 --> 00:06:25,520
+We'll take care of Creed bid and get bid history.

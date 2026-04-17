@@ -1,0 +1,251 @@
+1
+00:00:00,900 --> 00:00:05,370
+We just had two long videos on a couple of different commands, and I know just going over commands
+
+2
+00:00:05,370 --> 00:00:06,240
+is pretty boring.
+
+3
+00:00:06,630 --> 00:00:11,400
+We're going to do one last very quick video on a few commands and then I'm really excited because in
+
+4
+00:00:11,400 --> 00:00:15,510
+the next video we're going to go over a lot of these different commands together and see how they all
+
+5
+00:00:15,510 --> 00:00:18,190
+fit together to make a pretty interesting system.
+
+6
+00:00:18,210 --> 00:00:20,610
+We're going to start to see where Reddit starts to come to life.
+
+7
+00:00:21,060 --> 00:00:22,740
+Very quickly, one last set of commands.
+
+8
+00:00:23,250 --> 00:00:26,950
+In this video we're going to cover get range, that range in Del.
+
+9
+00:00:26,970 --> 00:00:27,570
+Very quickly.
+
+10
+00:00:28,320 --> 00:00:28,560
+All right.
+
+11
+00:00:28,560 --> 00:00:34,350
+So first off, Del, this deletes an existing key out of your database and all the data stored at that
+
+12
+00:00:34,350 --> 00:00:34,650
+key.
+
+13
+00:00:35,100 --> 00:00:38,670
+This can use not only with strings, it can be used with any kind of data type.
+
+14
+00:00:39,480 --> 00:00:42,810
+For example, it called Del with a string of color.
+
+15
+00:00:42,840 --> 00:00:47,490
+It's going to delete the key color and any data associated with that key.
+
+16
+00:00:48,440 --> 00:00:54,110
+As a very quick example, I can do a jet color and I've got red stored there still.
+
+17
+00:00:54,980 --> 00:00:57,230
+I then do a del of color.
+
+18
+00:00:58,500 --> 00:00:59,310
+And then finally.
+
+19
+00:01:00,420 --> 00:01:02,040
+Another jet of color.
+
+20
+00:01:02,250 --> 00:01:05,070
+And now I can see plainly that no data is stored there at all.
+
+21
+00:01:06,220 --> 00:01:06,460
+All right.
+
+22
+00:01:06,460 --> 00:01:07,030
+Simple enough.
+
+23
+00:01:08,770 --> 00:01:10,150
+Next up, get range.
+
+24
+00:01:10,480 --> 00:01:14,980
+Now this command and the next one we're going to look at, which is set range, are both going to look
+
+25
+00:01:15,250 --> 00:01:16,660
+not super useful.
+
+26
+00:01:16,660 --> 00:01:20,920
+But like I said, we're going to see how all these commands kind of come together to really make this
+
+27
+00:01:20,920 --> 00:01:21,850
+very interesting.
+
+28
+00:01:22,720 --> 00:01:28,810
+The get range allows us to look at an existing string inside of our database and we can pull a range
+
+29
+00:01:28,810 --> 00:01:30,250
+of characters out of that string.
+
+30
+00:01:31,150 --> 00:01:32,740
+So we might Ron get range.
+
+31
+00:01:33,250 --> 00:01:39,640
+Look at the string stored at color and try to retrieve just the characters at index zero of that string
+
+32
+00:01:39,910 --> 00:01:41,740
+all the way through index three.
+
+33
+00:01:43,210 --> 00:01:44,980
+Let me show you an example that very quickly.
+
+34
+00:01:47,640 --> 00:01:53,190
+As a reminder, I have a key already set up of model here, and Toyota is stored at it.
+
+35
+00:01:54,130 --> 00:02:02,350
+So if I do a get range on model and then a zero and two, that means starting at index zero.
+
+36
+00:02:02,380 --> 00:02:03,070
+That would be a tie.
+
+37
+00:02:03,520 --> 00:02:06,940
+Go all the way up to and including index two.
+
+38
+00:02:07,600 --> 00:02:10,270
+So a012.
+
+39
+00:02:10,730 --> 00:02:12,010
+That would give me back toi.
+
+40
+00:02:13,240 --> 00:02:13,570
+Arun.
+
+41
+00:02:13,570 --> 00:02:14,470
+That's Antonoff.
+
+42
+00:02:14,470 --> 00:02:16,360
+I get to play again.
+
+43
+00:02:16,570 --> 00:02:20,200
+Doesn't look super useful, but we'll see how it can be very useful in just a moment.
+
+44
+00:02:22,450 --> 00:02:24,050
+Only got set range.
+
+45
+00:02:24,310 --> 00:02:26,020
+Kind of like the opposite of get rings.
+
+46
+00:02:26,380 --> 00:02:31,840
+This allows us to update a portion of an existing string, so we'll look up a string stored at color.
+
+47
+00:02:32,560 --> 00:02:37,150
+We're going to go to some index inside that string, maybe index two.
+
+48
+00:02:37,420 --> 00:02:42,850
+And starting at index two, we're going to replace the characters in that string with whatever string
+
+49
+00:02:42,850 --> 00:02:44,470
+we provide right after that number.
+
+50
+00:02:45,340 --> 00:02:46,750
+Again, very quick example.
+
+51
+00:02:49,110 --> 00:02:52,050
+I'll do a set range on model.
+
+52
+00:02:53,890 --> 00:02:56,020
+I'll say starting at index you.
+
+53
+00:02:56,710 --> 00:02:59,620
+I want to overwrite all the existing characters with Lou.
+
+54
+00:03:01,070 --> 00:03:02,680
+Now we'll get back six.
+
+55
+00:03:02,690 --> 00:03:04,970
+That is the total length of the string that was created.
+
+56
+00:03:05,840 --> 00:03:11,030
+Well, then it's actually if I run this again, I'm going to do a further insertion.
+
+57
+00:03:11,600 --> 00:03:15,620
+So let me instead make a new cell down here and I will get model.
+
+58
+00:03:16,370 --> 00:03:23,120
+Now we can see that I have to loop because I started at index two of Toyota and started overwriting
+
+59
+00:03:23,120 --> 00:03:24,050
+existing characters.
+
+60
+00:03:25,540 --> 00:03:25,930
+All right.
+
+61
+00:03:25,940 --> 00:03:27,550
+So three more commands now.
+
+62
+00:03:27,550 --> 00:03:31,600
+We're going to take a quick pause, come back and see how all these different commands kind of come
+
+63
+00:03:31,600 --> 00:03:34,240
+together to make a pretty performant system.

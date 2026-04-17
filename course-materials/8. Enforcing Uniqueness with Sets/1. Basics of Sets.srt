@@ -1,0 +1,255 @@
+1
+00:00:00,780 --> 00:00:05,760
+Onto our next major data type that we can store in red us and our next type is a set.
+
+2
+00:00:06,210 --> 00:00:11,550
+Now sets are where red is starts to get really, really interesting because they allow us to model more
+
+3
+00:00:11,550 --> 00:00:14,970
+interesting relationships between different pieces of data.
+
+4
+00:00:15,780 --> 00:00:20,310
+A set by itself is a collection of strings where each string is unique.
+
+5
+00:00:20,910 --> 00:00:26,610
+So for example, I might have a key that references a set, and inside the set I've got red, green,
+
+6
+00:00:26,610 --> 00:00:27,570
+blue and orange.
+
+7
+00:00:28,380 --> 00:00:34,200
+I'm guaranteed that I will never have any duplicate record within the set, so I will never have, say,
+
+8
+00:00:34,440 --> 00:00:38,040
+two copies of red or two copies or three copies of green.
+
+9
+00:00:38,640 --> 00:00:41,400
+Each string will only appear exactly one time.
+
+10
+00:00:41,640 --> 00:00:46,020
+No matter how many times I tried to add in, say the string red or the string green.
+
+11
+00:00:47,830 --> 00:00:52,240
+Now, as usual, we're going to go over a list of very common commands that we're going to use with
+
+12
+00:00:52,240 --> 00:00:53,050
+this data structure.
+
+13
+00:00:53,320 --> 00:00:58,240
+We're going to write out a ton of examples into a artbook notebook, and after that, we're going to
+
+14
+00:00:58,240 --> 00:01:02,710
+go over some common use cases and then eventually use sets inside of our e-commerce application.
+
+15
+00:01:03,750 --> 00:01:08,640
+But right now we're going to focus on just how we create add and list elements inside of a sense.
+
+16
+00:01:09,590 --> 00:01:15,170
+Our first command is going to be at just about all the different segments we're going to learn about,
+
+17
+00:01:15,170 --> 00:01:19,610
+begin with the character s and that makes them really, really easy for us to identify.
+
+18
+00:01:20,360 --> 00:01:23,570
+The ad command is how we add elements into a set.
+
+19
+00:01:24,170 --> 00:01:29,870
+So for example, if we do s add colors red, we're going to go to the key colors.
+
+20
+00:01:31,160 --> 00:01:36,650
+If a set does not already exist there, one will be created and we will add the key read to it.
+
+21
+00:01:37,890 --> 00:01:43,200
+No matter how many times you run the same exact ad command, if they are all identical, no changes
+
+22
+00:01:43,200 --> 00:01:43,680
+will be made.
+
+23
+00:01:43,920 --> 00:01:49,470
+So in other words, if I've already got a set with the string red inside of it, and then I run that
+
+24
+00:01:49,470 --> 00:01:54,870
+command again, again and again, no changes will be made my sets, because I've already got the string
+
+25
+00:01:54,870 --> 00:01:55,770
+red inside there.
+
+26
+00:01:57,910 --> 00:02:00,850
+Before we test out this command, there's one other I want to tell you about.
+
+27
+00:02:01,300 --> 00:02:08,200
+That is as members as members returns, all the different values that are stored within a set.
+
+28
+00:02:09,650 --> 00:02:09,920
+All right.
+
+29
+00:02:09,920 --> 00:02:13,400
+So between these two commands, we can very easily test them out inside of our book.
+
+30
+00:02:13,610 --> 00:02:14,690
+Let's take care of that right now.
+
+31
+00:02:15,640 --> 00:02:20,560
+Back inside of our book, I've already created a new notebook called Sets as your guests.
+
+32
+00:02:20,620 --> 00:02:22,270
+First is ADD.
+
+33
+00:02:22,270 --> 00:02:22,930
+Let's take a look.
+
+34
+00:02:22,940 --> 00:02:24,130
+I'm going to do ADD.
+
+35
+00:02:25,490 --> 00:02:27,230
+Others read.
+
+36
+00:02:28,700 --> 00:02:34,190
+And I get back a one you might have noticed on the diagram I showed you just a moment ago, when we
+
+37
+00:02:34,190 --> 00:02:38,150
+run the ad, if we get back a one, that means an element was added.
+
+38
+00:02:38,570 --> 00:02:42,020
+If we get back a zero, it means that that element already exists inside the set.
+
+39
+00:02:42,230 --> 00:02:44,420
+And we did not add anything to the set.
+
+40
+00:02:44,990 --> 00:02:51,290
+The very first time I run ad colors red, I get back to one because I've added red to the set for the
+
+41
+00:02:51,290 --> 00:02:52,130
+very first time.
+
+42
+00:02:52,610 --> 00:02:58,250
+But if I run this command again, I get back a zero because Red already existed inside there.
+
+43
+00:03:00,280 --> 00:03:07,150
+If I add in a different value, say green, I once again get a one and then a zero if I run it again.
+
+44
+00:03:08,250 --> 00:03:12,450
+Now I've been saying string, string, string over and over and over again.
+
+45
+00:03:12,810 --> 00:03:17,640
+But remember, numbers are treated in a very similar fashion as strings inside of lettuce.
+
+46
+00:03:18,180 --> 00:03:20,340
+So I can add in numbers to a set as well.
+
+47
+00:03:20,790 --> 00:03:23,250
+For example, if I wanted to, I could do s add.
+
+48
+00:03:23,700 --> 00:03:27,360
+How about numbers three?
+
+49
+00:03:28,710 --> 00:03:30,290
+I get a one, I run again.
+
+50
+00:03:30,300 --> 00:03:30,930
+I get a zero.
+
+51
+00:03:31,850 --> 00:03:33,310
+I'm going to go back to colors, though.
+
+52
+00:03:34,630 --> 00:03:36,520
+Because it's a little bit easier to keep track of.
+
+53
+00:03:38,120 --> 00:03:41,840
+All right, so now you see what values exist inside the sets.
+
+54
+00:03:41,990 --> 00:03:43,220
+We can do an S.
+
+55
+00:03:43,940 --> 00:03:44,480
+Members.
+
+56
+00:03:45,630 --> 00:03:48,150
+And then the key representative said that we want to look up.
+
+57
+00:03:48,840 --> 00:03:51,540
+Now, if we'd run this, I will get back red and green.
+
+58
+00:03:53,060 --> 00:03:55,880
+Well, that's the basics of Assad and its members.
+
+59
+00:03:56,120 --> 00:04:01,130
+Now, once again, at first glance, kind of seems like this is a very basic structure and it might
+
+60
+00:04:01,130 --> 00:04:02,960
+seem like it doesn't really do a lot for us.
+
+61
+00:04:03,260 --> 00:04:05,870
+But if you start to use your imagination, you're going to start to see that.
+
+62
+00:04:06,140 --> 00:04:10,690
+Like I said, sets really start to unlock a lot of interesting capabilities in Reddit.
+
+63
+00:04:11,060 --> 00:04:15,800
+And we're going to see those very quickly as we discuss use cases and use them inside of our application.
+
+64
+00:04:16,490 --> 00:04:19,280
+Let's continue on with a couple more commands in the next video.

@@ -1,0 +1,359 @@
+1
+00:00:00,530 --> 00:00:04,130
+Let's take a look at a couple of different diagrams and understand how we're going to solve this concurrency
+
+2
+00:00:04,130 --> 00:00:04,460
+issue.
+
+3
+00:00:04,940 --> 00:00:09,470
+First, I want to really simplify the situation that we're running into around these concurrency problems.
+
+4
+00:00:09,920 --> 00:00:15,140
+The problem specifically that we are really seeing here is we have two processes that are both trying
+
+5
+00:00:15,140 --> 00:00:20,630
+to read a value out of Redis and then do a right operation based upon that value.
+
+6
+00:00:21,700 --> 00:00:26,770
+So if you're ever in this scenario where you have one process that is doing a read and then a writes
+
+7
+00:00:27,130 --> 00:00:30,910
+and then a second process that is just doing a read of the same value.
+
+8
+00:00:31,000 --> 00:00:31,840
+This is okay.
+
+9
+00:00:31,930 --> 00:00:33,520
+No problem here whatsoever.
+
+10
+00:00:34,090 --> 00:00:39,880
+The issue is when we have two processes that are both trying to read and write to the same value at
+
+11
+00:00:39,880 --> 00:00:45,190
+the same time, because we might end up with different results depending upon which processes right
+
+12
+00:00:45,190 --> 00:00:46,420
+operation goes first.
+
+13
+00:00:47,170 --> 00:00:50,140
+So that's specifically the problem that we are trying to fix.
+
+14
+00:00:50,920 --> 00:00:57,250
+So ideally, we would have some way to say process one is going to go first and then process two will
+
+15
+00:00:57,250 --> 00:00:58,000
+go second.
+
+16
+00:00:58,540 --> 00:01:02,350
+We ideally want to pause temporarily one process or the other.
+
+17
+00:01:03,510 --> 00:01:04,620
+Here's how we're going to do that.
+
+18
+00:01:05,600 --> 00:01:11,780
+Whenever we have two different processes that are trying to update some value inside of Redis or really
+
+19
+00:01:11,780 --> 00:01:16,280
+do a read and then a write operation, and it doesn't have to be something stored inside of a hash,
+
+20
+00:01:16,280 --> 00:01:19,640
+it could be something inside of a list or a sorted set and so on.
+
+21
+00:01:20,270 --> 00:01:25,880
+We're going to try to say that only one process can modify a given value at any given time.
+
+22
+00:01:26,570 --> 00:01:29,390
+And we're going to do that by using a technique called a lock.
+
+23
+00:01:30,340 --> 00:01:35,560
+So whenever process one or process two, you wants to update something tied to this hash, they're going
+
+24
+00:01:35,560 --> 00:01:39,370
+to first try to set a very specific key in Redis.
+
+25
+00:01:39,910 --> 00:01:41,440
+This is going to be a separate key.
+
+26
+00:01:41,770 --> 00:01:43,730
+There's nothing special about the name.
+
+27
+00:01:43,750 --> 00:01:46,780
+It is going to be just a random convention that you and I come up with.
+
+28
+00:01:47,470 --> 00:01:53,440
+So we might try to set a key of something like Lock Colon, item A one, which would indicate that we
+
+29
+00:01:53,440 --> 00:01:56,950
+are trying to lock the value stored at the key item A1.
+
+30
+00:01:58,060 --> 00:02:02,680
+They're both going to try to do a right operation and set some value right here.
+
+31
+00:02:03,670 --> 00:02:06,700
+The right operation that they're going to do will be a simple set.
+
+32
+00:02:07,480 --> 00:02:12,550
+So at the same time, process one and process two are both going to send off a set command.
+
+33
+00:02:13,240 --> 00:02:16,720
+They're both going to try to set the key lock item, A-1.
+
+34
+00:02:17,320 --> 00:02:22,570
+And then process one might try to store some random string there, something like high and process.
+
+35
+00:02:22,600 --> 00:02:26,140
+You might try to store something random there like say the string by.
+
+36
+00:02:27,040 --> 00:02:31,180
+And then very critically, we're also going to add on the annex arguments to both these commands.
+
+37
+00:02:31,720 --> 00:02:33,370
+Remember what Annex does.
+
+38
+00:02:33,790 --> 00:02:37,960
+It means only try to set the value if a value is not already stored here.
+
+39
+00:02:39,110 --> 00:02:39,800
+Let's imagine.
+
+40
+00:02:41,050 --> 00:02:45,970
+That may be process one sends off its set command just a little bit before process to.
+
+41
+00:02:47,200 --> 00:02:51,070
+At that point, lock item A1 is currently not referring to any value.
+
+42
+00:02:51,700 --> 00:02:55,480
+The first set command is going to work because there is no value stored there yet.
+
+43
+00:02:56,970 --> 00:02:57,810
+We're going to do a high.
+
+44
+00:02:59,670 --> 00:03:04,560
+When process one gets a response from Metis, it will be told that the set operation was successful.
+
+45
+00:03:05,470 --> 00:03:10,270
+Well, then imagine that a half a millisecond later, Ross has to set Comey.
+
+46
+00:03:10,270 --> 00:03:11,020
+I just processed.
+
+47
+00:03:12,020 --> 00:03:15,590
+It runs the same set operation, but with a different value right there.
+
+48
+00:03:16,040 --> 00:03:20,240
+And in this case, when it looks up this key, it's going to find that the value is already stored there.
+
+49
+00:03:20,720 --> 00:03:23,480
+So it's going to return null back over to our process.
+
+50
+00:03:23,750 --> 00:03:27,580
+And so our process is aware that the set operation failed.
+
+51
+00:03:29,040 --> 00:03:34,920
+Because Process one was successful in doing a set and Process two failed in doing the set.
+
+52
+00:03:35,790 --> 00:03:42,480
+Process one currently would have exclusive access to read and write to the hash stored at item A1.
+
+53
+00:03:43,620 --> 00:03:47,090
+So at this point in time, Ross, this one has exclusive access.
+
+54
+00:03:47,100 --> 00:03:50,460
+It can read from that value, it can update the value and so on.
+
+55
+00:03:51,060 --> 00:03:55,560
+And once again, to be clear, any other process can read it from this House right now.
+
+56
+00:03:55,590 --> 00:03:56,130
+Absolutely.
+
+57
+00:03:56,130 --> 00:03:57,270
+They can read from that house.
+
+58
+00:03:57,270 --> 00:03:58,170
+No problem whatsoever.
+
+59
+00:03:58,500 --> 00:04:03,840
+What we specifically want to prevent is any other process doing a read and then a rights operation.
+
+60
+00:04:05,570 --> 00:04:06,110
+The process.
+
+61
+00:04:06,110 --> 00:04:11,510
+One is going to mess around it, that hash as much as it wants because it knows that in theory, nobody
+
+62
+00:04:11,510 --> 00:04:14,360
+else should be trying to modify this value at that point in time.
+
+63
+00:04:15,440 --> 00:04:16,340
+Simultaneously.
+
+64
+00:04:16,370 --> 00:04:18,500
+Process two is not going to give up just yet.
+
+65
+00:04:18,950 --> 00:04:23,960
+Instead, it's going to keep on sending that same set commands every couple of milliseconds.
+
+66
+00:04:24,140 --> 00:04:28,580
+So it's going to keep retrying this command over and over and over again in very quick succession.
+
+67
+00:04:29,950 --> 00:04:33,820
+Then at some point, Ross, this one is going to finish up with all of its work.
+
+68
+00:04:34,360 --> 00:04:37,330
+So it's done, it's read operation, it's done its right operation.
+
+69
+00:04:37,480 --> 00:04:41,440
+And so now it needs to say, Hey, I'm all done working on this item hash.
+
+70
+00:04:42,450 --> 00:04:47,220
+So it's going to delete the key stored there, stored at specifically lock item A1.
+
+71
+00:04:48,380 --> 00:04:49,670
+That value is going to be removed.
+
+72
+00:04:50,600 --> 00:04:56,300
+Now, as you can imagine, the next time process two sends off its set commands, it's going to succeed.
+
+73
+00:04:56,780 --> 00:04:59,720
+So it will store by their process.
+
+74
+00:04:59,780 --> 00:05:03,160
+You will get a response from Rita saying that the value was successfully stored.
+
+75
+00:05:03,200 --> 00:05:06,890
+And so now Process two has exclusive access to item A1.
+
+76
+00:05:08,170 --> 00:05:08,630
+And that's it.
+
+77
+00:05:08,650 --> 00:05:09,970
+That's the entire flow.
+
+78
+00:05:10,870 --> 00:05:16,180
+We're going to use this technique of a lock to make sure that only one process has that read and rights
+
+79
+00:05:16,180 --> 00:05:20,200
+operation or responsibility around any given key at a given time.
+
+80
+00:05:21,160 --> 00:05:26,770
+Any other process that wants to do this, read and write is going to have to keep on trying to set a
+
+81
+00:05:26,890 --> 00:05:27,970
+very specific key.
+
+82
+00:05:28,210 --> 00:05:34,390
+And only when that set operation succeeds will it have the ability to do a read and write operation
+
+83
+00:05:34,390 --> 00:05:35,560
+to that particular key.
+
+84
+00:05:36,940 --> 00:05:40,210
+Now, I've given you a very high level definition of what we're doing here.
+
+85
+00:05:40,300 --> 00:05:41,260
+Very high level look.
+
+86
+00:05:41,590 --> 00:05:46,120
+But there are a couple of other little odds and ends that we're going to run into along the way.
+
+87
+00:05:46,330 --> 00:05:52,150
+So we are going to slightly change this process just a little bit as we do some further investigation
+
+88
+00:05:52,150 --> 00:05:53,230
+and implementation.
+
+89
+00:05:53,350 --> 00:05:57,010
+But for right now, this is a pretty accurate overview on what we're trying to achieve.
+
+90
+00:05:57,900 --> 00:06:00,450
+Let's get started on our implementation in just a moment.

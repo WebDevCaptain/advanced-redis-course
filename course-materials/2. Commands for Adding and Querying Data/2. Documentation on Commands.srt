@@ -1,0 +1,359 @@
+1
+00:00:00,930 --> 00:00:03,390
+We are going to write out a couple more commands in just a moment.
+
+2
+00:00:03,390 --> 00:00:07,890
+But first, I want to give you a few more high level notes on commands and show you some documentation
+
+3
+00:00:07,890 --> 00:00:08,670
+around them as well.
+
+4
+00:00:09,390 --> 00:00:13,500
+I went through the official Rita's documentation and I found a list of all the different commands that
+
+5
+00:00:13,500 --> 00:00:15,900
+are relevant for dealing with strings in just about any way.
+
+6
+00:00:16,260 --> 00:00:18,240
+And I came up with a list that you see right here.
+
+7
+00:00:18,900 --> 00:00:23,310
+Now, this might look like many different commands where you have to understand and really figure out
+
+8
+00:00:23,310 --> 00:00:24,570
+what they're all used for.
+
+9
+00:00:24,930 --> 00:00:30,360
+But I want to immediately help you understand that you really don't have to memorize every single one
+
+10
+00:00:30,360 --> 00:00:34,320
+of these commands to use this effectively out of all these different commands.
+
+11
+00:00:34,920 --> 00:00:38,270
+Just about half of them are used to retrieve data out of Redis.
+
+12
+00:00:38,610 --> 00:00:40,440
+Those specifically retrieve strings.
+
+13
+00:00:41,190 --> 00:00:44,400
+Just about the other half are used to store strings in red.
+
+14
+00:00:45,420 --> 00:00:48,840
+Now, even when I start to divide it down like this, it still looks like there's a lot of stuff to
+
+15
+00:00:48,840 --> 00:00:49,380
+memorize.
+
+16
+00:00:50,010 --> 00:00:56,250
+But here's the thing to understand about Red is it turns out that many commands kind of duplicate functionality.
+
+17
+00:00:56,490 --> 00:01:03,840
+In other words, something like get and get really have at the end of the day very similar behavior.
+
+18
+00:01:04,500 --> 00:01:09,930
+Making use of the Git X Command is very similar to get, except it kind of implies that you're also
+
+19
+00:01:09,930 --> 00:01:11,940
+going to add in this additional option.
+
+20
+00:01:12,300 --> 00:01:17,100
+In other words, you're kind of like very small variations on otherwise simple commands.
+
+21
+00:01:18,280 --> 00:01:21,370
+But of all this, I kind of did a little bit of grouping together.
+
+22
+00:01:23,030 --> 00:01:23,960
+On the guitar side.
+
+23
+00:01:24,140 --> 00:01:26,000
+These are all commands that are used to retrieve data.
+
+24
+00:01:26,330 --> 00:01:30,350
+It turns out that gets get Del and get x duvall.
+
+25
+00:01:30,350 --> 00:01:32,000
+Do something vaguely similar.
+
+26
+00:01:32,510 --> 00:01:35,690
+So you don't really have to memorize each and every one of these three commands.
+
+27
+00:01:35,930 --> 00:01:38,270
+You can really just start to study, get by itself.
+
+28
+00:01:38,510 --> 00:01:44,060
+And if you ever decide that you're in a special scenario or special case where maybe get Del would be
+
+29
+00:01:44,060 --> 00:01:45,990
+a little bit more convenient for you to use.
+
+30
+00:01:46,010 --> 00:01:49,730
+You can very quickly look at the documentation and understand how to use it very quickly.
+
+31
+00:01:50,680 --> 00:01:52,270
+Very similar on Seders as well.
+
+32
+00:01:52,660 --> 00:01:58,720
+It turns out that set set an X and set x all kind of vaguely do the same thing.
+
+33
+00:01:59,180 --> 00:02:03,580
+So we're going to spend a lot of time understanding sets and we're going to have a quick word about
+
+34
+00:02:03,580 --> 00:02:07,690
+set an X and set x, but we're not going to obsess over them or anything like that.
+
+35
+00:02:08,630 --> 00:02:13,940
+In addition, there are also some commands where it's really not immediately obvious where you would
+
+36
+00:02:13,940 --> 00:02:18,830
+ever use these things, any practical application, unless you have some kind of very special circumstance.
+
+37
+00:02:19,490 --> 00:02:25,940
+Some examples of that would be substring get range LCS and for setters the append and set range.
+
+38
+00:02:26,450 --> 00:02:30,380
+That's not to say that you're never going to use these commands, but if you're going to use them,
+
+39
+00:02:30,500 --> 00:02:35,450
+it's probably in a very special use case and I'll mention what some possible use cases would be.
+
+40
+00:02:36,540 --> 00:02:41,460
+And the last thing I want to do is show you the official documentation you are going to be making use
+
+41
+00:02:41,460 --> 00:02:44,560
+of the official docs around commands very, very often.
+
+42
+00:02:44,700 --> 00:02:48,140
+Even if you are using a library in your code to work with Redis.
+
+43
+00:02:48,180 --> 00:02:49,110
+I'll tell you why that is.
+
+44
+00:02:49,260 --> 00:02:50,670
+A little bit later on inside the course.
+
+45
+00:02:51,570 --> 00:02:55,110
+I want to very quickly show you this documentation and help you understand how to read it.
+
+46
+00:02:55,440 --> 00:02:59,250
+Because even in this course, we are going to refer back to the documentation very often.
+
+47
+00:03:00,290 --> 00:03:02,030
+Go inside your browser, open up a new tab.
+
+48
+00:03:02,150 --> 00:03:07,370
+We're going to go to register IO, slash commands, and I've got the page open myself right here.
+
+49
+00:03:09,590 --> 00:03:14,030
+Now up at the top, I am going to find this dropdown that says Filter by group.
+
+50
+00:03:14,510 --> 00:03:16,380
+Remember what I told you in the last video?
+
+51
+00:03:16,610 --> 00:03:21,440
+There are many different commands and each of these different commands are usually used to modify or
+
+52
+00:03:21,440 --> 00:03:23,450
+work with a very specific type of data.
+
+53
+00:03:24,050 --> 00:03:28,730
+So if I use this dropdown, I'll see that I can look up all the different commands related to strings.
+
+54
+00:03:30,700 --> 00:03:34,600
+And now we're going to see some the commands we just saw in that diagram just a moment ago.
+
+55
+00:03:34,630 --> 00:03:38,140
+So things like append, get set, get delegate X and so on.
+
+56
+00:03:38,470 --> 00:03:42,340
+You'll notice that there are some other commands inside here that didn't list inside the diagram that
+
+57
+00:03:42,340 --> 00:03:46,300
+you were just looking at, because they are related specifically to working with numbers.
+
+58
+00:03:46,420 --> 00:03:48,220
+We're going to cover numbers separately in just a moment.
+
+59
+00:03:49,160 --> 00:03:50,090
+Ah, this entire list.
+
+60
+00:03:50,090 --> 00:03:53,150
+I'm going to scroll down and find the command called set.
+
+61
+00:03:53,180 --> 00:03:53,900
+Here it is right here.
+
+62
+00:03:56,720 --> 00:04:01,070
+Now all I want to show you is really this big lock of text up here at the top because you're going to
+
+63
+00:04:01,070 --> 00:04:05,770
+see in the documentation for just about every command blocks of text that look like this.
+
+64
+00:04:05,780 --> 00:04:09,010
+And if you don't know what you're looking at, it's going to get really confusing really quickly.
+
+65
+00:04:09,080 --> 00:04:11,930
+So let me just help you understand what this text is trying to tell us.
+
+66
+00:04:12,770 --> 00:04:15,530
+I took all the text of that heading and broke it up part by parts.
+
+67
+00:04:16,100 --> 00:04:20,660
+The first thing I want to point out is that any time you see a capitalized word, that is a keyword.
+
+68
+00:04:21,020 --> 00:04:25,400
+In other words, we're going to write out exactly that keyword for a command whenever we execute it.
+
+69
+00:04:25,970 --> 00:04:27,350
+So set is capitalized.
+
+70
+00:04:27,440 --> 00:04:31,250
+That means if we ever want to run the set command, we must write in SBT.
+
+71
+00:04:32,040 --> 00:04:36,770
+Any time you see a lowercase value, that is where you and I, as developers are supposed to put in
+
+72
+00:04:36,920 --> 00:04:38,630
+some particular value of our own.
+
+73
+00:04:39,320 --> 00:04:40,650
+So we're not supposed to write in here.
+
+74
+00:04:40,700 --> 00:04:41,180
+Right here.
+
+75
+00:04:41,210 --> 00:04:43,610
+We're supposed to put in some value or key.
+
+76
+00:04:43,850 --> 00:04:47,270
+So something like color or message or something similar.
+
+77
+00:04:49,850 --> 00:04:53,720
+Any time you see square brackets, that means everything inside there is optional.
+
+78
+00:04:54,410 --> 00:04:57,380
+So down here at the very bottom we have get inside of square brackets.
+
+79
+00:04:57,380 --> 00:05:02,270
+That means this is an optional argument that we are not required to put in to understand what these
+
+80
+00:05:02,270 --> 00:05:03,710
+optional arguments do for us.
+
+81
+00:05:03,740 --> 00:05:07,760
+You can scroll down in the documentation a little bit and find right your options.
+
+82
+00:05:08,420 --> 00:05:12,620
+Find git and that will tell you what's going to happen if you add in that get keyword.
+
+83
+00:05:14,580 --> 00:05:16,590
+Finally you'll see all of these hype symbols.
+
+84
+00:05:17,010 --> 00:05:23,460
+They kind of look like capital I's that can be interpreted as meaning or everything inside of this big
+
+85
+00:05:23,460 --> 00:05:32,220
+square bracket block right here means you can add in an argument or apex or an exact or apex out and
+
+86
+00:05:32,220 --> 00:05:32,580
+so on.
+
+87
+00:05:34,630 --> 00:05:39,220
+Now, like I said, we're going to come back to this documentation very often because it really is truly
+
+88
+00:05:39,220 --> 00:05:41,620
+the source of understanding how this works.
+
+89
+00:05:41,950 --> 00:05:45,520
+In addition, many of the documentation on these different commands will give you more insight into
+
+90
+00:05:45,520 --> 00:05:49,810
+what the command is doing behind the scenes and how we might use it effectively in a real application.

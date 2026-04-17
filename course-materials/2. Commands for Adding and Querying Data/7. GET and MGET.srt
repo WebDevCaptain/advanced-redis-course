@@ -1,0 +1,51 @@
+1
+00:00:00,950 --> 00:00:02,150
+That's for completion sake.
+
+2
+00:00:02,180 --> 00:00:03,890
+Let's go over to the other side of this diagram.
+
+3
+00:00:04,130 --> 00:00:06,440
+We're going to take a look at and get and get very quickly.
+
+4
+00:00:06,620 --> 00:00:10,760
+We've already used get a couple of times, so I bet you can guess how that one's going to work.
+
+5
+00:00:10,850 --> 00:00:14,120
+We just put in get and the name of some key that we want to retrieve.
+
+6
+00:00:15,380 --> 00:00:16,330
+Very small variation.
+
+7
+00:00:16,370 --> 00:00:19,780
+This is in Get, which works very similar to M set.
+
+8
+00:00:20,110 --> 00:00:25,700
+It allows us to retrieve multiple different keys with one single command, so an in get of color in
+
+9
+00:00:25,700 --> 00:00:29,930
+model would give us whatever value is associated with both color and model.
+
+10
+00:00:30,800 --> 00:00:32,420
+Again, very quick demonstration here.
+
+11
+00:00:33,080 --> 00:00:40,280
+So I have previously set the keys, color and model and if I now add in another cell here and do an
+
+12
+00:00:40,280 --> 00:00:43,020
+m gets of color and model.
+
+13
+00:00:43,040 --> 00:00:47,210
+I should get back both Red and Toyota and sure enough, I do.

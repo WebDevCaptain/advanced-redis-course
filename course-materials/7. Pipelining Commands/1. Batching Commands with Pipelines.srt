@@ -1,0 +1,219 @@
+1
+00:00:00,690 --> 00:00:02,220
+On to the get items function.
+
+2
+00:00:02,580 --> 00:00:04,840
+This function is going to be pretty interesting to put together.
+
+3
+00:00:04,860 --> 00:00:07,440
+It's going to require us to learn a new topic in Redis.
+
+4
+00:00:07,950 --> 00:00:13,170
+So let me give you a very quick side topic here, very quick side story to help you understand why this
+
+5
+00:00:13,170 --> 00:00:14,820
+is going to be an interesting function.
+
+6
+00:00:15,600 --> 00:00:15,900
+Okay.
+
+7
+00:00:15,930 --> 00:00:16,950
+Very quick example.
+
+8
+00:00:17,340 --> 00:00:22,350
+Let's imagine we are building a different application and we have an incoming request that says give
+
+9
+00:00:22,350 --> 00:00:26,880
+me the details about cars with the IDs by five, three, six, oh one and so on.
+
+10
+00:00:27,820 --> 00:00:31,800
+This is actually kind of challenging for us to do right now because you'll notice that all the different
+
+11
+00:00:31,800 --> 00:00:36,720
+commands we have learned about, such as each get all, each set each get and so on.
+
+12
+00:00:36,990 --> 00:00:39,660
+They all work on one single hash.
+
+13
+00:00:39,750 --> 00:00:41,340
+One of the words, one single key.
+
+14
+00:00:42,600 --> 00:00:47,550
+But we now are getting a request saying go and fetch a wide variety of different records.
+
+15
+00:00:48,030 --> 00:00:51,510
+So how do we somehow tell is that we don't want to fetch one single hash.
+
+16
+00:00:51,630 --> 00:00:54,060
+We want to get a variety of different hashes.
+
+17
+00:00:55,260 --> 00:00:59,000
+Let's first begin by taking a look at two different options.
+
+18
+00:00:59,840 --> 00:01:04,670
+The first option I want to show you, just because you will see some documentation, some blog posts
+
+19
+00:01:04,910 --> 00:01:09,200
+that show this as a possible way of implementing this, but it's definitely not ideal.
+
+20
+00:01:09,770 --> 00:01:13,010
+So this is an option, but probably you do not want to do this.
+
+21
+00:01:14,270 --> 00:01:14,690
+So notch.
+
+22
+00:01:14,700 --> 00:01:16,670
+Number one, very obvious solution.
+
+23
+00:01:16,940 --> 00:01:21,680
+We might take a look at all the IDs that the user has provided us, and we might loop over that list
+
+24
+00:01:21,680 --> 00:01:27,650
+of IDs and then do a separate each, get all one by one inside of a for loop or something similar.
+
+25
+00:01:28,740 --> 00:01:29,700
+This would definitely work.
+
+26
+00:01:29,820 --> 00:01:34,110
+We would definitely fetch all the data we're looking for, but there's a very clear downside.
+
+27
+00:01:34,530 --> 00:01:40,170
+We are making a wide variety of different separate requests off to Redis, and so that's just plain
+
+28
+00:01:40,170 --> 00:01:45,210
+going to take some amount of time if we are trying to fetch, say, 100 different records.
+
+29
+00:01:45,510 --> 00:01:51,210
+We're talking about making 100 different requests over to Redis, though probably not going to be very
+
+30
+00:01:51,210 --> 00:01:51,630
+ideal.
+
+31
+00:01:52,410 --> 00:01:54,000
+Let's take a look at option number two.
+
+32
+00:01:55,970 --> 00:01:56,300
+All right.
+
+33
+00:01:56,330 --> 00:02:00,350
+Option number two is going to use a feature in red is referred to as pipe lining.
+
+34
+00:02:00,990 --> 00:02:06,380
+Pipeline essentially means take a bunch of different commands and dump them all into one single command
+
+35
+00:02:06,860 --> 00:02:10,370
+and then throw that one single, big giant command off to Redis.
+
+36
+00:02:11,240 --> 00:02:16,820
+Though in this scenario we might still loop over all of our different IDs and tried to say, Hey, I
+
+37
+00:02:16,820 --> 00:02:21,860
+want to fetch the car with ID five, five, three and 67789, four, one, nine and so on.
+
+38
+00:02:22,220 --> 00:02:26,720
+But the big difference here is that we're essentially saying don't send the command off just yet.
+
+39
+00:02:27,260 --> 00:02:30,260
+So set all these commands up, but don't actually issue them.
+
+40
+00:02:31,540 --> 00:02:36,940
+Once we finish the for loop and creates or initialize these different commands, we can then say, All
+
+41
+00:02:36,940 --> 00:02:39,250
+right, take a look at all those commands that we had queued up.
+
+42
+00:02:39,430 --> 00:02:42,910
+And now in one big batch, send them off to lettuce.
+
+43
+00:02:43,780 --> 00:02:49,690
+So in one single connection, we can send off this big group of different Skittles, one for each individual
+
+44
+00:02:49,690 --> 00:02:50,770
+card that we're trying to fetch.
+
+45
+00:02:51,460 --> 00:02:55,240
+Reddest understands this idea of batching commands together.
+
+46
+00:02:55,510 --> 00:03:00,040
+So it's going to take the big pile of commands, break them all out into separate individual ones,
+
+47
+00:03:00,340 --> 00:03:02,200
+and execute each of them one by one.
+
+48
+00:03:03,350 --> 00:03:07,400
+The net result is that in response, we're going to get back a list.
+
+49
+00:03:08,460 --> 00:03:13,650
+Of sorts, containing the results of all the different commands that we just executed.
+
+50
+00:03:14,130 --> 00:03:18,660
+So we will get back a list of all these different cars in one single response.
+
+51
+00:03:20,490 --> 00:03:22,340
+Again, this is referred to as pipelines.
+
+52
+00:03:23,180 --> 00:03:28,730
+And before implementing pipelines inside of our application, I would like to do a quick little side,
+
+53
+00:03:28,960 --> 00:03:33,350
+a little bit of code back inside that sandbox folder that we worked on a little bit ago.
+
+54
+00:03:33,590 --> 00:03:38,780
+Just so you understand how to implement pipelines specifically with JavaScript and of course, TypeScript.
+
+55
+00:03:39,620 --> 00:03:43,720
+A quick pause right here, and we're going to work on a very small little side task with Pipeline.

@@ -1,0 +1,615 @@
+1
+00:00:01,170 --> 00:00:03,450
+We are trying to implement some very simple page caching.
+
+2
+00:00:03,780 --> 00:00:08,940
+Like I said, this is probably going to be implemented with a very simple git and set operation, which
+
+3
+00:00:08,940 --> 00:00:10,080
+we've already taken a look at.
+
+4
+00:00:10,560 --> 00:00:13,890
+We could just dive in headfirst and put this stuff together.
+
+5
+00:00:14,100 --> 00:00:17,430
+But of course, there are a couple of high level notes I want to give you first.
+
+6
+00:00:18,270 --> 00:00:18,600
+All right.
+
+7
+00:00:18,630 --> 00:00:20,430
+This is the most important thing.
+
+8
+00:00:20,730 --> 00:00:25,740
+And out of the entire course, this is probably what I'm going to really hope that you walk away understanding
+
+9
+00:00:25,740 --> 00:00:25,890
+this.
+
+10
+00:00:25,890 --> 00:00:30,840
+Probably the most important part of read is Barnhardt and the world of SQL databases.
+
+11
+00:00:30,870 --> 00:00:36,180
+If we were using MySchool or PostgreSQL, we usually use a design methodology where we just take all
+
+12
+00:00:36,180 --> 00:00:42,510
+of our data and we throw it into tables, and once it is stored in tables we can then query that data
+
+13
+00:00:42,510 --> 00:00:43,500
+very flexibly.
+
+14
+00:00:43,830 --> 00:00:45,480
+We could figure out what data we need.
+
+15
+00:00:45,480 --> 00:00:50,790
+We can query it with any kind of query we can possibly think up using sequel, and our database is going
+
+16
+00:00:50,790 --> 00:00:54,780
+to take these different queries, run random, hopefully in the most efficient way possible.
+
+17
+00:00:55,710 --> 00:01:00,060
+In the world of reticence, we follow an absolutely reverse flow.
+
+18
+00:01:00,240 --> 00:01:01,740
+We do the absolute reverse.
+
+19
+00:01:02,190 --> 00:01:07,260
+But if you have any background in school design, we kind of want to take that idea or that entire methodology
+
+20
+00:01:07,260 --> 00:01:08,250
+and throw it out the window.
+
+21
+00:01:08,790 --> 00:01:14,130
+Instead, in the world of lettuce, we first figure out what queries we need to answer.
+
+22
+00:01:14,910 --> 00:01:15,990
+That's the thing we start with.
+
+23
+00:01:15,990 --> 00:01:19,680
+We say, What do we need to actually learn or look up inside of our data?
+
+24
+00:01:20,010 --> 00:01:24,660
+And then only once we understand that, we start to think about the design of our database.
+
+25
+00:01:25,170 --> 00:01:28,800
+So it's completely the opposite of the world of school that minds.
+
+26
+00:01:28,830 --> 00:01:33,300
+In this particular case, we are trying to implement some caching, and that means that we need to say,
+
+27
+00:01:33,330 --> 00:01:35,070
+okay, what are we trying to look at?
+
+28
+00:01:35,340 --> 00:01:40,950
+We are trying to store a rendered page and then at some point in time, the future end is the only possible
+
+29
+00:01:40,950 --> 00:01:41,450
+use case.
+
+30
+00:01:41,460 --> 00:01:44,250
+That is the only way in which we're going to search for this information.
+
+31
+00:01:44,670 --> 00:01:50,100
+There's never going to be a scenario where we say, try to find all of our cached pages and run some
+
+32
+00:01:50,100 --> 00:01:53,310
+query to find what the most common phrase is in those pages.
+
+33
+00:01:53,730 --> 00:01:58,410
+That is not a designed requirement, so we don't need to structure our data inside of red to allow us
+
+34
+00:01:58,410 --> 00:02:01,830
+to iterate over all the cache pages or anything like that.
+
+35
+00:02:02,400 --> 00:02:06,780
+We're using a very simple yet and set operation is appropriate in this case.
+
+36
+00:02:07,500 --> 00:02:12,290
+Now, for this implementation or for this feature, this is a pretty easy thing to think up.
+
+37
+00:02:12,300 --> 00:02:15,210
+Like we barely even have to think about what queries we're trying to answer.
+
+38
+00:02:15,510 --> 00:02:18,330
+But you're going to see that as we start to get into more complicated data.
+
+39
+00:02:19,050 --> 00:02:23,850
+Going through this second methodology or this kind of Reddit style can sometimes be a little bit more
+
+40
+00:02:23,850 --> 00:02:24,330
+challenging.
+
+41
+00:02:25,790 --> 00:02:26,120
+Okay.
+
+42
+00:02:26,810 --> 00:02:30,050
+Next up, let's go through our design considerations.
+
+43
+00:02:30,800 --> 00:02:32,330
+We're going to do this just a couple of times.
+
+44
+00:02:32,330 --> 00:02:34,580
+I'm not going to make you do it for every feature that we walk through.
+
+45
+00:02:34,620 --> 00:02:39,260
+I just want you to think about this stuff a handful of times, just to kind of get in the mindset of
+
+46
+00:02:39,260 --> 00:02:41,360
+how we really start designing stuff around.
+
+47
+00:02:41,380 --> 00:02:45,200
+Redis The first thing we need to figure out is what kind of data are we story?
+
+48
+00:02:45,410 --> 00:02:48,410
+Well, again, very simple, just plain string.
+
+49
+00:02:48,620 --> 00:02:49,010
+That's it.
+
+50
+00:02:49,280 --> 00:02:53,150
+And each string represents one render page second off.
+
+51
+00:02:53,630 --> 00:02:56,450
+Should we be concerned about the size of data?
+
+52
+00:02:56,840 --> 00:02:58,730
+In other words, we're trying to cache some pages.
+
+53
+00:02:59,120 --> 00:03:01,250
+What pages exactly are recounting?
+
+54
+00:03:01,250 --> 00:03:02,390
+Is it one per user?
+
+55
+00:03:02,600 --> 00:03:04,280
+Is it every page in cyber application?
+
+56
+00:03:04,520 --> 00:03:07,640
+Is there ever going to be a scenario where we are trying to store too much data?
+
+57
+00:03:08,330 --> 00:03:13,550
+Remember registers all its data in memory and so there is kind of a practical upper bound in how much
+
+58
+00:03:13,550 --> 00:03:14,780
+information we can hold on to.
+
+59
+00:03:15,200 --> 00:03:19,340
+As I mentioned previously, there are some strategies where we don't have to worry quite so much about
+
+60
+00:03:19,340 --> 00:03:22,970
+the size of our database, but at least right now, we should make sure that we're not trying to store
+
+61
+00:03:23,090 --> 00:03:26,570
+a tremendous amount of information as we are caching these pages.
+
+62
+00:03:27,230 --> 00:03:29,300
+So for that, we're going to do a very quick calculation.
+
+63
+00:03:30,780 --> 00:03:31,110
+Okay.
+
+64
+00:03:31,590 --> 00:03:35,970
+So Andrew, our application and I know I haven't shown you like all the features of this application
+
+65
+00:03:35,970 --> 00:03:40,080
+yet, but again, it's kind of like an eBay style e-commerce application.
+
+66
+00:03:40,350 --> 00:03:42,870
+So I bet you can guess what kind of pages we're going to have inside of out.
+
+67
+00:03:43,560 --> 00:03:48,160
+We'll have a landing page, a dashboard where a user can see what items they are currently selling.
+
+68
+00:03:48,870 --> 00:03:50,190
+The ability to create an auction.
+
+69
+00:03:50,610 --> 00:03:51,690
+You can look up an auction.
+
+70
+00:03:51,960 --> 00:03:54,480
+You can search and you can look up a user's profile.
+
+71
+00:03:55,050 --> 00:03:56,940
+In addition, we have a contact about us.
+
+72
+00:03:56,940 --> 00:03:58,290
+Sign in and sign up pages.
+
+73
+00:03:58,830 --> 00:04:03,840
+Again, I know we haven't looked at the app itself in great detail, but you can probably imagine what
+
+74
+00:04:03,840 --> 00:04:05,310
+these pages are all going to do.
+
+75
+00:04:07,600 --> 00:04:10,900
+Though some of these pages are going to be a very custom in nature.
+
+76
+00:04:10,990 --> 00:04:15,850
+In other words, every user is probably going to see some different content on the screen for each of
+
+77
+00:04:15,850 --> 00:04:21,160
+these different pages, or in some cases, every single time a user refreshes the page, they might
+
+78
+00:04:21,160 --> 00:04:22,540
+expect to see different data.
+
+79
+00:04:23,200 --> 00:04:29,560
+So in the case of, say, auction show or dashboard, these are going to involve some data that's probably
+
+80
+00:04:29,560 --> 00:04:31,120
+going to change quite a bit over time.
+
+81
+00:04:31,540 --> 00:04:36,760
+If a user is selling many products, they might expect to see their dashboard with very up to date data
+
+82
+00:04:36,880 --> 00:04:38,860
+around the status of every single auction.
+
+83
+00:04:39,770 --> 00:04:44,480
+And if a user is looking at a single auction that is very hotly contested, like a lot of people are
+
+84
+00:04:44,480 --> 00:04:48,980
+trying to buy a given product, we want to make sure every user is always seeing the most up to date
+
+85
+00:04:48,980 --> 00:04:49,340
+data.
+
+86
+00:04:50,650 --> 00:04:55,810
+Everything on the left hand side might not be a very good candidate for caching because these are pages
+
+87
+00:04:55,990 --> 00:04:58,660
+that we probably want to re render very often.
+
+88
+00:04:58,930 --> 00:05:03,640
+Or alternatively, we need to render a different page for every different user because there's going
+
+89
+00:05:03,640 --> 00:05:07,750
+to be different information on the screen, as is the case, especially with the dashboard.
+
+90
+00:05:08,170 --> 00:05:10,510
+Every users can have their own separate dashboard.
+
+91
+00:05:11,400 --> 00:05:15,840
+On the other hand, there are some pages where every user is definitely going to see the same content,
+
+92
+00:05:16,200 --> 00:05:19,200
+and the content on that page is not going to change very often.
+
+93
+00:05:19,860 --> 00:05:25,410
+That is the case with, say, a contact page or about us or a sign in or sign up page.
+
+94
+00:05:26,280 --> 00:05:29,400
+What gets rendered on those pages just doesn't change very often.
+
+95
+00:05:31,030 --> 00:05:35,950
+Now with all this in mind, if we just write off and say, hey, we're not going to cash any of this
+
+96
+00:05:35,950 --> 00:05:41,080
+stuff, let's actually do some real math and say, okay, even though there are these requirements,
+
+97
+00:05:41,350 --> 00:05:43,870
+maybe it does make sense to cache that content anyways.
+
+98
+00:05:45,260 --> 00:05:51,290
+So I sat down and I took a look at what an average page inside of our application for what size it is.
+
+99
+00:05:51,650 --> 00:05:55,760
+The homepage of our app, as it stands right now, is about 57.1 kilobytes large.
+
+100
+00:05:56,270 --> 00:06:01,940
+So with that as an average as the size for these different pages, we can start to average out what
+
+101
+00:06:01,940 --> 00:06:05,510
+the size requirements are of our entire caching feature.
+
+102
+00:06:07,620 --> 00:06:09,930
+So on the left hand side, we have six pages.
+
+103
+00:06:10,590 --> 00:06:17,910
+Every one of these pages is 57.1 kilobytes large, and there are 1024 kilobytes per megabyte.
+
+104
+00:06:18,570 --> 00:06:23,100
+So that comes out to be about one third of a megabyte for every user.
+
+105
+00:06:23,610 --> 00:06:27,690
+That's what it would take to cache all these different pages for every single user.
+
+106
+00:06:28,500 --> 00:06:33,930
+If we have a million users, or even 10 million or even 100 million users, this would really start
+
+107
+00:06:33,930 --> 00:06:35,490
+to stack up very quickly.
+
+108
+00:06:36,090 --> 00:06:40,170
+So maybe caching these more custom pages isn't quite as good idea.
+
+109
+00:06:41,100 --> 00:06:44,070
+But on the other hand, for our static pages over here.
+
+110
+00:06:45,160 --> 00:06:48,720
+We can have the same version of the contact about us.
+
+111
+00:06:48,730 --> 00:06:51,890
+Sign in and sign up pages for every single user.
+
+112
+00:06:51,910 --> 00:06:53,920
+They're all looking at the exact same page.
+
+113
+00:06:54,520 --> 00:06:57,310
+We've got four pages, 57.1 kilobytes each.
+
+114
+00:06:57,520 --> 00:07:02,560
+That means that to cast these pages for all users across our entire application, we're talking about
+
+115
+00:07:02,560 --> 00:07:04,960
+only .22 megabytes.
+
+116
+00:07:05,500 --> 00:07:07,480
+Well, that sounds pretty good to me.
+
+117
+00:07:07,540 --> 00:07:12,970
+Sounds like we can definitely cache these pages, not cache these, and get some pretty good performance
+
+118
+00:07:13,330 --> 00:07:13,870
+benefits.
+
+119
+00:07:16,080 --> 00:07:16,460
+Okay.
+
+120
+00:07:16,470 --> 00:07:17,310
+So back over here.
+
+121
+00:07:17,970 --> 00:07:19,620
+Should be concerned about the size of the data.
+
+122
+00:07:19,890 --> 00:07:20,430
+Yes.
+
+123
+00:07:20,790 --> 00:07:25,080
+And we're going to only cache certain pages.
+
+124
+00:07:25,840 --> 00:07:29,760
+Means we can have to put in some logic to decide whether or not we want to cache given page.
+
+125
+00:07:30,720 --> 00:07:32,610
+Next up, do we need to inspire this data?
+
+126
+00:07:32,650 --> 00:07:38,190
+Remember, a key aspect of the set operation is the ability to automatically expire data.
+
+127
+00:07:38,490 --> 00:07:43,110
+And the reason I told you that that existed at all is for accounting reasons, because we want to want
+
+128
+00:07:43,110 --> 00:07:45,270
+to eventually automatically expire data.
+
+129
+00:07:46,500 --> 00:07:50,300
+We want to expire the cash in our case for these different pages.
+
+130
+00:07:50,990 --> 00:07:51,590
+Probably so.
+
+131
+00:07:51,590 --> 00:07:56,300
+At some point in time, eventually we might decide to update the about us page or the contact page.
+
+132
+00:07:56,750 --> 00:07:57,710
+Sign in and sign up.
+
+133
+00:07:57,980 --> 00:07:59,960
+Probably not going to change very often, but they might.
+
+134
+00:08:00,530 --> 00:08:02,240
+So yes, we probably want to.
+
+135
+00:08:03,830 --> 00:08:08,710
+Expire after some number of minutes, hours, days.
+
+136
+00:08:08,720 --> 00:08:12,920
+And honestly, it's totally up to you what that expired time would be, what we probably want to have
+
+137
+00:08:12,920 --> 00:08:18,050
+one for testing purposes in our application, I'm going to use a very short expiration just to make
+
+138
+00:08:18,050 --> 00:08:19,850
+sure that the feature works as expected.
+
+139
+00:08:20,270 --> 00:08:23,750
+But if I ever deployed this app, I might use a much longer expiration.
+
+140
+00:08:25,470 --> 00:08:27,110
+Next up, the key naming policy.
+
+141
+00:08:27,120 --> 00:08:30,210
+In other words, what key names are we going to use inside of red?
+
+142
+00:08:30,900 --> 00:08:34,800
+We're going to come back to that one in just a moment because that's little bit more in-depth conversation.
+
+143
+00:08:35,490 --> 00:08:38,340
+And then finally, any business business logic concerns in this case?
+
+144
+00:08:38,610 --> 00:08:40,080
+No, I don't think so.
+
+145
+00:08:40,110 --> 00:08:40,560
+Not really.
+
+146
+00:08:41,010 --> 00:08:46,730
+Kind of is around this which pages we cash, but we kind of cover that with the question up here.
+
+147
+00:08:46,740 --> 00:08:48,930
+So I'm going to say no, no business logic concerns.
+
+148
+00:08:50,100 --> 00:08:50,310
+Okay.
+
+149
+00:08:50,310 --> 00:08:51,840
+So that's our design methodology.
+
+150
+00:08:52,080 --> 00:08:55,560
+Again, I'm not going to make you go through all these steps every time we build in a future.
+
+151
+00:08:55,740 --> 00:09:00,060
+It's really just this time and maybe another one or two, just so we kind of get through the process
+
+152
+00:09:00,060 --> 00:09:02,610
+of what we want to think about as we are storing data in Redis.
+
+153
+00:09:03,060 --> 00:09:07,590
+So we do still have to discuss this key naming policy, but we're going to do it in just a little bit.
+
+154
+00:09:07,930 --> 00:09:10,530
+As I know, these lectures start to go out a little bit long.

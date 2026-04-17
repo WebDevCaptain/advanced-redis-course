@@ -1,0 +1,275 @@
+1
+00:00:00,880 --> 00:00:02,500
+Last set of hashes we have to store inside.
+
+2
+00:00:02,500 --> 00:00:05,650
+Red is related to all the different items that are going to be for sale.
+
+3
+00:00:05,890 --> 00:00:09,040
+So let's start making sure that we can save and retrieve items.
+
+4
+00:00:09,640 --> 00:00:15,070
+Inside my code editor, I'll find the queries directory items and then items sorts.
+
+5
+00:00:15,790 --> 00:00:16,450
+Here it is right here.
+
+6
+00:00:17,410 --> 00:00:22,450
+So there are three separate functions we need to put together to make items work inside of our application.
+
+7
+00:00:22,540 --> 00:00:28,330
+First is git item which will retrieve a single item gets items which will get many different items at
+
+8
+00:00:28,330 --> 00:00:32,440
+the same time, and then finally creates item which will do exactly what you expect.
+
+9
+00:00:33,250 --> 00:00:35,050
+Let's first begin with create item.
+
+10
+00:00:36,210 --> 00:00:37,530
+All right, I'm going to open this function up.
+
+11
+00:00:39,040 --> 00:00:45,550
+So inside of here, we're going to receive some argument called outers and it is of type create item
+
+12
+00:00:45,550 --> 00:00:46,060
+adders.
+
+13
+00:00:46,660 --> 00:00:53,440
+Just to understand what we are trying to store, let's do a command click or control click on create
+
+14
+00:00:53,440 --> 00:00:54,220
+item adders.
+
+15
+00:00:55,640 --> 00:00:55,970
+Okay.
+
+16
+00:00:56,660 --> 00:01:00,560
+So our function is going to be called with an object that has a bunch of different properties.
+
+17
+00:01:01,280 --> 00:01:06,110
+And I want you to take note that a lot of these are strings and numbers, which we can, of course,
+
+18
+00:01:06,110 --> 00:01:08,750
+very easily store inside of Redis.
+
+19
+00:01:09,260 --> 00:01:13,100
+However, we have in this case to date objects.
+
+20
+00:01:13,100 --> 00:01:17,720
+And remember the whole reason we were talking about Serialize and this entire section we've been talking
+
+21
+00:01:17,720 --> 00:01:23,510
+about it non-stop is that whenever we are trying to take an object and stored it inside of Redis, we
+
+22
+00:01:23,510 --> 00:01:26,600
+have to convert it into something that can be safely stored in Redis.
+
+23
+00:01:27,020 --> 00:01:29,450
+And so this is a perfect example of that.
+
+24
+00:01:30,370 --> 00:01:33,280
+Read it at an ending at r two objects.
+
+25
+00:01:33,340 --> 00:01:38,920
+We need to somehow store this date information in some way that is safe to be stored in Redis.
+
+26
+00:01:39,700 --> 00:01:44,710
+Now, whenever we store a date of any kind in Redis, we have a little decision to make.
+
+27
+00:01:45,280 --> 00:01:47,920
+In the previous diagrams around serialization that I've shown you.
+
+28
+00:01:48,110 --> 00:01:51,400
+I've said, Oh yeah, we want to save the date as some useful formats.
+
+29
+00:01:51,580 --> 00:01:53,830
+And so it might be a string like this right here.
+
+30
+00:01:54,100 --> 00:01:58,390
+It has a year, month, day and time, and then a timezone offset.
+
+31
+00:01:59,080 --> 00:02:01,330
+We might do the same thing, but with a slightly different format.
+
+32
+00:02:01,990 --> 00:02:07,570
+Now we can definitely store dates in these formats because they are strings in Redis, but there's a
+
+33
+00:02:07,570 --> 00:02:08,470
+little issue with it.
+
+34
+00:02:09,860 --> 00:02:15,860
+By default, writers can't really do any kind of query or any sorting operation on dates that are in
+
+35
+00:02:15,860 --> 00:02:16,670
+these format.
+
+36
+00:02:17,660 --> 00:02:18,620
+This is by default.
+
+37
+00:02:19,160 --> 00:02:22,670
+We can technically add support for it, but it's just a little bit challenging.
+
+38
+00:02:23,360 --> 00:02:28,340
+So if we store dates in these formats, they're not immediately super useful to us in Redis.
+
+39
+00:02:29,000 --> 00:02:36,110
+So instead, we might decide to store our dates in a slightly different format and that is using UNIX
+
+40
+00:02:36,110 --> 00:02:36,440
+time.
+
+41
+00:02:37,180 --> 00:02:40,280
+Your next time represents a single time.
+
+42
+00:02:40,400 --> 00:02:47,270
+So both a day, month, year, our minute, second and A represents it as the number of seconds that
+
+43
+00:02:47,270 --> 00:02:50,720
+have elapsed since January 1st, 1970.
+
+44
+00:02:52,290 --> 00:02:53,580
+So this is a number.
+
+45
+00:02:53,730 --> 00:02:55,350
+So it can definitely be stored in Redis.
+
+46
+00:02:55,740 --> 00:03:01,620
+And because it is a simple number, we can very easily write code that will do queries or searching
+
+47
+00:03:01,920 --> 00:03:03,180
+for a value like this.
+
+48
+00:03:04,080 --> 00:03:09,420
+Alternatively, if we need a better resolution than just seconds because sometimes you want more fine
+
+49
+00:03:09,420 --> 00:03:15,390
+grained resolution on your dates and your times than just seconds, you can instead store Unix time
+
+50
+00:03:15,390 --> 00:03:17,790
+as milliseconds does the same idea.
+
+51
+00:03:17,970 --> 00:03:23,310
+It is an amount of time that has elapsed since January 1st, 1970, but instead of just the number of
+
+52
+00:03:23,310 --> 00:03:28,290
+seconds, we instead multiply basically by 1000 and we get milliseconds.
+
+53
+00:03:29,290 --> 00:03:35,260
+Given that you and I are making an auctioning application and we really care about having precise time.
+
+54
+00:03:35,530 --> 00:03:40,390
+Whenever it comes down to those very last milliseconds, whenever someone is trying to purchase an item,
+
+55
+00:03:40,660 --> 00:03:45,640
+we might want to store all of our dates using millisecond resolution, as that can make sure that we're
+
+56
+00:03:45,640 --> 00:03:48,790
+always very accurate in when we close bidding for an item.
+
+57
+00:03:50,300 --> 00:03:50,620
+Okay.
+
+58
+00:03:50,630 --> 00:03:56,150
+So that's what we're going to do in our application whenever we have a time value that we want to store
+
+59
+00:03:56,150 --> 00:03:56,780
+in anyway.
+
+60
+00:03:57,140 --> 00:04:01,570
+So like these to date objects right here and we need to store those in Redis.
+
+61
+00:04:01,820 --> 00:04:06,800
+We're going to take those date objects and convert them into Unix time as milliseconds.
+
+62
+00:04:07,550 --> 00:04:09,890
+And if you don't know how to do that in JavaScript, don't worry.
+
+63
+00:04:09,920 --> 00:04:11,180
+Of course I'll show you how to do that.
+
+64
+00:04:11,420 --> 00:04:13,700
+That is the easiest part of everything we're doing here.
+
+65
+00:04:14,990 --> 00:04:15,320
+All right.
+
+66
+00:04:15,350 --> 00:04:16,580
+Let's take a brief pause right here.
+
+67
+00:04:16,610 --> 00:04:20,240
+When we come back, the next video we're going to write out our serialize function that whenever we
+
+68
+00:04:20,240 --> 00:04:25,820
+tried to save an object with this structure, we're going to make sure we take those date values and
+
+69
+00:04:25,820 --> 00:04:26,870
+turn them into numbers.

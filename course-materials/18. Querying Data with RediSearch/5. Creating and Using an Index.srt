@@ -1,0 +1,495 @@
+1
+00:00:01,400 --> 00:00:03,420
+To get a better idea of how ready search works.
+
+2
+00:00:03,440 --> 00:00:05,780
+I'd like to create a new hour book notebook.
+
+3
+00:00:06,050 --> 00:00:07,520
+You'll notice I've already done that myself.
+
+4
+00:00:08,030 --> 00:00:12,650
+I want to create a couple of different records by hand, so they're all going to be hashes, but then
+
+5
+00:00:12,650 --> 00:00:16,040
+going to create an index around those and then run a query or two.
+
+6
+00:00:17,100 --> 00:00:22,560
+Once we get some hands on experience will then come back and understand what those two commands of FTA
+
+7
+00:00:22,560 --> 00:00:24,420
+create and FTA search are doing.
+
+8
+00:00:25,790 --> 00:00:26,060
+All right.
+
+9
+00:00:26,060 --> 00:00:30,290
+So step one, we're going to write out a couple of different hashes by hand very quickly.
+
+10
+00:00:30,800 --> 00:00:35,750
+We're going to have four hashes in total cars, a one B1, C1 and D1.
+
+11
+00:00:36,320 --> 00:00:38,810
+Each of them is going to have a name, a color and a year.
+
+12
+00:00:39,440 --> 00:00:42,020
+Let's write out the commands to create these very fast.
+
+13
+00:00:43,160 --> 00:00:44,300
+The back and side of our book.
+
+14
+00:00:44,960 --> 00:00:47,420
+I'm going to do a couple of eight set commands.
+
+15
+00:00:47,990 --> 00:00:56,330
+I'll do a H set RS, a one with the name of fast car, a color of red.
+
+16
+00:00:56,840 --> 00:00:58,490
+And a year of 1950.
+
+17
+00:01:00,200 --> 00:01:04,280
+I'm not going to copy that command down three times just to save a little bit of time.
+
+18
+00:01:06,000 --> 00:01:08,160
+I'm going to edit each these lines one by one.
+
+19
+00:01:08,520 --> 00:01:13,500
+So the next one is going to be a key of cars B one, c one, and then D one.
+
+20
+00:01:15,530 --> 00:01:17,900
+And the second car will have a name of just car.
+
+21
+00:01:19,160 --> 00:01:21,770
+An old car and then new car.
+
+22
+00:01:23,800 --> 00:01:25,780
+And for color, first you will be red.
+
+23
+00:01:26,500 --> 00:01:28,450
+Then the second two are going to be blue.
+
+24
+00:01:31,800 --> 00:01:38,370
+And then finally I'll leave the year on the first one in 1950, then 1960, 1970.
+
+25
+00:01:39,320 --> 00:01:40,280
+And 1990.
+
+26
+00:01:42,220 --> 00:01:42,540
+Okay.
+
+27
+00:01:42,550 --> 00:01:45,790
+I'm going to run this and create those four different hashes.
+
+28
+00:01:47,890 --> 00:01:52,840
+So now we have some datasets, we've got four different hashes and we want to be able to search over
+
+29
+00:01:52,870 --> 00:01:58,720
+all these different records and write some kind of query to find only some specific records for to make
+
+30
+00:01:58,720 --> 00:02:03,370
+use of ready search, as we just saw just a moment ago, we're going to go through two different steps.
+
+31
+00:02:03,700 --> 00:02:05,230
+First, we're going to create an index.
+
+32
+00:02:05,710 --> 00:02:09,640
+We only have to do that one time and then we're going to use that index to actually run a query.
+
+33
+00:02:10,700 --> 00:02:12,110
+For this video in particular.
+
+34
+00:02:12,140 --> 00:02:15,720
+We're just going to write out the commands and we'll understand how they work.
+
+35
+00:02:15,740 --> 00:02:17,000
+Starting in the next video.
+
+36
+00:02:17,400 --> 00:02:18,200
+So let's get to it.
+
+37
+00:02:19,200 --> 00:02:19,800
+Back over here.
+
+38
+00:02:19,800 --> 00:02:25,560
+I'm going to add in a new code block and I'm going to create a new index with.
+
+39
+00:02:27,570 --> 00:02:29,160
+FTA dot creates.
+
+40
+00:02:30,450 --> 00:02:34,110
+I'm going to give this index a name of index cars.
+
+41
+00:02:35,610 --> 00:02:37,800
+Then on hash.
+
+42
+00:02:39,220 --> 00:02:43,030
+Prefix one rs lb.
+
+43
+00:02:44,780 --> 00:02:47,240
+I'm then going to add on a second line here.
+
+44
+00:02:47,690 --> 00:02:50,750
+Remember, when you add on a second line, you have to indent.
+
+45
+00:02:50,780 --> 00:02:51,770
+You have to tab in.
+
+46
+00:02:52,130 --> 00:02:56,930
+If you do not tab in, if you just put in the continuation of the command right here, you will get
+
+47
+00:02:56,930 --> 00:03:00,560
+an error because our book is going to think that this is a separate command right here.
+
+48
+00:03:01,310 --> 00:03:03,230
+On next line down, I'm going to tab in.
+
+49
+00:03:04,440 --> 00:03:05,040
+And then do.
+
+50
+00:03:05,130 --> 00:03:05,730
+Schema.
+
+51
+00:03:06,870 --> 00:03:07,410
+Name.
+
+52
+00:03:08,190 --> 00:03:08,640
+Text.
+
+53
+00:03:09,750 --> 00:03:11,040
+You're numeric.
+
+54
+00:03:12,370 --> 00:03:14,140
+And color tag.
+
+55
+00:03:16,650 --> 00:03:16,790
+Now.
+
+56
+00:03:16,800 --> 00:03:18,330
+Double check your spelling on all these.
+
+57
+00:03:18,360 --> 00:03:19,980
+Make sure you've got the same typing.
+
+58
+00:03:20,130 --> 00:03:21,210
+Everything is identical.
+
+59
+00:03:21,590 --> 00:03:24,830
+Once you've confirmed that we're going to run that cell, we should see.
+
+60
+00:03:24,840 --> 00:03:25,350
+Okay.
+
+61
+00:03:27,600 --> 00:03:33,630
+The index has now been created and we can use it to write out a couple of queries and find some very
+
+62
+00:03:33,630 --> 00:03:34,620
+particular cars.
+
+63
+00:03:34,950 --> 00:03:35,940
+So let's now try that.
+
+64
+00:03:37,150 --> 00:03:40,240
+We're going to write out three different queries down here in the bottom cell.
+
+65
+00:03:41,020 --> 00:03:47,620
+The first query that I would like to write out is going to find all of the cars with the name of a fast
+
+66
+00:03:47,620 --> 00:03:48,130
+car.
+
+67
+00:03:48,760 --> 00:03:51,520
+In this case, we've only got one record with the name a fast car.
+
+68
+00:03:51,520 --> 00:03:53,020
+So that's cars at A1 right here.
+
+69
+00:03:53,650 --> 00:03:57,730
+Let's write out the query and we'll make sure that we get back just that particular record.
+
+70
+00:04:00,220 --> 00:04:01,060
+For this first query.
+
+71
+00:04:01,090 --> 00:04:05,920
+I'll do not search IDC's Colin Carr's.
+
+72
+00:04:06,900 --> 00:04:09,960
+And then inside of a string at color.
+
+73
+00:04:11,360 --> 00:04:12,690
+A colon or something.
+
+74
+00:04:12,710 --> 00:04:14,720
+Hot color, but name.
+
+75
+00:04:14,750 --> 00:04:15,170
+There we go.
+
+76
+00:04:15,740 --> 00:04:17,270
+So at name colon.
+
+77
+00:04:17,870 --> 00:04:20,450
+And then inside of parentheses, fast car.
+
+78
+00:04:23,070 --> 00:04:24,690
+If I run that, I'm going to get back.
+
+79
+00:04:24,690 --> 00:04:26,740
+Kind of a confusing result right here.
+
+80
+00:04:26,760 --> 00:04:29,670
+But if we look really closely, it appears that it actually is correct.
+
+81
+00:04:30,180 --> 00:04:31,020
+We get back in Ray.
+
+82
+00:04:31,530 --> 00:04:33,690
+The first element is the number of results we got.
+
+83
+00:04:33,810 --> 00:04:34,710
+So in this case, one.
+
+84
+00:04:35,860 --> 00:04:39,550
+The one result we get, we got will then see the key of that record.
+
+85
+00:04:40,420 --> 00:04:44,560
+And then inside of an array we'll see the keys and values of that hash look.
+
+86
+00:04:44,560 --> 00:04:47,110
+Get a name, a fast car color, red year, 1950.
+
+87
+00:04:47,830 --> 00:04:48,850
+That looks correct to me.
+
+88
+00:04:49,660 --> 00:04:50,890
+Let's try another query now.
+
+89
+00:04:51,780 --> 00:04:55,920
+This next one, I want to find all the cars with a color of blue.
+
+90
+00:04:56,340 --> 00:04:58,440
+That would be RC one.
+
+91
+00:04:58,440 --> 00:04:59,430
+And cars D one.
+
+92
+00:05:02,390 --> 00:05:05,990
+I'm going to comment out the first query and then do an FTA search.
+
+93
+00:05:06,860 --> 00:05:07,850
+Idk cars.
+
+94
+00:05:09,250 --> 00:05:09,730
+During.
+
+95
+00:05:11,120 --> 00:05:12,020
+At color.
+
+96
+00:05:13,340 --> 00:05:13,550
+In.
+
+97
+00:05:14,600 --> 00:05:15,350
+Really braces.
+
+98
+00:05:16,510 --> 00:05:17,290
+And then blue.
+
+99
+00:05:19,220 --> 00:05:19,960
+L run that.
+
+100
+00:05:20,630 --> 00:05:22,340
+And then correctly, I get two results.
+
+101
+00:05:22,970 --> 00:05:25,880
+A kilo of C one and D one.
+
+102
+00:05:27,480 --> 00:05:27,810
+Okay.
+
+103
+00:05:27,840 --> 00:05:29,760
+Looks like it's definitely working out as expected.
+
+104
+00:05:29,790 --> 00:05:30,720
+Let's just do one more.
+
+105
+00:05:30,900 --> 00:05:37,020
+I want to try to find all the different cars that have a year between 1955 and 1985.
+
+106
+00:05:37,470 --> 00:05:39,590
+That would be just be one and see one.
+
+107
+00:05:41,060 --> 00:05:43,010
+So for that, we'll do an FTA search.
+
+108
+00:05:44,570 --> 00:05:45,080
+RS.
+
+109
+00:05:46,580 --> 00:05:47,030
+You're.
+
+110
+00:05:48,210 --> 00:05:50,450
+And then square brackets this time that they.
+
+111
+00:05:50,470 --> 00:05:52,920
+1955 in 1980.
+
+112
+00:05:54,710 --> 00:05:55,370
+I run that.
+
+113
+00:05:56,260 --> 00:05:57,930
+And once again, I get to results here.
+
+114
+00:05:58,000 --> 00:06:02,110
+So I've got cars C one and B one, and that's correct as well.
+
+115
+00:06:03,340 --> 00:06:03,670
+Okay.
+
+116
+00:06:03,670 --> 00:06:09,700
+So we've now seen an example of reading an index and then using it to run a couple of different queries.
+
+117
+00:06:10,240 --> 00:06:15,660
+And the first thing I really want to highlight here is that there's definitely a wide range of syntax.
+
+118
+00:06:15,690 --> 00:06:16,690
+We're actually writing the query.
+
+119
+00:06:17,200 --> 00:06:22,120
+So in one case, we use parentheses, in another we use curly braces, and then in another we use square
+
+120
+00:06:22,120 --> 00:06:22,660
+brackets.
+
+121
+00:06:23,550 --> 00:06:28,000
+Turns out that understanding the search command is probably going to be the most challenging aspect
+
+122
+00:06:28,000 --> 00:06:29,620
+of understanding ready search.
+
+123
+00:06:29,890 --> 00:06:34,840
+So we really have a lot to learn, but let's start to dive into the innards of these commands in the
+
+124
+00:06:34,840 --> 00:06:35,440
+next video.

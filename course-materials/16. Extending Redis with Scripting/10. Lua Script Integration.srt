@@ -1,0 +1,787 @@
+1
+00:00:01,230 --> 00:00:01,650
+All right.
+
+2
+00:00:01,830 --> 00:00:03,300
+No more lecturing for right now.
+
+3
+00:00:03,510 --> 00:00:04,800
+Let's go back over to our editor.
+
+4
+00:00:04,800 --> 00:00:09,420
+And like I said, we're going to implement this add one and store function II to work clients and it's
+
+5
+00:00:09,420 --> 00:00:11,740
+going to be implemented using a custom Lua script.
+
+6
+00:00:12,390 --> 00:00:18,700
+But to get started back inside my editor, I'm going to find the services Redis folder and then clients.
+
+7
+00:00:20,280 --> 00:00:25,170
+When we are making use of no treaties, we have to define all of our scripts and provide them to the
+
+8
+00:00:25,170 --> 00:00:26,350
+create client call.
+
+9
+00:00:26,370 --> 00:00:31,020
+Right here you define a new custom script that's going to be written in Lua.
+
+10
+00:00:31,500 --> 00:00:37,410
+We have to import the you fine script function from Redis up here at the top.
+
+11
+00:00:38,960 --> 00:00:44,570
+And then inside of this options object right after password, I'm going to put in a comma and then a
+
+12
+00:00:44,570 --> 00:00:45,590
+scripts section.
+
+13
+00:00:47,080 --> 00:00:50,490
+As you guess, this is where we are going to define all of our different scripts.
+
+14
+00:00:51,150 --> 00:00:57,330
+Inside this object is where we are going to provide these five pieces of information, the name of our
+
+15
+00:00:57,330 --> 00:00:59,010
+function script itself, blah, blah, blah.
+
+16
+00:01:01,470 --> 00:01:02,520
+Inside this object.
+
+17
+00:01:03,270 --> 00:01:05,770
+The key is going to be the name of our script.
+
+18
+00:01:06,210 --> 00:01:10,530
+So it's going to be how we are going to eventually call this function from inside of our code base.
+
+19
+00:01:11,280 --> 00:01:14,490
+We want to have a function called something like add one and store.
+
+20
+00:01:14,910 --> 00:01:21,690
+I'm going to put in, add one and store and then the value of this will be define scripts.
+
+21
+00:01:21,930 --> 00:01:24,420
+I'll pass in an empty object for right now.
+
+22
+00:01:25,110 --> 00:01:26,260
+I know we have an error right here.
+
+23
+00:01:26,280 --> 00:01:27,510
+We'll fix that for just a moment.
+
+24
+00:01:27,650 --> 00:01:33,360
+I just want to highlight, because we have now added in ad one and store anywhere inside of our code
+
+25
+00:01:33,360 --> 00:01:33,690
+base.
+
+26
+00:01:33,700 --> 00:01:39,060
+We could now call client dot, add one and store.
+
+27
+00:01:40,190 --> 00:01:43,850
+That is going to run the custom script that we are about to define right here.
+
+28
+00:01:44,630 --> 00:01:50,270
+If we instead put a key right here of something like the Tract one and store.
+
+29
+00:01:51,120 --> 00:01:55,970
+Well, now we can run the function, subtract one and store, and it's going to run the script that
+
+30
+00:01:55,970 --> 00:01:57,020
+we defined right there.
+
+31
+00:01:57,990 --> 00:02:04,410
+Again, whatever kiwi add in this object right here, it adds additional methods to this client object.
+
+32
+00:02:06,080 --> 00:02:06,350
+Okay.
+
+33
+00:02:06,350 --> 00:02:09,410
+So going to undo that back to add one in store because that's what we actually want.
+
+34
+00:02:11,470 --> 00:02:13,750
+We've now achieved step number one right here.
+
+35
+00:02:13,760 --> 00:02:17,380
+We have defined the name of the function we're going to call inside of our JavaScript code.
+
+36
+00:02:18,640 --> 00:02:20,240
+Let's move on to step number three.
+
+37
+00:02:20,260 --> 00:02:21,790
+We're going to go over number two really quickly.
+
+38
+00:02:22,030 --> 00:02:26,740
+We're going to define how many keys we are going to provide when we try to run our function.
+
+39
+00:02:27,430 --> 00:02:32,350
+This essentially means how many keys are we trying to pass off to the shore command?
+
+40
+00:02:32,620 --> 00:02:38,410
+When Node Redis runs it for us, in our case, there's only one key that we are trying to access.
+
+41
+00:02:38,800 --> 00:02:43,870
+Remember, we have to mention the exact values of all these different keys ahead of time.
+
+42
+00:02:43,990 --> 00:02:48,670
+When we tried to run our Lewis script, the only key that we were going to try to access is going to
+
+43
+00:02:48,670 --> 00:02:51,070
+be whatever this first argument is right here.
+
+44
+00:02:51,670 --> 00:02:56,260
+In this case, its books count, but naturally it could be any other kind of key we want to put it.
+
+45
+00:02:57,730 --> 00:03:01,960
+But to instruct no treatise on how many keys we are going to eventually provide to it.
+
+46
+00:03:03,580 --> 00:03:07,050
+I'm going to add in number of keys.
+
+47
+00:03:07,570 --> 00:03:07,930
+One.
+
+48
+00:03:09,190 --> 00:03:09,700
+And that's it.
+
+49
+00:03:10,510 --> 00:03:16,090
+Whatever value you put right here, that's essentially going to be passed directly through to the shore
+
+50
+00:03:16,090 --> 00:03:19,300
+command when no treatise runs in store for you.
+
+51
+00:03:19,300 --> 00:03:21,100
+As a part of this script, we are defining.
+
+52
+00:03:23,300 --> 00:03:23,580
+All right.
+
+53
+00:03:23,600 --> 00:03:26,390
+Next up, we're going to define the script itself.
+
+54
+00:03:26,870 --> 00:03:28,460
+So this is going to be our loose script.
+
+55
+00:03:28,940 --> 00:03:34,040
+Script that's going to receive some arguments, receive some keys, and then run some read commands
+
+56
+00:03:34,040 --> 00:03:35,990
+and possibly return a results.
+
+57
+00:03:37,160 --> 00:03:38,060
+The for our scripts.
+
+58
+00:03:39,280 --> 00:03:43,480
+I'm going to add in script in all capitals and then a template string.
+
+59
+00:03:44,500 --> 00:03:46,570
+Notice the back ticks right here, not single quotes.
+
+60
+00:03:47,110 --> 00:03:51,070
+I'm only using a template string because I want to put in a multi-line string right here.
+
+61
+00:03:51,320 --> 00:03:54,100
+We can define multi-line strings with a template string.
+
+62
+00:03:55,660 --> 00:03:59,410
+So inside of here, we're going to put in all the logic required to implement our scripts.
+
+63
+00:03:59,530 --> 00:04:04,720
+Remember, all we are really doing in our case is taking in some number, adding one to it, and then
+
+64
+00:04:04,720 --> 00:04:05,950
+storing it at some key.
+
+65
+00:04:06,870 --> 00:04:08,400
+I'm going to return.
+
+66
+00:04:09,530 --> 00:04:09,790
+Right.
+
+67
+00:04:09,800 --> 00:04:10,430
+A skull.
+
+68
+00:04:11,390 --> 00:04:13,910
+I want to run the set command in my scripts.
+
+69
+00:04:14,750 --> 00:04:19,670
+I want to put in arguments for sets of first the key where I want to store of value.
+
+70
+00:04:19,940 --> 00:04:22,430
+And then, of course, the value that I want to store there.
+
+71
+00:04:23,560 --> 00:04:26,050
+So I'm going to run a set.
+
+72
+00:04:27,220 --> 00:04:28,600
+On Keys at one.
+
+73
+00:04:30,690 --> 00:04:34,860
+And then I'll put in the value I want to store there, which will be one plus.
+
+74
+00:04:35,880 --> 00:04:36,540
+To number.
+
+75
+00:04:38,310 --> 00:04:39,860
+RGV at one.
+
+76
+00:04:42,350 --> 00:04:45,620
+This goes back to some stuff we learned around Lewis Scripps a little bit ago.
+
+77
+00:04:46,040 --> 00:04:50,380
+Remember, the keys array is going have a list of all the different keys we provided to our scripts
+
+78
+00:04:50,390 --> 00:04:55,640
+when e-mail Shaw gets called, and then RGV is going to be an array of all the different arguments that
+
+79
+00:04:55,640 --> 00:04:56,210
+are provided.
+
+80
+00:04:58,350 --> 00:04:58,650
+All right.
+
+81
+00:04:58,710 --> 00:04:59,790
+That's number two.
+
+82
+00:05:00,240 --> 00:05:02,220
+Now we're going to move on to four and five.
+
+83
+00:05:03,090 --> 00:05:08,740
+One, step four, we need to provide node readies, instructions on how to pass arguments to our scripts.
+
+84
+00:05:09,280 --> 00:05:15,240
+And what I mean by this is when we call Add one and Store, we're going to provide arguments right here
+
+85
+00:05:15,390 --> 00:05:17,310
+of some key and some number.
+
+86
+00:05:18,230 --> 00:05:23,870
+No treatise out of the box doesn't really know how to take these arguments right here and pass them
+
+87
+00:05:23,870 --> 00:05:25,790
+off to the e-mail shore command.
+
+88
+00:05:26,450 --> 00:05:32,330
+We have to define a function that's going to take in these two arguments and then return an array that
+
+89
+00:05:32,330 --> 00:05:38,480
+says here is the exact order and the exact values of what we want to be provided to evil.
+
+90
+00:05:38,480 --> 00:05:38,780
+Shaw.
+
+91
+00:05:39,680 --> 00:05:40,940
+Let me show you how that works.
+
+92
+00:05:42,540 --> 00:05:46,950
+I'm going to put a comma at the end of our script and then transform arguments.
+
+93
+00:05:49,160 --> 00:05:54,320
+The arguments to this function are going to be whatever we expect to be asked to the function that we
+
+94
+00:05:54,320 --> 00:05:57,230
+are trying to run or tied to our node readiness library.
+
+95
+00:05:57,950 --> 00:06:03,110
+So in other words, the arguments to transform arguments are going to be these exact values right here.
+
+96
+00:06:04,160 --> 00:06:06,650
+So for us, the first argument is going to be a key.
+
+97
+00:06:06,950 --> 00:06:10,760
+That's a string, and then the second will be a number.
+
+98
+00:06:12,060 --> 00:06:12,470
+Let's call it.
+
+99
+00:06:12,480 --> 00:06:13,590
+How about value instead?
+
+100
+00:06:14,740 --> 00:06:17,590
+The number that we are trying to add one, two and store.
+
+101
+00:06:18,910 --> 00:06:23,810
+Again, we only are using these arguments right here because that is how we want to call add one in
+
+102
+00:06:23,810 --> 00:06:24,170
+store.
+
+103
+00:06:24,930 --> 00:06:28,640
+We instead expected to put in first a number right here.
+
+104
+00:06:31,830 --> 00:06:32,670
+And then a key.
+
+105
+00:06:37,610 --> 00:06:40,610
+Then we would have flipped the order of key and value right here.
+
+106
+00:06:40,760 --> 00:06:43,970
+Now, we would have been receiving first the value and then the key.
+
+107
+00:06:47,690 --> 00:06:53,090
+Then inside of here, we have to return an array that exactly describes how we want to take these arguments
+
+108
+00:06:53,660 --> 00:06:56,570
+right here and provide them off to the email shore command.
+
+109
+00:06:57,520 --> 00:07:01,420
+But for us, that's going to be return whatever key.
+
+110
+00:07:02,350 --> 00:07:04,690
+And then the value to strength.
+
+111
+00:07:06,370 --> 00:07:11,830
+Now internally when we try to run this function, when we tried to tell node readies to run our custom
+
+112
+00:07:11,830 --> 00:07:15,430
+script node Redis is going to take those two arguments right there.
+
+113
+00:07:15,880 --> 00:07:17,470
+The books count and number six.
+
+114
+00:07:18,560 --> 00:07:20,720
+It's going to provide them to transform arguments.
+
+115
+00:07:21,380 --> 00:07:25,010
+We are going to return an array that has the key and the value as a string.
+
+116
+00:07:25,070 --> 00:07:27,080
+So imagine what that's going to eventually turn into.
+
+117
+00:07:27,350 --> 00:07:33,260
+It'll be an array that looks like books count and say the number five as a string.
+
+118
+00:07:34,380 --> 00:07:42,030
+No treatise is then going to execute evolution, but the script ID is going to insert number of keys
+
+119
+00:07:42,030 --> 00:07:42,480
+right here.
+
+120
+00:07:43,430 --> 00:07:49,730
+The one, and then it's going to take this entire array of strings right here and just basically put
+
+121
+00:07:49,730 --> 00:07:54,440
+that in right after that one that's going to insert books out.
+
+122
+00:07:55,450 --> 00:07:56,200
+And five.
+
+123
+00:07:57,510 --> 00:08:00,450
+And this right here is a valid way of running al-Qaida.
+
+124
+00:08:01,390 --> 00:08:03,040
+That's what transform argument is doing.
+
+125
+00:08:03,040 --> 00:08:09,640
+It's how we are mapping the arguments we're passing to our function right here to the evil shore command.
+
+126
+00:08:12,350 --> 00:08:12,680
+Okay.
+
+127
+00:08:12,740 --> 00:08:14,480
+Last step, step number five.
+
+128
+00:08:15,630 --> 00:08:21,090
+The Stettner five is very similar to a D.C. realize function we've already put together many times throughout
+
+129
+00:08:21,090 --> 00:08:21,630
+this course.
+
+130
+00:08:22,050 --> 00:08:27,450
+All we're doing is telling Node, read us how to take the results or the return value from our Lewis
+
+131
+00:08:27,450 --> 00:08:31,950
+script and pass it into some value that can be used by the rest of our application.
+
+132
+00:08:32,820 --> 00:08:38,520
+Russ We don't really have any particular way that we want to transform or serialize the results.
+
+133
+00:08:39,150 --> 00:08:42,330
+I'm going to put in a transform reply.
+
+134
+00:08:43,170 --> 00:08:46,500
+I'm going to receive whatever is coming back from running our scripts.
+
+135
+00:08:46,830 --> 00:08:48,180
+I don't know what the value is going to be.
+
+136
+00:08:48,270 --> 00:08:51,810
+It's going to be whatever the result of a red skull set is.
+
+137
+00:08:51,960 --> 00:08:53,790
+It's really the result of a set command.
+
+138
+00:08:54,390 --> 00:08:57,060
+I don't really want to do anything in particular with it, however.
+
+139
+00:08:57,090 --> 00:09:00,900
+So I'm going to say take whatever that value is and return it.
+
+140
+00:09:03,790 --> 00:09:05,350
+But now whenever we run.
+
+141
+00:09:06,910 --> 00:09:07,810
+Ad one in store.
+
+142
+00:09:08,810 --> 00:09:14,540
+That's going to execute our Lewis scripts take whatever value gets returns, it's going to pass it through,
+
+143
+00:09:14,780 --> 00:09:15,740
+transform reply.
+
+144
+00:09:16,250 --> 00:09:20,720
+We are not doing anything in particular or anything special with it, so we are just going to return
+
+145
+00:09:20,720 --> 00:09:25,190
+it back to whatever part of our code base ran, the ad won and store function.
+
+146
+00:09:25,400 --> 00:09:27,650
+No additional parsing required in this case.
+
+147
+00:09:29,340 --> 00:09:29,640
+Okay.
+
+148
+00:09:29,640 --> 00:09:30,270
+So that's it.
+
+149
+00:09:30,390 --> 00:09:32,340
+That is our custom function.
+
+150
+00:09:33,380 --> 00:09:34,510
+Now to test this out.
+
+151
+00:09:34,640 --> 00:09:35,420
+Here's the fun part.
+
+152
+00:09:36,420 --> 00:09:38,670
+Underneath this entire client block.
+
+153
+00:09:39,120 --> 00:09:41,580
+I'm going to add in a client dot on.
+
+154
+00:09:42,560 --> 00:09:42,980
+Next.
+
+155
+00:09:45,040 --> 00:09:48,460
+And then inside of here, I'm going to try to call my custom function.
+
+156
+00:09:49,030 --> 00:09:55,350
+So I will do a client, not add one and store two books.
+
+157
+00:09:55,360 --> 00:09:57,310
+Count it five.
+
+158
+00:09:58,510 --> 00:10:01,960
+And just to make sure this thing is working, I'm going to mark this as async.
+
+159
+00:10:02,620 --> 00:10:05,140
+I will then await the execution of that script.
+
+160
+00:10:06,120 --> 00:10:07,920
+And then immediately after we run that.
+
+161
+00:10:09,470 --> 00:10:10,250
+I'm going to get.
+
+162
+00:10:12,510 --> 00:10:14,730
+Whatever value is stored at Brooks Counts.
+
+163
+00:10:16,110 --> 00:10:17,760
+And just console.log it like.
+
+164
+00:10:17,780 --> 00:10:21,060
+So that's how we're going to check and make sure that everything is working as expected.
+
+165
+00:10:21,660 --> 00:10:26,070
+Run the script, wait for it to be executed, and go ahead and get whatever value is stored at books.
+
+166
+00:10:26,070 --> 00:10:27,480
+Count and console.log it.
+
+167
+00:10:28,750 --> 00:10:29,080
+Okay.
+
+168
+00:10:29,080 --> 00:10:29,860
+So I'm going to save this.
+
+169
+00:10:30,430 --> 00:10:31,780
+I'm going to go back over to my terminal.
+
+170
+00:10:33,210 --> 00:10:34,300
+And sure enough, there we go.
+
+171
+00:10:34,320 --> 00:10:36,720
+I got the value six, which is exactly what we want.
+
+172
+00:10:37,140 --> 00:10:38,820
+So it looks like the script worked.
+
+173
+00:10:39,630 --> 00:10:43,140
+Naturally, if I wanted to, I could change what value we are passing into the script right here.
+
+174
+00:10:43,140 --> 00:10:44,640
+I could put in a ten instead.
+
+175
+00:10:45,510 --> 00:10:47,160
+If I save this, look back over.
+
+176
+00:10:47,340 --> 00:10:48,360
+I get back 11.
+
+177
+00:10:49,270 --> 00:10:52,090
+But definitely looks like everything is working as expected.
+
+178
+00:10:52,940 --> 00:10:58,750
+I want to show you one last diagram to just summarize the different parts of that little code block
+
+179
+00:10:58,750 --> 00:10:59,170
+right there.
+
+180
+00:11:00,710 --> 00:11:06,530
+The actual script we wrote out was a little bit different than what I show in this diagram, but essentially
+
+181
+00:11:06,530 --> 00:11:07,190
+the same thing.
+
+182
+00:11:07,670 --> 00:11:14,360
+And this diagram I just showed assigning keys and arguments to local variables just to clarify their
+
+183
+00:11:14,360 --> 00:11:14,630
+use.
+
+184
+00:11:14,870 --> 00:11:17,030
+But other than that, everything is just about identical.
+
+185
+00:11:20,280 --> 00:11:25,680
+Once again, I just want to repeat, I know this stuff is nasty because we're taking a look at a complicated
+
+186
+00:11:25,680 --> 00:11:31,620
+topic of race within throwing on top the idea of custom functions or Louis snippets.
+
+187
+00:11:31,890 --> 00:11:37,860
+And on top of that, we're looking at how to integrate these custom lua snippets into the Node Redis
+
+188
+00:11:37,860 --> 00:11:38,340
+library.
+
+189
+00:11:38,850 --> 00:11:42,540
+So it's several levels of abstraction being stacked up on top of each other.
+
+190
+00:11:43,300 --> 00:11:43,780
+That's it.
+
+191
+00:11:43,800 --> 00:11:45,450
+We got through a basic function.
+
+192
+00:11:46,080 --> 00:11:47,730
+Now that we understand these basics.
+
+193
+00:11:48,000 --> 00:11:50,970
+We're going to define another custom script in just a moment.
+
+194
+00:11:51,300 --> 00:11:52,620
+Just like what we did right here.
+
+195
+00:11:53,160 --> 00:11:58,410
+And this custom script is going to replace all the logic that we currently have inside of Increment
+
+196
+00:11:58,410 --> 00:11:58,710
+View.
+
+197
+00:11:59,290 --> 00:12:01,080
+Let's get started on that in the next video.

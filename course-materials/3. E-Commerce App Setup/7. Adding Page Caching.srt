@@ -1,0 +1,451 @@
+1
+00:00:00,860 --> 00:00:02,510
+Finally time to start writing some code.
+
+2
+00:00:02,750 --> 00:00:03,950
+I'm back inside my editor.
+
+3
+00:00:03,980 --> 00:00:06,540
+I'm going to find the SRT directory inside there.
+
+4
+00:00:06,560 --> 00:00:13,220
+I'll go to services and then queries and then friendly page cache inside this page cache file.
+
+5
+00:00:13,250 --> 00:00:18,140
+There are two functions that we're going to put together, so get cache page and set cache page.
+
+6
+00:00:18,900 --> 00:00:24,770
+These are both about attempting to cache a page and then later on retrieve it for the implementation
+
+7
+00:00:24,770 --> 00:00:25,940
+of Get cache page.
+
+8
+00:00:26,210 --> 00:00:29,690
+The only argument to it is going to be the route that a user is trying to access.
+
+9
+00:00:30,050 --> 00:00:33,350
+So something like slash about or slash privacy and so on.
+
+10
+00:00:34,310 --> 00:00:39,260
+So inside of Get Cash page, we need to take a look at that argument and decide whether or not it is
+
+11
+00:00:39,260 --> 00:00:41,210
+in the list of routes that we want to cash.
+
+12
+00:00:41,750 --> 00:00:46,070
+If it is, then we're going to try to fetch the cash version of this page from Redis and return it.
+
+13
+00:00:46,670 --> 00:00:50,480
+Otherwise, we'll just return not to say, Hey, this is a route that we're not going to cash.
+
+14
+00:00:50,480 --> 00:00:51,260
+We don't care about it.
+
+15
+00:00:51,440 --> 00:00:53,930
+So we're not even going to try to look up the cash version.
+
+16
+00:00:55,050 --> 00:00:59,190
+Finally to just make sure that we've got a list of all the different routes you want to cast, we should
+
+17
+00:00:59,190 --> 00:01:00,630
+probably make an array of them.
+
+18
+00:01:00,960 --> 00:01:04,470
+We might make an array saying that we want to catch the routes about privacy.
+
+19
+00:01:05,100 --> 00:01:06,070
+Sign in and order.
+
+20
+00:01:06,120 --> 00:01:06,600
+Sign up.
+
+21
+00:01:07,650 --> 00:01:08,010
+Okay.
+
+22
+00:01:08,070 --> 00:01:09,120
+Let's write out some code here.
+
+23
+00:01:09,390 --> 00:01:11,080
+Now for this very first little edition.
+
+24
+00:01:11,100 --> 00:01:13,770
+Really just going to write out the code together very quickly.
+
+25
+00:01:14,010 --> 00:01:17,820
+And we're not going to worry too much about the specifics of TypeScript or anything like that.
+
+26
+00:01:18,510 --> 00:01:23,910
+So to get started at the very top, I'm going to make a new array called cache routes.
+
+27
+00:01:25,050 --> 00:01:27,950
+And this will be my list of all the different routes that I want to cash.
+
+28
+00:01:28,440 --> 00:01:29,460
+That's going to be about.
+
+29
+00:01:30,700 --> 00:01:31,330
+Privacy.
+
+30
+00:01:34,250 --> 00:01:35,090
+Sign in.
+
+31
+00:01:37,240 --> 00:01:38,620
+And off sign up.
+
+32
+00:01:42,350 --> 00:01:47,180
+Next up inside of Get Cash Page, we're going to take a look at the route that the user is trying to
+
+33
+00:01:47,180 --> 00:01:50,300
+access and see if that route is one of these.
+
+34
+00:01:50,960 --> 00:01:51,950
+We'll say if.
+
+35
+00:01:52,870 --> 00:01:55,180
+Ash roots includes.
+
+36
+00:01:57,420 --> 00:01:57,930
+Root.
+
+37
+00:01:58,710 --> 00:02:04,140
+So if the root that the user is trying to access is included in this list right here, then that means
+
+38
+00:02:04,140 --> 00:02:10,200
+we want to make use of our reddest clients and issue some kind of command to reach out and get the cached
+
+39
+00:02:10,200 --> 00:02:11,340
+version of our page.
+
+40
+00:02:13,080 --> 00:02:14,880
+Do write out that query or write up that command.
+
+41
+00:02:14,880 --> 00:02:16,980
+We need to get access to our Redis clients.
+
+42
+00:02:17,490 --> 00:02:20,610
+The red is client was already created for us ahead of time inside this project.
+
+43
+00:02:20,820 --> 00:02:26,520
+As you might recall, we looked at it very, very briefly inside the services Redis directory.
+
+44
+00:02:27,810 --> 00:02:28,410
+Yes, file.
+
+45
+00:02:29,040 --> 00:02:30,900
+This client acts file is where the red is.
+
+46
+00:02:30,900 --> 00:02:34,050
+Client is created and that's how we issue commands off to the right a server.
+
+47
+00:02:35,210 --> 00:02:39,920
+But to issue a command inside this if statements we need to import the register client at the very top.
+
+48
+00:02:45,840 --> 00:02:47,370
+Then finally inside the statements.
+
+49
+00:02:48,600 --> 00:02:51,060
+We will return clients client get.
+
+50
+00:02:52,490 --> 00:02:55,080
+And then we're going to get a very specific key.
+
+51
+00:02:55,100 --> 00:02:57,560
+And we spoke about our key design in the last video.
+
+52
+00:02:57,980 --> 00:02:59,870
+So it's going to be string.
+
+53
+00:03:00,880 --> 00:03:03,010
+And let's just take a look at that diagram very quickly.
+
+54
+00:03:03,780 --> 00:03:08,020
+So it's this right here is going to be page, cash, pound, and then the route that we're trying to
+
+55
+00:03:08,020 --> 00:03:08,380
+look at.
+
+56
+00:03:09,520 --> 00:03:16,930
+So page cash out and I'm going to add on to that string whatever route a user is access accessing.
+
+57
+00:03:19,450 --> 00:03:19,700
+Right.
+
+58
+00:03:20,090 --> 00:03:26,030
+And then finally, if we are accessing a route that we are not caching, then we're going to just return
+
+59
+00:03:26,030 --> 00:03:26,750
+null instead.
+
+60
+00:03:27,870 --> 00:03:29,040
+And that should be it for the get.
+
+61
+00:03:32,070 --> 00:03:35,970
+Let's also take care of the sets very quickly, because this one is going to be very simple as well.
+
+62
+00:03:37,200 --> 00:03:38,790
+So for the setting operation.
+
+63
+00:03:40,760 --> 00:03:45,580
+Our arguments are going to be the route that the user is visiting and a page.
+
+64
+00:03:45,590 --> 00:03:48,170
+So the actual HTML that was generated.
+
+65
+00:03:48,830 --> 00:03:54,800
+So we want to take that HTML and set it inside of Redis so we can cache it and get access to it later.
+
+66
+00:03:55,430 --> 00:03:59,840
+Inside of Set Cache Page, we once again want to see if the route that the user has visited is in the
+
+67
+00:03:59,840 --> 00:04:01,490
+list of all the routes we want to cache.
+
+68
+00:04:01,970 --> 00:04:06,440
+And if it is that we want to take that page html and stored inside of Redis.
+
+69
+00:04:08,410 --> 00:04:12,550
+So inside of the set function we can do if astronauts.
+
+70
+00:04:13,610 --> 00:04:14,720
+Includes Root.
+
+71
+00:04:16,880 --> 00:04:19,550
+And I will return client sets.
+
+72
+00:04:19,730 --> 00:04:21,500
+They're going to set a value in this case.
+
+73
+00:04:24,850 --> 00:04:28,270
+And once again, we're going to generate Aki using the same kind of approach.
+
+74
+00:04:28,300 --> 00:04:30,220
+We will improve that approach in just a moment.
+
+75
+00:04:30,220 --> 00:04:31,450
+But right now it will do.
+
+76
+00:04:31,930 --> 00:04:35,170
+I'll do page cache LB plus roots.
+
+77
+00:04:36,960 --> 00:04:40,020
+And then we're going to put in the value that we want to store at this key.
+
+78
+00:04:40,500 --> 00:04:42,600
+And in this case, it's going to be that page argument.
+
+79
+00:04:44,900 --> 00:04:48,570
+And then optionally we can also add in some arguments to the set command.
+
+80
+00:04:48,830 --> 00:04:53,750
+You might recall that we spoke about putting on an expiration value whenever we are using Redis as a
+
+81
+00:04:53,750 --> 00:04:54,170
+cache.
+
+82
+00:04:54,530 --> 00:04:59,000
+So at some point in time, we probably want to make sure that we expire this cash value in case a new
+
+83
+00:04:59,000 --> 00:05:03,740
+version of our about page or privacy page or something like that is actually available.
+
+84
+00:05:04,460 --> 00:05:11,120
+So to add in an expiration option, I'm going to put in a third argument here of an object with the
+
+85
+00:05:11,130 --> 00:05:17,630
+X arguments of two, which means expire this value after 2 seconds.
+
+86
+00:05:18,440 --> 00:05:22,490
+Now, 2 seconds is really short in general for a cache page of this nature.
+
+87
+00:05:23,350 --> 00:05:27,640
+I'm only using 2 seconds just because we can test it out very easily to make sure that the value is
+
+88
+00:05:27,640 --> 00:05:28,420
+being expired.
+
+89
+00:05:28,930 --> 00:05:33,130
+But depending upon your application, you might instead want to do something like 2 minutes, 2 hours,
+
+90
+00:05:33,130 --> 00:05:34,930
+or even two days in some cases.
+
+91
+00:05:36,440 --> 00:05:36,790
+Okay.
+
+92
+00:05:36,800 --> 00:05:38,900
+So that is it for our implementation.
+
+93
+00:05:39,530 --> 00:05:44,810
+Now to test this out, well, things are going to really appear to be completely the same when we use
+
+94
+00:05:44,810 --> 00:05:47,630
+our application because we are just caching these pages.
+
+95
+00:05:47,870 --> 00:05:52,730
+We're not really going to notice any distinct improvement or different behavior, but just to make sure
+
+96
+00:05:52,730 --> 00:05:54,650
+that our app still works as expected.
+
+97
+00:05:55,190 --> 00:05:58,810
+I will go back to my terminal, make sure my application is still running.
+
+98
+00:05:59,680 --> 00:06:01,420
+I'm going to go back to my browser.
+
+99
+00:06:02,910 --> 00:06:08,340
+I'm going to find the privacy apologist privacy policy page down here at the very, very bottom.
+
+100
+00:06:08,340 --> 00:06:08,580
+Right.
+
+101
+00:06:08,580 --> 00:06:09,360
+So here's the footer.
+
+102
+00:06:09,510 --> 00:06:10,770
+I can go to privacy.
+
+103
+00:06:12,020 --> 00:06:16,550
+And then if I refresh the page, everything should basically just still work as expected.
+
+104
+00:06:17,830 --> 00:06:20,170
+I should also be able to go down to you about us.
+
+105
+00:06:21,630 --> 00:06:25,060
+Refresh and still see everything work the same with.
+
+106
+00:06:25,080 --> 00:06:26,880
+Sign in and sign up as well.
+
+107
+00:06:27,840 --> 00:06:32,160
+Now in theory, all these different routes are incredibly fast, hopefully anyways.
+
+108
+00:06:33,060 --> 00:06:37,530
+But like I said, it's kind of hard for us to tell, since in general, rendering these pages isn't
+
+109
+00:06:37,530 --> 00:06:38,790
+super expensive right now.
+
+110
+00:06:39,820 --> 00:06:40,120
+Okay.
+
+111
+00:06:40,120 --> 00:06:40,570
+So that's it.
+
+112
+00:06:40,570 --> 00:06:44,260
+That's the first improvement to our application, a very small one, but we're just seeing kind of the
+
+113
+00:06:44,260 --> 00:06:46,180
+basics of a simple get insets.

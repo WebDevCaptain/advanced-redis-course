@@ -1,0 +1,571 @@
+1
+00:00:00,980 --> 00:00:02,960
+Let's get started on the git item function.
+
+2
+00:00:03,560 --> 00:00:07,310
+So inside of here, we're going to go through some operations that are just about identical to when
+
+3
+00:00:07,310 --> 00:00:09,830
+we fetched a user and a session a little bit ago.
+
+4
+00:00:10,430 --> 00:00:13,580
+But first, we're going to take a look in red is using our red is client.
+
+5
+00:00:14,790 --> 00:00:17,700
+And do a each gets all.
+
+6
+00:00:18,830 --> 00:00:24,080
+And we want to look up the key specifically at items key with this particular ID.
+
+7
+00:00:27,900 --> 00:00:29,430
+That's going to give us back our item.
+
+8
+00:00:30,300 --> 00:00:32,940
+Now, remember what we've been discussing nonstop here.
+
+9
+00:00:33,120 --> 00:00:35,700
+Whenever we do an H, get all using Redis.
+
+10
+00:00:36,060 --> 00:00:40,560
+If we find some key or we're trying to find a key that doesn't actually exist by default, we're going
+
+11
+00:00:40,560 --> 00:00:41,820
+to get back an empty object.
+
+12
+00:00:42,000 --> 00:00:46,380
+And we need to handle that because if we get back an empty object, we didn't actually find what we
+
+13
+00:00:46,380 --> 00:00:47,190
+were looking for.
+
+14
+00:00:47,490 --> 00:00:52,140
+Now we need to return some signal to whoever is calling this function and let them know that they tried
+
+15
+00:00:52,140 --> 00:00:54,360
+to look up some data that does not yet exist.
+
+16
+00:00:55,270 --> 00:01:02,380
+But I'm going to do a if object he's item that length is equal to zero.
+
+17
+00:01:03,130 --> 00:01:06,640
+Okay, we got an object, but it wasn't actually the data we were looking for.
+
+18
+00:01:07,090 --> 00:01:09,550
+I will return null in that case.
+
+19
+00:01:10,030 --> 00:01:15,940
+And that is the sign to whoever called get item that well, they're trying to find an ID or an item
+
+20
+00:01:15,970 --> 00:01:17,410
+that doesn't actually exist in Redis.
+
+21
+00:01:20,460 --> 00:01:24,980
+Then if we get past that statement, it turns out that we actually did find the item we were looking
+
+22
+00:01:24,980 --> 00:01:27,500
+for, but we need to now serialize it.
+
+23
+00:01:27,500 --> 00:01:28,580
+Before we return it.
+
+24
+00:01:29,390 --> 00:01:34,820
+Let's make sure that we implement a serialize function once again inside of our items directory.
+
+25
+00:01:35,540 --> 00:01:37,120
+I'm going to find D serialized.
+
+26
+00:01:37,400 --> 00:01:37,760
+Yes.
+
+27
+00:01:40,260 --> 00:01:41,820
+Here is d serialize.
+
+28
+00:01:43,170 --> 00:01:45,330
+So our function is going to be called with the idea.
+
+29
+00:01:45,330 --> 00:01:49,650
+The item we just found and the raw attributes we got out of red is as well.
+
+30
+00:01:50,520 --> 00:01:53,880
+And then we are expected to return an object of type item.
+
+31
+00:01:54,120 --> 00:01:57,150
+That's what the colon item over here at the very end means.
+
+32
+00:01:58,940 --> 00:02:01,630
+You need to understand what attributes an item has.
+
+33
+00:02:01,840 --> 00:02:04,030
+We could always do a command click on item.
+
+34
+00:02:05,700 --> 00:02:08,710
+And it will be told that an item should have an ID name.
+
+35
+00:02:08,730 --> 00:02:09,270
+Blah, blah blah.
+
+36
+00:02:09,270 --> 00:02:09,780
+All this stuff.
+
+37
+00:02:10,440 --> 00:02:11,760
+And most notably.
+
+38
+00:02:13,340 --> 00:02:19,100
+It needs to also have a created that's an ending at property and both those need to be actual date time
+
+39
+00:02:19,100 --> 00:02:19,670
+values.
+
+40
+00:02:20,150 --> 00:02:23,960
+Remember, we stored our date times as millisecond values.
+
+41
+00:02:24,050 --> 00:02:29,750
+We're really, really just plain numbers, but they represented milliseconds in Unix time, so we now
+
+42
+00:02:29,750 --> 00:02:30,770
+need to take those values.
+
+43
+00:02:30,770 --> 00:02:34,340
+So we just got out of Redis and turn them back into DateTime objects.
+
+44
+00:02:35,410 --> 00:02:40,810
+The other thing to be aware of is that when we get our data or views likes price and whatnot out of
+
+45
+00:02:40,810 --> 00:02:45,850
+Redis, they're going to show up as strings because everything that gets stored in Redis is stored as
+
+46
+00:02:45,850 --> 00:02:46,330
+a string.
+
+47
+00:02:47,080 --> 00:02:51,610
+So when we get these values back from Redis, we need to make sure we turn them back into numbers.
+
+48
+00:02:53,220 --> 00:02:56,520
+So a lot of work we're going have to do inside of D.C. realize here.
+
+49
+00:02:56,730 --> 00:02:57,480
+Let's get started.
+
+50
+00:02:58,960 --> 00:03:01,150
+The inside of DC relies on an returning new object.
+
+51
+00:03:01,870 --> 00:03:05,410
+And unfortunately, in this case, we're gonna have to write out pretty much every single property,
+
+52
+00:03:05,410 --> 00:03:06,100
+one by one.
+
+53
+00:03:06,760 --> 00:03:08,710
+But first, we're going to say, here's the ID.
+
+54
+00:03:09,980 --> 00:03:11,480
+Name will be item name.
+
+55
+00:03:14,440 --> 00:03:16,510
+Description of the item dot description.
+
+56
+00:03:18,480 --> 00:03:19,110
+Image u.
+
+57
+00:03:19,110 --> 00:03:21,540
+R l the item dot image url.
+
+58
+00:03:23,290 --> 00:03:27,810
+And then just two others that are not going to require any kind of messing with or anything like that.
+
+59
+00:03:27,820 --> 00:03:28,660
+So highest.
+
+60
+00:03:29,830 --> 00:03:34,600
+Bid user ID is item Dot's highest bid user ID.
+
+61
+00:03:36,260 --> 00:03:38,930
+An owner I.D. is item, not owner ID.
+
+62
+00:03:39,830 --> 00:03:43,610
+You'll notice, though, we haven't really spoken about some of these properties at all just yet, such
+
+63
+00:03:43,610 --> 00:03:45,350
+as high speed user ID and owner ID.
+
+64
+00:03:45,740 --> 00:03:50,360
+Don't worry, we're going to do a deeper dive on what all these properties are related to an item later
+
+65
+00:03:50,360 --> 00:03:50,570
+on.
+
+66
+00:03:50,840 --> 00:03:53,990
+But as you can guess, they're really tied into the bidding system and whatnot.
+
+67
+00:03:53,990 --> 00:03:56,060
+So not super relevant to discuss just yet.
+
+68
+00:03:57,240 --> 00:03:58,650
+Now comes the interesting stuff.
+
+69
+00:03:59,310 --> 00:04:03,090
+Here are the properties we actually have to mess around with a little bit in order to make sure that
+
+70
+00:04:03,090 --> 00:04:07,920
+they are actually available to the rest of our application in a format that we kind of expect and want
+
+71
+00:04:07,920 --> 00:04:08,370
+to work with.
+
+72
+00:04:09,000 --> 00:04:15,060
+The first will be repeated at again when we get this item object right here.
+
+73
+00:04:15,840 --> 00:04:17,700
+This is the data that we pulled out of Redis.
+
+74
+00:04:17,880 --> 00:04:23,040
+We're going to get a millisecond value and that's going to show up as a string.
+
+75
+00:04:23,460 --> 00:04:25,230
+So we have to do a couple of different operations.
+
+76
+00:04:25,240 --> 00:04:27,990
+We have to take that created at string value.
+
+77
+00:04:28,380 --> 00:04:33,930
+We have to pass it into an integer and we have to take that integer and turn it into a datetime object.
+
+78
+00:04:34,680 --> 00:04:35,250
+So in total.
+
+79
+00:04:36,170 --> 00:04:39,550
+You have to do a pass int an item created at.
+
+80
+00:04:39,950 --> 00:04:41,360
+That's going to give us a number.
+
+81
+00:04:42,550 --> 00:04:46,270
+We then will do a date time from Millis.
+
+82
+00:04:46,660 --> 00:04:48,880
+That's how we get back into a date time object.
+
+83
+00:04:50,200 --> 00:04:50,640
+And that's it.
+
+84
+00:04:50,650 --> 00:04:54,190
+So now we're going to have created that as a date object.
+
+85
+00:04:56,880 --> 00:05:01,080
+Well, then repeat that same operation for ending that as well.
+
+86
+00:05:09,810 --> 00:05:10,590
+If that looks good.
+
+87
+00:05:11,460 --> 00:05:13,140
+Now there are a few other properties.
+
+88
+00:05:13,230 --> 00:05:16,860
+So these different numbers right here, we have to do use likes, price bids.
+
+89
+00:05:17,490 --> 00:05:21,600
+And again, all these are going to show up inside of our DC realized function as strings.
+
+90
+00:05:21,750 --> 00:05:24,630
+We need to parse them back into integers or floats.
+
+91
+00:05:25,560 --> 00:05:30,090
+The four views will have pass int item dot views.
+
+92
+00:05:31,590 --> 00:05:34,470
+Four likes will have passed into item dot likes.
+
+93
+00:05:36,350 --> 00:05:37,010
+For bids.
+
+94
+00:05:39,770 --> 00:05:40,420
+And then finally.
+
+95
+00:05:41,090 --> 00:05:46,640
+And in the case of price, rice is going to be a float or essentially a number that has a decimal is
+
+96
+00:05:46,640 --> 00:05:52,610
+we want to allow users to bid, say, $5.30, assuming they are paying in U.S. dollars.
+
+97
+00:05:53,600 --> 00:05:55,970
+I'm going to float instead.
+
+98
+00:05:58,180 --> 00:05:59,050
+Item dot price.
+
+99
+00:06:00,630 --> 00:06:01,140
+And that's it.
+
+100
+00:06:02,120 --> 00:06:06,230
+As soon as I do all this parsing now, all the errors inside this file go away.
+
+101
+00:06:06,410 --> 00:06:07,880
+I don't have any issues whatsoever.
+
+102
+00:06:08,030 --> 00:06:13,520
+I am now returning an object that is truly an item where I had previously started off with an object
+
+103
+00:06:13,730 --> 00:06:15,080
+where everything was a string.
+
+104
+00:06:15,380 --> 00:06:16,370
+All the keys were strings.
+
+105
+00:06:16,370 --> 00:06:17,780
+All the values were strings.
+
+106
+00:06:20,370 --> 00:06:20,670
+Okay.
+
+107
+00:06:20,670 --> 00:06:22,110
+So that's it for Serialize.
+
+108
+00:06:22,440 --> 00:06:24,810
+Now let's step back inside of items.
+
+109
+00:06:25,080 --> 00:06:25,470
+Yes.
+
+110
+00:06:25,830 --> 00:06:27,140
+Here's the one we were just working on.
+
+111
+00:06:27,150 --> 00:06:28,320
+Item starts right here.
+
+112
+00:06:29,720 --> 00:06:33,710
+I'm going to import the cereals at the top.
+
+113
+00:06:39,010 --> 00:06:43,570
+And then inside of get item after we make it past the if statements we can return.
+
+114
+00:06:44,800 --> 00:06:45,790
+E serialize.
+
+115
+00:06:47,670 --> 00:06:48,000
+Item.
+
+116
+00:06:51,430 --> 00:06:52,660
+And I spell that correctly.
+
+117
+00:06:54,140 --> 00:06:54,770
+Yes, I did.
+
+118
+00:06:56,730 --> 00:06:57,260
+Well, that's right.
+
+119
+00:06:57,270 --> 00:06:59,490
+I made November 3rd time.
+
+120
+00:06:59,490 --> 00:07:00,300
+I made this mistake.
+
+121
+00:07:00,300 --> 00:07:04,470
+Now, the first argument is supposed to be the idea, the item we just got so we can merge it into the
+
+122
+00:07:04,470 --> 00:07:05,430
+object that gets returned.
+
+123
+00:07:05,430 --> 00:07:07,560
+I can't believe I've made that mistake three times now.
+
+124
+00:07:07,560 --> 00:07:08,160
+My mistake.
+
+125
+00:07:08,430 --> 00:07:08,970
+There we go.
+
+126
+00:07:08,970 --> 00:07:09,510
+That works.
+
+127
+00:07:10,360 --> 00:07:10,660
+Okay.
+
+128
+00:07:10,660 --> 00:07:14,230
+So now in theory, we should be able to create an item and then view it.
+
+129
+00:07:14,590 --> 00:07:16,330
+We might still see a couple of errors.
+
+130
+00:07:16,600 --> 00:07:18,730
+We probably will see an error or two, to be honest.
+
+131
+00:07:18,940 --> 00:07:20,530
+But let's at least try it very quickly.
+
+132
+00:07:21,680 --> 00:07:23,360
+Though, back over at our application.
+
+133
+00:07:23,780 --> 00:07:26,390
+Oh, I actually kind of worked the test out.
+
+134
+00:07:26,420 --> 00:07:30,050
+In total, I would go to new after signing up to the application.
+
+135
+00:07:30,080 --> 00:07:31,790
+Remember, we don't have any sign in just yet.
+
+136
+00:07:32,060 --> 00:07:34,490
+So if you need to sign up again, go and sign up.
+
+137
+00:07:35,090 --> 00:07:37,110
+We can then use the default info right here.
+
+138
+00:07:37,130 --> 00:07:41,060
+I'll click on submit and sure enough, we can then see the item that was created.
+
+139
+00:07:42,150 --> 00:07:46,830
+So I've got the title, I've got a description and some other info in here as well.
+
+140
+00:07:48,300 --> 00:07:51,420
+Now, if you start to place a bid, of course, that's not going to work just yet.
+
+141
+00:07:51,750 --> 00:07:54,870
+You can't like it because we not actually implemented any of that stuff just yet.
+
+142
+00:07:55,110 --> 00:07:57,840
+But at least we can actually view an item though.
+
+143
+00:07:57,840 --> 00:07:58,950
+Good progress forward.

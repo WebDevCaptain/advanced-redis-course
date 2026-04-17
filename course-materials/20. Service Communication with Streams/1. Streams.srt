@@ -1,0 +1,99 @@
+1
+00:00:00,790 --> 00:00:01,420
+In this section.
+
+2
+00:00:01,420 --> 00:00:04,690
+We're going to move on to yet another data type referred to as streams.
+
+3
+00:00:05,200 --> 00:00:09,850
+Understanding streams is a little bit challenging, so we can take a couple of videos just to get a
+
+4
+00:00:09,850 --> 00:00:14,680
+high level overview of what these things are all about and understand why we use them at all, because
+
+5
+00:00:14,680 --> 00:00:18,850
+they are really unlike just about any other data type we've looked at so far.
+
+6
+00:00:19,600 --> 00:00:24,520
+So the first couple of things to understand here are that streams are kind of like a cross between a
+
+7
+00:00:24,520 --> 00:00:26,020
+list and a sorted set.
+
+8
+00:00:26,590 --> 00:00:29,170
+They are used to store a collection of different records.
+
+9
+00:00:30,040 --> 00:00:34,570
+We are most commonly going to use streams anytime we need to communicate between different servers.
+
+10
+00:00:35,020 --> 00:00:40,840
+So although we can store information inside of a stream, the real goal here is coordination and communication
+
+11
+00:00:41,020 --> 00:00:43,240
+between different servers or different processes.
+
+12
+00:00:44,520 --> 00:00:48,870
+Streams are most useful when used with a feature called consumer groups.
+
+13
+00:00:49,320 --> 00:00:51,360
+We're going to go over consumer groups quite a bit.
+
+14
+00:00:51,390 --> 00:00:56,040
+I just want you to understand that when we first look at streams, they're going to seem not super useful.
+
+15
+00:00:56,050 --> 00:01:00,510
+But as soon as we introduce this idea of consumer groups, you're going to start to understand, okay,
+
+16
+00:01:00,510 --> 00:01:01,530
+yeah, this makes sense.
+
+17
+00:01:01,770 --> 00:01:03,300
+You can see how we would use them.
+
+18
+00:01:04,370 --> 00:01:09,560
+And then finally, this is the most important item to understand, is that there are tons and tons of
+
+19
+00:01:09,560 --> 00:01:14,540
+tiny details to understand around streams, tons of tiny little features, little bits of syntax.
+
+20
+00:01:14,690 --> 00:01:20,840
+And just about every single one of them is very important because they are all used to enable communication
+
+21
+00:01:20,840 --> 00:01:23,450
+between these different servers in a very specific way.
+
+22
+00:01:24,490 --> 00:01:24,820
+Okay.
+
+23
+00:01:24,820 --> 00:01:26,110
+So hopefully up and scared away.
+
+24
+00:01:26,380 --> 00:01:27,340
+Let's pause right here.
+
+25
+00:01:27,340 --> 00:01:30,610
+And I want to help you understand why we use dreams in just a moment.

@@ -1,0 +1,203 @@
+1
+00:00:00,390 --> 00:00:04,110
+We've now ran into a couple of different concurrency issues on our application.
+
+2
+00:00:04,440 --> 00:00:09,000
+And remember, we have seen these issues whenever we tried to fetch some data, allow some time to pass,
+
+3
+00:00:09,210 --> 00:00:11,730
+and then attempt to save some data back into Metis.
+
+4
+00:00:12,180 --> 00:00:17,550
+The issue is that while this time is passing, some other requests might have caused this data to be
+
+5
+00:00:17,550 --> 00:00:18,000
+changed.
+
+6
+00:00:19,710 --> 00:00:23,550
+Another issue that we haven't really ran into just yet, but I'm sure you could see that this might
+
+7
+00:00:23,550 --> 00:00:28,590
+be a problem, is if we're trying to fetch a lot of data from lettuce and there's no command that really
+
+8
+00:00:28,590 --> 00:00:31,170
+supports a particular query that we're trying to run.
+
+9
+00:00:31,740 --> 00:00:37,530
+Let's imagine that we have a sorted set with members of ABCD e and scores of one, two, three, four,
+
+10
+00:00:37,530 --> 00:00:42,210
+five and maybe for some crazy reason, who knows why we want to do this.
+
+11
+00:00:42,420 --> 00:00:47,580
+But for some reason we want to find all the members of that sorted set the score that is a multiple
+
+12
+00:00:47,580 --> 00:00:48,120
+of two.
+
+13
+00:00:48,360 --> 00:00:50,220
+Then the words, all the even scores.
+
+14
+00:00:51,000 --> 00:00:53,730
+That would be B and D right there.
+
+15
+00:00:54,860 --> 00:00:58,810
+Without a doubt, there's no command that allows us to do this right out of the box with reticence.
+
+16
+00:00:59,240 --> 00:01:05,270
+So the only solution we could probably put in here would be to find all the members and scores match
+
+17
+00:01:05,270 --> 00:01:08,900
+them all over to our server and then apply some filtering logic there.
+
+18
+00:01:09,530 --> 00:01:14,660
+So in this case, we are fetching way more data than we need just to implement what is otherwise a pretty
+
+19
+00:01:14,660 --> 00:01:15,650
+basic query.
+
+20
+00:01:17,150 --> 00:01:21,650
+So in this section, as you can probably guess, we're going to figure out a way to deal with this.
+
+21
+00:01:21,710 --> 00:01:27,590
+We're going to figure out a way to solve these problems of data over fetching and also solve some concurrency
+
+22
+00:01:27,590 --> 00:01:28,340
+issues as well.
+
+23
+00:01:29,000 --> 00:01:32,000
+And this feature, we're going to learn about our Lua scripts.
+
+24
+00:01:32,330 --> 00:01:34,580
+So let's take a look at what a Lewis script is.
+
+25
+00:01:35,850 --> 00:01:39,570
+Lewis scripts are little bits of code that we write on our server.
+
+26
+00:01:40,320 --> 00:01:43,410
+We're then going to take the script and send it off to Redis.
+
+27
+00:01:44,070 --> 00:01:45,000
+Reddit is going to run.
+
+28
+00:01:45,000 --> 00:01:50,790
+That script produced some amount of data depending upon what code we write in the script and then send
+
+29
+00:01:50,790 --> 00:01:52,050
+us back some results.
+
+30
+00:01:53,210 --> 00:01:53,480
+Is.
+
+31
+00:01:53,480 --> 00:01:56,600
+Lewis Scripts are written in a programming language called Lua.
+
+32
+00:01:57,080 --> 00:01:59,230
+If you are not familiar with Lua, don't sweat it.
+
+33
+00:01:59,240 --> 00:02:01,220
+It's really, really easy to pick up.
+
+34
+00:02:01,250 --> 00:02:04,340
+And I'm going to give you a brief overview on some major topics around it.
+
+35
+00:02:05,440 --> 00:02:12,310
+Is Lewis scripts have access to the full set of commands a reticence so a Lewis script can access a
+
+36
+00:02:12,310 --> 00:02:16,030
+simple string or a hash is sorted, set and so on.
+
+37
+00:02:16,970 --> 00:02:22,820
+A single Lewis script and a run multiple different commands in a row so we can have a Lewis script that
+
+38
+00:02:22,820 --> 00:02:30,170
+attempts to say, access our sorted sets, use some filtering logic on it, and then return all the
+
+39
+00:02:30,170 --> 00:02:33,140
+results that we find that match some kind of filtering criteria.
+
+40
+00:02:33,980 --> 00:02:39,260
+We can then run some other commands on the data that comes back we want to before we attempt to return
+
+41
+00:02:39,260 --> 00:02:40,760
+those results, back over to our server.
+
+42
+00:02:41,710 --> 00:02:46,510
+So the very nice thing about Louis Scripps is that allows us to run multiple different commands without
+
+43
+00:02:46,510 --> 00:02:51,610
+ever returning any data back over to our server except for the final result that we actually care about.
+
+44
+00:02:52,400 --> 00:02:57,910
+So you can imagine that it's very much going to solve problems related to data over fetching or other
+
+45
+00:02:57,910 --> 00:02:58,900
+related issues.
+
+46
+00:03:00,220 --> 00:03:00,490
+All right.
+
+47
+00:03:00,490 --> 00:03:04,030
+So like I said, we do need to understand a little bit about Lua.
+
+48
+00:03:04,360 --> 00:03:08,020
+We're going to do a little brief aside in the next couple of videos, and I'm just going to give you
+
+49
+00:03:08,020 --> 00:03:09,790
+some high level points around Lua.
+
+50
+00:03:09,880 --> 00:03:13,720
+We're going to write out a couple of code snippets and just understand how the programming language
+
+51
+00:03:13,720 --> 00:03:15,340
+works at a very basic level.

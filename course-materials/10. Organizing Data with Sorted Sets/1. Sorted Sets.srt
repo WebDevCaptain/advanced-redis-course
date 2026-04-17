@@ -1,0 +1,207 @@
+1
+00:00:01,150 --> 00:00:04,810
+Let's move on to our next major data type, which is sorted sets.
+
+2
+00:00:05,320 --> 00:00:09,670
+Understanding sorted sets can be a little bit challenging because they're like a mix between two other
+
+3
+00:00:09,670 --> 00:00:10,180
+data types.
+
+4
+00:00:10,180 --> 00:00:12,820
+So we've already taken a look at hashes and sets.
+
+5
+00:00:13,240 --> 00:00:15,640
+So what exactly is a sorted set?
+
+6
+00:00:16,270 --> 00:00:21,850
+Well, I've got an example of one right here, as usual in red, as we're going to have a key that is
+
+7
+00:00:21,850 --> 00:00:23,560
+going to point to our data structure.
+
+8
+00:00:23,980 --> 00:00:25,840
+This right here is these sorted sets.
+
+9
+00:00:26,590 --> 00:00:27,400
+Just like a hash.
+
+10
+00:00:27,430 --> 00:00:33,220
+We've got a collection of what looks like key value pairs, but we don't refer to these as keys and
+
+11
+00:00:33,220 --> 00:00:33,700
+values.
+
+12
+00:00:34,060 --> 00:00:38,980
+Instead, we refer to everything on the left hand side as members and everything on the right hand side
+
+13
+00:00:38,980 --> 00:00:39,760
+as scores.
+
+14
+00:00:40,720 --> 00:00:42,790
+All the members are guaranteed to be unique.
+
+15
+00:00:42,910 --> 00:00:44,650
+Just like with a usual set.
+
+16
+00:00:45,560 --> 00:00:51,320
+Every single member has a score and the score is always, absolutely, always going to be a number.
+
+17
+00:00:51,810 --> 00:00:55,120
+So we will never have a score that is a string or anything like that.
+
+18
+00:00:55,850 --> 00:00:58,130
+The scores can be negative or positive.
+
+19
+00:00:58,160 --> 00:00:59,870
+They can be integers, they can be floats.
+
+20
+00:01:00,170 --> 00:01:02,480
+Basically any number we want to insert in here.
+
+21
+00:01:04,100 --> 00:01:07,460
+All the different members are going to be ordered according to their score.
+
+22
+00:01:08,150 --> 00:01:10,280
+We're going to go from least up to greatest.
+
+23
+00:01:10,850 --> 00:01:14,840
+Right here, we've got the lowest score of negative four that corresponds to peanut butter.
+
+24
+00:01:14,910 --> 00:01:17,030
+That's going to show up first inside of our sorted set.
+
+25
+00:01:17,720 --> 00:01:23,120
+And then at the bottom, we have the greatest score of 5.32 corresponding to strawberry.
+
+26
+00:01:24,060 --> 00:01:25,350
+I just want repeat one more time.
+
+27
+00:01:25,500 --> 00:01:29,250
+The members are unique, but these scores do not have to be unique.
+
+28
+00:01:29,700 --> 00:01:32,130
+We could have negative four show up twice.
+
+29
+00:01:34,590 --> 00:01:39,780
+Now in general, sort of assets are one of the most flexible and useful data types we have available
+
+30
+00:01:39,780 --> 00:01:40,230
+to us.
+
+31
+00:01:40,440 --> 00:01:43,950
+So we're going to get a lot of experience with them inside of our e-commerce application.
+
+32
+00:01:44,130 --> 00:01:47,910
+We're going to see just how many problems we can solve with them.
+
+33
+00:01:47,940 --> 00:01:49,560
+They really, truly are very useful.
+
+34
+00:01:50,220 --> 00:01:55,710
+Unfortunately, along with this flexibility and great functionality around them comes a wide variety
+
+35
+00:01:55,710 --> 00:01:59,610
+of different commands because there's so much stuff you can do at the sorted set.
+
+36
+00:01:59,790 --> 00:02:04,530
+There's a lot of different commands you understand around them as well as usual rock and got through
+
+37
+00:02:04,530 --> 00:02:06,930
+every last command here for two reasons.
+
+38
+00:02:07,410 --> 00:02:11,850
+First reason is that again, I'm going to assume that you can kind of get through some documentation
+
+39
+00:02:12,090 --> 00:02:14,550
+on some different commands that are kind of basic.
+
+40
+00:02:14,760 --> 00:02:15,900
+We're not very commonly used.
+
+41
+00:02:16,650 --> 00:02:19,920
+The other thing to be aware of, the other reason we're not going to go through every single command
+
+42
+00:02:19,920 --> 00:02:22,680
+is that there are many commands that are actually deprecated.
+
+43
+00:02:23,160 --> 00:02:28,200
+So in other words, these are commands that we don't make use of anymore in later versions of Redis.
+
+44
+00:02:28,740 --> 00:02:34,200
+And some examples of those would be the the rev range, the rev range by LAX.
+
+45
+00:02:34,770 --> 00:02:39,030
+So some of these up here around Z Rev and there are some others as well.
+
+46
+00:02:40,470 --> 00:02:43,800
+However, we are going to, of course, go through a bulk of these different commands.
+
+47
+00:02:44,100 --> 00:02:45,150
+We'll take a little bit of time.
+
+48
+00:02:45,480 --> 00:02:46,740
+So let's take a pause right here.
+
+49
+00:02:46,770 --> 00:02:48,210
+We're going to come back in just a moment.
+
+50
+00:02:48,450 --> 00:02:50,230
+We're going to create our new notebook.
+
+51
+00:02:50,250 --> 00:02:53,460
+Over on our book, I've called Mine Sorted Sets over here.
+
+52
+00:02:53,760 --> 00:02:56,310
+And as usual, we'll go through a couple of different commands.

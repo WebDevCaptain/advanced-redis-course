@@ -1,0 +1,211 @@
+1
+00:00:00,730 --> 00:00:02,980
+The next topic we're going to look at is arrays.
+
+2
+00:00:02,980 --> 00:00:08,650
+In Lua, we can create an array that's very similar to a JavaScript array with one very important difference.
+
+3
+00:00:09,160 --> 00:00:11,980
+First, I'm going to write out a array literal right here on the very first line.
+
+4
+00:00:12,340 --> 00:00:15,340
+Let's say local colors is curly braces.
+
+5
+00:00:15,910 --> 00:00:17,200
+Red, green.
+
+6
+00:00:18,640 --> 00:00:19,100
+I blew.
+
+7
+00:00:20,890 --> 00:00:23,440
+The difference here is not the fact that we're using curly braces.
+
+8
+00:00:23,830 --> 00:00:27,490
+The difference is how we access elements inside the array.
+
+9
+00:00:27,970 --> 00:00:32,200
+So in JavaScript, if you're white writing JavaScript right now, we would do colors at zero to get
+
+10
+00:00:32,200 --> 00:00:33,190
+the very first elements.
+
+11
+00:00:33,670 --> 00:00:35,170
+But Lua things are different.
+
+12
+00:00:35,590 --> 00:00:39,850
+The very first element has an index of one completely different.
+
+13
+00:00:40,540 --> 00:00:41,980
+So please pay attention to that.
+
+14
+00:00:41,980 --> 00:00:47,680
+Please keep that in mind as you are trying to access elements in an array in Lua, first element is
+
+15
+00:00:47,680 --> 00:00:51,430
+one and therefore the second is two, three, four and so on.
+
+16
+00:00:52,900 --> 00:00:56,800
+Lua arrays are one indexed JavaScript arrays are zero indexed.
+
+17
+00:00:57,610 --> 00:01:00,070
+If I do a print on colors at one.
+
+18
+00:01:01,340 --> 00:01:02,450
+I will see Red.
+
+19
+00:01:03,050 --> 00:01:03,320
+Yep.
+
+20
+00:01:03,320 --> 00:01:03,650
+There we go.
+
+21
+00:01:03,650 --> 00:01:04,040
+Right there.
+
+22
+00:01:05,950 --> 00:01:10,840
+Next up, we can print out the number of elements inside of an array with pounds and then the name of
+
+23
+00:01:10,840 --> 00:01:11,290
+the array.
+
+24
+00:01:12,010 --> 00:01:13,000
+That will show me three.
+
+25
+00:01:14,020 --> 00:01:18,700
+And then if we ever want to add in an element to the end of an array, we can use a built in function
+
+26
+00:01:18,850 --> 00:01:19,690
+called insert.
+
+27
+00:01:20,320 --> 00:01:25,720
+I'm going to run table, not inserts and put in colors and orange.
+
+28
+00:01:26,530 --> 00:01:29,500
+This will add in a brand new element to the very end of colors.
+
+29
+00:01:30,160 --> 00:01:35,710
+But now, if I do a print on colors at four, I should see that new element I just added, which is
+
+30
+00:01:35,710 --> 00:01:36,850
+orange and yup.
+
+31
+00:01:36,850 --> 00:01:37,630
+There it is right there.
+
+32
+00:01:39,880 --> 00:01:45,010
+Next up, very common operation we do around arrays is iterate through all the elements and work with
+
+33
+00:01:45,010 --> 00:01:46,060
+the elements in some way.
+
+34
+00:01:46,870 --> 00:01:50,080
+Write out a or loop in Lua we're going to write for.
+
+35
+00:01:51,210 --> 00:01:53,220
+An I and a B.
+
+36
+00:01:54,660 --> 00:01:56,490
+In I pears.
+
+37
+00:01:57,430 --> 00:01:57,900
+Others.
+
+38
+00:01:59,000 --> 00:02:01,620
+Well, then put in the key word do and end like so.
+
+39
+00:02:02,680 --> 00:02:03,730
+And inside the for loop.
+
+40
+00:02:03,730 --> 00:02:05,380
+I'm going to print out I and be.
+
+41
+00:02:07,200 --> 00:02:11,580
+Pairs is used to iterate through all the different keys and values inside of an array.
+
+42
+00:02:11,580 --> 00:02:17,220
+Really the indexes and the values the indexes are going to be assigned to this variable AI and each
+
+43
+00:02:17,220 --> 00:02:18,690
+element will be assigned to the.
+
+44
+00:02:19,630 --> 00:02:25,360
+If I now run this, we'll see index one, two, three and four with values of red, green, blue and
+
+45
+00:02:25,360 --> 00:02:25,810
+orange.
+
+46
+00:02:27,720 --> 00:02:28,020
+Okay.
+
+47
+00:02:28,260 --> 00:02:29,310
+So that's pretty much it.
+
+48
+00:02:29,310 --> 00:02:31,800
+That's all we need to know around a raise for right now.
+
+49
+00:02:32,040 --> 00:02:36,540
+Naturally, there is a lot more around arrays to understand the loop, but for what we are going to
+
+50
+00:02:36,540 --> 00:02:38,730
+be doing, this is pretty much good enough.
+
+51
+00:02:39,650 --> 00:02:41,260
+Lastly, I want to mention just one more time.
+
+52
+00:02:41,270 --> 00:02:46,400
+Please don't forget that arrays are one index as opposed to JavaScript in many other languages where
+
+53
+00:02:46,400 --> 00:02:48,200
+they are zero indexed instead.

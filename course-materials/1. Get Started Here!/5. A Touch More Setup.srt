@@ -1,0 +1,303 @@
+1
+00:00:00,830 --> 00:00:02,720
+It looks like my database has been created.
+
+2
+00:00:03,140 --> 00:00:07,340
+So now that we have a database, we're going to move on to a second piece of very quick setup.
+
+3
+00:00:08,360 --> 00:00:11,350
+Now that we have a database, we need to actually run some commands against it.
+
+4
+00:00:11,390 --> 00:00:15,800
+We need to be able to add data to our database and eventually query for that data as well.
+
+5
+00:00:16,370 --> 00:00:20,540
+There are a couple of options you can use in this course or running commands against Redis.
+
+6
+00:00:21,200 --> 00:00:26,000
+I'm going to show you in these first couple of videos a tool called our Books Cloud.
+
+7
+00:00:26,600 --> 00:00:30,470
+This is a publicly available website that I put together just for you.
+
+8
+00:00:30,500 --> 00:00:35,930
+Just for this course is a website that allows you to connect to a running Redis database and run some
+
+9
+00:00:35,930 --> 00:00:36,740
+commands against it.
+
+10
+00:00:36,980 --> 00:00:42,290
+Kind of a nice looking interface if you do not want to use our Bakkt Cloud, which I'm about to show
+
+11
+00:00:42,290 --> 00:00:43,040
+you in just a moment.
+
+12
+00:00:43,310 --> 00:00:44,240
+That's totally fine.
+
+13
+00:00:44,480 --> 00:00:48,020
+You can instead make use of a command line program called Red Acela.
+
+14
+00:00:48,680 --> 00:00:52,820
+I am going to show you how to use Red Acela later on inside this course.
+
+15
+00:00:53,300 --> 00:00:58,520
+Right now, just to get started very easily and very quickly, I recommend trying out our books out
+
+16
+00:00:58,550 --> 00:00:59,930
+just for a couple of videos.
+
+17
+00:01:00,560 --> 00:01:01,910
+Let me show you how to use that tool.
+
+18
+00:01:02,940 --> 00:01:08,220
+Back inside my browser, I'm going to make another tab and go to our cloud.
+
+19
+00:01:09,030 --> 00:01:10,830
+Once there, we'll see a page that looks like this.
+
+20
+00:01:11,850 --> 00:01:14,910
+On the top right hand side, click on the button that says New Notebook.
+
+21
+00:01:16,570 --> 00:01:19,480
+This will create a brand new notebook for you.
+
+22
+00:01:19,780 --> 00:01:24,160
+A notebook is a place where you can write out some comments or some notes to yourself, and you can
+
+23
+00:01:24,160 --> 00:01:27,160
+also write out some reader's commands and execute them as well.
+
+24
+00:01:28,160 --> 00:01:32,450
+So this little grey box right here, if you click on it, you can add in your own notes.
+
+25
+00:01:32,600 --> 00:01:36,020
+So is something about read this and then click out of it.
+
+26
+00:01:37,370 --> 00:01:42,100
+Right underneath that is a food running, celery calorie running cell.
+
+27
+00:01:42,110 --> 00:01:44,420
+So I can type in a Redis command right here.
+
+28
+00:01:44,510 --> 00:01:46,610
+So some kind of command and then run it.
+
+29
+00:01:47,180 --> 00:01:50,470
+If I try to run it right now, I'm going to get an error because I'm not yet connected to a register
+
+30
+00:01:50,480 --> 00:01:50,960
+database.
+
+31
+00:01:51,680 --> 00:01:56,000
+Once I successfully run a command, the result will then be displayed on the right hand side of this
+
+32
+00:01:56,000 --> 00:01:56,630
+little box.
+
+33
+00:01:58,270 --> 00:02:03,670
+You can also add in additional sections so I can put in some more boxes for running commands or some
+
+34
+00:02:03,670 --> 00:02:05,650
+more note sections and so on.
+
+35
+00:02:05,950 --> 00:02:06,700
+You get the idea.
+
+36
+00:02:07,540 --> 00:02:10,270
+So again, you do not have to use this tool if you do not want to.
+
+37
+00:02:10,510 --> 00:02:15,520
+But just for the first couple of videos, I recommend trying it out because running right ACR, I can
+
+38
+00:02:15,520 --> 00:02:17,740
+sometimes be a little bit of a challenge of a challenge.
+
+39
+00:02:19,190 --> 00:02:24,470
+Okay so to make use of our but dark cloud do is set up our connection to a read a database we just created
+
+40
+00:02:25,100 --> 00:02:29,300
+to set up that connection I'm going to go to the top right hand side and find that connect button.
+
+41
+00:02:31,390 --> 00:02:33,880
+Well, then see a connection settings window like this appear.
+
+42
+00:02:34,780 --> 00:02:40,570
+We have to enter in a host, a port and a password for the database that we just created.
+
+43
+00:02:40,810 --> 00:02:42,340
+Let me show you how to get that information.
+
+44
+00:02:43,030 --> 00:02:45,040
+I'm going to go back over to Rita's Cloud.
+
+45
+00:02:45,910 --> 00:02:48,250
+I'm going to make sure I'm looking at my database that was created.
+
+46
+00:02:49,120 --> 00:02:51,340
+And I'll make sure that I'm on the configuration tab.
+
+47
+00:02:52,720 --> 00:02:55,570
+Well then scroll down a little bit to public and point.
+
+48
+00:02:57,470 --> 00:03:03,050
+I'm going to highlight everything in here all the way up to you, but not including the colon and the
+
+49
+00:03:03,050 --> 00:03:03,950
+number at the end.
+
+50
+00:03:04,880 --> 00:03:07,280
+So I'm highlighting everything up to the adcom.
+
+51
+00:03:08,530 --> 00:03:09,550
+Well then copy that.
+
+52
+00:03:10,480 --> 00:03:13,120
+Go back over and paste it in as the host.
+
+53
+00:03:15,950 --> 00:03:16,970
+Then back over here.
+
+54
+00:03:17,180 --> 00:03:20,570
+I'm going to grab the number at the very end of public and points.
+
+55
+00:03:21,260 --> 00:03:21,890
+Copy that.
+
+56
+00:03:23,880 --> 00:03:25,920
+And put it in this window at the port.
+
+57
+00:03:27,500 --> 00:03:29,030
+And then finally, for the password.
+
+58
+00:03:30,260 --> 00:03:35,720
+We'll scroll down to the bottom of the section and find a default user password right here.
+
+59
+00:03:36,440 --> 00:03:38,000
+I'm going to click on the copy button.
+
+60
+00:03:40,440 --> 00:03:42,810
+Back over and paste it in as the password.
+
+61
+00:03:44,000 --> 00:03:47,390
+No username should be required so you can leave that just completely empty.
+
+62
+00:03:48,200 --> 00:03:51,590
+Once I've got the host port and password in here, I'm going to click on test.
+
+63
+00:03:52,860 --> 00:03:54,900
+And then I should see a connection successful.
+
+64
+00:03:56,550 --> 00:03:59,310
+Once I see that, I'll click on Save and that's pretty much it.
+
+65
+00:04:00,850 --> 00:04:04,720
+Now as a very quick example of a very simple command that we could run against Redis.
+
+66
+00:04:04,930 --> 00:04:09,630
+I'm going to type in here, set P value like.
+
+67
+00:04:09,670 --> 00:04:12,700
+So I'll then click on this play button right here.
+
+68
+00:04:14,700 --> 00:04:18,870
+Now, if you see some big orange box over here that gives some kind of error message.
+
+69
+00:04:19,200 --> 00:04:23,520
+As long as the error message does not say connection error, that's totally fine.
+
+70
+00:04:23,520 --> 00:04:28,020
+So if it says connection error, there is some issue and you want to double check your connection settings.
+
+71
+00:04:28,470 --> 00:04:33,420
+Otherwise, if you get some kind of error that says invalid number of arguments or invalid syntax.
+
+72
+00:04:33,630 --> 00:04:35,340
+That is totally fine for right now.
+
+73
+00:04:36,610 --> 00:04:37,000
+Okay.
+
+74
+00:04:37,030 --> 00:04:41,410
+So that is setting up our but once you've gone to that set up, we only have to do it one time.
+
+75
+00:04:42,440 --> 00:04:46,610
+So now that we have a database and we've got a place to run some Redis commands, let's take a pause
+
+76
+00:04:46,610 --> 00:04:49,760
+right here and understand what these commands are all about in just a moment.

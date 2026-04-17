@@ -1,0 +1,255 @@
+1
+00:00:01,540 --> 00:00:02,440
+Just one or two more.
+
+2
+00:00:02,440 --> 00:00:03,580
+Very quickly, hot topics.
+
+3
+00:00:03,940 --> 00:00:08,080
+First, we saw a for loop in the last video where we can iterate through all the different elements
+
+4
+00:00:08,080 --> 00:00:08,620
+in an array.
+
+5
+00:00:09,010 --> 00:00:13,420
+In some cases, we might want to write out a for loop where we are not iterating through an array.
+
+6
+00:00:13,480 --> 00:00:19,570
+We might instead want to have some generic balance, maybe iterate from, say, one up to five or ten
+
+7
+00:00:19,570 --> 00:00:20,980
+up to 20 or something like that.
+
+8
+00:00:21,700 --> 00:00:29,020
+Right now, if we're like that in Lua, we can do four I equals and we're going to put in a start value
+
+9
+00:00:29,020 --> 00:00:30,070
+and an end value.
+
+10
+00:00:30,700 --> 00:00:33,550
+If I put in, I am a RN.
+
+11
+00:00:36,170 --> 00:00:37,610
+And print out the value of I.
+
+12
+00:00:38,000 --> 00:00:41,750
+I will start off at five and then go all the way up to and including ten.
+
+13
+00:00:42,650 --> 00:00:47,720
+If I run that I will see a print up of I six, seven, eight, nine, ten any second now.
+
+14
+00:00:47,720 --> 00:00:48,170
+There we go.
+
+15
+00:00:49,470 --> 00:00:54,060
+We'll use this every now and then any time we want to iterate through just some number of very specific
+
+16
+00:00:54,060 --> 00:00:55,620
+elements or I should say numbers.
+
+17
+00:00:57,040 --> 00:00:57,310
+All right.
+
+18
+00:00:57,310 --> 00:01:03,010
+Last topic we're going to go over right now is how we create something very similar to an object in
+
+19
+00:01:03,010 --> 00:01:03,280
+Lua.
+
+20
+00:01:04,000 --> 00:01:10,120
+Now, objects are not referred to as objects in the but instead we refer to them as tables or associative
+
+21
+00:01:10,120 --> 00:01:10,750
+arrays.
+
+22
+00:01:11,350 --> 00:01:16,030
+The syntax around them is very, very similar to arrays, which we looked at just a moment ago.
+
+23
+00:01:16,780 --> 00:01:20,170
+And as a matter of fact, an array can function as a table.
+
+24
+00:01:20,710 --> 00:01:25,900
+It is a little bit confusing, but at the end of the day, what we want to keep in mind is that a Lua
+
+25
+00:01:26,200 --> 00:01:29,770
+table is like a US object, roughly similar.
+
+26
+00:01:31,130 --> 00:01:34,670
+All right, so I'm going to make a new local variable called user.
+
+27
+00:01:36,570 --> 00:01:41,610
+I'm going to declare a associative array or a table by putting in curly braces, and then I will list
+
+28
+00:01:41,610 --> 00:01:44,070
+out some number of key value pairs inside of here.
+
+29
+00:01:44,550 --> 00:01:48,060
+I will say that my user has an ID of a one.
+
+30
+00:01:49,410 --> 00:01:50,370
+And a name.
+
+31
+00:01:51,880 --> 00:01:52,420
+Samantha.
+
+32
+00:01:55,280 --> 00:02:02,630
+Oki of id value of A1 of name value of Samantha noticed that you separate the keys and the values.
+
+33
+00:02:02,640 --> 00:02:05,300
+We do not use a colon as we do in JavaScript.
+
+34
+00:02:05,310 --> 00:02:06,840
+Instead we use an equal sign.
+
+35
+00:02:07,830 --> 00:02:14,540
+Now, if I ever want to access a element inside of here, we can do a user at ID.
+
+36
+00:02:18,030 --> 00:02:19,260
+And I get a one right there.
+
+37
+00:02:20,880 --> 00:02:24,570
+Another very common operation that we're going to want to do all the time is iterate through all the
+
+38
+00:02:24,570 --> 00:02:27,180
+keys and values inside of a table.
+
+39
+00:02:28,190 --> 00:02:34,040
+We can use a very similar for loop to what we used a little bit to go around an array with one important
+
+40
+00:02:34,040 --> 00:02:34,520
+difference.
+
+41
+00:02:35,150 --> 00:02:41,630
+I'm going to write out 4kb in and then pairs user.
+
+42
+00:02:43,290 --> 00:02:45,090
+I'll print out K and B.
+
+43
+00:02:45,930 --> 00:02:50,160
+So the big difference here is the fact that we're using a slightly different function called pairs.
+
+44
+00:02:50,970 --> 00:02:55,800
+So if we were working with an array and we're going to use our pairs, if we are working with something
+
+45
+00:02:55,800 --> 00:02:59,280
+that has e value pairs inside of it, we'll use simply pairs instead.
+
+46
+00:02:59,970 --> 00:03:06,210
+A good pneumonic or way to remember this is think of the AI in here as representing integer and arrays
+
+47
+00:03:06,210 --> 00:03:07,500
+are integer index.
+
+48
+00:03:08,920 --> 00:03:09,970
+I'm going to use pairs here.
+
+49
+00:03:10,610 --> 00:03:11,410
+I'm going to run this.
+
+50
+00:03:11,560 --> 00:03:15,190
+And we should see the ID and the value name.
+
+51
+00:03:15,190 --> 00:03:15,940
+And Samantha.
+
+52
+00:03:17,690 --> 00:03:23,360
+There are more similarities around tables and arrays than at what I'm going into here.
+
+53
+00:03:23,360 --> 00:03:29,130
+But again, not super relevant for what we are doing with Redis at this point, believe it or not.
+
+54
+00:03:29,150 --> 00:03:34,370
+We pretty much know enough to write out some interesting scripts with Lua inside of Redis.
+
+55
+00:03:34,880 --> 00:03:39,350
+We're going to kind of pause the Lua discussion here as far as the basics of Lua goes, and we're going
+
+56
+00:03:39,350 --> 00:03:41,840
+to move on to the world of how we use Lua in it.
+
+57
+00:03:41,860 --> 00:03:47,600
+Reddit's very last thing I want to mention really quickly is naturally, if you ever get stuck writing
+
+58
+00:03:47,600 --> 00:03:49,730
+any Lua code, just use Google.
+
+59
+00:03:50,030 --> 00:03:54,230
+There are a tremendous number of technologies that use Lua as a scripting language.
+
+60
+00:03:54,680 --> 00:03:59,930
+Just about every single simple operation you can imagine, like iterating through all the elements of
+
+61
+00:03:59,930 --> 00:04:01,460
+an array or stuff like that.
+
+62
+00:04:01,760 --> 00:04:08,150
+There will be a ton of blog posts and questions and whatnot asked you can very easily search for on
+
+63
+00:04:08,150 --> 00:04:08,540
+Google.
+
+64
+00:04:08,600 --> 00:04:10,400
+So just keep that in mind if you ever get stuck.

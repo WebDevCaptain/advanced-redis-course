@@ -1,0 +1,215 @@
+1
+00:00:00,990 --> 00:00:06,630
+When we execute our search, we get back total, which is the total number of results and documents,
+
+2
+00:00:06,630 --> 00:00:09,210
+which is an array of all the different item hashes we found.
+
+3
+00:00:09,840 --> 00:00:12,270
+But documents is just a little bit more complicated than that.
+
+4
+00:00:12,270 --> 00:00:16,170
+I want to point out very quickly, we take a look at that console.log very closely.
+
+5
+00:00:16,170 --> 00:00:21,330
+You'll notice that documents is actually an array of objects for every object has the ID, which is
+
+6
+00:00:21,330 --> 00:00:24,240
+actually the key at which our item hash was stored.
+
+7
+00:00:24,810 --> 00:00:27,030
+And then the value is the item hash itself.
+
+8
+00:00:27,600 --> 00:00:29,130
+So just keep that in mind for a moment.
+
+9
+00:00:31,520 --> 00:00:35,150
+We need to take total and documents and use it to return those two properties.
+
+10
+00:00:35,540 --> 00:00:36,620
+Let's take care of total pages.
+
+11
+00:00:36,620 --> 00:00:40,010
+First of all is the total number of records we found.
+
+12
+00:00:40,190 --> 00:00:42,710
+Total pages is the total number of pages.
+
+13
+00:00:42,980 --> 00:00:46,010
+Assuming that we are using this many items per page.
+
+14
+00:00:46,730 --> 00:00:50,330
+So to calculate total pages, it will be math dot ceiling.
+
+15
+00:00:51,840 --> 00:00:55,080
+Of total divided by ops dots per page.
+
+16
+00:00:57,260 --> 00:00:58,250
+And then four items.
+
+17
+00:00:58,520 --> 00:00:59,690
+We'll take a look at documents.
+
+18
+00:01:02,120 --> 00:01:03,410
+We're going to map over all them.
+
+19
+00:01:07,050 --> 00:01:10,020
+I'm going to structure out the ID and a value.
+
+20
+00:01:11,230 --> 00:01:17,170
+Now remember, I'm right here is not the actual items ID, it is the key at which the item was stored.
+
+21
+00:01:18,220 --> 00:01:19,360
+We're going to do a.
+
+22
+00:01:20,510 --> 00:01:21,770
+These are your lives inside of your.
+
+23
+00:01:23,590 --> 00:01:29,860
+And then the first argument to this is supposed to be the idea of this item house, this idea right
+
+24
+00:01:29,860 --> 00:01:30,120
+here.
+
+25
+00:01:30,130 --> 00:01:32,080
+Not actually the item is it is the key.
+
+26
+00:01:32,590 --> 00:01:37,660
+So we're going to take that key and we're going to remove the items, pound part of it, and that will
+
+27
+00:01:37,660 --> 00:01:39,260
+leave us with just the items.
+
+28
+00:01:39,280 --> 00:01:39,700
+True.
+
+29
+00:01:39,720 --> 00:01:44,350
+ID in shorts will do an item, not replace.
+
+30
+00:01:45,290 --> 00:01:47,030
+Items lb with empty string.
+
+31
+00:01:48,640 --> 00:01:53,410
+And then the second argument to DC lies will be the actual item hash, which is value.
+
+32
+00:01:54,850 --> 00:01:58,270
+We do get an air here once again, just some funny stuff around TypeScript.
+
+33
+00:01:59,050 --> 00:02:01,330
+We're going to cheat and just do a value as any.
+
+34
+00:02:03,060 --> 00:02:03,750
+And that should be it.
+
+35
+00:02:04,410 --> 00:02:05,820
+I will remove the console.log.
+
+36
+00:02:07,120 --> 00:02:08,650
+And I think we're ready for a test.
+
+37
+00:02:10,870 --> 00:02:11,320
+Okay.
+
+38
+00:02:11,350 --> 00:02:13,030
+Looking pretty good, though.
+
+39
+00:02:13,030 --> 00:02:18,670
+Now, as I start to look around here, I should be able to click on these things and do some sorting.
+
+40
+00:02:19,660 --> 00:02:21,340
+I can sort my time left.
+
+41
+00:02:22,640 --> 00:02:26,240
+I can sort by pretty much nothing else because we don't actually have any other values inside of here.
+
+42
+00:02:26,570 --> 00:02:31,670
+So I'm going to go and look at how about new chair really quickly and place a bid on this.
+
+43
+00:02:33,970 --> 00:02:37,030
+If I go back to Dashboard now, I see a price of 50 right there.
+
+44
+00:02:37,510 --> 00:02:39,580
+So I should be able to sort on that as well.
+
+45
+00:02:39,970 --> 00:02:40,870
+Yup, definitely can.
+
+46
+00:02:42,030 --> 00:02:46,620
+If you want to totally optional, you can go and create a whole bunch of additional items and you can
+
+47
+00:02:46,620 --> 00:02:49,440
+verify that the pagination is working correctly as well.
+
+48
+00:02:49,650 --> 00:02:50,550
+I'm going to leave that up to you.
+
+49
+00:02:51,980 --> 00:02:52,240
+Okay.
+
+50
+00:02:52,250 --> 00:02:53,560
+So let's say this works right now.
+
+51
+00:02:53,580 --> 00:02:56,090
+Doesn't look that great because we only have a couple of items.
+
+52
+00:02:56,420 --> 00:03:01,010
+But surely if we actually made a few and put in some more realistic data here, probably look a little
+
+53
+00:03:01,010 --> 00:03:01,430
+bit better.
+
+54
+00:03:01,550 --> 00:03:03,140
+But I'm happy with this as is.

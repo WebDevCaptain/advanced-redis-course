@@ -1,0 +1,351 @@
+1
+00:00:01,020 --> 00:00:06,300
+After we list out the schema keyword, we then place the name of a field inside of our hash and then
+
+2
+00:00:06,300 --> 00:00:08,250
+the type of value that is stored inside there.
+
+3
+00:00:08,710 --> 00:00:12,150
+So now I want to tell you about some of the different types that are are available to us.
+
+4
+00:00:13,050 --> 00:00:13,430
+Okay.
+
+5
+00:00:13,440 --> 00:00:19,530
+So the first one is the easiest to understand the numeric type so we can mark a field inside of a hash
+
+6
+00:00:19,530 --> 00:00:20,880
+as storing a numeric.
+
+7
+00:00:21,090 --> 00:00:25,470
+Any time that we want to do some kind of number based query over our index.
+
+8
+00:00:26,070 --> 00:00:27,150
+So in our example.
+
+9
+00:00:28,140 --> 00:00:33,840
+We marked the year as a numeric and because we did that, we can then do a numeric type query.
+
+10
+00:00:34,110 --> 00:00:41,640
+We can try to find all the cars that were made before 1950, after 1950, or exactly on 1950.
+
+11
+00:00:41,940 --> 00:00:44,190
+So any kind of basic numeric query.
+
+12
+00:00:46,160 --> 00:00:49,640
+Next up is Geo will mark field as GEO.
+
+13
+00:00:49,670 --> 00:00:54,650
+Any time it contains geographic coordinates and that allows us to do a geographic type query.
+
+14
+00:00:55,130 --> 00:00:58,940
+We're not going to go too much into geographic queries, so we're going to skip over to the next one
+
+15
+00:00:59,780 --> 00:01:00,260
+vector.
+
+16
+00:01:00,290 --> 00:01:01,730
+We're also not going to go too much into.
+
+17
+00:01:02,180 --> 00:01:07,520
+This is a very advanced type of query that allows us to find similarities between different records.
+
+18
+00:01:08,060 --> 00:01:09,650
+We might touch on it a little bit later.
+
+19
+00:01:09,980 --> 00:01:15,290
+But right now on, move on just once again and focus on the two most important for us to understand
+
+20
+00:01:15,290 --> 00:01:17,450
+for right now, which are tag and text.
+
+21
+00:01:18,610 --> 00:01:24,160
+You'll notice a moment ago when we defined schema, we marked name, which refers to a string inside
+
+22
+00:01:24,160 --> 00:01:29,650
+of our hash as text, but we marked color, which is also referring to a string as tag.
+
+23
+00:01:30,250 --> 00:01:32,710
+So what is the difference between text and tag?
+
+24
+00:01:33,520 --> 00:01:38,890
+Well, it really goes back to what we discussed just a little bit ago between querying and searching
+
+25
+00:01:39,670 --> 00:01:40,440
+in general.
+
+26
+00:01:40,450 --> 00:01:46,690
+If we are using a string inside of a hash as a query term, then we're going to mark that string as
+
+27
+00:01:46,690 --> 00:01:47,620
+being type tag.
+
+28
+00:01:48,370 --> 00:01:54,960
+And again, in general, if we are making use of a field inside of a hash for a search operation and
+
+29
+00:01:55,030 --> 00:01:57,070
+we're probably going to market as text.
+
+30
+00:01:57,880 --> 00:02:01,780
+So querying is tag, searching is text.
+
+31
+00:02:03,170 --> 00:02:04,690
+Let me tell you why that is.
+
+32
+00:02:06,730 --> 00:02:12,940
+Whenever we have marquee field as tag, we can use that field for exact string lookups so we can try
+
+33
+00:02:12,940 --> 00:02:19,540
+to find, say, all the cars with a color exactly equal to red for all the cars that do not have a color
+
+34
+00:02:19,540 --> 00:02:19,960
+of red.
+
+35
+00:02:21,050 --> 00:02:26,990
+When we mark a field as containing text, then Ready Search is going to do a lot of additional analysis
+
+36
+00:02:26,990 --> 00:02:33,160
+on that field and we will be able to search for the text inside that field using fuzzy search.
+
+37
+00:02:33,170 --> 00:02:34,370
+We can handle typos.
+
+38
+00:02:34,580 --> 00:02:40,130
+We can do a lot of very fancy search operations that you would really expect out of any kind of typical
+
+39
+00:02:40,130 --> 00:02:40,820
+search field.
+
+40
+00:02:41,090 --> 00:02:44,690
+Just like the search field I showed you a moment ago over on Amazon.
+
+41
+00:02:46,470 --> 00:02:50,550
+Let's show you some more examples of where we might use a tag versus text.
+
+42
+00:02:51,520 --> 00:02:57,460
+So if we are ever trying to refer to a string idea that is stored inside of a hash, we're probably
+
+43
+00:02:57,460 --> 00:03:03,040
+going to try to do queries in the future where we look for IDs exactly equal to that or exactly not
+
+44
+00:03:03,040 --> 00:03:03,640
+equal to that.
+
+45
+00:03:04,000 --> 00:03:05,350
+That's where we might want to use attack.
+
+46
+00:03:06,600 --> 00:03:11,700
+We might want to use a tag any time that we are trying to record the color of a product and the color
+
+47
+00:03:11,700 --> 00:03:15,900
+is only ever going to be a member of it, a very strict set of colors.
+
+48
+00:03:16,560 --> 00:03:21,330
+I'm assuming that we're not going to want to say allow any user to enter in any kind of color for a
+
+49
+00:03:21,330 --> 00:03:21,780
+product.
+
+50
+00:03:21,990 --> 00:03:25,110
+We might just want to have a very thick set of colors for products.
+
+51
+00:03:25,500 --> 00:03:27,290
+So red, green and blue and that's it.
+
+52
+00:03:27,300 --> 00:03:27,840
+Nothing else.
+
+53
+00:03:29,480 --> 00:03:34,190
+If our products are made in a very specific country, we might want to reflect that country using a
+
+54
+00:03:34,190 --> 00:03:40,220
+tag because again, we might try to find all the products that are made inside of a very specific country.
+
+55
+00:03:42,710 --> 00:03:45,860
+Likewise, any time we are doing a search operation, we want to use text.
+
+56
+00:03:46,460 --> 00:03:52,340
+So good options of using text are really any time a user is entering data themselves.
+
+57
+00:03:52,910 --> 00:03:56,180
+So something like a product name, a description or a review.
+
+58
+00:03:56,960 --> 00:03:59,030
+These are all opportunities for us to use text.
+
+59
+00:04:00,270 --> 00:04:04,560
+Now, even in these examples right here, I don't think I'm really giving you the full sense of where
+
+60
+00:04:04,560 --> 00:04:06,030
+to use tags or text.
+
+61
+00:04:06,450 --> 00:04:11,070
+Let me give you one last example that is kind of like a little test that I think is really going to
+
+62
+00:04:11,070 --> 00:04:14,550
+work the vast majority of time when you are trying to decide which to use.
+
+63
+00:04:15,760 --> 00:04:22,210
+Let's imagine we are building a website and on this website you cannot create a new product and a product
+
+64
+00:04:22,210 --> 00:04:23,950
+is going to have a name and a color.
+
+65
+00:04:24,950 --> 00:04:30,230
+So for your product, you probably can have an open ended text field where a user can enter in any value
+
+66
+00:04:30,230 --> 00:04:30,860
+they want.
+
+67
+00:04:31,880 --> 00:04:37,190
+If you have some property in a hash that would be best represented by an open ended text field like
+
+68
+00:04:37,190 --> 00:04:37,520
+this.
+
+69
+00:04:37,910 --> 00:04:43,160
+Chances are you want to mark that field as being text because a user can enter in any value.
+
+70
+00:04:43,580 --> 00:04:44,810
+And that might include.
+
+71
+00:04:45,670 --> 00:04:47,620
+Some typos or something like that.
+
+72
+00:04:47,650 --> 00:04:50,140
+It might include some unexpected characters.
+
+73
+00:04:51,080 --> 00:04:56,600
+Whenever we are trying to search over unexpected strings or user provided strings using radio search,
+
+74
+00:04:56,750 --> 00:04:58,880
+we usually want to mark that field as text.
+
+75
+00:05:00,310 --> 00:05:05,890
+And if you have an attribute inside of your house that would be best represented by a dropdown where
+
+76
+00:05:05,890 --> 00:05:09,460
+it can only be selected from an existing set.
+
+77
+00:05:09,790 --> 00:05:11,680
+That's probably a good example of a tag.
+
+78
+00:05:12,890 --> 00:05:14,300
+So I might have a dropdown right here.
+
+79
+00:05:14,670 --> 00:05:17,690
+If a user clicks on it, I'm going to show options of red, green or blue.
+
+80
+00:05:18,230 --> 00:05:21,170
+So it's one value out of this possible set of values.
+
+81
+00:05:21,440 --> 00:05:23,600
+Again, that'd be a good example of where to use a tag.
+
+82
+00:05:24,720 --> 00:05:25,080
+Okay.
+
+83
+00:05:25,110 --> 00:05:26,250
+So text first.
+
+84
+00:05:26,250 --> 00:05:30,060
+Tag one gives us really fancy search capabilities.
+
+85
+00:05:30,390 --> 00:05:33,180
+The other is really just about exact string lookups.
+
+86
+00:05:34,150 --> 00:05:39,490
+Now we've got text and tags done and we've got a better understanding around indexes.
+
+87
+00:05:39,610 --> 00:05:45,130
+At least right now, let's take one more pause and we'll start taking a look at the search command in
+
+88
+00:05:45,130 --> 00:05:45,680
+just a moment.

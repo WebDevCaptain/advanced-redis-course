@@ -1,0 +1,307 @@
+1
+00:00:00,960 --> 00:00:01,410
+The next day.
+
+2
+00:00:01,410 --> 00:00:03,900
+The type we were going to work on is called a hyper log log.
+
+3
+00:00:04,380 --> 00:00:09,480
+This thing has a weird name, but it is a data type, just like all the other data types we have covered
+
+4
+00:00:09,480 --> 00:00:10,800
+so far inside this course.
+
+5
+00:00:10,830 --> 00:00:14,040
+So just like sets, sorted sets, strings and so on.
+
+6
+00:00:14,310 --> 00:00:16,320
+It just happens to have a weird name.
+
+7
+00:00:17,010 --> 00:00:21,510
+The second thing I want you to understand is that even though it's got the word log inside of this thing
+
+8
+00:00:21,510 --> 00:00:25,050
+twice, it has nothing to do with logging whatsoever.
+
+9
+00:00:25,140 --> 00:00:28,230
+So nothing to do with console logs or anything like that.
+
+10
+00:00:29,210 --> 00:00:34,490
+Hyper log logs are used whenever we want to keep track of the uniqueness of a collection of different
+
+11
+00:00:34,490 --> 00:00:37,790
+elements, and specifically the approximate uniqueness.
+
+12
+00:00:38,030 --> 00:00:42,830
+And I'll tell you what I mean by approximate in just a little bit, you can think of a hyper log log
+
+13
+00:00:42,830 --> 00:00:48,260
+as being similar to a set with the important distinction that it doesn't actually store any elements.
+
+14
+00:00:49,180 --> 00:00:53,110
+And lastly, I want to mention for right now, this thing is going to seem kind of useless at first
+
+15
+00:00:53,110 --> 00:00:59,170
+glance, but there are some very specific use cases where it is absolutely a fantastic data structure
+
+16
+00:00:59,260 --> 00:01:00,520
+that you're going to want to use.
+
+17
+00:01:01,000 --> 00:01:04,750
+We're going to see a very good use case inside of our e-commerce application.
+
+18
+00:01:04,990 --> 00:01:07,450
+So don't worry, you're going to get a good idea of what's going on here.
+
+19
+00:01:08,260 --> 00:01:12,580
+Now, I'm being kind of mysterious about this structure right now, not really giving you a very clear
+
+20
+00:01:12,580 --> 00:01:13,810
+definition of what it is.
+
+21
+00:01:14,500 --> 00:01:18,520
+You just have to look at some commands around it and you'll get a better sense of what is going on.
+
+22
+00:01:18,550 --> 00:01:20,920
+So let's look at some commands right away.
+
+23
+00:01:22,010 --> 00:01:26,630
+There's only two commands, believe it or not, just two that you need to understand.
+
+24
+00:01:27,380 --> 00:01:34,730
+The first one is P.F. at will call P.F. Ad with some string or a number that's going to take that string
+
+25
+00:01:34,730 --> 00:01:35,330
+or a number.
+
+26
+00:01:35,330 --> 00:01:41,000
+And we can imagine that it's going to add it into this hyper log log structure over here.
+
+27
+00:01:41,420 --> 00:01:45,080
+And again, we can kind of think of this thing as being like a set.
+
+28
+00:01:45,740 --> 00:01:51,230
+The only difference is that once we add the string in, it doesn't truly get stored inside the hyper
+
+29
+00:01:51,230 --> 00:01:51,770
+log log.
+
+30
+00:01:52,220 --> 00:01:58,280
+Instead, this thing has a very complex algorithm inside of it that looks at this string, does some
+
+31
+00:01:58,280 --> 00:02:05,030
+parsing on it, does some very complex math, and kind of remembers that string, but it doesn't actually
+
+32
+00:02:05,030 --> 00:02:06,130
+start per say.
+
+33
+00:02:07,070 --> 00:02:12,050
+So again, we imagine that it's like a set and that it's going to keep track of a unique set of items,
+
+34
+00:02:12,380 --> 00:02:15,710
+but it doesn't actually store any true values inside of it.
+
+35
+00:02:16,980 --> 00:02:23,370
+Whenever we call that very critically, if we have not added SDF before this string before.
+
+36
+00:02:23,380 --> 00:02:26,400
+So this is a brand new string that we are adding into the thing.
+
+37
+00:02:26,760 --> 00:02:27,750
+We'll get back a one.
+
+38
+00:02:28,420 --> 00:02:34,320
+Otherwise, if this value already existed or had already been added in the past, we'll get back a zero.
+
+39
+00:02:36,730 --> 00:02:37,060
+All right.
+
+40
+00:02:37,270 --> 00:02:38,320
+Onto the second command.
+
+41
+00:02:39,870 --> 00:02:46,920
+The second command, if count allows us to look at a hyper log log and get an approximate count of the
+
+42
+00:02:46,920 --> 00:02:49,050
+number of unique elements that have been added.
+
+43
+00:02:49,940 --> 00:02:50,550
+And that's it.
+
+44
+00:02:50,570 --> 00:02:52,520
+That's the only two commands we get.
+
+45
+00:02:52,790 --> 00:02:53,810
+That's all there is.
+
+46
+00:02:54,620 --> 00:02:58,970
+Now, next we're going to do is going to run these commands over in Arabic very quickly.
+
+47
+00:02:59,540 --> 00:03:01,490
+So we're going to get some hands on experience with them.
+
+48
+00:03:01,640 --> 00:03:05,630
+And then after that, I'll tell you exactly why we use this structure at all.
+
+49
+00:03:05,990 --> 00:03:11,660
+Because right now, between just P.F. ad and puff count, it doesn't seem terribly, terribly useful.
+
+50
+00:03:12,750 --> 00:03:16,140
+All right, so over in our book, I've already created a notebook.
+
+51
+00:03:16,200 --> 00:03:17,310
+I've called it hyper logline.
+
+52
+00:03:18,540 --> 00:03:23,250
+So we're going to run just a couple commands here, just up you have ADD, you have count and so on.
+
+53
+00:03:25,640 --> 00:03:26,860
+So I going to do a APF ad.
+
+54
+00:03:27,590 --> 00:03:31,490
+I'm going to create a new hyper log log at a key of.
+
+55
+00:03:32,560 --> 00:03:33,310
+Vegetables.
+
+56
+00:03:35,280 --> 00:03:36,600
+And I'm going to add in.
+
+57
+00:03:37,050 --> 00:03:38,610
+How about celery?
+
+58
+00:03:38,730 --> 00:03:39,090
+There we go.
+
+59
+00:03:40,720 --> 00:03:40,880
+Now.
+
+60
+00:03:40,900 --> 00:03:45,100
+I've never added in a string of celery before to this hyper log log.
+
+61
+00:03:45,670 --> 00:03:48,310
+So when I run this command, I'm going to get back responsive one.
+
+62
+00:03:49,060 --> 00:03:51,790
+If I run this command a second time, I'm going to get back zero.
+
+63
+00:03:52,300 --> 00:03:55,300
+So again, first time we add in a string, we get back a one.
+
+64
+00:03:55,330 --> 00:03:58,210
+Otherwise, if this thing has already been added, we get a zero.
+
+65
+00:03:59,860 --> 00:04:04,000
+I'm going to try changing from celery to how about a potato?
+
+66
+00:04:05,020 --> 00:04:07,110
+We're going to add this thing in again.
+
+67
+00:04:07,120 --> 00:04:08,500
+First time I add it, I get a one.
+
+68
+00:04:08,650 --> 00:04:10,330
+I run this again, I get a zero.
+
+69
+00:04:12,330 --> 00:04:17,250
+Now let's add in another code cell underneath this and I'll do APF count.
+
+70
+00:04:18,400 --> 00:04:18,820
+On.
+
+71
+00:04:20,160 --> 00:04:20,760
+Vegetables.
+
+72
+00:04:22,380 --> 00:04:27,060
+And I get to because of I have added at this point time celery and potato.
+
+73
+00:04:28,200 --> 00:04:29,220
+Like I said, that's it.
+
+74
+00:04:29,230 --> 00:04:31,060
+That's all there is to these commands.
+
+75
+00:04:31,740 --> 00:04:32,910
+Let's take a pause right here.
+
+76
+00:04:32,940 --> 00:04:37,500
+We're going to come back the next video, and I'm going to tell you exactly why this is a useful structure
+
+77
+00:04:37,680 --> 00:04:42,180
+and how we can use these two very simple commands to do some pretty interesting things.

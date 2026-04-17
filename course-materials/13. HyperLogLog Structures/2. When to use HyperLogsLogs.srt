@@ -1,0 +1,415 @@
+1
+00:00:00,690 --> 00:00:03,510
+Let's look at a practical example of a hyper log log.
+
+2
+00:00:03,540 --> 00:00:06,090
+Like I said, I think that this is going to clear up a lot of stuff.
+
+3
+00:00:06,540 --> 00:00:11,670
+So inside of our e-commerce application, remember, we are tracking the number of views that an item
+
+4
+00:00:11,670 --> 00:00:12,090
+has.
+
+5
+00:00:12,450 --> 00:00:17,790
+And we really want to make sure that one user can only contribute one view per item.
+
+6
+00:00:18,360 --> 00:00:23,070
+So if someone would not be able to just create an item and then refresh the page like a thousand times
+
+7
+00:00:23,070 --> 00:00:25,850
+to get a thousand views, we don't want to allow that behavior.
+
+8
+00:00:26,310 --> 00:00:30,300
+So we need to track every view per user, per item in some way.
+
+9
+00:00:30,570 --> 00:00:33,090
+And we need to make sure that every view is unique.
+
+10
+00:00:33,780 --> 00:00:39,030
+One way that we could do this is by adding in a set, one set for every single item.
+
+11
+00:00:39,450 --> 00:00:42,480
+So I might have a items five right here hash.
+
+12
+00:00:42,720 --> 00:00:45,750
+I might make a corresponding views five set.
+
+13
+00:00:46,140 --> 00:00:49,140
+And this might track all the different views for item five.
+
+14
+00:00:49,920 --> 00:00:54,060
+And if I had many different items, I would have one set for each.
+
+15
+00:00:54,690 --> 00:00:55,620
+So something like this.
+
+16
+00:00:56,690 --> 00:00:57,590
+Inside the set.
+
+17
+00:00:57,830 --> 00:01:03,650
+I could keep track of, say, the username maybe, or the user ID of every person who has viewed this
+
+18
+00:01:03,650 --> 00:01:03,980
+item.
+
+19
+00:01:04,490 --> 00:01:09,620
+And then whenever someone comes to an item page before incrementing the number of views, I could check
+
+20
+00:01:09,620 --> 00:01:13,400
+and see if their username or their user id already exists inside the set.
+
+21
+00:01:14,330 --> 00:01:16,630
+This is a very classic use case of sets.
+
+22
+00:01:16,640 --> 00:01:18,530
+We're using it to track uniqueness.
+
+23
+00:01:18,620 --> 00:01:19,220
+Very simple.
+
+24
+00:01:20,080 --> 00:01:23,240
+This would definitely work, but there's a very big downside to it.
+
+25
+00:01:24,390 --> 00:01:28,800
+If I'm keeping track of usernames inside of here and the usernames are always the same length.
+
+26
+00:01:29,190 --> 00:01:30,750
+So about nine characters.
+
+27
+00:01:30,760 --> 00:01:33,420
+So username one username to three for and so on.
+
+28
+00:01:33,870 --> 00:01:39,840
+Each of these additional strings costs me about 40 bytes to store inside the set so we can do a little
+
+29
+00:01:39,840 --> 00:01:40,980
+bit of calculation here.
+
+30
+00:01:41,220 --> 00:01:48,300
+We can easily figure out that if an item has a million different views, we would have 40 bytes, times
+
+31
+00:01:48,300 --> 00:01:54,480
+a million views divided by 1024 to get into kill bytes, and then 1024 to get into megabytes.
+
+32
+00:01:54,930 --> 00:02:02,160
+And we're left with 38 megabytes just to store this one set for this one single item.
+
+33
+00:02:03,380 --> 00:02:08,690
+You can imagine that if we have many different items or we have items with many more views than 1 million.
+
+34
+00:02:08,960 --> 00:02:14,480
+Well, this is going to start to get really expensive really quickly for such a simple little feature.
+
+35
+00:02:14,750 --> 00:02:16,880
+Just keeping track of who has viewed the item.
+
+36
+00:02:17,930 --> 00:02:21,680
+So we should probably figure out a better way of keeping track of this uniqueness.
+
+37
+00:02:21,890 --> 00:02:24,580
+And for that, we can use a hyper log log.
+
+38
+00:02:25,690 --> 00:02:26,020
+So.
+
+39
+00:02:27,230 --> 00:02:28,340
+Here's what we would do instead.
+
+40
+00:02:28,970 --> 00:02:35,690
+Whenever a user views an item, we could run off, add views and then say username one and this should
+
+41
+00:02:35,690 --> 00:02:36,590
+specifically be it.
+
+42
+00:02:36,590 --> 00:02:38,210
+Say views five.
+
+43
+00:02:39,290 --> 00:02:42,600
+So we'll have still a hybrid log log for every single item.
+
+44
+00:02:42,900 --> 00:02:47,730
+And whenever someone views the item, we will attempt to add their username or their user ID into the
+
+45
+00:02:47,730 --> 00:02:48,510
+hyper log log.
+
+46
+00:02:49,260 --> 00:02:56,310
+Remember that whenever we do a PDF Add operation, we will be told in the response whether or not this
+
+47
+00:02:56,310 --> 00:02:57,390
+is a new value.
+
+48
+00:02:57,660 --> 00:03:01,950
+So if we get back one, that means that this is a brand new username that we are adding.
+
+49
+00:03:02,220 --> 00:03:07,320
+And because this is a brand new person viewing this item, we should increment the number of views that
+
+50
+00:03:07,320 --> 00:03:07,800
+it has.
+
+51
+00:03:08,640 --> 00:03:13,170
+Otherwise, if we get back a zero, that means that this person has already viewed this item.
+
+52
+00:03:13,200 --> 00:03:15,330
+They already exist inside that hyper log log.
+
+53
+00:03:15,720 --> 00:03:18,120
+And so we should not increment the number of use.
+
+54
+00:03:19,350 --> 00:03:23,490
+So functionally as just about identical to the set implementation.
+
+55
+00:03:23,760 --> 00:03:30,750
+But here's the difference, because the hyper log log does not actually truly store the individual records.
+
+56
+00:03:30,900 --> 00:03:34,530
+So it doesn't actually store these usernames or the user IDs or anything like that.
+
+57
+00:03:34,800 --> 00:03:36,450
+It has a constant size.
+
+58
+00:03:36,840 --> 00:03:42,210
+It is always just about 12 kilobytes, no matter what, when stored inside of Redis.
+
+59
+00:03:42,750 --> 00:03:44,580
+So we could add in a million views.
+
+60
+00:03:44,670 --> 00:03:45,150
+2 million.
+
+61
+00:03:45,150 --> 00:03:47,370
+5 million, however, million we want.
+
+62
+00:03:47,730 --> 00:03:52,020
+And we're always going to be keeping only 12 kilobytes worth of data.
+
+63
+00:03:52,750 --> 00:03:57,990
+So obviously, if all of our different items have a lot of different views, this is going to be a huge
+
+64
+00:03:57,990 --> 00:04:00,510
+space savings compared to the set approach.
+
+65
+00:04:01,770 --> 00:04:04,770
+So this is a great use case of hyper log locks.
+
+66
+00:04:05,870 --> 00:04:07,250
+This might sound like fantastic.
+
+67
+00:04:07,250 --> 00:04:07,920
+And it is.
+
+68
+00:04:07,940 --> 00:04:11,240
+But there is one very small downside that you need to be aware of.
+
+69
+00:04:11,990 --> 00:04:13,670
+And it comes back to this diagram right here.
+
+70
+00:04:13,700 --> 00:04:15,950
+I had used the word approximately counting.
+
+71
+00:04:16,580 --> 00:04:22,820
+That is the downside because the hyper log log doesn't actually truly store these individual items.
+
+72
+00:04:23,060 --> 00:04:29,060
+It only stores a kind of approximation or representation of what it thinks it might have seen in the
+
+73
+00:04:29,060 --> 00:04:32,780
+past, through the use of, like I said, a very fancy algorithm.
+
+74
+00:04:33,630 --> 00:04:34,410
+So in general.
+
+75
+00:04:35,840 --> 00:04:41,840
+Whenever we do hpf count or whenever we do APF ad and we look at that one or zero that gets returned,
+
+76
+00:04:42,620 --> 00:04:50,000
+the number we get back is going to be incorrect ever so slightly by the amount of 0.81%.
+
+77
+00:04:50,510 --> 00:04:53,990
+That's a very small amount of error, but is nonetheless an error.
+
+78
+00:04:54,650 --> 00:05:01,880
+So in other words, if I ran a PEF ad 1000 times each with a unique value and I added all these ads
+
+79
+00:05:01,880 --> 00:05:06,770
+into one single hyper log log and then did APF count on average?
+
+80
+00:05:06,770 --> 00:05:13,340
+I would get back a error value or I would get a slightly incorrect value on the scale of .81 percent.
+
+81
+00:05:13,790 --> 00:05:19,340
+So I might see a response of anywhere from 991 all the way up to 1008.
+
+82
+00:05:20,210 --> 00:05:25,010
+So that is the approximate nature here, and this is the tradeoff we make for not actually storing the
+
+83
+00:05:25,010 --> 00:05:26,450
+original individual items.
+
+84
+00:05:27,720 --> 00:05:32,910
+So it's up to you to decide whether or not using a hyper log log is appropriate in your application.
+
+85
+00:05:33,540 --> 00:05:39,690
+In our app, if we are making use of one to keep track of these unique views, it is really, truly
+
+86
+00:05:39,690 --> 00:05:40,590
+at the end of the day.
+
+87
+00:05:40,920 --> 00:05:41,400
+Okay.
+
+88
+00:05:41,400 --> 00:05:45,420
+With me if we are slightly incorrect on a number of views an item has.
+
+89
+00:05:45,870 --> 00:05:46,620
+That's totally fine.
+
+90
+00:05:47,160 --> 00:05:47,580
+So what?
+
+91
+00:05:47,580 --> 00:05:51,750
+An item gets a couple extra or a couple of fewer views for every thousand views.
+
+92
+00:05:52,020 --> 00:05:58,140
+That's really, truly not a big deal to me, but I might not want to use a hyper log log if I'm trying
+
+93
+00:05:58,140 --> 00:06:02,340
+to keep track of, say, unique user names or unique email addresses.
+
+94
+00:06:02,910 --> 00:06:08,340
+In those scenarios, I truly want to make sure that if I'm looking for unique emails or usernames or
+
+95
+00:06:08,340 --> 00:06:11,550
+something like that, I want to make sure I have truly unique values.
+
+96
+00:06:12,210 --> 00:06:15,690
+So it probably not be appropriate to use a hyper log log in those scenarios.
+
+97
+00:06:16,470 --> 00:06:21,360
+But if it's something like we use, hey, whatever, sure, 12 kilobytes, I will make that trade off
+
+98
+00:06:21,480 --> 00:06:22,020
+happily.
+
+99
+00:06:23,290 --> 00:06:23,640
+Okay.
+
+100
+00:06:23,650 --> 00:06:29,620
+So as you can guess, we are going to implement exactly this approach right here inside of our application
+
+101
+00:06:30,040 --> 00:06:36,250
+to make sure that whenever a user views an item, we only keep track of original first time views for
+
+102
+00:06:36,250 --> 00:06:37,470
+incrementing the view counter.
+
+103
+00:06:38,200 --> 00:06:42,670
+So let's take a pause here and we'll start to implement this hyper log log inside of our e-commerce
+
+104
+00:06:42,670 --> 00:06:43,270
+application.

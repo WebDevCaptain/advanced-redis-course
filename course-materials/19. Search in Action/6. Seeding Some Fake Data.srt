@@ -1,0 +1,171 @@
+1
+00:00:00,720 --> 00:00:05,910
+We could do a much better job of trying to optimize our searching operation if we had a lot more data
+
+2
+00:00:05,910 --> 00:00:06,690
+inside of our app.
+
+3
+00:00:06,780 --> 00:00:11,340
+So if we just had a lot more items with somewhat realistic item names and descriptions.
+
+4
+00:00:12,060 --> 00:00:14,280
+Luckily I put together a little script for us.
+
+5
+00:00:14,490 --> 00:00:17,850
+It's inside of our project directory in the Seeds folder.
+
+6
+00:00:18,450 --> 00:00:20,550
+Inside here is a seed file.
+
+7
+00:00:21,090 --> 00:00:24,930
+This generates a whole bunch of fake data and then puts it into our Red Hat database.
+
+8
+00:00:25,590 --> 00:00:27,810
+It's going to create a bunch of items and users.
+
+9
+00:00:28,160 --> 00:00:30,750
+It has somewhat realistic item names and descriptions.
+
+10
+00:00:31,650 --> 00:00:36,360
+If you run the seed script, it's going to insert a lot of data into Redis, but it's also going to
+
+11
+00:00:36,360 --> 00:00:39,120
+delete all the data that already exists inside there.
+
+12
+00:00:39,630 --> 00:00:43,740
+So if you run the seed script, make sure you are not connected to any important.
+
+13
+00:00:43,740 --> 00:00:47,280
+Read a database that has any information that you want to keep around.
+
+14
+00:00:48,960 --> 00:00:49,260
+Okay.
+
+15
+00:00:49,320 --> 00:00:50,490
+Let me show you how to run the scripts.
+
+16
+00:00:50,670 --> 00:00:51,840
+Well, just make sure it works.
+
+17
+00:00:52,500 --> 00:00:53,670
+Back over at my terminal.
+
+18
+00:00:54,510 --> 00:00:58,920
+I'm going to stop my running server and then execute NPM run seed.
+
+19
+00:01:00,170 --> 00:01:00,680
+And that's it.
+
+20
+00:01:02,120 --> 00:01:06,140
+Once I've executed that script well, then start my server back up with NPM.
+
+21
+00:01:06,140 --> 00:01:06,650
+Run Dev.
+
+22
+00:01:08,730 --> 00:01:14,700
+Then back inside my browser, I can see a huge list of brand new items they've all got.
+
+23
+00:01:15,030 --> 00:01:21,300
+Again, pretty reasonable titles, I guess, and their descriptions are also pretty long as well.
+
+24
+00:01:21,690 --> 00:01:27,540
+So notice that there's a lot of text inside of here, and the text generally follows a trend of sorts,
+
+25
+00:01:27,930 --> 00:01:31,170
+though in particular, this one has a name of a kind of wood.
+
+26
+00:01:31,290 --> 00:01:32,790
+This is beech in this case.
+
+27
+00:01:34,730 --> 00:01:37,190
+A bunch of bids have also been created and tied to the item.
+
+28
+00:01:38,440 --> 00:01:41,650
+Now, any data you already had inside of Rita's has been deleted.
+
+29
+00:01:41,770 --> 00:01:47,110
+So if you want to add a bid or anything like that, you do have to create a brand new account and sign
+
+30
+00:01:47,110 --> 00:01:47,620
+into it.
+
+31
+00:01:47,920 --> 00:01:49,600
+I'm going to take care of that right now.
+
+32
+00:01:49,960 --> 00:01:52,780
+Plug it to sign up and create new accounts.
+
+33
+00:01:56,370 --> 00:01:58,830
+You can run that seat command as often as you want.
+
+34
+00:01:59,340 --> 00:02:03,460
+All the items in there have runtimes that are based upon the current time.
+
+35
+00:02:03,480 --> 00:02:05,040
+When you run the speed command.
+
+36
+00:02:05,580 --> 00:02:10,800
+So in other words, if I wait, say a week right now to finish up the rest of the course, all these
+
+37
+00:02:10,800 --> 00:02:12,480
+items are going to end up being expired.
+
+38
+00:02:12,930 --> 00:02:17,700
+So if you come back in a week just to rerun the seed command and a bunch of additional items will be
+
+39
+00:02:17,700 --> 00:02:21,570
+created that are going to end relative to the time when you run that command.
+
+40
+00:02:22,620 --> 00:02:22,890
+Okay.
+
+41
+00:02:22,890 --> 00:02:24,930
+So we've now got some more realistic data here.
+
+42
+00:02:25,230 --> 00:02:30,270
+So now we're going to start to play around with our search query and figure out what kind of options
+
+43
+00:02:30,270 --> 00:02:33,660
+are going to modify the results and make it a little bit more ideal.

@@ -1,0 +1,247 @@
+1
+00:00:01,700 --> 00:00:03,470
+We've got the validation steps complete.
+
+2
+00:00:03,500 --> 00:00:06,950
+So now we need to update the item hash and save it back into Redis.
+
+3
+00:00:09,090 --> 00:00:13,080
+All right, so back over here inside of creep ID, we've already got one request.
+
+4
+00:00:13,080 --> 00:00:17,400
+Going off to Red is right here because we're trying to now issue a second command.
+
+5
+00:00:17,520 --> 00:00:21,900
+We should probably set up a pipeline so we can batch all these different commands together and send
+
+6
+00:00:21,900 --> 00:00:23,430
+them off to red us at the same time.
+
+7
+00:00:24,030 --> 00:00:25,860
+So I'm going to do a little bit of a refactor.
+
+8
+00:00:28,050 --> 00:00:33,150
+I'm going to delete the return right there and then going to wrap this inside of a promise.
+
+9
+00:00:33,570 --> 00:00:34,590
+Not all statements.
+
+10
+00:00:35,640 --> 00:00:36,290
+So here's promised.
+
+11
+00:00:36,290 --> 00:00:36,690
+Not all.
+
+12
+00:00:36,700 --> 00:00:38,020
+I've got an array right there.
+
+13
+00:00:38,610 --> 00:00:41,910
+I'm going to cut and paste the output in there.
+
+14
+00:00:42,970 --> 00:00:45,220
+And then I will add in my hash update as well.
+
+15
+00:00:45,730 --> 00:00:49,030
+So I want to do a client not age set.
+
+16
+00:00:50,320 --> 00:00:54,040
+I want to set my items key at item ID.
+
+17
+00:00:54,340 --> 00:00:55,870
+So that's the item house we're looking for.
+
+18
+00:00:56,410 --> 00:00:59,890
+We have not yet imported items key into this file just yet.
+
+19
+00:00:59,920 --> 00:01:01,270
+We'll take care of that in just a moment.
+
+20
+00:01:02,260 --> 00:01:04,540
+And then we want to update three different properties.
+
+21
+00:01:05,230 --> 00:01:11,020
+First, we want to make sure that our number of bids is going to be whatever the items current number
+
+22
+00:01:11,020 --> 00:01:12,430
+of bids is plus one.
+
+23
+00:01:13,270 --> 00:01:16,390
+So we'll put in item dot bids plus one.
+
+24
+00:01:18,320 --> 00:01:24,890
+Then our price is going to be the bid amount which is available inside this file or this function right
+
+25
+00:01:24,890 --> 00:01:26,240
+here as at or not amounts.
+
+26
+00:01:28,460 --> 00:01:34,790
+And then finally, the idea of the user who is placing the bid that is also available on the ATRs object.
+
+27
+00:01:35,510 --> 00:01:38,780
+So ATRs hears the argument, if I do a command, click on created it.
+
+28
+00:01:38,780 --> 00:01:40,280
+ATRs Right there.
+
+29
+00:01:40,280 --> 00:01:41,480
+There is user ID.
+
+30
+00:01:45,950 --> 00:01:48,680
+Well, I'll put in highest bid user ID.
+
+31
+00:01:49,280 --> 00:01:51,320
+That's going to be at her sort user ID.
+
+32
+00:01:54,020 --> 00:01:55,820
+Finally, I'm going to make sure that I return.
+
+33
+00:01:56,540 --> 00:01:57,230
+Promised not all.
+
+34
+00:02:00,050 --> 00:02:00,380
+Okay.
+
+35
+00:02:00,410 --> 00:02:03,920
+So the last thing we need to do is just make sure that we import items key.
+
+36
+00:02:04,490 --> 00:02:10,850
+So at the very top next to all my other item or my key imports, I'll put in items key.
+
+37
+00:02:13,190 --> 00:02:13,940
+I'm going to save this.
+
+38
+00:02:14,930 --> 00:02:16,910
+Let's go back over to the browser as usual.
+
+39
+00:02:16,910 --> 00:02:17,690
+Very quick test.
+
+40
+00:02:18,990 --> 00:02:21,650
+I've got an item that is still pending in the future.
+
+41
+00:02:22,340 --> 00:02:24,860
+I'm going to add in a bid of 15.
+
+42
+00:02:25,790 --> 00:02:27,230
+And now we can see the high bid.
+
+43
+00:02:27,230 --> 00:02:27,440
+Right?
+
+44
+00:02:27,440 --> 00:02:29,840
+There is $15 and it has one bid.
+
+45
+00:02:30,870 --> 00:02:34,230
+You'll also notice that the little input right here has now updated as well.
+
+46
+00:02:34,230 --> 00:02:39,060
+And I'm told that if I want to place another bid, I have to put in at least $15 and one cents.
+
+47
+00:02:39,450 --> 00:02:41,760
+So if I tried to do 15 again, I'll get an error.
+
+48
+00:02:42,150 --> 00:02:44,160
+But if I put in .01.
+
+49
+00:02:45,590 --> 00:02:45,810
+Yup.
+
+50
+00:02:45,890 --> 00:02:46,400
+Looks good.
+
+51
+00:02:47,240 --> 00:02:50,660
+And my high bid has updated number of bids has updated perfect.
+
+52
+00:02:51,660 --> 00:02:51,980
+Okay.
+
+53
+00:02:51,990 --> 00:02:55,080
+So this looks good and it appears that everything is functioning.
+
+54
+00:02:55,590 --> 00:02:57,330
+There is still one step we have to go through.
+
+55
+00:02:57,660 --> 00:03:02,680
+We have to create that sorted set to record which items have the highest bid at present.
+
+56
+00:03:02,970 --> 00:03:07,620
+And that sorted set, you will recall, is being used on the landing page in this section right here.
+
+57
+00:03:07,830 --> 00:03:08,820
+So we'll get around to that.
+
+58
+00:03:09,120 --> 00:03:13,650
+But in the meantime, there's some other very big issue that I want to point out.
+
+59
+00:03:13,920 --> 00:03:16,230
+This is something I mentioned a couple of videos ago.
+
+60
+00:03:16,410 --> 00:03:19,080
+It's a kind of big issue around creating bids right now.
+
+61
+00:03:19,080 --> 00:03:24,270
+And it's going to lead us into a much, much, much deeper discussion around a very important topic
+
+62
+00:03:24,270 --> 00:03:25,530
+to understand in is.

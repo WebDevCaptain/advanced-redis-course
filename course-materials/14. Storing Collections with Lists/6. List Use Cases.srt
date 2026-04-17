@@ -1,0 +1,647 @@
+1
+00:00:00,950 --> 00:00:04,940
+Let's take a look at a couple of scenarios where we would want to use a list data structure.
+
+2
+00:00:05,180 --> 00:00:10,130
+Remember, in general, you probably don't want to use a list as often as you might think.
+
+3
+00:00:10,370 --> 00:00:16,610
+There are many scenarios where a sorted set is probably more ideal, but certainly there are some scenarios
+
+4
+00:00:16,610 --> 00:00:17,780
+where you would want to use a list.
+
+5
+00:00:18,240 --> 00:00:23,030
+Those would be any time that you have any append only or prepared only data.
+
+6
+00:00:23,420 --> 00:00:28,760
+So if it turns out that you just keep on adding in additional readings over time or additional records
+
+7
+00:00:28,760 --> 00:00:33,680
+over time to some set of records, well, that might be a good use case for a list.
+
+8
+00:00:33,950 --> 00:00:39,260
+And examples of that might be, as I showed in last couple of diagrams, temperature readings or maybe
+
+9
+00:00:39,260 --> 00:00:42,500
+stock quotes, financial quotes or something like that.
+
+10
+00:00:42,860 --> 00:00:47,030
+Anything where we just keep on adding in additional data non-stop over time.
+
+11
+00:00:48,120 --> 00:00:55,200
+Another good use case is any time that we need to only fetch the last or first couple records of some
+
+12
+00:00:55,200 --> 00:00:56,370
+collection of records.
+
+13
+00:00:56,940 --> 00:01:02,910
+Examples of this might be if we are trying to show social media posts and we only want to see the latest
+
+14
+00:01:02,910 --> 00:01:04,260
+five posts from someone.
+
+15
+00:01:04,710 --> 00:01:09,390
+We could store the IDs of those posts inside of a list, and then whenever we want to find the last
+
+16
+00:01:09,390 --> 00:01:14,610
+five, we can use a very simple l range and always be guaranteed that we're going to find the last five
+
+17
+00:01:14,610 --> 00:01:15,540
+posts by that person.
+
+18
+00:01:16,320 --> 00:01:23,160
+Naturally, we could also use a sorted set for this very easily by storing each member or storing the
+
+19
+00:01:23,160 --> 00:01:27,840
+post IDs as members, and then the timestamp when they were created as the scores for each.
+
+20
+00:01:27,930 --> 00:01:30,200
+So definitely could use a sorted set there as well.
+
+21
+00:01:32,140 --> 00:01:36,790
+And then finally, any time that we have a collection of records where there is no real sort order to
+
+22
+00:01:36,790 --> 00:01:40,060
+the data outside of the order in which we are inserting it.
+
+23
+00:01:40,420 --> 00:01:43,270
+And again, an example that would be social media posts.
+
+24
+00:01:43,550 --> 00:01:46,150
+We want to show the last five or the most recent five posts.
+
+25
+00:01:46,360 --> 00:01:51,280
+The order in which we add those posts into a list is really the only order we care about around those
+
+26
+00:01:51,280 --> 00:01:51,610
+posts.
+
+27
+00:01:52,890 --> 00:01:57,360
+Now, just as importantly has understanding use cases of when you should use one.
+
+28
+00:01:57,660 --> 00:02:00,240
+You also need to know when you shouldn't use a list.
+
+29
+00:02:00,240 --> 00:02:00,660
+Probably.
+
+30
+00:02:00,990 --> 00:02:02,130
+Now, little caveat here.
+
+31
+00:02:02,250 --> 00:02:07,680
+If you've only got a list of, say, ten items or even 100 items, you can basically do whatever you
+
+32
+00:02:07,680 --> 00:02:08,010
+want.
+
+33
+00:02:08,040 --> 00:02:11,460
+You do not have so many records where you have to worry about performance.
+
+34
+00:02:11,820 --> 00:02:15,690
+We are really talking about when you might have thousands or tens of thousands of records.
+
+35
+00:02:16,380 --> 00:02:21,120
+So if you have many records in a list, then you probably do not want to use a list at all.
+
+36
+00:02:21,360 --> 00:02:25,980
+Any time that you need to apply some filtering criteria to the elements in the list, you might have
+
+37
+00:02:25,980 --> 00:02:29,700
+noticed that in all the commands we looked at, there was no filter command.
+
+38
+00:02:29,940 --> 00:02:35,700
+There was no ability for us to go through each element in red itself and specifically say, Give me
+
+39
+00:02:35,700 --> 00:02:39,750
+all the elements that are greater than or less than or equal to something.
+
+40
+00:02:39,890 --> 00:02:41,430
+We can't do an equal to you.
+
+41
+00:02:41,430 --> 00:02:42,720
+Let me be precise here.
+
+42
+00:02:42,720 --> 00:02:43,560
+There is a command for that.
+
+43
+00:02:43,760 --> 00:02:45,480
+We can't do a greater than or less than.
+
+44
+00:02:47,230 --> 00:02:52,510
+Another scenario in which we probably don't want to use a list is any time our data is sorted by some
+
+45
+00:02:52,510 --> 00:02:55,510
+attribute other than time or insertion order.
+
+46
+00:02:55,960 --> 00:03:00,820
+So if we are trying to sort by say alphabetical order, that would be really challenging to do with
+
+47
+00:03:00,820 --> 00:03:01,300
+a list.
+
+48
+00:03:03,090 --> 00:03:03,390
+All right.
+
+49
+00:03:03,390 --> 00:03:09,390
+So now a couple of little tips and some scenarios where you might run into where you could definitely
+
+50
+00:03:09,390 --> 00:03:10,110
+use a list.
+
+51
+00:03:11,320 --> 00:03:11,590
+All right.
+
+52
+00:03:11,590 --> 00:03:16,180
+So the first example we're going to take a look at is if we were building a book reviewing platform,
+
+53
+00:03:16,840 --> 00:03:21,790
+effectively, this is kind of like the same thing as if we were doing a social media network, so we
+
+54
+00:03:21,790 --> 00:03:23,650
+might have a list of reviews.
+
+55
+00:03:23,830 --> 00:03:25,720
+So reviews are being created for different books.
+
+56
+00:03:25,720 --> 00:03:26,290
+Over time.
+
+57
+00:03:27,040 --> 00:03:32,350
+We might store the idea of all these different books or these reviews inside of a list, and we might
+
+58
+00:03:32,350 --> 00:03:37,030
+just keep on appending onto the very end to list each new review as it is created.
+
+59
+00:03:37,750 --> 00:03:44,110
+So this right here, one is the idea of some review and here is the hash representing the view, the
+
+60
+00:03:44,110 --> 00:03:44,890
+review right here.
+
+61
+00:03:45,610 --> 00:03:49,510
+And then two is a review that was created just a little bit ago.
+
+62
+00:03:49,840 --> 00:03:51,850
+And so here's the hash representing it.
+
+63
+00:03:52,660 --> 00:03:58,450
+So one thing we might need to do on this book reviewing platform is get the titles of the two most recently
+
+64
+00:03:58,450 --> 00:03:59,440
+reviewed books.
+
+65
+00:04:00,100 --> 00:04:06,430
+So in other words, get A1 and B2 right here, find the respective hashes for each and then get the
+
+66
+00:04:06,430 --> 00:04:08,050
+title property of each one.
+
+67
+00:04:08,830 --> 00:04:11,440
+We could definitely do this in two separate commands.
+
+68
+00:04:11,830 --> 00:04:17,800
+We could do a L range to get the last two elements and then two separate H get alls, or just simply
+
+69
+00:04:17,800 --> 00:04:20,800
+each gets to get the title using both those IDs.
+
+70
+00:04:21,760 --> 00:04:26,830
+But one other thing we could do is you get all the data we need, but just one single command is to
+
+71
+00:04:26,830 --> 00:04:30,010
+use sorts, you might recall going over sort a little bit ago.
+
+72
+00:04:30,460 --> 00:04:35,950
+So let's go through this example and how we would solve this using the sort command to merge data from
+
+73
+00:04:35,950 --> 00:04:40,180
+multiple different locations in the exact same way that we did with sorted sets a while ago.
+
+74
+00:04:41,690 --> 00:04:43,190
+All right, back over to our booked cloud.
+
+75
+00:04:43,550 --> 00:04:49,970
+I'm going to create just an A1 and a B2 hash, and then I'll create the reviews list and just put in
+
+76
+00:04:49,970 --> 00:04:53,720
+A1 and B2 and we'll try to get the titles of those two books.
+
+77
+00:04:54,790 --> 00:04:55,510
+So inside of your.
+
+78
+00:04:56,810 --> 00:04:59,000
+Because I might run this code cell a couple of times.
+
+79
+00:04:59,000 --> 00:05:01,760
+I'm going to delete the review key.
+
+80
+00:05:02,740 --> 00:05:07,720
+I'll then do an R push into reviews of B to.
+
+81
+00:05:10,110 --> 00:05:10,860
+And A1.
+
+82
+00:05:11,800 --> 00:05:15,280
+So that's going to give me a list just like this right here, but without those additional elements
+
+83
+00:05:15,280 --> 00:05:15,550
+in it.
+
+84
+00:05:17,640 --> 00:05:19,140
+I'll then create two different structs.
+
+85
+00:05:21,150 --> 00:05:24,720
+So books a one with the title of say good book.
+
+86
+00:05:27,370 --> 00:05:28,790
+The title of bad book.
+
+87
+00:05:30,380 --> 00:05:31,490
+Oh, that should be, too.
+
+88
+00:05:32,120 --> 00:05:32,540
+There we go.
+
+89
+00:05:33,560 --> 00:05:38,960
+Now we've got all of our data and now to join these two records together, I guess three records, the
+
+90
+00:05:38,960 --> 00:05:40,130
+list and the two hashes.
+
+91
+00:05:40,460 --> 00:05:42,860
+We could do a sorts on reviews.
+
+92
+00:05:43,970 --> 00:05:48,800
+We want to specify the sorting criteria because we don't want to apply any additional sorting.
+
+93
+00:05:49,190 --> 00:05:51,340
+This data in the list is already sorted.
+
+94
+00:05:51,350 --> 00:05:54,800
+It's sorted in the order of which review was added first.
+
+95
+00:05:55,460 --> 00:05:59,030
+So to tell the sort command to not apply any additional sorting.
+
+96
+00:05:59,360 --> 00:06:02,870
+I'm going to put in some key here that just does not exist.
+
+97
+00:06:03,500 --> 00:06:07,220
+And once again, a very common convention is to just put in no sort.
+
+98
+00:06:08,920 --> 00:06:11,440
+We can then specify what data we want to get out.
+
+99
+00:06:13,150 --> 00:06:15,420
+So my template here will be books.
+
+100
+00:06:16,650 --> 00:06:19,430
+Colin Starr era title.
+
+101
+00:06:20,620 --> 00:06:25,060
+So this effectively means no end on all the different elements inside the list.
+
+102
+00:06:25,300 --> 00:06:29,440
+And then just as we saw with sorted sets, iterate through each member one by one.
+
+103
+00:06:30,100 --> 00:06:31,390
+So take that number right there.
+
+104
+00:06:31,870 --> 00:06:32,290
+A one.
+
+105
+00:06:33,480 --> 00:06:39,600
+Inserted into the template that we provided for gets that's going to result in book's colon A1 that's
+
+106
+00:06:39,600 --> 00:06:44,730
+going to point at a hash and then arrow title means go into the title or go into the hash, find the
+
+107
+00:06:44,730 --> 00:06:47,220
+title property and give us whatever string is there.
+
+108
+00:06:47,490 --> 00:06:50,670
+And that's what should be reported in the output output results set.
+
+109
+00:06:51,760 --> 00:06:55,450
+So if I run that, sure enough, I get that book and good book.
+
+110
+00:06:57,550 --> 00:06:57,880
+Okay.
+
+111
+00:06:57,910 --> 00:07:04,780
+So that is once again use case of the list command where we just want to show the most recent something
+
+112
+00:07:04,960 --> 00:07:05,830
+in our application.
+
+113
+00:07:06,840 --> 00:07:08,880
+But one other quick tip I want to give you.
+
+114
+00:07:09,150 --> 00:07:13,770
+You might be looking at lists and saying, gee, it sure is not very useful to only be able to store
+
+115
+00:07:13,860 --> 00:07:16,530
+a simple string here or essentially a simple number.
+
+116
+00:07:16,980 --> 00:07:19,800
+Naturally, we can get around this really, really easily.
+
+117
+00:07:20,610 --> 00:07:24,930
+Let's take the same example we were looking at a little bit ago of temperature records.
+
+118
+00:07:25,770 --> 00:07:29,310
+Last time I showed you this diagram, I said, Oh, yeah, these are going to be temperature records
+
+119
+00:07:29,310 --> 00:07:32,010
+from today, yesterday, two days ago, three days ago, and so on.
+
+120
+00:07:32,460 --> 00:07:36,960
+So presumably there's like 24 hours exactly between each of these different records.
+
+121
+00:07:37,490 --> 00:07:42,300
+Let's imagine for a second that we are getting this data on a very inconsistent schedule.
+
+122
+00:07:42,570 --> 00:07:47,730
+So maybe today we got this temperature data at 4 a.m..
+
+123
+00:07:48,820 --> 00:07:54,070
+And yesterday we got the temperature data at 8 a.m. and then before that we got it at 11 a.m..
+
+124
+00:07:54,080 --> 00:07:54,910
+You get the idea.
+
+125
+00:07:55,540 --> 00:07:59,710
+So there's a variable amount of time between each of these different records, and we might want to
+
+126
+00:07:59,710 --> 00:08:03,310
+record exactly when this temperature data was taken.
+
+127
+00:08:04,380 --> 00:08:09,840
+We could obviously use a sorted set here instead where all the members are, the temperatures and the
+
+128
+00:08:09,840 --> 00:08:15,540
+actual scores would be maybe a timestamp of when the record was collected or the recording was collected.
+
+129
+00:08:16,290 --> 00:08:21,450
+But another way we could do this is by using a list and just storing a little bit more clever value
+
+130
+00:08:21,840 --> 00:08:22,290
+in here.
+
+131
+00:08:23,240 --> 00:08:24,740
+So we might do something like this.
+
+132
+00:08:24,800 --> 00:08:28,640
+Now, first glance, it looks really nasty, but let me just show you exactly what's going on here.
+
+133
+00:08:29,710 --> 00:08:33,490
+I've encoded inside of each of these values which are being stored as strings.
+
+134
+00:08:33,850 --> 00:08:36,340
+A little bit of a schema of sorts.
+
+135
+00:08:36,940 --> 00:08:42,610
+So I'm saying that I want to restore the temperature that was recorded and then a colon, which is just
+
+136
+00:08:42,610 --> 00:08:45,820
+a random specify a random separator here.
+
+137
+00:08:45,940 --> 00:08:52,690
+I could have just as well done a space where a dot or a dash or slash whatever I want to use just some
+
+138
+00:08:52,690 --> 00:08:53,320
+separator.
+
+139
+00:08:53,590 --> 00:08:56,590
+And then right after that, I could put in, say, a UNIX timestamp.
+
+140
+00:08:57,650 --> 00:09:01,820
+So now for each of these different records, I know exactly the temperature.
+
+141
+00:09:02,680 --> 00:09:06,250
+Was recorded and the time at which this temperature was recorded.
+
+142
+00:09:07,150 --> 00:09:12,010
+So I've got all these records there, all sorted in the correct time, and I know a lot more information
+
+143
+00:09:12,010 --> 00:09:12,820
+about each one.
+
+144
+00:09:13,420 --> 00:09:18,670
+And actually, we could expand this quite a bit more so I could do temperature and then time stamp and
+
+145
+00:09:18,670 --> 00:09:21,490
+then another colon and maybe a location after that.
+
+146
+00:09:21,880 --> 00:09:25,630
+So this was the temperature in New York or something.
+
+147
+00:09:28,040 --> 00:09:29,230
+The sky's the limit here.
+
+148
+00:09:29,240 --> 00:09:32,960
+You can stuff just about as much info in here as you wish.
+
+149
+00:09:33,500 --> 00:09:35,960
+If you want to put in more data into your list.
+
+150
+00:09:37,780 --> 00:09:43,150
+The only downside to this is that we start to lose the ability to join this data with any other key
+
+151
+00:09:43,150 --> 00:09:44,170
+insider application.
+
+152
+00:09:44,500 --> 00:09:49,450
+So now if we wanted to somehow join this data with the hash, we would have to have a hash with a key
+
+153
+00:09:49,450 --> 00:09:53,470
+of something like 25 colon timestamp poll in New York.
+
+154
+00:09:53,710 --> 00:09:56,150
+And maybe you do have a key like that.
+
+155
+00:09:56,170 --> 00:09:56,770
+Maybe you don't.
+
+156
+00:09:57,010 --> 00:09:57,910
+But just keep that in mind.
+
+157
+00:09:59,040 --> 00:09:59,340
+All right.
+
+158
+00:09:59,340 --> 00:10:01,740
+So that is enough around some use cases here.
+
+159
+00:10:02,010 --> 00:10:07,020
+So last thing we're going to do is go back over to our e-commerce application and actually make use
+
+160
+00:10:07,020 --> 00:10:07,560
+of lists.
+
+161
+00:10:07,890 --> 00:10:10,330
+We've got one more feature we need to build out using them.
+
+162
+00:10:10,350 --> 00:10:12,120
+So let's get started in just a moment.

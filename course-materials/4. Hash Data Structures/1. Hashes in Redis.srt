@@ -1,0 +1,127 @@
+1
+00:00:00,810 --> 00:00:04,530
+At this point, we've been looking at storing planes, strings and numbers inside of readies.
+
+2
+00:00:04,770 --> 00:00:06,810
+As you see right here, it's a color red.
+
+3
+00:00:07,290 --> 00:00:12,930
+We're not going to move on to our next data structure, which is a hash hash allows us to store a collection
+
+4
+00:00:12,930 --> 00:00:15,270
+of nested key value pairs inside Redis.
+
+5
+00:00:15,870 --> 00:00:20,190
+So at a key of company, we might have a hash data structure.
+
+6
+00:00:20,400 --> 00:00:22,060
+This is the hash over here on the right hand side.
+
+7
+00:00:22,680 --> 00:00:26,190
+You can think of this once again as like a nested key value structure.
+
+8
+00:00:26,910 --> 00:00:30,090
+So we might have a key of name, the value of concrete code.
+
+9
+00:00:30,450 --> 00:00:31,010
+Read it out.
+
+10
+00:00:31,050 --> 00:00:33,390
+1915 Industry of concrete.
+
+11
+00:00:34,510 --> 00:00:41,480
+The most common use case of hashes is to store information about particular records or entities inside
+
+12
+00:00:41,480 --> 00:00:42,200
+of your application.
+
+13
+00:00:42,800 --> 00:00:47,840
+So you might have a hash that stores information about a particular user, a hash that stores information
+
+14
+00:00:47,840 --> 00:00:52,280
+about a particular post or a house that stores information about a particular image.
+
+15
+00:00:52,850 --> 00:00:54,230
+By far the most common use case.
+
+16
+00:00:54,500 --> 00:00:56,990
+But there are, of course, many other use cases as well.
+
+17
+00:00:57,970 --> 00:01:03,730
+One thing to be aware of around these hashes is that they are not allowed for us to have nested or deeply
+
+18
+00:01:03,730 --> 00:01:04,960
+nested evaluators.
+
+19
+00:01:05,620 --> 00:01:10,660
+You can really think of our hash data structure as being like something like this right here, a JSON
+
+20
+00:01:10,660 --> 00:01:11,140
+object.
+
+21
+00:01:11,380 --> 00:01:15,520
+We have a collection of key value pairs where the values can be numbers or strings.
+
+22
+00:01:16,990 --> 00:01:21,010
+We are not allowed to have deeply nested structures, as you see in this case right here.
+
+23
+00:01:21,520 --> 00:01:28,360
+The deeply nested nested aspect would be industry with a sub object of primary and secondary.
+
+24
+00:01:29,140 --> 00:01:32,680
+We also cannot have arrays inside of your as well as you see in this example.
+
+25
+00:01:33,320 --> 00:01:39,160
+Again, a hash value pairs where the values are only strings, only numbers.
+
+26
+00:01:40,760 --> 00:01:44,090
+Now there are a tremendous number of commands that we can take a look at around houses.
+
+27
+00:01:44,420 --> 00:01:46,400
+I shouldn't say tremendous, but a reasonable number.
+
+28
+00:01:47,210 --> 00:01:51,490
+A lot of these are going to be very similar to the commands we already went over for numbers and strings.
+
+29
+00:01:51,530 --> 00:01:53,120
+So it should not take very long.
+
+30
+00:01:53,870 --> 00:01:57,110
+Let's get started in a new our books cloud notebook.
+
+31
+00:01:57,140 --> 00:02:00,530
+In the next video, we're going to start taking a look at some of these different commands and how they
+
+32
+00:02:00,530 --> 00:02:00,800
+work.

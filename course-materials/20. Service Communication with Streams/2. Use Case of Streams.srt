@@ -1,0 +1,455 @@
+1
+00:00:00,800 --> 00:00:05,030
+Let's take a look at a couple of diagrams to understand how streams work and then take a look at a practical
+
+2
+00:00:05,030 --> 00:00:06,200
+use case of a stream.
+
+3
+00:00:06,740 --> 00:00:07,550
+Okay, here we go.
+
+4
+00:00:09,000 --> 00:00:10,860
+So as usual, you have read us here in the middle.
+
+5
+00:00:11,220 --> 00:00:12,220
+We got a stream.
+
+6
+00:00:12,240 --> 00:00:16,170
+This is our data structure that's going to eventually store some amount of information.
+
+7
+00:00:16,770 --> 00:00:20,520
+And then on the left hand side over here, I've got something called a message producer.
+
+8
+00:00:21,030 --> 00:00:24,060
+And then on the right hand side is something called a message consumer.
+
+9
+00:00:24,990 --> 00:00:30,180
+These producers and consumers are intended to be separate servers, processes, APIs.
+
+10
+00:00:30,510 --> 00:00:33,090
+Some piece of software that you and I author.
+
+11
+00:00:33,940 --> 00:00:39,190
+Our message producer is then going to try to communicate some information with the consumer.
+
+12
+00:00:39,910 --> 00:00:42,340
+So the producer is going to create a message.
+
+13
+00:00:42,760 --> 00:00:44,350
+A message is like a hash.
+
+14
+00:00:44,620 --> 00:00:46,360
+It's a collection of key value pairs.
+
+15
+00:00:46,780 --> 00:00:49,270
+No nesting of data inside this hash is allowed.
+
+16
+00:00:49,540 --> 00:00:51,760
+So we cannot store a hash inside of a hash.
+
+17
+00:00:52,000 --> 00:00:53,950
+It's just like a normal, reddest hash.
+
+18
+00:00:54,990 --> 00:00:58,920
+The message producer is going to add this message into the stream.
+
+19
+00:00:59,860 --> 00:01:00,910
+Inside the stream.
+
+20
+00:01:00,910 --> 00:01:03,670
+The message will exist and it's going to be assigned an ID.
+
+21
+00:01:04,810 --> 00:01:07,120
+The ID is going to be.
+
+22
+00:01:08,180 --> 00:01:13,580
+The time at which this message was added in UNIX time stamp formats.
+
+23
+00:01:14,000 --> 00:01:15,710
+That's going to be a millisecond value.
+
+24
+00:01:15,740 --> 00:01:16,700
+So something like that.
+
+25
+00:01:17,180 --> 00:01:19,310
+And then a-0 on the end.
+
+26
+00:01:20,120 --> 00:01:22,220
+I'll tell you what the dash zero is in a little bit.
+
+27
+00:01:23,570 --> 00:01:27,560
+So we can think of this as kind of like a little key value pair in its own right.
+
+28
+00:01:27,770 --> 00:01:30,650
+We've got the idea pointing to a particular message.
+
+29
+00:01:31,630 --> 00:01:33,640
+That's how the message exists inside the stream.
+
+30
+00:01:34,540 --> 00:01:39,940
+Then at some point in time, this consumer is going to ask for all the most recent messages that have
+
+31
+00:01:39,940 --> 00:01:41,110
+been added to the stream.
+
+32
+00:01:41,740 --> 00:01:45,520
+So we're going to take this message and it gets sent off to the consumer.
+
+33
+00:01:46,570 --> 00:01:49,060
+The consumer can then process that message in some way.
+
+34
+00:01:49,690 --> 00:01:54,010
+When the consumer reads a message, it is not deleted from the original stream.
+
+35
+00:01:54,190 --> 00:01:57,820
+It stays there until we specifically say that we want to delete that message.
+
+36
+00:01:59,610 --> 00:01:59,970
+Okay.
+
+37
+00:02:00,000 --> 00:02:01,830
+So that's pretty much what a stream is.
+
+38
+00:02:01,830 --> 00:02:04,680
+It stores these little hash like objects.
+
+39
+00:02:05,280 --> 00:02:10,590
+We have these ideas that point at them and they are really meant for communicating information between
+
+40
+00:02:10,590 --> 00:02:13,200
+some producer and some consumer.
+
+41
+00:02:13,740 --> 00:02:18,150
+Now, obviously, there's still a lot of details to fill in here, but let me immediately show you a
+
+42
+00:02:18,150 --> 00:02:20,850
+extremely common use case of streams.
+
+43
+00:02:21,240 --> 00:02:22,980
+This is really the primary use case.
+
+44
+00:02:22,980 --> 00:02:25,470
+This is really the whole reason that streams exist at all.
+
+45
+00:02:26,310 --> 00:02:32,550
+So I first show you a little sample application that is not quite set up ideally, so we don't really
+
+46
+00:02:32,550 --> 00:02:34,050
+want to build an application like this.
+
+47
+00:02:34,050 --> 00:02:37,320
+I just want you to help you understand why we would use a stream.
+
+48
+00:02:38,250 --> 00:02:43,260
+So let's imagine we are building some kind of API that's going to receive requests to send an email
+
+49
+00:02:43,260 --> 00:02:43,770
+to someone.
+
+50
+00:02:44,520 --> 00:02:48,240
+Leah's request says, Please send an email to SDF at gmail.com.
+
+51
+00:02:49,080 --> 00:02:54,300
+Our server will receive that and it's going to realize that it needs to make a request to some third
+
+52
+00:02:54,300 --> 00:02:57,360
+party email API to actually get the emails sent.
+
+53
+00:02:59,580 --> 00:03:02,310
+Now as servers making the request off to this third party API.
+
+54
+00:03:02,640 --> 00:03:05,080
+The original request right here is still hanging.
+
+55
+00:03:05,130 --> 00:03:05,990
+It's still pending.
+
+56
+00:03:06,000 --> 00:03:07,950
+It is still waiting for a response.
+
+57
+00:03:08,860 --> 00:03:14,110
+It might take this third party email API several seconds to actually successfully send the email.
+
+58
+00:03:14,620 --> 00:03:19,690
+So in the entire time that we are waiting for a response from this third party email, the original
+
+59
+00:03:19,690 --> 00:03:22,150
+request is just sitting there in a pending state.
+
+60
+00:03:22,960 --> 00:03:27,640
+When we finally get a response from the email API, we can now respond to the original request.
+
+61
+00:03:28,680 --> 00:03:32,160
+Now, is there something inherently wrong about leaving this request pending?
+
+62
+00:03:32,370 --> 00:03:37,740
+Well, it kind of depends upon the volume of traffic you are expecting, but in general, we don't really
+
+63
+00:03:37,740 --> 00:03:40,170
+like to have pending requests just sitting around.
+
+64
+00:03:41,070 --> 00:03:46,980
+So we might make use of a stream to simplify this process a little bit and allow ourselves to not have
+
+65
+00:03:46,980 --> 00:03:49,680
+to just have this request sitting around and pending.
+
+66
+00:03:50,910 --> 00:03:54,630
+So here's how we might use streams to enhance this entire process a little bit more.
+
+67
+00:03:54,960 --> 00:03:59,070
+Not only solve the problem of having this request pending for a certain amount of time, but also solve
+
+68
+00:03:59,070 --> 00:04:04,380
+the case in which we might get a lot of requests in very short order asking us to send some emails.
+
+69
+00:04:04,800 --> 00:04:06,420
+So this is how we would use a stream.
+
+70
+00:04:07,700 --> 00:04:10,200
+So we've still got a request coming in to some server here.
+
+71
+00:04:10,830 --> 00:04:12,930
+The server is our message producer.
+
+72
+00:04:13,930 --> 00:04:19,870
+Though, the message producer, when it receives this request is going to queue up or put a message
+
+73
+00:04:19,870 --> 00:04:20,740
+into our stream.
+
+74
+00:04:21,550 --> 00:04:25,030
+The message might look like this might have a two fields and a message field.
+
+75
+00:04:25,630 --> 00:04:27,880
+So too is where we are trying to send an email to.
+
+76
+00:04:28,090 --> 00:04:31,300
+The message might be the subject line of the email or whatever else.
+
+77
+00:04:32,350 --> 00:04:37,810
+As soon as we have added this message into the stream, we can then immediately send a response back
+
+78
+00:04:37,810 --> 00:04:38,800
+to this original request.
+
+79
+00:04:38,980 --> 00:04:41,080
+So it doesn't have to sit around pending any longer.
+
+80
+00:04:43,100 --> 00:04:45,680
+So our producer is going to queue up this message.
+
+81
+00:04:47,510 --> 00:04:49,190
+Though it will be added into our stream.
+
+82
+00:04:50,290 --> 00:04:53,440
+And be given that ID which is a UNIX timestamp.
+
+83
+00:04:53,830 --> 00:04:54,760
+Dash zero.
+
+84
+00:04:59,510 --> 00:05:02,600
+And then separately, we're going to have a worker over here.
+
+85
+00:05:02,630 --> 00:05:05,540
+Or again, we can refer to this as a message consumer.
+
+86
+00:05:06,320 --> 00:05:10,970
+This thing is going to wait around for some message to be added into our stream.
+
+87
+00:05:11,450 --> 00:05:16,880
+As soon as a message is added, we're going to get it sent over to our worker or our consumer.
+
+88
+00:05:17,860 --> 00:05:21,050
+The worker is going to see these the hash rate here.
+
+89
+00:05:21,070 --> 00:05:25,150
+It's going to say, okay, I need to send an email to this person and it must have this subject line.
+
+90
+00:05:25,930 --> 00:05:31,390
+The worker will receive this message across the set by sending a request off to a third party email
+
+91
+00:05:31,390 --> 00:05:33,670
+API and get the actual email sent.
+
+92
+00:05:35,810 --> 00:05:36,140
+All right.
+
+93
+00:05:36,290 --> 00:05:40,280
+Now, this entire process might not really sound like it solves the original problem of having this
+
+94
+00:05:40,280 --> 00:05:40,970
+request pending.
+
+95
+00:05:41,180 --> 00:05:45,720
+Then you might have some outstanding issues, such as how does the person who made this request know
+
+96
+00:05:45,860 --> 00:05:47,600
+the email was actually sent successfully?
+
+97
+00:05:47,870 --> 00:05:49,730
+That's all stuff we will figure out over time.
+
+98
+00:05:50,450 --> 00:05:55,100
+What I really want you to understand right now is that the flow that I just described is really the
+
+99
+00:05:55,100 --> 00:05:56,960
+primary use case of streams.
+
+100
+00:05:57,500 --> 00:06:01,880
+We have a message producer queuing up some little data structures.
+
+101
+00:06:02,180 --> 00:06:05,960
+Those are going to be consumed by some other worker inside of our application.
+
+102
+00:06:06,930 --> 00:06:11,880
+Just about every major application out there in the world has a set up like this.
+
+103
+00:06:12,090 --> 00:06:17,250
+It has some number of message producers, some kind of message broker, something like retest, who
+
+104
+00:06:17,250 --> 00:06:18,690
+stored these messages.
+
+105
+00:06:19,170 --> 00:06:23,880
+And then we've got some consumers that are taking these messages and processing them in some way.
+
+106
+00:06:23,910 --> 00:06:27,660
+Again, just about every application in the world has a set up like this.
+
+107
+00:06:29,080 --> 00:06:33,370
+When we talk about streams, we're really going to be discussing streams and learning about them from
+
+108
+00:06:33,370 --> 00:06:38,920
+this perspective, from understanding that we're probably trying to queue up some little message here
+
+109
+00:06:38,920 --> 00:06:43,300
+that needs to have some work done to it, and that's going to be cued up by a producer.
+
+110
+00:06:43,510 --> 00:06:48,340
+And we're going to eventually get that message with a worker and then process the message in some way.
+
+111
+00:06:49,690 --> 00:06:49,990
+All right.
+
+112
+00:06:49,990 --> 00:06:53,320
+So now we understand kind of the use case here and why we're using streams at all.
+
+113
+00:06:53,380 --> 00:06:57,490
+Now it's time to start to learn the specifics of them, how we create them, how we queue up messages
+
+114
+00:06:57,490 --> 00:06:58,030
+and so on.

@@ -1,0 +1,707 @@
+1
+00:00:01,130 --> 00:00:01,600
+All right.
+
+2
+00:00:01,610 --> 00:00:03,740
+Here's the last variation on sorts.
+
+3
+00:00:03,770 --> 00:00:05,660
+This is where things really get interesting.
+
+4
+00:00:05,900 --> 00:00:08,570
+This is where sorting is not really like sorting.
+
+5
+00:00:08,570 --> 00:00:13,400
+It's more like a general purpose command to kind of join together different sources of data in readies.
+
+6
+00:00:14,530 --> 00:00:19,120
+In this example, we're going to imagine a very similar problem, but with a little bit of a twist.
+
+7
+00:00:19,570 --> 00:00:24,580
+So this time around, I want to list out the title of each book sorted by the year published.
+
+8
+00:00:25,180 --> 00:00:30,370
+Now, at first glance, as we look at this table right here, that sounds just trivially easy, super
+
+9
+00:00:30,370 --> 00:00:30,580
+easy.
+
+10
+00:00:30,580 --> 00:00:34,930
+I mean, we can just look at this thing, say that's already sorted by year published, we would just
+
+11
+00:00:34,930 --> 00:00:35,710
+take bad book.
+
+12
+00:00:35,740 --> 00:00:36,580
+Okay, good.
+
+13
+00:00:36,760 --> 00:00:37,630
+And that's pretty much it.
+
+14
+00:00:38,080 --> 00:00:42,340
+But implementing this with Redis in one single command, little bit more challenging.
+
+15
+00:00:42,970 --> 00:00:46,630
+Remember, this is the data we have access to in Redis.
+
+16
+00:00:47,110 --> 00:00:48,400
+So we've got our hashes over here.
+
+17
+00:00:48,400 --> 00:00:49,780
+We got this sorted, set over here.
+
+18
+00:00:50,020 --> 00:00:52,750
+We need to somehow look up these IDs.
+
+19
+00:00:53,920 --> 00:00:57,130
+We need to somehow sort the IDs based upon these years.
+
+20
+00:00:57,370 --> 00:01:02,240
+But then instead of returning these IDs, we need to return some data from the hashes.
+
+21
+00:01:02,260 --> 00:01:03,490
+Over here on the left hand side.
+
+22
+00:01:03,730 --> 00:01:04,570
+So good book.
+
+23
+00:01:04,570 --> 00:01:05,110
+Bad book.
+
+24
+00:01:05,110 --> 00:01:06,010
+An okay book.
+
+25
+00:01:07,440 --> 00:01:11,820
+So as usual, we're going to write out the command to solve this and we'll walk through how it works
+
+26
+00:01:11,820 --> 00:01:12,570
+step by step.
+
+27
+00:01:14,800 --> 00:01:16,960
+It's the back of a hearing, an ad in another code cell.
+
+28
+00:01:18,830 --> 00:01:22,850
+And this time around we will do a sorts books likes.
+
+29
+00:01:24,220 --> 00:01:29,710
+We will still sort by book's Colon Star era year.
+
+30
+00:01:30,310 --> 00:01:34,300
+But then I'm going to also add on one additional argument of get.
+
+31
+00:01:35,370 --> 00:01:35,790
+Books.
+
+32
+00:01:35,820 --> 00:01:36,360
+Colin.
+
+33
+00:01:37,230 --> 00:01:39,040
+Star Arrow.
+
+34
+00:01:39,150 --> 00:01:39,540
+Title.
+
+35
+00:01:41,790 --> 00:01:47,910
+Yeah, I'm going to run that and I get my titles and in theory they are sorted in order of year published
+
+36
+00:01:48,300 --> 00:01:48,760
+so bad.
+
+37
+00:01:48,780 --> 00:01:49,140
+Okay.
+
+38
+00:01:49,140 --> 00:01:49,500
+Good.
+
+39
+00:01:49,920 --> 00:01:51,630
+All winds up with the result we got last time.
+
+40
+00:01:51,630 --> 00:01:52,200
+So yeah.
+
+41
+00:01:52,200 --> 00:01:53,610
+I'd say that this is probably correct.
+
+42
+00:01:54,650 --> 00:01:57,070
+Let's now take a look at a couple of different diagrams.
+
+43
+00:01:57,310 --> 00:01:59,320
+You know, just understand how this thing is working.
+
+44
+00:02:00,710 --> 00:02:05,090
+Well, once again, the first step or two are going to look very similar to what we went through a little
+
+45
+00:02:05,090 --> 00:02:05,450
+bit ago.
+
+46
+00:02:05,930 --> 00:02:09,260
+We're going to first take a look at the assorted set that we're trying to sort.
+
+47
+00:02:09,450 --> 00:02:11,030
+We're going to extract all the members.
+
+48
+00:02:11,480 --> 00:02:13,010
+So we're going to take the members of BAT.
+
+49
+00:02:13,010 --> 00:02:13,400
+Okay.
+
+50
+00:02:13,430 --> 00:02:13,880
+And good.
+
+51
+00:02:14,720 --> 00:02:18,710
+And I'm going to just delete everything else just for the sake of keeping this diagram simple.
+
+52
+00:02:19,610 --> 00:02:22,910
+Then in step number two, we're going to do the exact same thing as before.
+
+53
+00:02:23,090 --> 00:02:25,400
+We're going to loop through each individual member.
+
+54
+00:02:25,880 --> 00:02:28,790
+We're going to insert the member into this by template.
+
+55
+00:02:29,360 --> 00:02:35,450
+And then if this result right here points at a hash, we will extract that field and add it up here
+
+56
+00:02:35,450 --> 00:02:36,320
+at the top right hand side.
+
+57
+00:02:37,010 --> 00:02:40,280
+So we put in a bad and result in books.
+
+58
+00:02:41,270 --> 00:02:42,320
+Bad year.
+
+59
+00:02:42,860 --> 00:02:45,830
+So that would give me right here the 1930.
+
+60
+00:02:46,160 --> 00:02:47,330
+So 1930 right there.
+
+61
+00:02:47,510 --> 00:02:48,080
+Same thing for.
+
+62
+00:02:48,080 --> 00:02:48,590
+Okay.
+
+63
+00:02:48,620 --> 00:02:49,580
+Same thing for good.
+
+64
+00:02:50,150 --> 00:02:52,700
+So the buy is specifying our sorting criteria.
+
+65
+00:02:54,330 --> 00:02:57,000
+Then on Staten or three is where things get a little bit different.
+
+66
+00:02:57,510 --> 00:03:02,430
+So step number three, we're going to repeat that same thing we did with PHI, but now we're going to
+
+67
+00:03:02,430 --> 00:03:05,250
+use the template that was provided to the Get argument.
+
+68
+00:03:06,330 --> 00:03:09,300
+So we put in to the get argument a template of books.
+
+69
+00:03:09,780 --> 00:03:11,370
+Poland Star Title.
+
+70
+00:03:12,260 --> 00:03:14,760
+We're going to look through each member starting off with bat.
+
+71
+00:03:15,770 --> 00:03:18,350
+I'm going to insert that in place of the star.
+
+72
+00:03:20,240 --> 00:03:21,140
+Look at this key.
+
+73
+00:03:22,260 --> 00:03:23,330
+Points to this hash.
+
+74
+00:03:23,970 --> 00:03:26,790
+I'm going to look up whatever is on the right hand side of the arrow.
+
+75
+00:03:27,000 --> 00:03:27,750
+So it's title.
+
+76
+00:03:28,470 --> 00:03:29,610
+There's bad book right there.
+
+77
+00:03:29,640 --> 00:03:34,500
+So I'm going to take that value and I'm going to put it now on the left hand side of this diagram.
+
+78
+00:03:35,590 --> 00:03:40,630
+Now I've got this kind of association of bad with bad book and the sorting criteria.
+
+79
+00:03:40,660 --> 00:03:43,060
+This little pair right here is 1930.
+
+80
+00:03:44,040 --> 00:03:46,650
+Well, then repeat the same process for the other two members.
+
+81
+00:03:47,130 --> 00:03:48,350
+So this would go to books.
+
+82
+00:03:48,750 --> 00:03:49,380
+Okay.
+
+83
+00:03:50,470 --> 00:03:52,660
+There's the key look up title.
+
+84
+00:03:52,990 --> 00:03:53,950
+There's Oak Book.
+
+85
+00:03:54,160 --> 00:03:54,880
+Put it right there.
+
+86
+00:03:55,720 --> 00:03:57,160
+And then it's same thing for.
+
+87
+00:03:59,070 --> 00:03:59,910
+So book's good.
+
+88
+00:04:00,210 --> 00:04:02,250
+There's the title and put it right there.
+
+89
+00:04:04,330 --> 00:04:06,340
+All right, so now I've got these pairs.
+
+90
+00:04:07,560 --> 00:04:09,930
+On the left hand side of some amount of data.
+
+91
+00:04:10,350 --> 00:04:12,600
+And on the right hand side is these sorting criteria.
+
+92
+00:04:13,830 --> 00:04:14,970
+On to step number four.
+
+93
+00:04:15,570 --> 00:04:16,800
+Same thing as before.
+
+94
+00:04:16,860 --> 00:04:21,180
+We're going to sort each member based on the by field and those are the things on the right hand side.
+
+95
+00:04:21,690 --> 00:04:23,600
+Once again, values are already sorted.
+
+96
+00:04:23,610 --> 00:04:26,100
+I know I probably should have jumbled the data, but totally fine.
+
+97
+00:04:26,100 --> 00:04:28,710
+Actually works out better for something else we're going work on later on.
+
+98
+00:04:29,520 --> 00:04:30,420
+So do the sorting.
+
+99
+00:04:30,420 --> 00:04:30,970
+Already sorted?
+
+100
+00:04:30,970 --> 00:04:31,560
+Totally fine.
+
+101
+00:04:32,730 --> 00:04:37,860
+Move on to Stanton or for you're only going to return the fields specified in the GET template.
+
+102
+00:04:38,310 --> 00:04:43,650
+The Get template gave us these titles right here, so we would drop off the sorting criteria.
+
+103
+00:04:44,100 --> 00:04:49,890
+We would drop off those members because they were not specified in the GET template and we are left
+
+104
+00:04:49,890 --> 00:04:51,100
+with just that.
+
+105
+00:04:51,390 --> 00:04:51,960
+Okay.
+
+106
+00:04:51,990 --> 00:04:52,610
+And good book.
+
+107
+00:04:53,850 --> 00:04:54,720
+And that's how it works.
+
+108
+00:04:56,520 --> 00:04:56,850
+Okay.
+
+109
+00:04:56,850 --> 00:04:59,490
+So that's kind of the last big variation on sorts.
+
+110
+00:04:59,820 --> 00:05:04,920
+But there are a couple of other little odds and ends that you need to understand, particularly around
+
+111
+00:05:04,920 --> 00:05:05,580
+Git itself.
+
+112
+00:05:06,300 --> 00:05:12,150
+The first thing I want to point out is that we can apply the get cured multiple times to a single sort
+
+113
+00:05:12,150 --> 00:05:12,660
+command.
+
+114
+00:05:13,470 --> 00:05:18,750
+Let me show you an example that very quickly, I'm going to put a new line right before we get and then
+
+115
+00:05:18,750 --> 00:05:19,710
+tap this thing in.
+
+116
+00:05:20,130 --> 00:05:24,660
+Now, if you do the same thing to reformat this, make sure you put in a tab right there as well.
+
+117
+00:05:24,870 --> 00:05:26,430
+If you put in, just get like.
+
+118
+00:05:26,430 --> 00:05:29,220
+So these will be interpreted as two separate commands.
+
+119
+00:05:30,390 --> 00:05:36,450
+So now I'm doing a sort with one get operation right here and I'm going to add in a second get operation.
+
+120
+00:05:37,570 --> 00:05:39,160
+In the second get operation.
+
+121
+00:05:39,340 --> 00:05:40,930
+I'm going to Books Star.
+
+122
+00:05:41,110 --> 00:05:43,120
+But this time I'm going to try to look up the year.
+
+123
+00:05:44,280 --> 00:05:45,990
+So now do the same sorting operation.
+
+124
+00:05:46,260 --> 00:05:50,790
+But in addition to telling you the title of each book, I also want to know the year of each book.
+
+125
+00:05:51,610 --> 00:05:54,120
+So I'll run that and we get a results.
+
+126
+00:05:55,410 --> 00:05:59,100
+Formatted as the title and then the year title year.
+
+127
+00:05:59,100 --> 00:05:59,700
+Title the year.
+
+128
+00:06:01,350 --> 00:06:03,840
+So again, we can put in as many of these gifts as we want.
+
+129
+00:06:05,640 --> 00:06:07,140
+Another little variation on here.
+
+130
+00:06:07,350 --> 00:06:13,140
+We might want to get the title and the year, but also understand the idea of this book as well.
+
+131
+00:06:13,530 --> 00:06:16,650
+So I have the title and the year, but what is the idea of this thing?
+
+132
+00:06:17,100 --> 00:06:22,770
+Well, for that one last little piece of syntax here, I'm going to put in another gift and then a pound.
+
+133
+00:06:23,680 --> 00:06:27,730
+Pound means insert whatever the original member was.
+
+134
+00:06:28,240 --> 00:06:29,560
+So in our case, the member.
+
+135
+00:06:31,120 --> 00:06:32,020
+Was bad.
+
+136
+00:06:32,050 --> 00:06:32,530
+Okay.
+
+137
+00:06:32,530 --> 00:06:32,980
+And good.
+
+138
+00:06:33,190 --> 00:06:35,440
+The pound means keep this thing around.
+
+139
+00:06:35,620 --> 00:06:36,240
+Keep bad.
+
+140
+00:06:36,250 --> 00:06:36,520
+Okay.
+
+141
+00:06:36,520 --> 00:06:41,800
+And good around though in Stettner for as we are returning only the fields specified get we delete the
+
+142
+00:06:41,800 --> 00:06:46,900
+sorting criteria and we are left with the original member plus title and then plus technically right
+
+143
+00:06:46,900 --> 00:06:50,020
+now we've also added on the year as well.
+
+144
+00:06:51,200 --> 00:06:52,100
+Be something like this.
+
+145
+00:06:54,310 --> 00:06:59,350
+Now if I run that, I end up with the ID, the title and the year.
+
+146
+00:07:00,160 --> 00:07:02,380
+There is one other thing I want to point out around sorts.
+
+147
+00:07:02,800 --> 00:07:07,900
+We are not required to use the by keyword right here if we don't actually want to do any sorting operation.
+
+148
+00:07:08,500 --> 00:07:11,140
+So remember in our example with the data we are working with.
+
+149
+00:07:11,350 --> 00:07:16,690
+I had specifically said that I want to print out some information around each book sorted by some specific
+
+150
+00:07:16,690 --> 00:07:17,290
+criteria.
+
+151
+00:07:17,740 --> 00:07:22,990
+There might be some scenarios where you just want to use this kind of joining together feature of the
+
+152
+00:07:23,000 --> 00:07:26,140
+sort command without doing any explicit sort operation.
+
+153
+00:07:26,620 --> 00:07:32,080
+In addition, you might just want to rely upon however the data is naturally sorted inside of your sorted
+
+154
+00:07:32,080 --> 00:07:32,380
+sets.
+
+155
+00:07:32,920 --> 00:07:38,680
+So books like right here, these members are already sorted on the number of likes that each book has.
+
+156
+00:07:38,680 --> 00:07:43,240
+So there's already an implicit sorting order here to the members themselves.
+
+157
+00:07:44,170 --> 00:07:49,270
+So if you specifically do not want to do any additional sorting, if you just want to rely upon whatever
+
+158
+00:07:49,270 --> 00:07:54,850
+order the members are inside the sorted set, you can replace that little part right there at the by
+
+159
+00:07:55,390 --> 00:07:56,680
+with no sorts.
+
+160
+00:07:57,310 --> 00:07:59,140
+No sort is a special keyword.
+
+161
+00:07:59,500 --> 00:08:01,360
+That means don't do any sorting operation.
+
+162
+00:08:01,630 --> 00:08:07,810
+Just take a look at the order of members inside of the sorted set and do the data joining operation
+
+163
+00:08:07,900 --> 00:08:10,360
+without applying any additional sorting stuff to it.
+
+164
+00:08:11,200 --> 00:08:12,700
+So if I run this variation.
+
+165
+00:08:14,250 --> 00:08:19,920
+I'll end up with bad okay and good, which again is just the order in which they occur inside of that
+
+166
+00:08:19,920 --> 00:08:20,550
+sordid set.
+
+167
+00:08:21,660 --> 00:08:27,150
+By adding on the buy no sorts, you are implicitly going to make the sorting command go a little bit
+
+168
+00:08:27,150 --> 00:08:31,740
+faster because it says, okay, I don't have to worry about even remotely thinking about doing a true
+
+169
+00:08:31,740 --> 00:08:32,730
+sorting operation.
+
+170
+00:08:33,150 --> 00:08:39,240
+So again, if you're just using sort to do this joining stuff as we're doing at the get, then I do
+
+171
+00:08:39,240 --> 00:08:41,160
+recommend adding on the buy statement.
+
+172
+00:08:42,770 --> 00:08:43,040
+All right.
+
+173
+00:08:43,040 --> 00:08:44,630
+So that's it for sport for right now.
+
+174
+00:08:44,720 --> 00:08:49,040
+So I think that we have got a little bit more information on what's going on with this code over here,
+
+175
+00:08:49,460 --> 00:08:53,840
+with the exception of some stuff around like by score and whatnot, but good enough to go back over
+
+176
+00:08:53,840 --> 00:08:58,580
+to the code and figure out what's going on with this line and complete items by views.
+
+177
+00:08:58,730 --> 00:09:00,080
+So let's take care of that in just a moment.

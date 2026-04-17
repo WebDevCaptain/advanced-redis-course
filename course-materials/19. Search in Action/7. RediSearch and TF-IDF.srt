@@ -1,0 +1,451 @@
+1
+00:00:00,740 --> 00:00:05,390
+Our searching is definitely working, but in some cases it's not working quite as well as I would hope.
+
+2
+00:00:05,750 --> 00:00:06,920
+Let me show you an example.
+
+3
+00:00:07,490 --> 00:00:10,640
+The very first item I see right here is generic wooden gloves.
+
+4
+00:00:11,270 --> 00:00:18,020
+So if I do a search for wooden, I definitely see many items that have the word wooden in the name that's
+
+5
+00:00:18,020 --> 00:00:19,130
+working as expected.
+
+6
+00:00:19,670 --> 00:00:22,010
+But if I do a search for, say, chair.
+
+7
+00:00:23,200 --> 00:00:26,320
+I don't see any items that have the word chair in the name.
+
+8
+00:00:26,950 --> 00:00:28,120
+If I click on any item.
+
+9
+00:00:29,150 --> 00:00:31,490
+Share does appear in the items description.
+
+10
+00:00:32,020 --> 00:00:34,040
+A one right there and one right there.
+
+11
+00:00:35,170 --> 00:00:38,740
+Remember, we are searching over all the text fields for every single item.
+
+12
+00:00:39,040 --> 00:00:43,870
+So seeing cheer up here in the description means that this is technically a valid search results.
+
+13
+00:00:44,380 --> 00:00:49,990
+But I would really like to favor items that have the word chair in the name of the item rather than
+
+14
+00:00:49,990 --> 00:00:52,870
+always showing items that have chair in the description only.
+
+15
+00:00:53,320 --> 00:00:57,250
+That's just going to make it appear that our search result results are a little bit more relevant.
+
+16
+00:00:58,060 --> 00:00:58,780
+Just be clear.
+
+17
+00:00:58,790 --> 00:01:01,990
+There are items with the word chair in the name.
+
+18
+00:01:02,320 --> 00:01:08,020
+So if I do a search for, say, button chair, I will see an item right there with chair in the name.
+
+19
+00:01:09,440 --> 00:01:11,990
+So we need to do some tweaks around our search.
+
+20
+00:01:12,110 --> 00:01:17,180
+We need to make sure that we kind of fever items that have a search term in the name as opposed to the
+
+21
+00:01:17,180 --> 00:01:17,870
+description.
+
+22
+00:01:18,840 --> 00:01:20,070
+To understand how to do this.
+
+23
+00:01:20,070 --> 00:01:26,130
+I want to do a overall deep dive on search just so we can understand how these searching algorithm works
+
+24
+00:01:26,130 --> 00:01:26,850
+behind the scenes.
+
+25
+00:01:27,120 --> 00:01:31,410
+That's going to give us a better idea of how we can tweak the searching behavior to better suit our
+
+26
+00:01:31,410 --> 00:01:31,770
+needs.
+
+27
+00:01:32,800 --> 00:01:34,690
+To better understand how research works.
+
+28
+00:01:34,840 --> 00:01:36,970
+We're going to imagine a very simple scenario.
+
+29
+00:01:37,360 --> 00:01:40,420
+We're going to imagine we have two strings that we are searching over.
+
+30
+00:01:41,050 --> 00:01:42,670
+So string one and string two.
+
+31
+00:01:43,210 --> 00:01:47,410
+It will imagine that we run some kind of query where the search term is simply fruit.
+
+32
+00:01:47,590 --> 00:01:48,010
+That's it.
+
+33
+00:01:48,040 --> 00:01:48,580
+Nothing else.
+
+34
+00:01:49,450 --> 00:01:55,420
+I really want to focus on how ready search decides whether is will give us back search results of first
+
+35
+00:01:55,420 --> 00:01:59,410
+string one and then string two or string two and then string one.
+
+36
+00:01:59,920 --> 00:02:05,710
+So in other words, how does Ready Search decide which of these two strings is more relevant to this
+
+37
+00:02:05,710 --> 00:02:06,400
+search term?
+
+38
+00:02:07,490 --> 00:02:10,830
+I want to walk through the algorithm that Reddit search internally uses.
+
+39
+00:02:11,070 --> 00:02:12,360
+We're going to figure out how it works.
+
+40
+00:02:12,360 --> 00:02:16,800
+And then once we understand how it works, we'll be able to better manipulate the searching mechanism.
+
+41
+00:02:18,380 --> 00:02:22,850
+All right, so ready search uses something called ATF, IDF algorithm.
+
+42
+00:02:23,300 --> 00:02:27,860
+This is a relatively simple and pretty easy to understand searching algorithm.
+
+43
+00:02:28,670 --> 00:02:33,350
+With this algorithm, we can take a look at a bunch of different strings and decide which one is most
+
+44
+00:02:33,350 --> 00:02:35,360
+relevant for any given search term.
+
+45
+00:02:36,390 --> 00:02:41,580
+The IDF works by taking in something called a term frequency and multiplying it by something called
+
+46
+00:02:41,580 --> 00:02:43,500
+an inverse document frequency.
+
+47
+00:02:44,250 --> 00:02:47,460
+This results in a score for each individual string.
+
+48
+00:02:48,270 --> 00:02:52,500
+A higher score means that that string is more relevant to some given search result.
+
+49
+00:02:54,000 --> 00:02:59,940
+The term frequency is calculated by looking at how many times a search term appears in a string, and
+
+50
+00:02:59,940 --> 00:03:02,220
+then we divide it by the total number of words in the string.
+
+51
+00:03:02,790 --> 00:03:05,040
+I'm going to show you that in action in just a moment.
+
+52
+00:03:05,730 --> 00:03:11,430
+And then the IDF or inverse document frequency is a little bit more involved calculation.
+
+53
+00:03:11,490 --> 00:03:13,080
+We'll go over that in a second as well.
+
+54
+00:03:14,300 --> 00:03:19,130
+All right, so let's try calculating the term frequency and inverse document frequency for both these
+
+55
+00:03:19,130 --> 00:03:21,440
+strings given a search term of fruit.
+
+56
+00:03:22,540 --> 00:03:23,590
+So here's the calculation.
+
+57
+00:03:25,340 --> 00:03:29,300
+But for each separate string we'll calculate taf times the IDF.
+
+58
+00:03:30,410 --> 00:03:36,150
+The term frequency is how many number of times our search term appears in a string.
+
+59
+00:03:37,030 --> 00:03:41,620
+This first string right here, the word fruit appears twice, once here and once here.
+
+60
+00:03:42,250 --> 00:03:43,420
+Do we get a two?
+
+61
+00:03:44,770 --> 00:03:47,830
+We then divide that by the number of words in the string.
+
+62
+00:03:48,460 --> 00:03:51,910
+There are one, two, three, four, five, six.
+
+63
+00:03:52,090 --> 00:03:53,110
+So we end up with a six.
+
+64
+00:03:55,360 --> 00:04:02,650
+We then multiply by that the logarithm of one, plus the total number of strings in our entire search
+
+65
+00:04:02,650 --> 00:04:07,270
+set divided by the total number of strings containing our search term.
+
+66
+00:04:08,170 --> 00:04:11,860
+So in our case, our entire search set has two strings inside of it.
+
+67
+00:04:12,010 --> 00:04:13,450
+Hence the two right there.
+
+68
+00:04:14,140 --> 00:04:16,480
+And they both contain our search term a fruit.
+
+69
+00:04:17,230 --> 00:04:18,850
+So we get a two right there.
+
+70
+00:04:20,250 --> 00:04:23,850
+And if we do this entire calculation, we end up with a score of point one.
+
+71
+00:04:24,420 --> 00:04:28,380
+That is a search score of the term roots on this particular string.
+
+72
+00:04:29,560 --> 00:04:32,050
+We then repeat that same process for our second string.
+
+73
+00:04:32,680 --> 00:04:36,900
+In this case, we end up with one divided by two and then the same logarithm.
+
+74
+00:04:38,380 --> 00:04:44,320
+Are same term for the same value for the logarithm term, and we end up with a final score of 0.15.
+
+75
+00:04:45,190 --> 00:04:50,920
+So in this case, we would say that good fruit is more relevant and we would rate that higher inside
+
+76
+00:04:50,920 --> 00:04:51,850
+of our search results.
+
+77
+00:04:52,210 --> 00:04:57,430
+So this would appear first and then we would see excellent fruit, good fantastic fruit right after
+
+78
+00:04:57,430 --> 00:04:57,610
+it.
+
+79
+00:04:59,020 --> 00:04:59,890
+And just to be clear.
+
+80
+00:05:02,670 --> 00:05:06,710
+This searching algorithm that I'm showing you right here, the actual the actual calculation done by
+
+81
+00:05:06,720 --> 00:05:09,060
+ready search is slightly, slightly different.
+
+82
+00:05:09,360 --> 00:05:12,270
+It takes into account some extra parameters as well.
+
+83
+00:05:12,780 --> 00:05:18,360
+So, for example, they're going to take into account how many words occur between search terms or the
+
+84
+00:05:18,540 --> 00:05:20,400
+word that we're searching for inside of a string.
+
+85
+00:05:21,060 --> 00:05:24,780
+So in the case of the first string right here, we have three words in between.
+
+86
+00:05:25,050 --> 00:05:27,810
+And so that will be accounted for inside of ready search.
+
+87
+00:05:28,290 --> 00:05:32,340
+But more or less, this is pretty much exactly what's going on inside of ready search.
+
+88
+00:05:33,970 --> 00:05:34,270
+Okay.
+
+89
+00:05:34,300 --> 00:05:36,820
+Now, a couple of variations on this I want to look at very quickly.
+
+90
+00:05:37,660 --> 00:05:40,870
+Let's imagine what would happen if we have two separate search terms.
+
+91
+00:05:40,990 --> 00:05:46,480
+So fruit and good, we would do the same calculation for each individual term.
+
+92
+00:05:47,410 --> 00:05:52,900
+So we would do one calculation right here for fruit and then a second calculation for the word good.
+
+93
+00:05:53,290 --> 00:05:56,140
+And then we would add those scores together and get .15.
+
+94
+00:05:57,500 --> 00:05:59,720
+We repeat the same process for the second string as well.
+
+95
+00:05:59,960 --> 00:06:05,540
+We have one calculation for fruit, another calculation for good, and there is our score.
+
+96
+00:06:06,970 --> 00:06:12,220
+So in this case, if we search for fruit and good, we would still end up with string two down here
+
+97
+00:06:12,220 --> 00:06:12,910
+ranking higher.
+
+98
+00:06:13,860 --> 00:06:15,360
+And so that would be shown first.
+
+99
+00:06:16,900 --> 00:06:22,150
+Now, last variation I want to show you is that we can add on additional weights to individual terms.
+
+100
+00:06:22,870 --> 00:06:27,100
+So we could do a query where we say find fruit and good.
+
+101
+00:06:27,640 --> 00:06:32,620
+But anytime we see the word good, give that twice as much importance as the word fruit.
+
+102
+00:06:33,310 --> 00:06:36,820
+So we would expect to see documents or strings that contain good.
+
+103
+00:06:37,720 --> 00:06:43,330
+Appear higher inside of our search results than those that don't contain the word gut or maybe the less
+
+104
+00:06:43,330 --> 00:06:44,560
+usages of the word good.
+
+105
+00:06:45,610 --> 00:06:46,570
+The two apply a weight.
+
+106
+00:06:48,070 --> 00:06:52,930
+We'll still do the exact same calculation for fruit right here, and then we'll do the same initial
+
+107
+00:06:52,930 --> 00:06:54,160
+calculation for good.
+
+108
+00:06:54,700 --> 00:07:00,070
+But then once we get the score right there, we just multiply it by two, but places more importance
+
+109
+00:07:00,070 --> 00:07:01,030
+on the word good.
+
+110
+00:07:03,050 --> 00:07:08,300
+We can make use of waits inside of ready search really easily, not only to weight specific search terms,
+
+111
+00:07:08,450 --> 00:07:12,140
+but we can also make sure that we try to weight specific fields as well.
+
+112
+00:07:12,470 --> 00:07:14,150
+And that's what we are really focused on.
+
+113
+00:07:14,820 --> 00:07:17,030
+Let me show you an example of that in the next video.

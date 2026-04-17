@@ -1,0 +1,287 @@
+1
+00:00:00,570 --> 00:00:03,380
+In this section, we're going to start to get some hands on experience with Redis.
+
+2
+00:00:03,640 --> 00:00:06,330
+The first thing we're going to focus on is the idea of commands.
+
+3
+00:00:06,870 --> 00:00:12,420
+Commands are simple strings that we send to our database that we use to save or retrieve some information
+
+4
+00:00:13,050 --> 00:00:14,340
+better understand commands.
+
+5
+00:00:14,520 --> 00:00:16,890
+Let's go back over to our books Cloud.
+
+6
+00:00:16,980 --> 00:00:22,710
+So this tool right here, I've made a new notebook called Basic Strings and created one code cell inside
+
+7
+00:00:22,710 --> 00:00:22,980
+of here.
+
+8
+00:00:23,430 --> 00:00:28,620
+We're going to write out a couple of basic commands and just understand how Read receives and retrieves
+
+9
+00:00:28,620 --> 00:00:28,950
+data.
+
+10
+00:00:29,820 --> 00:00:31,260
+So here's our very first command.
+
+11
+00:00:31,290 --> 00:00:34,890
+We're going to write out a command that's going to save a simple string inside of our database.
+
+12
+00:00:35,490 --> 00:00:40,350
+I'm going to put in a set message and as a string of.
+
+13
+00:00:40,350 --> 00:00:41,280
+Hi there.
+
+14
+00:00:42,910 --> 00:00:48,730
+After that, I'll click on the play button and I get a response right here of, Okay, if I then want
+
+15
+00:00:48,730 --> 00:00:53,500
+to retrieve this information that I have stored, I can add in another code cell right here and I will
+
+16
+00:00:53,500 --> 00:00:55,240
+put in a slightly different command.
+
+17
+00:00:55,570 --> 00:00:56,650
+One called yet.
+
+18
+00:00:58,140 --> 00:00:59,130
+And then message.
+
+19
+00:01:00,590 --> 00:01:03,290
+I click on play, I get back the string I had just saved.
+
+20
+00:01:04,410 --> 00:01:04,710
+All right.
+
+21
+00:01:04,710 --> 00:01:05,940
+So very simple commands.
+
+22
+00:01:05,970 --> 00:01:09,750
+Well, let's take a look at a diagram or two and just understand what is going on behind the scenes
+
+23
+00:01:09,750 --> 00:01:09,990
+here.
+
+24
+00:01:11,360 --> 00:01:15,830
+So when you click on that play button, that string that you entered into, the code editor is taken
+
+25
+00:01:15,980 --> 00:01:19,760
+as it stands like a plain string and it's sent off to your running.
+
+26
+00:01:19,770 --> 00:01:20,450
+Read a server.
+
+27
+00:01:21,230 --> 00:01:26,720
+The first command that we executed is the set command and it's used to store a very simple string inside
+
+28
+00:01:26,720 --> 00:01:27,170
+of Redis.
+
+29
+00:01:27,920 --> 00:01:32,150
+Internally, Redis looks at the first word right after the set command.
+
+30
+00:01:32,570 --> 00:01:34,810
+In this case, it is message red.
+
+31
+00:01:34,940 --> 00:01:38,060
+Interpret this as being like a key or a variable name.
+
+32
+00:01:38,420 --> 00:01:41,600
+We are essentially creating a variable of sorts inside of red.
+
+33
+00:01:41,630 --> 00:01:43,040
+Red is called message.
+
+34
+00:01:43,720 --> 00:01:46,100
+It then assigns that a value of hi there.
+
+35
+00:01:46,670 --> 00:01:48,440
+So internally this is kind of what's going on.
+
+36
+00:01:48,950 --> 00:01:54,110
+We've got a key of message and if we ever refer to that variable or that key name in the future, we're
+
+37
+00:01:54,110 --> 00:01:55,340
+going to get back a string of.
+
+38
+00:01:55,340 --> 00:01:55,940
+Hi there.
+
+39
+00:01:57,890 --> 00:02:03,980
+After saving that data reticence back in response to us of OC, which simply means okay, the data has
+
+40
+00:02:03,980 --> 00:02:05,210
+been saved successfully.
+
+41
+00:02:06,470 --> 00:02:09,080
+The second command that we made use of was the get command.
+
+42
+00:02:09,650 --> 00:02:12,200
+You get command is used to retrieve simple strings.
+
+43
+00:02:13,220 --> 00:02:17,360
+Once again, Reddit is going to look at whatever word you put right after get in.
+
+44
+00:02:17,360 --> 00:02:21,900
+It's going to interpret that as being like a variable name or really a key threat.
+
+45
+00:02:21,980 --> 00:02:24,980
+This is going to take a look at all the different keys it has stored.
+
+46
+00:02:25,370 --> 00:02:27,950
+It's going to try to find one specifically called message.
+
+47
+00:02:28,670 --> 00:02:33,620
+In this case, it finds it right here, but retrieves whatever value is associated with that key and
+
+48
+00:02:33,620 --> 00:02:35,270
+sends it back in response to us.
+
+49
+00:02:35,600 --> 00:02:36,470
+And that's why we saw.
+
+50
+00:02:36,470 --> 00:02:37,910
+Hi there up here on the screen.
+
+51
+00:02:39,140 --> 00:02:44,660
+Now the jet and set commands that we just made use of are two very simple commands that are intended
+
+52
+00:02:44,660 --> 00:02:48,320
+only for storing plane strings and plane numbers.
+
+53
+00:02:48,980 --> 00:02:53,540
+As I mentioned in an earlier video, there are many other types of data that we can store inside of
+
+54
+00:02:53,540 --> 00:02:53,930
+Redis.
+
+55
+00:02:54,740 --> 00:02:59,510
+Some other very common data types are lists, hashes, sets, sorted sets and so on.
+
+56
+00:03:00,460 --> 00:03:04,600
+Each of these different types of data have different sets of command, so we make use of them with.
+
+57
+00:03:05,230 --> 00:03:08,410
+So for example with string we just used set and get.
+
+58
+00:03:08,920 --> 00:03:12,040
+Those are commands that are only made for working with plain strings.
+
+59
+00:03:12,850 --> 00:03:18,010
+If we ever want to work with a list of elements or a hash, there are completely different commands
+
+60
+00:03:18,010 --> 00:03:19,750
+that we're going to make use of the.
+
+61
+00:03:19,780 --> 00:03:26,200
+For example, to add an element into a list, we might use inserts to add an element into a hash.
+
+62
+00:03:26,320 --> 00:03:28,330
+We might make use of each set.
+
+63
+00:03:29,690 --> 00:03:32,870
+Each of these different commands work only on the respective data types.
+
+64
+00:03:33,210 --> 00:03:39,290
+So in other words, I cannot use set and get to work with the list that and get only works with strings.
+
+65
+00:03:40,570 --> 00:03:44,560
+Throughout this course, we're going to focus on all these different data types one at a time.
+
+66
+00:03:44,920 --> 00:03:49,360
+We're going to learn many of the different commands that are associated with each of them in general
+
+67
+00:03:49,360 --> 00:03:50,830
+in every section of this course.
+
+68
+00:03:51,010 --> 00:03:55,900
+We're going to focus on one data type, learn about the different commands associated with it, and
+
+69
+00:03:55,900 --> 00:03:58,150
+when we would use each of those different commands.
+
+70
+00:03:59,080 --> 00:04:04,270
+The first type that we're going to be working with is the most simple and straightforward, just plain
+
+71
+00:04:04,270 --> 00:04:04,690
+strings.
+
+72
+00:04:05,410 --> 00:04:08,980
+Let's pause right here and start to dive deeper into strings in the next video.

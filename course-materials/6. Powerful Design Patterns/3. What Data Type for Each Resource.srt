@@ -1,0 +1,419 @@
+1
+00:00:00,710 --> 00:00:04,700
+After going through our mock ups, we have identified six different kinds of resources that we need
+
+2
+00:00:04,700 --> 00:00:05,690
+to store inside of us.
+
+3
+00:00:06,230 --> 00:00:10,190
+For each of these different resources, we need to figure out whether or not we should represent them.
+
+4
+00:00:10,190 --> 00:00:12,170
+Inside bread is using a hash.
+
+5
+00:00:12,740 --> 00:00:16,760
+That's we're going to figure out inside this video how to figure out whether we should represent each
+
+6
+00:00:16,760 --> 00:00:19,160
+of these different kinds of resources as a hash or not.
+
+7
+00:00:19,370 --> 00:00:24,650
+We need some reasons to say, hey, here are scenarios in which we should use a hash and here are some
+
+8
+00:00:24,650 --> 00:00:25,370
+where we shouldn't.
+
+9
+00:00:25,700 --> 00:00:29,290
+And so that's what I came up with on the left hand side of this diagram.
+
+10
+00:00:29,300 --> 00:00:34,460
+I have some reasons where we should use a hash to represent some kind of data, and then some cases
+
+11
+00:00:34,460 --> 00:00:37,310
+where maybe using a hash is not super appropriate.
+
+12
+00:00:38,090 --> 00:00:42,950
+So we are going to want to use a hash any time we have a record that has many different attributes tied
+
+13
+00:00:42,950 --> 00:00:43,280
+to it.
+
+14
+00:00:43,640 --> 00:00:45,320
+A good example, this would be an item.
+
+15
+00:00:45,560 --> 00:00:47,390
+An item has an image URL.
+
+16
+00:00:47,660 --> 00:00:54,380
+So the location of an image for the item, a title, a description, it has probably a price and some
+
+17
+00:00:54,380 --> 00:00:55,760
+other information tied to it.
+
+18
+00:00:56,330 --> 00:01:01,700
+So a item has many different attributes tied to it, which is probably going to make it a good candidate
+
+19
+00:01:01,700 --> 00:01:02,570
+for being a hash.
+
+20
+00:01:03,760 --> 00:01:08,680
+We also are going to only access one item at a time in many different scenarios.
+
+21
+00:01:09,220 --> 00:01:11,320
+We have an entire page, as a matter of fact.
+
+22
+00:01:12,070 --> 00:01:16,900
+This one right here, the item show page that is entirely dedicated to just showing information about
+
+23
+00:01:16,900 --> 00:01:18,220
+one single item.
+
+24
+00:01:19,000 --> 00:01:22,060
+Whenever a user comes to this page, they intend to look at one item.
+
+25
+00:01:22,390 --> 00:01:27,460
+And so we want to reach into our database and fetch all the different pieces of information tied to
+
+26
+00:01:27,460 --> 00:01:30,730
+this information with as few a queries as possible.
+
+27
+00:01:31,240 --> 00:01:36,220
+So in a perfect world, to get all the information for this page, I would only have to make one single
+
+28
+00:01:36,220 --> 00:01:42,040
+query into our database that would allow us to show a single item show page very efficiently.
+
+29
+00:01:44,070 --> 00:01:50,460
+And then finally, if we ever intend to, that's a collection of a record, and we want to sort them
+
+30
+00:01:50,460 --> 00:01:51,780
+in many different ways.
+
+31
+00:01:51,930 --> 00:01:54,120
+That is a good candidate to use a hash as well.
+
+32
+00:01:54,540 --> 00:01:57,720
+And that is also very true of items, for example.
+
+33
+00:01:58,290 --> 00:02:00,990
+So for our items, we've got this table over here.
+
+34
+00:02:01,530 --> 00:02:06,810
+And as I mentioned, as we click on these different headers, I want to sort all of these items in different
+
+35
+00:02:06,810 --> 00:02:07,230
+ways.
+
+36
+00:02:07,560 --> 00:02:10,200
+So if I click on name, I want to sort all my items by name.
+
+37
+00:02:10,500 --> 00:02:12,810
+I click on price, I want to sort them by price and so on.
+
+38
+00:02:14,220 --> 00:02:15,300
+So without a doubt.
+
+39
+00:02:16,300 --> 00:02:21,580
+As you could probably guess, we probably are going to want to store our list of items using hash data
+
+40
+00:02:21,580 --> 00:02:22,120
+structures.
+
+41
+00:02:22,660 --> 00:02:27,490
+We're going to have every item, every individual item that we are selling stored as a separate hash.
+
+42
+00:02:28,040 --> 00:02:32,650
+Eventually, we'll have many, many, many different hashes stored inside of our database, each of
+
+43
+00:02:32,650 --> 00:02:34,330
+which represent a single item.
+
+44
+00:02:36,580 --> 00:02:39,130
+Now, how about some cases where maybe we don't want to use a hash?
+
+45
+00:02:39,580 --> 00:02:44,320
+Well, we probably do want to use a hash any time that the record that we are storing is only used for
+
+46
+00:02:44,320 --> 00:02:47,920
+accounting purposes, we're enforcing some kind of uniqueness.
+
+47
+00:02:48,890 --> 00:02:52,370
+Good examples of this would be our views and our likes.
+
+48
+00:02:53,150 --> 00:02:59,870
+This likes thing is really just about enforcing uniqueness and counting so any user can only like an
+
+49
+00:02:59,870 --> 00:03:01,190
+item one single time.
+
+50
+00:03:01,640 --> 00:03:06,230
+So there's kind of a uniqueness check in there, and it's also being used to store the number of likes
+
+51
+00:03:06,230 --> 00:03:07,340
+that a product has.
+
+52
+00:03:08,060 --> 00:03:11,780
+So we're probably going to want to find some other data structure to store a list of likes.
+
+53
+00:03:12,980 --> 00:03:14,450
+Same thing for views as well.
+
+54
+00:03:14,990 --> 00:03:17,960
+Views is really just counting up the number of views that a product has.
+
+55
+00:03:18,230 --> 00:03:22,670
+And remember, we are only going to allow any user to view a product one single time.
+
+56
+00:03:23,090 --> 00:03:27,920
+Well, a pro can be viewed as many times as you want, of course, but only the very first time that
+
+57
+00:03:27,920 --> 00:03:28,790
+you view a product.
+
+58
+00:03:28,940 --> 00:03:31,910
+Are we going to increment the number of views that that product has?
+
+59
+00:03:35,000 --> 00:03:39,710
+Other cases where we might not want to use a hash is if our record has only one or two attributes,
+
+60
+00:03:40,280 --> 00:03:42,860
+if the record is only be used for relational data.
+
+61
+00:03:42,890 --> 00:03:44,630
+We'll go into some details on that later on.
+
+62
+00:03:45,200 --> 00:03:50,330
+Or finally, if we are only using this record to store some kind of time series data.
+
+63
+00:03:50,630 --> 00:03:55,190
+So kind of snapshots of a single value or one or two values that are changing over time.
+
+64
+00:03:56,740 --> 00:03:57,040
+All right.
+
+65
+00:03:57,040 --> 00:04:01,540
+So those are reasons where we might want to use a hash or not use a hash with all those in mind.
+
+66
+00:04:01,570 --> 00:04:03,790
+Let's categorize the remaining records here.
+
+67
+00:04:04,540 --> 00:04:09,340
+So for storing all the different users inside of application, well, they're going to have many different
+
+68
+00:04:09,340 --> 00:04:09,820
+attributes.
+
+69
+00:04:10,090 --> 00:04:13,450
+And we're probably only going to need to access a single record at a time.
+
+70
+00:04:14,380 --> 00:04:15,730
+And that's definitely true of users.
+
+71
+00:04:16,000 --> 00:04:21,250
+We are going to have many, many different users stored as separate hashes or probably only every one
+
+72
+00:04:21,250 --> 00:04:23,350
+to fetch a single user at a time.
+
+73
+00:04:23,620 --> 00:04:28,030
+In other words, there is no page inside of application where we need to fetch all of our different
+
+74
+00:04:28,030 --> 00:04:29,560
+users and show them any table.
+
+75
+00:04:30,280 --> 00:04:31,810
+The users definitely satisfy.
+
+76
+00:04:32,410 --> 00:04:33,610
+This rule right here.
+
+77
+00:04:35,560 --> 00:04:38,200
+Sessions are also going to fall into a similar category.
+
+78
+00:04:38,620 --> 00:04:41,830
+And remember, we're going to go into more on sessions very shortly.
+
+79
+00:04:42,830 --> 00:04:43,960
+And that really just leaves.
+
+80
+00:04:43,970 --> 00:04:47,900
+Bids for bids might have many different attributes.
+
+81
+00:04:48,990 --> 00:04:53,700
+And well, I don't think we're ever going to really need to access a single record or a single bid at
+
+82
+00:04:53,700 --> 00:04:59,550
+any given time, because usually whenever we are showing information around bids, yes, we are showing
+
+83
+00:04:59,550 --> 00:05:02,100
+like the latest price of a product.
+
+84
+00:05:02,790 --> 00:05:07,680
+Whenever we are showing information about bids on this item at Show Page, we are definitely showing
+
+85
+00:05:08,010 --> 00:05:09,120
+collection of all bids.
+
+86
+00:05:09,270 --> 00:05:10,700
+So we've got the number of bids right here.
+
+87
+00:05:10,980 --> 00:05:15,810
+And on this chart right here, we are displaying the change in bid price over time.
+
+88
+00:05:16,830 --> 00:05:18,630
+And you might recall I just said a moment ago.
+
+89
+00:05:19,930 --> 00:05:25,030
+If we are using the record only for time, series data might be a better data structure for representing
+
+90
+00:05:25,030 --> 00:05:25,300
+that.
+
+91
+00:05:25,840 --> 00:05:30,370
+Though bids may be not going to be represented as a hash inside cyber application.
+
+92
+00:05:30,730 --> 00:05:31,450
+It definitely could.
+
+93
+00:05:31,480 --> 00:05:35,320
+Let's say that right now we're going to see that there is perhaps a better data structure that we could
+
+94
+00:05:35,320 --> 00:05:35,590
+use.
+
+95
+00:05:36,690 --> 00:05:36,960
+Okay.
+
+96
+00:05:36,960 --> 00:05:37,470
+So that's it.
+
+97
+00:05:37,980 --> 00:05:45,000
+So the end result of all this work is we are going to represent sessions, items and users making use
+
+98
+00:05:45,000 --> 00:05:45,660
+of hashes.
+
+99
+00:05:46,290 --> 00:05:51,210
+But for representing bids inside of our app likes and views, we're going to see that there are perhaps
+
+100
+00:05:51,210 --> 00:05:53,190
+better data structures to represent them.
+
+101
+00:05:54,260 --> 00:05:54,590
+Okay.
+
+102
+00:05:54,710 --> 00:05:55,320
+That's it.
+
+103
+00:05:55,340 --> 00:05:57,230
+We've got some direction to go in here.
+
+104
+00:05:57,650 --> 00:05:58,940
+So we're going to come back in next video.
+
+105
+00:05:59,990 --> 00:06:06,470
+And we're going to start to write some code to store sessions or users and items inside of our database.

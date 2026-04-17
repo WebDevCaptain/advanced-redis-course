@@ -1,0 +1,291 @@
+1
+00:00:01,630 --> 00:00:06,520
+Now that we understand problem one and problem two, we're going to understand how to fix these problems
+
+2
+00:00:06,520 --> 00:00:08,770
+by using an advanced feature around streams.
+
+3
+00:00:09,250 --> 00:00:11,680
+This advanced feature is called a consumer group.
+
+4
+00:00:12,250 --> 00:00:17,740
+Understanding consumer groups is a little bit challenging because there are a ton of very tiny details
+
+5
+00:00:17,740 --> 00:00:18,460
+to understand.
+
+6
+00:00:18,910 --> 00:00:23,650
+So in this video, I just want to outline a couple of really big high level points and we'll start to
+
+7
+00:00:23,650 --> 00:00:25,690
+play around with consumer groups in the next video.
+
+8
+00:00:26,440 --> 00:00:26,790
+Okay.
+
+9
+00:00:26,800 --> 00:00:31,780
+So first thing to understand here is that we're going to have some number of workers, each of these
+
+10
+00:00:31,780 --> 00:00:38,110
+different workers is a separate process that might be a different server, separate API, some separate
+
+11
+00:00:38,110 --> 00:00:42,340
+program that connects to Redis and is trying to get information out of a stream.
+
+12
+00:00:43,240 --> 00:00:48,400
+The goal of a consumer group is to get each of these different workers to work together in some way
+
+13
+00:00:48,400 --> 00:00:50,650
+or to get some level of coordination between them.
+
+14
+00:00:52,940 --> 00:00:57,020
+All the different workers inside of a consumer group are going to have a unique name.
+
+15
+00:00:57,380 --> 00:00:59,930
+This allows Redis to identify each worker.
+
+16
+00:01:00,470 --> 00:01:04,310
+So we might give our first worker a name of their one emailer to an emailer.
+
+17
+00:01:04,310 --> 00:01:04,700
+Three.
+
+18
+00:01:07,180 --> 00:01:12,070
+The first big benefit to these consumer groups is that renters can make sure that it only sends a single
+
+19
+00:01:12,070 --> 00:01:14,530
+message of this dream to one worker.
+
+20
+00:01:15,040 --> 00:01:19,840
+So let's imagine that we've got these three different workers right here, and simultaneously they all
+
+21
+00:01:19,840 --> 00:01:21,520
+execute in X read commands.
+
+22
+00:01:22,500 --> 00:01:24,180
+Because we are using a consumer group.
+
+23
+00:01:24,420 --> 00:01:29,520
+Redis is going to make sure that for these two messages right here, they will only be delivered to
+
+24
+00:01:29,520 --> 00:01:30,960
+one single worker.
+
+25
+00:01:31,470 --> 00:01:33,600
+So the first message might be sent to the first worker.
+
+26
+00:01:33,990 --> 00:01:36,840
+And then the second message might be sent to the second worker.
+
+27
+00:01:38,040 --> 00:01:40,740
+So we don't have to deal with any duplicate messages anymore.
+
+28
+00:01:42,790 --> 00:01:43,150
+Next.
+
+29
+00:01:44,470 --> 00:01:49,930
+When we create a consumer group readies is going to internally create a log of where all these different
+
+30
+00:01:49,930 --> 00:01:54,160
+messages are being sent and it's going to keep track of where it sends each one.
+
+31
+00:01:54,940 --> 00:01:58,870
+The readies is going to say, okay, I've got a message with an idea of one, two, three, one, two,
+
+32
+00:01:58,870 --> 00:01:59,230
+three.
+
+33
+00:01:59,500 --> 00:02:03,760
+I am going to send that message off to email or one.
+
+34
+00:02:04,790 --> 00:02:06,860
+And then four nine, nine nine right here.
+
+35
+00:02:06,890 --> 00:02:10,610
+It's going to keep track of the fact that it sent that message to worker number two.
+
+36
+00:02:11,450 --> 00:02:16,100
+Now alone, that doesn't seem super useful, but it's a little addition to that log.
+
+37
+00:02:16,520 --> 00:02:22,220
+That's going to solve problem two that we discussed where a worker might crash after it is delivered
+
+38
+00:02:22,220 --> 00:02:22,790
+a message.
+
+39
+00:02:23,940 --> 00:02:30,660
+So as a part of the stream log register is also going to keep track of whether or not the worker acknowledged
+
+40
+00:02:30,690 --> 00:02:32,280
+receipt of the message.
+
+41
+00:02:33,030 --> 00:02:38,640
+So in other words, if we take 1 to 3 right here and send it off to emailer, one emailer one has to
+
+42
+00:02:38,640 --> 00:02:41,430
+eventually acknowledge receipt of that message.
+
+43
+00:02:42,540 --> 00:02:47,970
+Acknowledging receipt can either mean that, hey, we got the message and that's it, or it can mean
+
+44
+00:02:47,970 --> 00:02:54,150
+that WORKER one received the message and tried to process this thing and sent an email off to someone.
+
+45
+00:02:54,690 --> 00:03:00,210
+So it essentially allows us to send a message or kind of a signal back over to Redis, that worker one
+
+46
+00:03:00,210 --> 00:03:02,160
+has successfully processed a message.
+
+47
+00:03:03,240 --> 00:03:08,340
+At a future point, we're going to learn that we can find all the messages that have not been acknowledged
+
+48
+00:03:08,340 --> 00:03:10,020
+and make sure that those get processed.
+
+49
+00:03:10,230 --> 00:03:14,400
+And that's how we're going to handle the case in which a worker receives a message and then crashes.
+
+50
+00:03:16,710 --> 00:03:17,250
+Last thing.
+
+51
+00:03:18,360 --> 00:03:23,220
+Is that as as a part of the stream log register will keep track of the last delivered ID.
+
+52
+00:03:24,060 --> 00:03:27,240
+So if we first do 123, one, two, three and then we deliver nine, nine, nine.
+
+53
+00:03:27,540 --> 00:03:27,730
+Right.
+
+54
+00:03:27,750 --> 00:03:30,300
+It will keep track of the fact that that was the last delivered ID.
+
+55
+00:03:31,320 --> 00:03:35,760
+The benefit to this is that if we get some additional message in the future, like, let's say a message
+
+56
+00:03:35,760 --> 00:03:42,090
+with ID five, five, five and we need to send this off to some worker, we no longer have to make sure
+
+57
+00:03:42,090 --> 00:03:46,890
+that each worker understands what the current ID is or the most recent ID.
+
+58
+00:03:47,520 --> 00:03:51,780
+Instead, each worker can just say, Hey, give me the next undelivered message.
+
+59
+00:03:52,620 --> 00:03:58,380
+And when it asks for the next undelivered message, it will automatically be given the most recent undelivered
+
+60
+00:03:58,380 --> 00:03:58,920
+message.
+
+61
+00:03:59,040 --> 00:04:00,330
+So in this case, five, five, five.
+
+62
+00:04:01,160 --> 00:04:05,910
+And then we would update this last, delivered it right here to the five, five, five I.D..
+
+63
+00:04:08,040 --> 00:04:08,330
+Okay.
+
+64
+00:04:08,340 --> 00:04:12,960
+So each of these little features in isolation kind of seems like, yeah, not a big deal, but it's
+
+65
+00:04:12,960 --> 00:04:18,390
+really when we put all these very special characteristics together that we get a very powerful framework
+
+66
+00:04:18,630 --> 00:04:22,280
+to implement this kind of job processing setup that we've been discussing.
+
+67
+00:04:22,290 --> 00:04:23,850
+So this entire flow right here.
+
+68
+00:04:24,630 --> 00:04:30,570
+So if we ever want to build some kind of message producer and message consumer workflow, we are almost
+
+69
+00:04:30,570 --> 00:04:35,820
+always going to be using a consumer group unless you've got a very a very good reason not to do so.
+
+70
+00:04:36,760 --> 00:04:41,140
+So then mind becomes really important for us to understand how consumer groups work.
+
+71
+00:04:41,740 --> 00:04:43,960
+So as I mentioned, we're going to come back to the next video.
+
+72
+00:04:44,110 --> 00:04:48,880
+We're going to create a consumer group and then run a couple of commands to just understand how they
+
+73
+00:04:48,880 --> 00:04:49,200
+work.

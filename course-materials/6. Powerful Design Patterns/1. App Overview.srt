@@ -1,0 +1,595 @@
+1
+00:00:00,730 --> 00:00:05,470
+We've taken a look at a couple of different house commands and as I've mentioned several times, they're
+
+2
+00:00:05,470 --> 00:00:07,270
+pretty simple and straightforward in nature.
+
+3
+00:00:07,640 --> 00:00:11,770
+Now, now it's time for us to actually figure out where to use hashes and how to use them effectively.
+
+4
+00:00:11,920 --> 00:00:16,300
+And believe it or not, even though the commands around hashes were very simple, well, it turns out
+
+5
+00:00:16,300 --> 00:00:21,010
+that actually making use of hashes in design, your application around them ends up being a little bit
+
+6
+00:00:21,010 --> 00:00:21,880
+more challenging.
+
+7
+00:00:22,330 --> 00:00:25,270
+So let me tell you about what we're going to do in this video and the next view.
+
+8
+00:00:25,840 --> 00:00:30,190
+We're going to first begin with a deep walkthrough of the eCommerce application that we are building.
+
+9
+00:00:30,520 --> 00:00:34,690
+Although we have installed it and written a little bit of code into it, we still haven't really gotten
+
+10
+00:00:34,690 --> 00:00:37,040
+a good overview of exactly what we are building.
+
+11
+00:00:37,060 --> 00:00:39,790
+So it's one make sure that part is super, super clear.
+
+12
+00:00:40,680 --> 00:00:43,570
+Once we understand what we are making, we're going to do some design work.
+
+13
+00:00:43,860 --> 00:00:48,240
+We're going to take a look at the different pieces of data that we need to store and we need to figure
+
+14
+00:00:48,240 --> 00:00:53,740
+out how we're going to store that data inside of Redis and out of all that data specifically.
+
+15
+00:00:54,050 --> 00:00:58,590
+Right now, I really want to figure out what data we're going to store as simple hashes.
+
+16
+00:00:59,500 --> 00:01:02,860
+And then finally, once we figure all that stuff out, time to write some code.
+
+17
+00:01:03,430 --> 00:01:03,790
+Okay.
+
+18
+00:01:03,790 --> 00:01:06,520
+So it's going to be a couple of videos to get through before we write some code.
+
+19
+00:01:06,730 --> 00:01:10,960
+And I got to tell you right now, the code that we're going to write really only going to be a couple
+
+20
+00:01:10,960 --> 00:01:11,590
+of lines.
+
+21
+00:01:11,740 --> 00:01:15,820
+So the real value here hopefully is taking a look at this entire design process.
+
+22
+00:01:16,660 --> 00:01:17,040
+Okay.
+
+23
+00:01:17,050 --> 00:01:17,980
+So first off.
+
+24
+00:01:19,520 --> 00:01:23,830
+The e-commerce application that we are working on your are some basic rules around this app.
+
+25
+00:01:24,440 --> 00:01:26,570
+So users are going to come to our application.
+
+26
+00:01:26,580 --> 00:01:28,880
+They're going to sign up, sign out and sign in.
+
+27
+00:01:29,060 --> 00:01:30,770
+Very basic, typical features.
+
+28
+00:01:31,430 --> 00:01:36,020
+Once a user has signed into our application, they can create an item to sell.
+
+29
+00:01:36,530 --> 00:01:40,400
+So an item is some kind of product that a user wants to sell on our platform.
+
+30
+00:01:41,150 --> 00:01:44,350
+All items are sold via auction type formats.
+
+31
+00:01:44,840 --> 00:01:50,480
+So a user can list an item at a certain price and then other users come and bid some amount of money
+
+32
+00:01:50,480 --> 00:01:51,230
+on that product.
+
+33
+00:01:52,160 --> 00:01:55,100
+Every item that gets created is going to have a starting price.
+
+34
+00:01:55,680 --> 00:02:00,020
+So you might list a say piano or something like that for $10.
+
+35
+00:02:00,410 --> 00:02:05,060
+Another user can then come and make a bid on that product or $10.
+
+36
+00:02:05,540 --> 00:02:09,350
+When the next user comes, they must bid a higher amount.
+
+37
+00:02:09,470 --> 00:02:14,720
+The next user who comes might be at 11 or 12 or $13, and then the next person would have to bid, say
+
+38
+00:02:14,720 --> 00:02:16,490
+15 and then 20 and so on.
+
+39
+00:02:17,690 --> 00:02:19,640
+Every item is going to have an ending time.
+
+40
+00:02:20,180 --> 00:02:23,480
+That's going to be some day, some very specific time.
+
+41
+00:02:23,780 --> 00:02:27,260
+Once that time passes, whoever has the highest bid wins the item.
+
+42
+00:02:28,850 --> 00:02:29,200
+Okay.
+
+43
+00:02:30,280 --> 00:02:31,450
+That's the general rules.
+
+44
+00:02:31,750 --> 00:02:35,440
+It's essentially just the same as, say, eBay or something similar to it.
+
+45
+00:02:35,920 --> 00:02:39,040
+So I'm going to take a look at some of the different mock ups around our application.
+
+46
+00:02:40,060 --> 00:02:44,530
+Now, as a reminder, the entire front end of this app has already been built for you.
+
+47
+00:02:44,860 --> 00:02:48,910
+So as we go through these mock ups is really just to help you get a better sense of what we are building
+
+48
+00:02:49,120 --> 00:02:52,660
+and some of the queries that we're going to have to write to actually make these different features
+
+49
+00:02:52,660 --> 00:02:52,930
+work.
+
+50
+00:02:53,410 --> 00:02:58,630
+We are not going to be writing any of the HTML or stuff like that to actually get these elements to
+
+51
+00:02:58,630 --> 00:02:59,440
+appear on the screen.
+
+52
+00:03:00,450 --> 00:03:02,220
+So first is our landing page.
+
+53
+00:03:02,670 --> 00:03:07,500
+On the landing page, we're going to have a very typical header up here that has a little search interface
+
+54
+00:03:07,950 --> 00:03:09,690
+buttons to sign in and sign up.
+
+55
+00:03:10,850 --> 00:03:13,370
+But then go on display three different carousels.
+
+56
+00:03:13,700 --> 00:03:17,570
+The carousel is a list of items that spans left and right.
+
+57
+00:03:18,680 --> 00:03:23,660
+A user can use these little arrows right there and right there to scroll through at this carousel and
+
+58
+00:03:23,660 --> 00:03:24,920
+see all these different items.
+
+59
+00:03:26,000 --> 00:03:32,770
+Every item is going to have a name and image the number of hours or really the duration left this auction.
+
+60
+00:03:32,780 --> 00:03:34,550
+So it might be hours, minutes, seconds.
+
+61
+00:03:35,150 --> 00:03:37,580
+And then the current bid price for this item.
+
+62
+00:03:39,890 --> 00:03:41,540
+That's true of all three sections.
+
+63
+00:03:42,080 --> 00:03:45,000
+The one exception is that most of you are down here at the very bottom.
+
+64
+00:03:45,000 --> 00:03:49,190
+One is also going to display the number of views that a product has received.
+
+65
+00:03:49,940 --> 00:03:53,450
+Now a very important requirement around views inside of our application.
+
+66
+00:03:53,630 --> 00:03:59,660
+We want to make sure that users don't try to game or kind of cheat the view system, because if a product
+
+67
+00:03:59,660 --> 00:04:03,290
+gets more views, it's going to show up more prominently on the websites.
+
+68
+00:04:04,070 --> 00:04:09,860
+We're going to make sure that whenever someone who is authenticated or logged into our application views
+
+69
+00:04:09,860 --> 00:04:12,890
+a product, we are going to count that as a view.
+
+70
+00:04:13,850 --> 00:04:18,170
+And a product can only be viewed by a user exactly one time.
+
+71
+00:04:18,320 --> 00:04:23,660
+So in other words, what I really mean by all that, if I click on this item right here and I go to
+
+72
+00:04:23,660 --> 00:04:29,270
+its particular page to show me all the details around it, I would add one view to it because I just
+
+73
+00:04:29,270 --> 00:04:31,520
+went to that page and looked at that particular item.
+
+74
+00:04:32,270 --> 00:04:37,430
+But if I then refresh that page, if I revisit that page many, many times, I'm not going to add on
+
+75
+00:04:37,430 --> 00:04:38,600
+any additional views.
+
+76
+00:04:39,350 --> 00:04:44,420
+So for any given user, they can only contribute one single view forever for any given product.
+
+77
+00:04:45,210 --> 00:04:48,510
+That might sound like a very small thing, but it turns out it's actually going to be a little bit of
+
+78
+00:04:48,510 --> 00:04:50,100
+a challenge to implement later on.
+
+79
+00:04:52,470 --> 00:04:52,680
+All right.
+
+80
+00:04:52,680 --> 00:04:56,280
+Lastly, want to mention here is that on these three different carousels, we are displaying items in
+
+81
+00:04:56,280 --> 00:04:57,270
+a very particular order.
+
+82
+00:04:57,750 --> 00:04:59,450
+The first is the most expensive.
+
+83
+00:04:59,760 --> 00:05:01,560
+So from most to least expensive.
+
+84
+00:05:02,220 --> 00:05:05,970
+Then the items that are an incident soonest and then the items to have the most views.
+
+85
+00:05:07,800 --> 00:05:08,120
+All right.
+
+86
+00:05:08,130 --> 00:05:14,070
+After that, we've got a sign in page where a user can enter in a user name and password to sign in
+
+87
+00:05:14,760 --> 00:05:15,840
+a sign up page.
+
+88
+00:05:15,840 --> 00:05:18,660
+Or user can enter in the username and password to sign up for an account.
+
+89
+00:05:19,870 --> 00:05:25,720
+Once a user is authenticated, the header is going to change up here just a little bit and the user
+
+90
+00:05:25,720 --> 00:05:31,720
+will get links to log out to go to a dashboard that's going to display all the items that this user
+
+91
+00:05:31,720 --> 00:05:36,490
+is selling and a link to list a new item to be purchased or auctioned off.
+
+92
+00:05:38,630 --> 00:05:43,730
+This page right here in particular is where a new oxygen will be created, which green auction a user
+
+93
+00:05:43,730 --> 00:05:48,620
+only has to enter in the name of the item, a short description and a duration.
+
+94
+00:05:51,030 --> 00:05:52,320
+Once the action has been created.
+
+95
+00:05:54,600 --> 00:05:56,730
+User can then go to the item show page.
+
+96
+00:05:57,210 --> 00:06:00,540
+This is where we're going to display information about a particular auction.
+
+97
+00:06:01,290 --> 00:06:03,580
+So there is a lot of content on this page right here.
+
+98
+00:06:03,730 --> 00:06:06,900
+We're just going to go over it very quickly because we're going to spend a lot of time on this page.
+
+99
+00:06:07,410 --> 00:06:14,040
+On the top left hand side is going to be a image of the product and the title, then a link to the seller's
+
+100
+00:06:14,040 --> 00:06:15,170
+profile page.
+
+101
+00:06:15,180 --> 00:06:17,340
+So that will be some information about the seller.
+
+102
+00:06:18,060 --> 00:06:21,720
+Well, then show the product description on the top right hand side.
+
+103
+00:06:22,050 --> 00:06:26,010
+We'll display an interface where a user can like this auction or like this product.
+
+104
+00:06:26,670 --> 00:06:31,260
+If I click on like right there, I would expect three, which is the current number of likes that this
+
+105
+00:06:31,260 --> 00:06:32,790
+item has to go up to four.
+
+106
+00:06:34,820 --> 00:06:40,190
+Well, then display the highest bid, the number of bids and win the auction or the amount of time left
+
+107
+00:06:40,190 --> 00:06:40,850
+in this auction.
+
+108
+00:06:41,720 --> 00:06:43,460
+Then a form to place a bid.
+
+109
+00:06:45,230 --> 00:06:49,250
+A little chart to display how the bid price has changed over time.
+
+110
+00:06:50,310 --> 00:06:53,940
+And then finally, another carousel down here not actually going to a carousel is just going to be a
+
+111
+00:06:53,940 --> 00:06:56,090
+static list of similar items.
+
+112
+00:06:56,400 --> 00:07:00,540
+So items that are somewhat similar in nature, we'll figure out exactly how we're going to measure similarity,
+
+113
+00:07:00,540 --> 00:07:01,440
+of course, later on.
+
+114
+00:07:03,340 --> 00:07:05,320
+All right, next page, just one or two more.
+
+115
+00:07:05,650 --> 00:07:10,210
+This is the cellar profile where you can look at all the items that another user is selling.
+
+116
+00:07:11,020 --> 00:07:14,920
+So on this page, we're going to display what items the seller likes.
+
+117
+00:07:15,830 --> 00:07:19,490
+And items that both the currently authenticated users.
+
+118
+00:07:19,490 --> 00:07:22,700
+In other words you and this person into like.
+
+119
+00:07:24,250 --> 00:07:26,470
+And then finally, one last page here, the dashboard.
+
+120
+00:07:26,800 --> 00:07:29,560
+This is where you can review all the items that you are currently selling.
+
+121
+00:07:29,890 --> 00:07:35,260
+So we're going to have a very fully featured table in here where we will list a ton of items that I'm
+
+122
+00:07:35,260 --> 00:07:35,980
+currently selling.
+
+123
+00:07:36,400 --> 00:07:40,000
+We'll have the name, the current price, I'm left bids, blah, blah, blah.
+
+124
+00:07:40,000 --> 00:07:40,870
+All that stuff on here.
+
+125
+00:07:41,880 --> 00:07:47,280
+Now, one thing to note in particular is that we were going to design this entire application, assuming
+
+126
+00:07:47,280 --> 00:07:50,100
+that this is going to be a very well trafficked website.
+
+127
+00:07:50,460 --> 00:07:54,960
+So we're going to assume that there could potentially be millions of different products being actively
+
+128
+00:07:54,960 --> 00:07:56,310
+sold at any given time.
+
+129
+00:07:57,000 --> 00:08:02,640
+But then mind, any time that we display a list of items like right here or any time that we display,
+
+130
+00:08:02,670 --> 00:08:09,210
+say, this table, we might be displaying just some records out of a set of thousands of different records.
+
+131
+00:08:09,600 --> 00:08:13,560
+So I wouldn't want to show a table right here with, say, a thousand different rows, which means we
+
+132
+00:08:13,560 --> 00:08:15,690
+need to implement some sort of pagination.
+
+133
+00:08:16,320 --> 00:08:21,490
+So we are only going to display, say, ten items at a time and then give the user a little paginated
+
+134
+00:08:21,500 --> 00:08:22,170
+down here.
+
+135
+00:08:23,240 --> 00:08:25,430
+That they can click on to look at different pages.
+
+136
+00:08:26,600 --> 00:08:27,190
+Same thing.
+
+137
+00:08:27,590 --> 00:08:29,810
+Back over here on the main landing page.
+
+138
+00:08:30,140 --> 00:08:34,370
+When we have these carousels, a user is not scrolling through all the different items we have on our
+
+139
+00:08:34,370 --> 00:08:34,820
+website.
+
+140
+00:08:35,000 --> 00:08:39,260
+They're only going to be looking at, say, the ten or 15 most expensive items.
+
+141
+00:08:40,900 --> 00:08:41,190
+Okay.
+
+142
+00:08:41,200 --> 00:08:44,560
+So that is the overview, overview of the features that are in this application.
+
+143
+00:08:44,830 --> 00:08:46,030
+So several different pages.
+
+144
+00:08:46,060 --> 00:08:47,290
+A lot of stuff going on here.
+
+145
+00:08:47,470 --> 00:08:51,790
+Definitely a lot of implementation that we have to worry about now that we've got this overview.
+
+146
+00:08:51,880 --> 00:08:55,720
+Time for us to jump into the high level design of all this stuff.
+
+147
+00:08:55,870 --> 00:09:01,210
+And remember, I want to really focus on in particular where we are going to use hashes to build this
+
+148
+00:09:01,210 --> 00:09:01,780
+application.
+
+149
+00:09:01,990 --> 00:09:04,990
+So let's start to think about the design of all this stuff in the next video.

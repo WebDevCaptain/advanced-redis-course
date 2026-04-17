@@ -1,0 +1,263 @@
+1
+00:00:00,870 --> 00:00:04,650
+Now that we've got some administrative stuff out of the way, let's start to dive into some technical
+
+2
+00:00:04,650 --> 00:00:05,160
+topics.
+
+3
+00:00:05,430 --> 00:00:09,700
+In this video, we're going to try to answer one single question What is this all about?
+
+4
+00:00:10,260 --> 00:00:11,700
+So we're going to start with the basics.
+
+5
+00:00:12,090 --> 00:00:18,030
+Redis is a database that means we can use it for persisting information for any kind of app information
+
+6
+00:00:18,030 --> 00:00:20,880
+like user accounts, blog posts, comments and so on.
+
+7
+00:00:21,450 --> 00:00:25,200
+After storing information, we can then retrieve it later on by writing queries.
+
+8
+00:00:25,800 --> 00:00:29,460
+Now, this behavior is similar to just about every other database out there.
+
+9
+00:00:29,910 --> 00:00:31,020
+The how it's right is different.
+
+10
+00:00:31,140 --> 00:00:34,320
+And why do we decide to use right us over any other database?
+
+11
+00:00:35,100 --> 00:00:36,360
+Well, the answer is simple.
+
+12
+00:00:37,230 --> 00:00:42,270
+Software engineers like yourself and myself just use Redis for one primary reason.
+
+13
+00:00:42,360 --> 00:00:43,740
+It is incredibly fast.
+
+14
+00:00:44,190 --> 00:00:46,530
+Redis can store and retrieve data extremely quickly.
+
+15
+00:00:47,580 --> 00:00:50,800
+The question here is where does Redis get its performance from?
+
+16
+00:00:51,310 --> 00:00:58,120
+Redis is not fast because it was created by some coding genius and it is not fast because it is written
+
+17
+00:00:58,120 --> 00:01:01,690
+in some kind of super special programming language or anything like that.
+
+18
+00:01:02,440 --> 00:01:05,980
+Instead, Redis is fast for three primary reasons.
+
+19
+00:01:06,790 --> 00:01:08,980
+First, all data is stored in memory.
+
+20
+00:01:09,580 --> 00:01:15,760
+Most databases store all their information between both the memory of a computer and a hard drive.
+
+21
+00:01:16,390 --> 00:01:21,580
+Accessing data in memory is fast, but getting data that is stored on the hard disk is relatively slow.
+
+22
+00:01:22,240 --> 00:01:24,370
+The register makes a very simple decision here.
+
+23
+00:01:24,790 --> 00:01:28,690
+Rather than storing any information on hard disk, it keeps all the data in memory.
+
+24
+00:01:28,870 --> 00:01:34,570
+And that means that accessing any data inside of a registered database is usually a very fast by default.
+
+25
+00:01:36,180 --> 00:01:38,250
+Now there is a very clear downside to this approach.
+
+26
+00:01:38,700 --> 00:01:43,830
+It means that by default, it can be challenging to work with a dataset that is larger than the amount
+
+27
+00:01:43,830 --> 00:01:45,450
+of memory that your computer has.
+
+28
+00:01:46,050 --> 00:01:51,870
+So, for example, if you have a dataset that is 100 gigabytes large, but your computer only has eight
+
+29
+00:01:51,870 --> 00:01:54,540
+gigabytes of memory, that is not going to fit in memory.
+
+30
+00:01:55,380 --> 00:01:58,560
+That might sound like a tremendous problem, but do not worry about it.
+
+31
+00:01:58,800 --> 00:02:03,420
+We're going to spend a lot of time later in this course discussing very clear strategies for working
+
+32
+00:02:03,420 --> 00:02:04,410
+around this limitation.
+
+33
+00:02:05,650 --> 00:02:08,140
+All right, onto the second reason that is very fast.
+
+34
+00:02:08,650 --> 00:02:14,470
+The second reason is that Reddit stores all of its data or organizes all of its data in simple data
+
+35
+00:02:14,470 --> 00:02:15,100
+structures.
+
+36
+00:02:15,490 --> 00:02:17,330
+Now, there's a lot of detail in this diagram right here.
+
+37
+00:02:17,350 --> 00:02:18,490
+Don't worry about the details.
+
+38
+00:02:18,790 --> 00:02:24,700
+All I need to indicate is that all of our data is organized into classic data structures like link lists,
+
+39
+00:02:25,000 --> 00:02:27,430
+sorted sets, hash maps and so on.
+
+40
+00:02:28,390 --> 00:02:33,670
+These different data structures have very well known and very well understood performance characteristics.
+
+41
+00:02:34,270 --> 00:02:40,810
+So you and I, as developers, can decide exactly how our information is organized in memory, so you
+
+42
+00:02:40,810 --> 00:02:44,410
+and I end up with a very good idea of how to efficiently query data.
+
+43
+00:02:45,930 --> 00:02:50,520
+Finally, red is very fast because it is very simple in nature.
+
+44
+00:02:51,150 --> 00:02:58,230
+Other databases like say PostgreSQL or MySQL and so on choose to layer on a feature upon feature to
+
+45
+00:02:58,230 --> 00:02:59,400
+make them easier to use.
+
+46
+00:02:59,910 --> 00:03:03,390
+But all those additional features have big performance penalties.
+
+47
+00:03:04,050 --> 00:03:06,060
+Red is takes a very different approach.
+
+48
+00:03:06,480 --> 00:03:11,820
+Rather than stuffing in a ton of different features into the database, it is kept very simple on purpose.
+
+49
+00:03:13,110 --> 00:03:13,470
+Okay.
+
+50
+00:03:13,590 --> 00:03:18,130
+So right away we are understanding here in this video that this is very fast.
+
+51
+00:03:18,150 --> 00:03:18,960
+That is why we use it.
+
+52
+00:03:19,260 --> 00:03:20,610
+It is fast for three reasons.
+
+53
+00:03:20,610 --> 00:03:22,050
+We keep all this data in memory.
+
+54
+00:03:22,680 --> 00:03:25,110
+We organize this data in simple data structures.
+
+55
+00:03:25,380 --> 00:03:28,410
+And this, on purpose has a very simple feature set.
+
+56
+00:03:29,220 --> 00:03:32,520
+Now, these three notes right here really have one big takeaway.
+
+57
+00:03:33,630 --> 00:03:38,550
+Understanding, reticence and learning how it works ends up being very different than other databases
+
+58
+00:03:39,270 --> 00:03:43,840
+we use write us because it is fast and it is fast because of these limitations right here.
+
+59
+00:03:44,340 --> 00:03:49,620
+So in order to use Redis, we have to understand how to fit our data into a limited space.
+
+60
+00:03:49,950 --> 00:03:54,300
+We have to understand how to fit our data or organize it using these simple data structures.
+
+61
+00:03:54,810 --> 00:04:00,240
+And we have to understand how to kind of work ourselves around this limited feature sets.
+
+62
+00:04:01,250 --> 00:04:05,990
+That really starts to paint a picture of where we're going to spend our time when we are learning this.
+
+63
+00:04:06,230 --> 00:04:10,070
+We need to understand how to work with data, how to organize it, and how to work with this simple
+
+64
+00:04:10,070 --> 00:04:10,700
+feature set.
+
+65
+00:04:11,510 --> 00:04:11,810
+Okay.
+
+66
+00:04:11,810 --> 00:04:14,900
+So with that in mind, let's go through a little bit of setup in the next video.

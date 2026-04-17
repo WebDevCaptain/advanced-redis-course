@@ -1,0 +1,311 @@
+1
+00:00:00,720 --> 00:00:04,050
+Before we move on, there's one last thing I want to take care of around bids.
+
+2
+00:00:04,500 --> 00:00:09,060
+You might recall that on the main landing page, you've got a section showing the items that are ending
+
+3
+00:00:09,060 --> 00:00:09,540
+soonest.
+
+4
+00:00:09,960 --> 00:00:15,630
+The items with the most views and the items that are the most expensive or in other words, have had
+
+5
+00:00:15,630 --> 00:00:18,000
+the highest amount of money bid on them.
+
+6
+00:00:18,690 --> 00:00:22,110
+We have not put in any implementation, are showing the most expensive items.
+
+7
+00:00:22,500 --> 00:00:24,060
+We're going to take care of that very quickly.
+
+8
+00:00:25,630 --> 00:00:30,700
+The actual implementation of this is going to be identical to what we did for ending soonest and most
+
+9
+00:00:30,700 --> 00:00:31,150
+views.
+
+10
+00:00:31,650 --> 00:00:34,690
+The we're going to have a single sorted set called items.
+
+11
+00:00:34,720 --> 00:00:42,370
+Colin Rice This will store the ID of every individual item as a member and the score will be the price
+
+12
+00:00:42,370 --> 00:00:43,030
+of the item.
+
+13
+00:00:44,430 --> 00:00:49,870
+Whenever a user creates a brand new item, we're going to add the item ID to our sorted set.
+
+14
+00:00:49,890 --> 00:00:54,390
+With an initial score of zero because it has not yet had any money bid on it.
+
+15
+00:00:55,200 --> 00:01:00,270
+And then whenever someone creates a bid and attempts to bid some amount of money on an item will go
+
+16
+00:01:00,270 --> 00:01:05,520
+into that same sorted set and update the score with the amount of money that was just bid on it.
+
+17
+00:01:06,450 --> 00:01:12,270
+And to show the most expensive items here, we can just take the list of items like the top five or
+
+18
+00:01:12,270 --> 00:01:17,190
+something like that from the very end of our sorted sets, because those will have the most amount of
+
+19
+00:01:17,190 --> 00:01:19,500
+money bid on them, and that's pretty much it.
+
+20
+00:01:20,930 --> 00:01:25,850
+The implementation will first begin by creating this sorted sets key.
+
+21
+00:01:26,100 --> 00:01:28,790
+We need to make a key function of items price.
+
+22
+00:01:29,270 --> 00:01:30,470
+Let's take care of that right away.
+
+23
+00:01:31,430 --> 00:01:32,540
+Back inside my editor.
+
+24
+00:01:32,900 --> 00:01:34,460
+I'm going to find my services.
+
+25
+00:01:34,760 --> 00:01:35,220
+Easy.
+
+26
+00:01:35,570 --> 00:01:35,810
+Yes.
+
+27
+00:01:35,810 --> 00:01:36,170
+File.
+
+28
+00:01:37,830 --> 00:01:43,440
+Under the item section, I'll add in a new items I price key.
+
+29
+00:01:44,670 --> 00:01:46,770
+And then return a string of items.
+
+30
+00:01:46,770 --> 00:01:47,730
+Colin Price.
+
+31
+00:01:51,290 --> 00:01:51,680
+All right.
+
+32
+00:01:52,340 --> 00:01:57,710
+Next up, we'll make sure that whenever we create an item you take, the item is added to our sorted
+
+33
+00:01:57,710 --> 00:01:58,760
+set with a score of zero.
+
+34
+00:01:59,570 --> 00:02:04,670
+Our item creation goes on inside of our queries, items, items, stats, file.
+
+35
+00:02:04,910 --> 00:02:05,630
+Here it is right here.
+
+36
+00:02:06,840 --> 00:02:07,590
+At the very top.
+
+37
+00:02:07,590 --> 00:02:10,860
+I'm going to find where I import the other keys, those right there.
+
+38
+00:02:11,280 --> 00:02:16,270
+And I'm going to add in an additional import or items by price.
+
+39
+00:02:16,480 --> 00:02:16,700
+Key.
+
+40
+00:02:19,930 --> 00:02:22,480
+Well, then go down to where we greet each individual item.
+
+41
+00:02:23,590 --> 00:02:24,310
+Here it is right here.
+
+42
+00:02:24,700 --> 00:02:29,740
+That's where we make our ID, then got our pipeline for all these different item creation commands we
+
+43
+00:02:29,740 --> 00:02:30,190
+have to run.
+
+44
+00:02:30,940 --> 00:02:34,660
+We're going to add in yet another command to run as a part of this pipeline.
+
+45
+00:02:35,260 --> 00:02:39,910
+We'll do client dot z add items by price key.
+
+46
+00:02:43,020 --> 00:02:48,570
+And then inside of here our value, which is actually the member, remember, the member is going to
+
+47
+00:02:48,570 --> 00:02:51,690
+be the ID and the initial score will just be zero.
+
+48
+00:02:53,320 --> 00:02:53,810
+And that's it.
+
+49
+00:02:57,770 --> 00:02:58,100
+Okay.
+
+50
+00:02:58,160 --> 00:03:03,440
+Next up, we need to make sure that whenever we create a bid, we update the score in the sorted sets,
+
+51
+00:03:04,370 --> 00:03:07,070
+a bid creation we were just working on a little bit ago.
+
+52
+00:03:07,250 --> 00:03:10,730
+We can find the code related to that inside of queries.
+
+53
+00:03:10,970 --> 00:03:11,400
+It's not.
+
+54
+00:03:11,520 --> 00:03:11,900
+Yes.
+
+55
+00:03:13,340 --> 00:03:20,720
+Here's where we agreed a bid but the very top the file let's import that sorted set key as well by all
+
+56
+00:03:20,720 --> 00:03:25,460
+the other key imports will get items by price key.
+
+57
+00:03:28,840 --> 00:03:34,960
+Then down inside of our transaction, in addition to the R push and the H set, you can also do this
+
+58
+00:03:34,960 --> 00:03:39,100
+update to the sorted sets and we'll use the Z add command yet again.
+
+59
+00:03:39,760 --> 00:03:44,410
+We'll do a Z, add on items by price key.
+
+60
+00:03:46,870 --> 00:03:50,080
+And then our value is going to be the items it.
+
+61
+00:03:52,370 --> 00:03:55,070
+And the score is going to be the amount of money in the bid.
+
+62
+00:03:55,550 --> 00:03:58,880
+The amount of money in the bid is available as ATRs dot amounts.
+
+63
+00:03:59,950 --> 00:04:00,490
+So the score.
+
+64
+00:04:00,490 --> 00:04:01,390
+Write your score.
+
+65
+00:04:01,420 --> 00:04:03,760
+Colon matters, not amount.
+
+66
+00:04:05,350 --> 00:04:05,980
+And that's it.
+
+67
+00:04:08,050 --> 00:04:11,980
+But we are now maintaining our data inside of our sorted sets, which is very good.
+
+68
+00:04:12,040 --> 00:04:16,900
+Last thing you have to do is make sure that we eventually allow ourselves to pull this data out of Redis
+
+69
+00:04:17,290 --> 00:04:18,010
+and we're going to do that.
+
+70
+00:04:18,250 --> 00:04:23,470
+The very similar set up to what we had done in the past, you might recall inside of queries, items,
+
+71
+00:04:23,480 --> 00:04:26,020
+DOT or some of the items folder.
+
+72
+00:04:26,590 --> 00:04:34,210
+We have a couple of files at the very top year of by ending time AI views and then two other ones of
+
+73
+00:04:34,210 --> 00:04:35,530
+by price and by user.
+
+74
+00:04:36,730 --> 00:04:41,680
+We had previously discussed some different ways of loading up relational data by using these sort commands.
+
+75
+00:04:41,920 --> 00:04:44,620
+We saw an example of that with items by views.
+
+76
+00:04:45,190 --> 00:04:50,470
+We're going to do something very similar in loading up all of our different, most expensive items.
+
+77
+00:04:51,070 --> 00:04:52,630
+That's going to take a little bit of time, however.
+
+78
+00:04:52,660 --> 00:04:58,540
+So let's start to tackle the by price or items by price function in the next video.

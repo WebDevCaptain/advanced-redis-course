@@ -1,0 +1,59 @@
+1
+00:00:00,870 --> 00:00:05,340
+Attached to the lecture right before this one is a JSON file called String Exercises.
+
+2
+00:00:05,670 --> 00:00:10,470
+Inside there there are just a couple of exercises around strings I'd like to go over really quickly,
+
+3
+00:00:10,980 --> 00:00:13,600
+so make sure you download that file once you have downloaded it.
+
+4
+00:00:13,800 --> 00:00:15,420
+Go over to our object cloud.
+
+5
+00:00:15,840 --> 00:00:17,160
+Go to the main landing page.
+
+6
+00:00:17,250 --> 00:00:19,170
+We're going to click on Upload Notebook.
+
+7
+00:00:20,950 --> 00:00:23,470
+Then I'm going to do a simple drag and drop.
+
+8
+00:00:24,770 --> 00:00:25,880
+Of that Jason file.
+
+9
+00:00:28,030 --> 00:00:30,910
+And then I should see strings exercises right there.
+
+10
+00:00:32,230 --> 00:00:35,920
+Inside of here are three just very simple, very straightforward exercises.
+
+11
+00:00:36,070 --> 00:00:39,250
+There's going to make sure that some of the topics we just went over are super clear.
+
+12
+00:00:39,760 --> 00:00:42,250
+I would like you to give these exercises a shot.
+
+13
+00:00:42,460 --> 00:00:46,060
+We're then going to go over the solutions to them together in just a moment.
+
+14
+00:00:46,270 --> 00:00:47,320
+So go and give it a try.
+
+15
+00:00:47,470 --> 00:00:50,260
+And we will watch together everything in the next video.

@@ -1,0 +1,267 @@
+1
+00:00:00,940 --> 00:00:04,510
+Let's take a look at where we might use a list on our e-commerce application.
+
+2
+00:00:04,930 --> 00:00:06,490
+I'm on the main landing page right now.
+
+3
+00:00:06,520 --> 00:00:10,690
+I'm going to scroll down to the most viewed section and then just click on any item on here.
+
+4
+00:00:11,840 --> 00:00:15,710
+Then once on this page, I'll scroll down a little bit to the bid history section.
+
+5
+00:00:16,370 --> 00:00:22,430
+So this is intended to be a chart displaying what the current bid is and how it is changing over time.
+
+6
+00:00:23,030 --> 00:00:26,930
+So the vertical axis is supposed to be the amount of money that has been bid on this product.
+
+7
+00:00:27,290 --> 00:00:32,750
+And then from left to right, going in the right direction, we should see time increasing.
+
+8
+00:00:32,930 --> 00:00:36,020
+So we should see newer bids over here on the far right hand side.
+
+9
+00:00:36,970 --> 00:00:43,120
+Because we are trying to show pretty much one single value here and we're just appending on new values
+
+10
+00:00:43,300 --> 00:00:45,010
+to the far right hand side over time.
+
+11
+00:00:45,280 --> 00:00:51,580
+This is probably a good use case for a list, so we'll use a list to store our history of bids and then
+
+12
+00:00:51,580 --> 00:00:52,660
+display them on this chart.
+
+13
+00:00:53,590 --> 00:00:58,450
+As a reminder, we haven't really dealt with BET bids at all inside of our application just yet, so
+
+14
+00:00:58,450 --> 00:01:02,620
+we do have to come back and have a larger discussion around bids and how they're going to be used in
+
+15
+00:01:02,620 --> 00:01:03,130
+our app.
+
+16
+00:01:03,490 --> 00:01:07,630
+Right now we are only going to focus on implementing the bid history parts.
+
+17
+00:01:09,010 --> 00:01:09,340
+All right.
+
+18
+00:01:09,340 --> 00:01:10,660
+So back inside, my editor.
+
+19
+00:01:12,730 --> 00:01:14,440
+I want to find these services.
+
+20
+00:01:14,710 --> 00:01:17,020
+Queries, bids, dots, file.
+
+21
+00:01:18,460 --> 00:01:22,840
+In here, you're going to notice that there are two functions, one called create bid, and another
+
+22
+00:01:22,840 --> 00:01:24,400
+is get bid history.
+
+23
+00:01:25,150 --> 00:01:28,720
+Inside of Create bid, we're eventually going to have a ton of logic.
+
+24
+00:01:29,110 --> 00:01:30,860
+So not just the speed history stuff.
+
+25
+00:01:30,860 --> 00:01:35,530
+We're going to have a lot of other stuff going on around Pids notably to handle some concurrency issues
+
+26
+00:01:35,530 --> 00:01:37,390
+that we're going to discuss a little bit later on.
+
+27
+00:01:38,230 --> 00:01:42,940
+But right now, again, we're just going to worry about creating a record saying some amount of money
+
+28
+00:01:42,940 --> 00:01:44,830
+was bid at this particular time.
+
+29
+00:01:45,810 --> 00:01:51,630
+Then our second function here get bit history is where we are going to naturally try to get some data
+
+30
+00:01:51,630 --> 00:01:52,320
+out of Redis.
+
+31
+00:01:52,560 --> 00:01:53,580
+Get our list of bids.
+
+32
+00:01:53,580 --> 00:01:55,280
+And how is Japan changing over time?
+
+33
+00:01:56,210 --> 00:01:57,800
+So how are we going to actually store the bids?
+
+34
+00:01:58,040 --> 00:02:01,520
+Well, for every item, we're going to have a separate list.
+
+35
+00:02:02,180 --> 00:02:06,470
+We're going to store these at History Pounds and then the idea of the item.
+
+36
+00:02:06,770 --> 00:02:09,080
+So in this case, the item ID is A1.
+
+37
+00:02:09,800 --> 00:02:16,250
+Then in our list, we're going to use the same kind of structure or kind of serialization that I mentioned
+
+38
+00:02:16,250 --> 00:02:18,320
+a little bit ago around storing temperatures.
+
+39
+00:02:18,800 --> 00:02:24,770
+So we're going to have the amount of money that was bid on this item and then a colon and then a UNIX
+
+40
+00:02:24,770 --> 00:02:27,290
+timestamp of when this bid was created.
+
+41
+00:02:27,890 --> 00:02:32,960
+So in one single record, we'll know the amount of money and we'll also know the time at which the bid
+
+42
+00:02:32,960 --> 00:02:33,590
+was created.
+
+43
+00:02:35,750 --> 00:02:40,040
+So over time, as more bids are added, we're going to add them onto the right hand side of the list.
+
+44
+00:02:40,700 --> 00:02:43,910
+So first $25, then 30, then 40 and so on.
+
+45
+00:02:45,710 --> 00:02:51,440
+Now as far as those two functions, we just looked at creep ID and get bit history again, creep ID
+
+46
+00:02:51,470 --> 00:02:53,360
+is going to eventually have a ton of logic in it.
+
+47
+00:02:53,390 --> 00:02:59,030
+But right now, just some stuff around inserting a new record into the list and then on Get It history.
+
+48
+00:02:59,030 --> 00:03:02,030
+Something that I really want to make sure is very clear.
+
+49
+00:03:02,420 --> 00:03:05,750
+This is a function that's going to return an array of objects.
+
+50
+00:03:06,290 --> 00:03:07,820
+So we need to go into Redis.
+
+51
+00:03:08,060 --> 00:03:11,660
+We need to take a look at the list or some particular item.
+
+52
+00:03:12,200 --> 00:03:13,730
+We need to pull out all that data.
+
+53
+00:03:14,000 --> 00:03:21,710
+We need to parse it and turn every one of those little number, colon number things into an object that
+
+54
+00:03:21,710 --> 00:03:22,400
+looks like this.
+
+55
+00:03:22,910 --> 00:03:27,020
+So I want to see the amount that was bid created out and created out.
+
+56
+00:03:27,020 --> 00:03:28,940
+Should have the UNIX timestamp right here.
+
+57
+00:03:28,940 --> 00:03:31,850
+I'm just abbreviating it as 1002 thousand.
+
+58
+00:03:32,510 --> 00:03:34,580
+So again, we need to have an array of objects.
+
+59
+00:03:35,150 --> 00:03:42,020
+Each object is going to have an amount and created out and we're going to go from the later earliest
+
+60
+00:03:42,020 --> 00:03:42,350
+bid.
+
+61
+00:03:42,350 --> 00:03:42,960
+That's I'm looking for.
+
+62
+00:03:42,980 --> 00:03:48,980
+So the oldest bid and then next element should be the next bid that was added, then the next bid and
+
+63
+00:03:48,980 --> 00:03:49,370
+so on.
+
+64
+00:03:50,670 --> 00:03:50,910
+All right.
+
+65
+00:03:50,910 --> 00:03:54,180
+So a lot of information here, but I just want make sure, again, it's super clear what's going on
+
+66
+00:03:54,420 --> 00:03:57,900
+because we're going to pretty quickly run into a interesting issue here.
+
+67
+00:03:58,290 --> 00:04:02,160
+So let's take a pause right here and start with the implementation in just a moment.

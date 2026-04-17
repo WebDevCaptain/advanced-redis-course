@@ -1,0 +1,283 @@
+1
+00:00:01,070 --> 00:00:05,930
+If you log into the application and then click on the dashboard link at the top right hand side, you're
+
+2
+00:00:05,930 --> 00:00:07,700
+going to get a big area that looks like this.
+
+3
+00:00:08,090 --> 00:00:10,430
+So we've always had a big error on the dashboard page.
+
+4
+00:00:10,490 --> 00:00:11,990
+We're going to try to fix that in this video.
+
+5
+00:00:12,770 --> 00:00:17,360
+First one, begin by helping you understand what information the dashboard page is going to show.
+
+6
+00:00:18,260 --> 00:00:20,030
+I'm going to go back over to my code editor.
+
+7
+00:00:20,570 --> 00:00:23,570
+I'm going to find the queries items I use.
+
+8
+00:00:23,570 --> 00:00:24,680
+Hertz file.
+
+9
+00:00:25,600 --> 00:00:29,350
+And then inside of here, we've got a items by user function.
+
+10
+00:00:30,390 --> 00:00:34,290
+I'm going to expand on that function and return an empty array from it.
+
+11
+00:00:36,510 --> 00:00:40,830
+If I then save this and go back over to the dashboard, I'll now see a little table on here.
+
+12
+00:00:41,610 --> 00:00:43,950
+So that is what this page is supposed to display.
+
+13
+00:00:43,980 --> 00:00:48,120
+We're going to show the user all the items that they are trying to sell on our platform.
+
+14
+00:00:48,630 --> 00:00:53,430
+We're going to show the name, the price, the time left on the auction, the number of bids, number
+
+15
+00:00:53,430 --> 00:00:54,480
+of views and number of likes.
+
+16
+00:00:55,080 --> 00:00:58,140
+And each of these different fields are going to be sortable as well.
+
+17
+00:00:58,740 --> 00:01:02,490
+So we are really doing kind of a search and a sort operation.
+
+18
+00:01:02,880 --> 00:01:06,540
+We are searching for all the different items that have been created by the user.
+
+19
+00:01:07,670 --> 00:01:10,310
+And then we are sorting by these different values.
+
+20
+00:01:11,240 --> 00:01:15,470
+We need to understand a little bit more about sorting with ready search before we start to put any of
+
+21
+00:01:15,470 --> 00:01:16,220
+this stuff together.
+
+22
+00:01:16,790 --> 00:01:19,460
+So couple of notes on ready search and sorting.
+
+23
+00:01:20,610 --> 00:01:23,490
+The ready search itself can sort search results.
+
+24
+00:01:23,640 --> 00:01:28,350
+We don't have to do a search and then use that sort of command we learned about a long time ago.
+
+25
+00:01:28,620 --> 00:01:30,090
+Not an easy command at all here.
+
+26
+00:01:30,510 --> 00:01:32,490
+Instead, we're just going to do a normal search.
+
+27
+00:01:32,850 --> 00:01:37,650
+And as a part of our query, we're also going to say, please sort the results by some field.
+
+28
+00:01:39,020 --> 00:01:41,900
+In order to use sorting, we have to update our index.
+
+29
+00:01:42,290 --> 00:01:46,520
+So we have to specifically say which fields we want to be able to sort by.
+
+30
+00:01:46,970 --> 00:01:49,800
+By default, we can't just do arbitrary sorting.
+
+31
+00:01:49,820 --> 00:01:53,150
+We have to say ahead of time how we expect to do our sort.
+
+32
+00:01:54,470 --> 00:01:56,090
+And then a little limitation here.
+
+33
+00:01:56,090 --> 00:02:03,110
+We can only sort by one field at a time, so we can't try to say sort by dates or something like that
+
+34
+00:02:03,110 --> 00:02:08,780
+and find all the items that were created on one day and then within that day apply further sorting by
+
+35
+00:02:08,780 --> 00:02:12,200
+maybe doing sorting by the items name or something like that.
+
+36
+00:02:12,410 --> 00:02:14,270
+But only at one sort yield at a time.
+
+37
+00:02:17,290 --> 00:02:20,470
+Now as we start to create our index, we want to do sorting.
+
+38
+00:02:20,590 --> 00:02:25,330
+We have to say out of all of our different fields, whether we want them to be sortable or not.
+
+39
+00:02:25,780 --> 00:02:30,640
+At present, as we've created our index, we have only the name and the description.
+
+40
+00:02:31,210 --> 00:02:35,260
+And because we did not specifically say that we wanted these to be sortable, they were automatically
+
+41
+00:02:35,260 --> 00:02:37,540
+marked as non sortable for us.
+
+42
+00:02:38,410 --> 00:02:40,810
+We definitely want to build a sorts on the items names.
+
+43
+00:02:41,170 --> 00:02:43,810
+So I'm going to move it over to this sortable column.
+
+44
+00:02:44,870 --> 00:02:50,130
+So I want to be able to do a search on our items index and be able to search sort by the item name.
+
+45
+00:02:51,650 --> 00:02:55,430
+And then let's go through all these other properties that are stored inside of an item house as well
+
+46
+00:02:55,640 --> 00:03:00,470
+and figure out if they should be included inside of our index and whether or not they should be sortable.
+
+47
+00:03:00,980 --> 00:03:03,620
+Remember we are now talking about using this items index.
+
+48
+00:03:05,110 --> 00:03:06,980
+Or this entire table right here.
+
+49
+00:03:07,000 --> 00:03:10,840
+So we definitely need to do an update to the index and we need to mark some of these different fields
+
+50
+00:03:10,840 --> 00:03:11,590
+as being sortable.
+
+51
+00:03:12,220 --> 00:03:13,810
+Let's just go down list one by one.
+
+52
+00:03:15,110 --> 00:03:16,400
+Next up is owner ID.
+
+53
+00:03:17,270 --> 00:03:21,650
+We do want this to be in our index now because we want to find all the items that have been created
+
+54
+00:03:21,650 --> 00:03:23,600
+by a very specific person.
+
+55
+00:03:24,440 --> 00:03:28,580
+But once we find those items, we don't really need to sort by that in any way.
+
+56
+00:03:28,940 --> 00:03:32,510
+So we're going to add owner ID to our index, but it's going to be non searchable.
+
+57
+00:03:33,910 --> 00:03:39,120
+Image URL doesn't need to be in our index at all because we are not searching by image URLs.
+
+58
+00:03:39,130 --> 00:03:40,240
+We're also not sorting by its.
+
+59
+00:03:41,240 --> 00:03:45,530
+We don't really need to read it out because we're not doing any sorting or searching based on it.
+
+60
+00:03:46,710 --> 00:03:51,660
+But we are going to be doing some sorting based on ending apps as we got the time left column right
+
+61
+00:03:51,660 --> 00:03:51,960
+here.
+
+62
+00:03:52,920 --> 00:03:55,920
+So I'm going to start to include that in my index as a sortable field.
+
+63
+00:03:56,780 --> 00:04:03,890
+And then views like price and bids are all going to be added into our index as sortable yields because
+
+64
+00:04:03,890 --> 00:04:08,300
+those are columns that I want people to click on right here and sort my search results.
+
+65
+00:04:11,060 --> 00:04:11,390
+Okay.
+
+66
+00:04:11,390 --> 00:04:12,020
+So that's it.
+
+67
+00:04:12,110 --> 00:04:13,700
+We're going to recreate our index.
+
+68
+00:04:14,090 --> 00:04:18,620
+We're going to add a bunch of additional fields to the index, and some of those fields will be marked
+
+69
+00:04:18,620 --> 00:04:19,250
+as sortable.
+
+70
+00:04:20,090 --> 00:04:21,010
+Let's take a pause right here.
+
+71
+00:04:21,020 --> 00:04:23,810
+We'll come back in just a moment and we're going to update our index.

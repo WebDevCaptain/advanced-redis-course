@@ -1,0 +1,147 @@
+1
+00:00:00,830 --> 00:00:02,990
+Onto the last big feature, our end, our like system.
+
+2
+00:00:03,000 --> 00:00:05,360
+So I want to show items that I like and this person likes.
+
+3
+00:00:05,780 --> 00:00:10,820
+In this case, this is my own profile, so I'm really just going to expect to see this chair listed
+
+4
+00:00:10,820 --> 00:00:11,210
+in there.
+
+5
+00:00:11,510 --> 00:00:15,410
+But eventually, once we start to load in more data, we'll come back and make sure that this section
+
+6
+00:00:15,410 --> 00:00:16,520
+is working correctly.
+
+7
+00:00:17,720 --> 00:00:17,970
+All right.
+
+8
+00:00:17,990 --> 00:00:19,610
+Back inside of our likes knockouts file.
+
+9
+00:00:19,850 --> 00:00:22,730
+We're going to implement the common like items function.
+
+10
+00:00:23,360 --> 00:00:29,630
+So we need to do an intersection between this person's, like, set of item IDs and that person's.
+
+11
+00:00:30,290 --> 00:00:32,660
+That's going to be the entire command.
+
+12
+00:00:34,320 --> 00:00:34,800
+All right.
+
+13
+00:00:34,800 --> 00:00:35,940
+So I'm going to expand this.
+
+14
+00:00:37,930 --> 00:00:44,500
+I'm going to get a new variable called IDs and this will be the result of a wait find dot s enter.
+
+15
+00:00:45,440 --> 00:00:50,620
+Now the arguments to the center function, unfortunately, is not just a plain row in this list of ideas.
+
+16
+00:00:50,630 --> 00:00:52,220
+It has to be an array of them.
+
+17
+00:00:52,310 --> 00:00:53,390
+So we're going to put in an array.
+
+18
+00:00:53,960 --> 00:00:57,290
+We want to want to find the intersection between that user and that user.
+
+19
+00:00:57,500 --> 00:01:00,350
+So it will be user likes.
+
+20
+00:01:02,010 --> 00:01:08,490
+E with user one id user likes key with user to ID.
+
+21
+00:01:12,660 --> 00:01:15,870
+After getting that list of ideas, we will once again return.
+
+22
+00:01:17,870 --> 00:01:20,870
+Get items and put in the list of ideas that we found.
+
+23
+00:01:24,070 --> 00:01:24,640
+And that's it.
+
+24
+00:01:26,130 --> 00:01:28,800
+But once again, back over here, I refresh the page.
+
+25
+00:01:28,800 --> 00:01:30,290
+I will see items you both like.
+
+26
+00:01:30,300 --> 00:01:31,980
+And sure enough, there is the chair there.
+
+27
+00:01:32,160 --> 00:01:36,360
+Again, this is my own profile, so it's not super proof that everything is working as expected.
+
+28
+00:01:36,360 --> 00:01:40,770
+But yeah, it's probably working and we can test it out in greater detail later on.
+
+29
+00:01:42,220 --> 00:01:42,610
+Okay.
+
+30
+00:01:42,820 --> 00:01:44,860
+That is, it's around our like system.
+
+31
+00:01:45,430 --> 00:01:48,250
+Now, in my opinion, it's my opinion.
+
+32
+00:01:48,610 --> 00:01:52,690
+This is an awfully small amount of code to implement a like system.
+
+33
+00:01:53,260 --> 00:01:56,590
+So this is really the power of sets in action right here.
+
+34
+00:01:56,590 --> 00:02:02,500
+We're seeing how easy it is to set up relations between different items or different records by using
+
+35
+00:02:02,500 --> 00:02:03,040
+a set.
+
+36
+00:02:03,520 --> 00:02:08,920
+And we even get this awesome functionality in getting common items or common things between different
+
+37
+00:02:08,920 --> 00:02:11,380
+records by using intersections as well.
